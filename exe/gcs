@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'gcs'
+
+Signal.trap('INT') do
+  exit(1)
+end
+
+begin
+  Gcs::Cli.start(ARGV)
+rescue StandardError => e
+  Console.logger.error(e.message)
+  exit 1
+end
+
