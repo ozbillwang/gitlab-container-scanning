@@ -12,7 +12,7 @@ stages:
   # - release-major    # update Docker images and distro packages of the major release
 
 tests:
-  image: ruby:2.5.5-alpine
+  image: ruby:2.5.5-slim
   stage: test
   script:
     - gem update bundler
