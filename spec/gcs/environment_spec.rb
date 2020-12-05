@@ -40,7 +40,8 @@ RSpec.describe Gcs::Environment do
 
   it 'exists the program when variables not set' do
     expect(Gcs.logger).to receive(:error)
-    expect(Gcs::Environment.default_docker_image).to raise_error SystemExit
+    execution = -> { Gcs::Environment.default_docker_image }
+    expect(execution).to terminate.with_code(1)
   end
 
   it 'setup log level' do

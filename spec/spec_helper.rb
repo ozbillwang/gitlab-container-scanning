@@ -7,6 +7,7 @@ require 'securerandom'
 # require 'rspec-benchmark'
 require 'helpers'
 require 'support/fixture_file_helper'
+require 'support/exit_code_matchers'
 # require 'support/report'
 # require 'support/project_helper'
 # require 'support/integration_test_helper'
@@ -26,10 +27,10 @@ require 'support/fixture_file_helper'
 #   end
 # end
 
-
 RSpec.configure do |config|
   # config.include RSpec::Benchmark::Matchers
   config.include FixtureFileHelper
+  config.include  ExitCodeMatchers
   # config.include Helpers
   # config.include IntegrationTestHelper, type: :integration
   config.define_derived_metadata(file_path: %r{/spec/integration}) do |metadata|

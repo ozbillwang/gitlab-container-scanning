@@ -9,7 +9,9 @@ RSpec.describe Gcs::Cli do
   it 'exists when scan fails' do
     arguments = ['scan', 'ubuntu:latest']
     allow(Gcs::Trivy).to receive(:scan_image).with('ubuntu:latest').and_return([nil, nil, double(success?: false)])
-    expect(Gcs::Cli.start(arguments)).to raise_error SystemExit
+
+    execution = -> { Gcs::Cli.start(arguments) }
     expect(Gcs::Trivy).to receive(:scan_image).with('ubuntu:latest')
+    expect(execution).to terminate.with_code(1)
   end
 end
