@@ -12,10 +12,11 @@ stages:
   # - release-major    # update Docker images and distro packages of the major release
 
 tests:
-  image: ruby:2.5-alpine
+  image: ruby:2.5.5-alpine
   stage: test
   script:
-    - bundle exec rake rspec
+    - gem update bundler
+    - bundle exec rake spec
 
 # build tmp image:
 #   image: docker:stable
