@@ -8,7 +8,8 @@
 /tmp/
 
 # rspec failure tracking
+.vscode
 .rspec_status
 .byebug_history
-.tmp.json
+tmp.json
 gl-container-scanning-report.json

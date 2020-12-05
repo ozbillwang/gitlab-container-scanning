@@ -12,7 +12,6 @@
       ,
     {{- end }}
     {
-      "id": "{{ .VulnerabilityID }}",
       "category": "container_scanning",
       "message": {{ .Title | printf "%q" }},
       "description": {{ .Description | printf "%q" }},
@@ -79,5 +78,20 @@
     {{- end -}}
   {{- end }}
   ],
-  "remediations": []
+  "remediations": [],
+  "scan": {
+  "scanner": {
+    "id": "trivy",
+    "name": "Trivy",
+    "url": "https://github.com/aquasecurity/trivy/",
+    "vendor": {
+      "name": "GitLab"
+    },
+    "version": ""
+  },
+  "type": "container_scanning",
+  "start_time": "",
+  "end_time": "",
+  "status": "success"
+  }
 }

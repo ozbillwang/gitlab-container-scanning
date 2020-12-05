@@ -13,4 +13,3 @@ rescue StandardError => e
   Console.logger.error(e.message)
   exit 1
 end
-

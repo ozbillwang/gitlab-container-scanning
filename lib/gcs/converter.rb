@@ -1,23 +1,25 @@
+# frozen_string_literal: true
+
 module Gcs
   class Converter
+    attr_accessor :source, :target, :opt
 
-    attr_accessor :source, :target
-
-    def initialize(source, target)
+    # @source trivy output
+    # @target gcs output
+    # opt additional information about scan
+    def initialize(source, target, opt = {})
       @source = source
       @target = target
+      @opt = opt
     end
 
     def convert
       parsed_report = JSON.parse(@source)
-      parsed_report['vulnerabilities'].each do |vulnerability|
-        vulnerability['message'] = 'temp' if vulnerability['message'] == ''
-        image, os = vulnerability.dig('location', 'image').split(' ', 2)
-        # vulnerability['location']['operating_system'] = os[1..-2].delete(" \t\r\n")
-        # vulnerability['cve'] = "#{vulnerability.dig('location', 'operating_system')}:#{vulnerability.dig('location', 'dependency', 'package', 'name')}:#{vulnerability['cve']}"
-        vulnerability['location']['image'] = image
-        vulnerability['id'] = Digest::SHA1.hexdigest("#{vulnerability['cve']}:#{vulnerability['location']}")
-      end
+      parsed_report['scan']['start_time'] = opt.fetch(:start_time, '')
+      parsed_report['scan']['end_time'] = opt.fetch(:end_time, '')
+      parsed_report['vulnerabilities'] = parsed_report['vulnerabilities'].map { |vuln| Vulnerability.new(vuln).to_hash }
+
+      parsed_report
     end
   end
 end

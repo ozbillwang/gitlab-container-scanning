@@ -1,18 +1,24 @@
+require 'ostruct'
+require 'forwardable'
 require 'thor'
 require 'console'
 require 'open3'
 require 'json'
+require 'date'
 require 'digest'
+require 'pathname'
 require 'zeitwerk'
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup
 
 module Gcs
+ DEFAULT_REPORT_NAME = 'gl-container-scanning-report.json'.freeze
+
  class << self
-   def self.root
-     Pathname.new(File.dirname(__FILE__)).join('../..')
-   end
+   def root
+    File.expand_path('..', __FILE__)
+  end
 
    def logger
      @logger ||= Console.logger
@@ -24,4 +30,6 @@ module Gcs
  end
 end
 
-# loader.eager_load
+loader.eager_load
+
+Gcs::Environment.setup_log_level

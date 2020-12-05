@@ -1,0 +1,90 @@
+# When using dind, it's wise to use the overlayfs driver for
+# improved performance.
+variables:
+  # The context of these variables is global to the downstream job
+  DOCKER_DRIVER: overlay2
+  MAJOR: 1
+  TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp:$CI_COMMIT_SHA
+
+stages:
+  - test             # check, test, and scan the Docker images
+  # - release-version  # release Docker images and distro packages
+  # - release-major    # update Docker images and distro packages of the major release
+
+tests:
+  image: 2.5-alpine
+  stage: test
+  script:
+    - bundle exec rake rspec
+
+# build tmp image:
+#   image: docker:stable
+#   stage: build-image
+#   services:
+#     - docker:19.03.5-dind
+#   script:
+#     - docker info
+#     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+#     - docker build --build-arg GO_VERSION -t $TMP_IMAGE .
+#     - docker push $TMP_IMAGE
+
+# # TODO
+# # integration test:
+
+# # TODO
+# # test-custom-ca-bundle
+
+# .docker_tag:
+#   image: docker:stable
+#   stage: release-version
+#   services:
+#     - docker:19.03.5-dind
+#   script:
+#     - docker info
+#     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+#     - export SOURCE_IMAGE=$TMP_IMAGE
+#     - export TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
+#     - docker pull $SOURCE_IMAGE
+#     - docker tag $SOURCE_IMAGE $TARGET_IMAGE
+#     - docker push $TARGET_IMAGE
+
+# tag branch:
+#   extends: .docker_tag
+#   variables:
+#     # CAUTION: by preferring `SLUG` over `NAME` we can properly handle non-alphanumeric
+#     # characters, but this may limit our tags to 63chars or raise potential conflicts.
+#     IMAGE_TAG: $CI_COMMIT_REF_SLUG
+#   rules:
+#     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+#       when: never
+#     - if: $CI_COMMIT_BRANCH
+
+# tag edge:
+#   extends: .docker_tag
+#   variables:
+#     IMAGE_TAG: edge
+#   rules:
+#     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+
+# tag version:
+#   extends: .docker_tag
+#   before_script:
+#     - export IMAGE_TAG=${CI_COMMIT_TAG/v/}
+#     - echo "Checking that $CI_COMMIT_TAG is last in the changelog"
+#     - test "$(grep '^## v' CHANGELOG.md |head -n 1)" = "## $CI_COMMIT_TAG"
+#   rules:
+#     - if: $CI_COMMIT_TAG
+
+# .release:
+#   extends: .docker_tag
+#   stage: release-major
+#   rules:
+#     - if: $CI_COMMIT_TAG
+
+# major:
+#   extends: .release
+#   variables:
+#     IMAGE_TAG: $MAJOR
+
+# latest:
+#   extends: .release

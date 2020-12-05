@@ -2,29 +2,13 @@
   module Gcs
     class Shell
       SPLIT_SCRIPT = "'BEGIN {x=0;} /BEGIN CERT/{x++} { print > \"custom.\" x \".crt\" }'"
-      COMMAND_MAP = {
-        asdf: '/opt/asdf/bin/asdf',
-        bundle: '/opt/asdf/bin/asdf exec bundle',
-        cargo: '/opt/asdf/bin/asdf exec cargo',
-        cert_sync: '/opt/asdf/installs/mono/6.8.0.123/bin/cert-sync',
-        embedded_bundle: '/opt/gitlab/embedded/bin/bundle',
-        gradle: '/opt/asdf/bin/asdf exec gradle',
-        gem: '/opt/asdf/bin/asdf exec gem',
-        go: '/opt/asdf/bin/asdf exec go',
-        keytool: '/opt/asdf/bin/asdf exec keytool',
-        mono: '/opt/asdf/installs/mono/6.8.0.123/bin/mono',
-        mvn: '/opt/asdf/bin/asdf exec mvn',
-        nuget: '/opt/asdf/installs/mono/6.8.0.123/bin/nuget.exe',
-        ruby: '/opt/asdf/bin/asdf exec ruby',
-        yarn: '/opt/asdf/bin/asdf exec yarn'
-      }.freeze
 
       attr_reader :default_env, :default_certificate_path, :custom_certificate_path, :logger
 
       def initialize(logger: Gcs.logger, certificate: ENV['ADDITIONAL_CA_CERT_BUNDLE'])
         @logger = logger
-        @custom_certificate_path = Pathname.new('/usr/local/share/ca-certificates/custom.crt')
-        @default_certificate_path = Pathname.new('/etc/ssl/certs/ca-certificates.crt')
+        @custom_certificate_path =  ::Pathname.new('/usr/local/share/ca-certificates/custom.crt')
+        @default_certificate_path = ::Pathname.new('/etc/ssl/certs/ca-certificates.crt')
         @default_env = { 'SSL_CERT_FILE' => @default_certificate_path.to_s }
         trust!(certificate) if present?(certificate)
       end
@@ -50,10 +34,7 @@
       private
 
       def expand(command)
-        Array(command)
-          .flatten
-          .map { |x| COMMAND_MAP.fetch(x, x).to_s }
-          .join(' ')
+        Array(command).flatten.join(' ')
       end
 
       def trust!(certificate)
@@ -81,10 +62,6 @@
           logger.error(stderr)
         end
       end
-
-    #   def flush(message, log)
-    #     logger(message) if present?(message)
-    #   end
 
       def collapsible_section(header)
         id = header.downcase.gsub(/[[:space:]]/, '_').gsub(/[^0-9a-z ]/i, '_')
