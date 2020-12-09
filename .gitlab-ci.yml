@@ -8,6 +8,7 @@ variables:
 
 stages:
   - test             # check, test, and scan the Docker images
+  - build-image
   # - release-version  # release Docker images and distro packages
   # - release-major    # update Docker images and distro packages of the major release
 
@@ -32,6 +33,7 @@ build tmp image:
 
 integration test:
   image: ruby:2.5.5-alpine
+  stage: test
   variables:
     IMAGE_TAG: $TMP_IMAGE
   needs: ['build tmp image']
