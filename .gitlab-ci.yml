@@ -39,6 +39,7 @@ integration test:
     IMAGE_TAG: $TMP_IMAGE
   needs: ['build-tmp-image']
   script:
+    - ls -la
     - ./script/setup_integration
     - bundle exec rake integration
   rules:
