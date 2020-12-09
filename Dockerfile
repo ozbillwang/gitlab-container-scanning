@@ -12,7 +12,8 @@ RUN ["/bin/bash","./script/build.sh"]
 FROM centos:centos8
 ENV TRIVY_CACHE_DIR='/opt/gitlab/.cache'
 ENV PATH="/opt/gitlab:${PATH}"
-COPY --from=builder /gcs/trivy /gcs/gcs.gem /gcs/.cache /opt/gitlab/
+COPY --from=builder /gcs/trivy /gcs/gcs.gem /opt/gitlab/
+COPY --from=builder /gcs/trivy.db /gcs/metadata.json /opt/gitlab/.cache/db/
 RUN yum install -y ca-certificates git-core xz ruby
 RUN gem install opt/gitlab/gcs.gem
 WORKDIR /

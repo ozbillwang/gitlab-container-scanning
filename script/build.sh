@@ -11,12 +11,13 @@ function download_trivy() {
 
 function download_trivy_db() {
   echo "Dowloading Trivy DB"
-  trivy image --download-db-only
+  wget https://github.com/aquasecurity/trivy-db/releases/latest/download/trivy-offline.db.tgz -O tmpdb.tgz
+  tar xvf tmpdb.tgz
 }
 
 function build_gem() {
   echo "Building gem"
-  gem build -o gcs.gem
+  gem build gcs.gemspec -o gcs.gem
 }
 
 case $1 in

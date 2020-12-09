@@ -18,18 +18,39 @@ tests:
     - gem update bundler
     - bundle config --local jobs "$(nproc)"
     - bundle install --no-cache  --quiet
-    - bundle exec rake spec
+    - bundle exec rake unit
 
-# build tmp image:
-#   image: docker:stable
-#   stage: build-image
-#   services:
-#     - docker:19.03.5-dind
-#   script:
-#     - docker info
-#     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-#     - docker build --build-arg GO_VERSION -t $TMP_IMAGE .
-#     - docker push $TMP_IMAGE
+build tmp image:
+  image: docker:stable
+  stage: build-image
+  services:
+    - docker:19.03.5-dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -q -t $TMP_IMAGE .
+    - docker push $TMP_IMAGE
+
+integration test:
+  image: ruby:2.5.5-alpine
+  variables:
+    IMAGE_TAG: $TMP_IMAGE
+  needs: ['build tmp image']
+  script:
+    - gem update bundler
+    - bundle config --local jobs "$(nproc)"
+    - bundle install --no-cache  --quiet
+    - bundle exec rake integration
+  rules:
+    - when: always
+  # artifacts:
+  #   expire_in: 1 week
+  #   paths:
+  #     - rspec.xml
+  #     - analyzer_scan_duration_in_seconds.txt
+  #   reports:
+  #     junit: rspec.xml
+  # tags:
+    # - fips
 
 # # TODO
 # # integration test:
