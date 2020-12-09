@@ -7,21 +7,22 @@ variables:
   TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp:$CI_COMMIT_SHA
 
 stages:
-  - test             # check, test, and scan the Docker images
+  - unit-test             # check, test, and scan the Docker images
   - build-image
+  - integration-test
   # - release-version  # release Docker images and distro packages
   # - release-major    # update Docker images and distro packages of the major release
 
 tests:
   image: ruby:2.5.5-alpine
-  stage: test
+  stage: unit-test
   script:
     - gem update bundler
     - bundle config --local jobs "$(nproc)"
     - bundle install --no-cache  --quiet
     - bundle exec rake unit
 
-build tmp image:
+build-tmp-image:
   image: docker:stable
   stage: build-image
   services:
@@ -33,10 +34,10 @@ build tmp image:
 
 integration test:
   image: ruby:2.5.5-alpine
-  stage: test
+  stage: integration-test
   variables:
     IMAGE_TAG: $TMP_IMAGE
-  needs: ['build tmp image']
+  needs: ['build-tmp-image']
   script:
     - gem update bundler
     - bundle config --local jobs "$(nproc)"
