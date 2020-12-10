@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'gcs'
 require 'json'
+require 'json-schema'
 require 'dry/schema'
 require 'json-schema'
 require 'securerandom'

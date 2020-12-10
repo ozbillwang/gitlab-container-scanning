@@ -3,9 +3,9 @@ module Gcs
   class Util
     class << self
       def measure_runtime
-        start_time = DateTime.now.to_s
+        start_time = Time.now.strftime('%Y-%m-%dT%H:%M:%S')
         yield
-        end_time = DateTime.now.to_s
+        end_time = Time.now.strftime('%Y-%m-%dT%H:%M:%S')
         { start_time: start_time, end_time: end_time }
       end
 

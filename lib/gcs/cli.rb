@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Gcs
   class Cli < Thor
     desc 'scan IMAGE', 'Scan a image'

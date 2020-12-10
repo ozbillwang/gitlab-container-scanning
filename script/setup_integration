@@ -18,6 +18,7 @@ if command -v apk; then
     ruby-json
 fi
 
+git submodule update --init
 bundle config --local jobs "$(nproc)"
 bundle install --no-cache  --quiet
 ruby -v

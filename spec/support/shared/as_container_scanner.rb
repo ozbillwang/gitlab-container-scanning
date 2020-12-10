@@ -6,7 +6,7 @@ RSpec.shared_examples 'as container scanner' do |item|
   let(:max_seconds) { 51 }
 
   # configure json schema project
-  xspecify { expect(subject).to match_schema(:container_scanning) }
+  specify { expect(subject).to match_schema(:container_scanning) }
 
   # TODO implement remediations
   xspecify do
@@ -53,14 +53,14 @@ RSpec.shared_examples 'as container scanner' do |item|
     end
   end
 
-  xspecify do
+  specify do
     expect(subject['scan']).not_to be_nil
     expect(subject['scan']['end_time']).not_to be_nil
     expect(subject['scan']['scanner']['id']).to eql('trivy')
     expect(subject['scan']['scanner']['name']).to eql('Trivy')
     expect(subject['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
     expect(subject['scan']['scanner']['vendor']['name']).to eql('GitLab')
-    expect(subject['scan']['scanner']['version']).to eql('')
+    expect(subject['scan']['scanner']['version']).to eql('0.13.0')
     expect(subject['scan']['start_time']).not_to be_nil
     expect(subject['scan']['status']).to eql('success')
     expect(subject['scan']['type']).to eql('container_scanning')

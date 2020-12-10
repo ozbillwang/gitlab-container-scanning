@@ -1,6 +1,6 @@
 {{- /* Template based on https://docs.gitlab.com/ee/user/application_security/container_scanning/#reports-json-format */ -}}
 {
-  "version": "3.0",
+  "version": "3.0.0",
   "vulnerabilities": [
   {{- $t_first := true }}
   {{- range . }}
@@ -87,7 +87,7 @@
     "vendor": {
       "name": "GitLab"
     },
-    "version": ""
+    "version": "0.13.0"
   },
   "type": "container_scanning",
   "start_time": "",
