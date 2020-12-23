@@ -9,7 +9,7 @@ RSpec.shared_examples 'as container scanner' do |item|
   specify { expect(subject).to match_schema(:container_scanning) }
 
   # TODO implement remediations
-  xspecify do
+  specify do
     subject['remediations'].each do |remedy|
       expect(remedy['summary']).not_to be_nil
       expect(remedy['diff']).not_to be_nil

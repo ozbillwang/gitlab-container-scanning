@@ -10,6 +10,15 @@ module Gcs
         "#{application_repository.strip}:#{application_tag.strip}"
       end
 
+      def docker_file
+        docker_file_path = ENV.fetch('DOCKERFILE_PATH') { 'Dockerfile' }
+        if Pathname.new(docker_file_path).exist?
+          docker_file_path
+        else
+          Gcs.logger.error("Can not find Dockerfile in #{docker_file_path}")
+        end
+      end
+
       def setup_log_level
         ENV['TRIVY_DEBUG'] = true if log_level == :debug
         ENV['CONSOLE_LEVEL'] = log_level

@@ -7,6 +7,9 @@ require 'json'
 require 'date'
 require 'digest'
 require 'pathname'
+require 'set'
+require 'base64'
+require 'tempfile'
 require 'zeitwerk'
 
 loader = Zeitwerk::Loader.for_gem
@@ -17,7 +20,7 @@ module Gcs
 
  class << self
    def root
-    File.expand_path('..', __FILE__)
+    File.expand_path(__dir__, __FILE__)
   end
 
    def logger

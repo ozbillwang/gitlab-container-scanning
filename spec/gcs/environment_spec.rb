@@ -1,7 +1,8 @@
 RSpec.describe Gcs::Environment do
   let(:commit_sha) { '85cbadce93fec0d78225fc00897221d8a74cb1f9' }
   let(:ci_registry_image) { 'registry.gitlab.com/defen/trivy-test' }
-  let(:ci_commit_ref_slug) { 'master'}
+  let(:ci_commit_ref_slug) { 'master' }
+  let(:docker_file_path) { 'CustomDocker' }
   let(:tag) { latest }
 
   before do
@@ -36,6 +37,19 @@ RSpec.describe Gcs::Environment do
     allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
 
     expect(Gcs::Environment.default_docker_image).to eq('registry.gitlab.com/defen/trivy-test/master:85cbadce93fec0d78225fc00897221d8a74cb1f9')
+  end
+
+  it 'uses dockerfile path variable for remediations' do
+    allow(ENV).to receive(:fetch).with('DOCKERFILE_PATH').and_return(docker_file_path)
+    allow_any_instance_of(Pathname).to receive(:exist?).and_return(true)
+
+    expect(Gcs::Environment.docker_file).to eq('CustomDocker')
+  end
+
+  it 'uses default value for dockerfile path' do
+    allow_any_instance_of(Pathname).to receive(:exist?).and_return(true)
+
+    expect(Gcs::Environment.docker_file).to eq('Dockerfile')
   end
 
   xit 'exists the program when variables not set' do

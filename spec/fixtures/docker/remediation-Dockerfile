@@ -1,0 +1,12 @@
+FROM ruby:2.5.5-slim as builder
+RUN apt-get update && apt-get install -y -q \
+  wget \
+  git
+COPY . project
+WORKDIR /project
+
+FROM centos:centos8
+ENV PATH="/opt/gitlab:${PATH}"
+COPY --from=builder /project  /opt/gitlab/
+RUN yum install -y ca-certificates git-core xz ruby
+WORKDIR /

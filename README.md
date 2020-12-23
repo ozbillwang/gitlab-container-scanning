@@ -1,7 +1,7 @@
 # Gcs
 # Todos
 
-- [] Add json schema validation
+- [x] Add json schema validation
 - [] Add more integration test for different image
 - [] Add  test for image size
 - [] Add remediation support
