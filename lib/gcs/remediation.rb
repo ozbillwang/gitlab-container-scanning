@@ -58,9 +58,11 @@ module Gcs
     def create_git_diff
       write_remediation
       stdout, _stderr, status = Gcs.shell.execute(['git diff', docker_file.to_path])
-      binding.irb
+
       Gcs.logger.info(stdout)
-      Base64.encode64(stdout) if status.success?
+      return Base64.encode64(stdout) if status.success?
+
+      Gcs.logger.error('Problem generating remediation')
 
       ''
     end
