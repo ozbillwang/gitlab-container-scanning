@@ -12,6 +12,17 @@ RSpec.describe Gcs::Converter do
     required(:url)
   end
 
+  FixesSchema = Dry::Schema.JSON do
+    required(:cve).filled(:string)
+    required(:id).filled(:string)
+  end
+
+  RemediationSchema = Dry::Schema.JSON do
+    required(:fixes).array(FixesSchema)
+    required(:summary).filled(:string)
+    required(:diff).filled(:string)
+  end
+
   VulnerabilitySchema = Dry::Schema.JSON do
     required(:id).filled(:string)
     required(:category).value(eql?: 'container_scanning')
@@ -42,7 +53,7 @@ RSpec.describe Gcs::Converter do
   schema = Dry::Schema.JSON do
     required(:version).filled(:string)
     required(:vulnerabilities).array(VulnerabilitySchema)
-    required(:remediations).array(:str?)
+    required(:remediations).array(RemediationSchema)
   end
 
   it 'converts into valid format' do

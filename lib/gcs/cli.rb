@@ -19,6 +19,8 @@ module Gcs
           end
         end
       else
+        Gcs.logger.error(_stderr)
+        Gcs.logger.error(stdout)
         Gcs.logger.info('Scan failed please re-run scanner with debug mode to see more details')
         exit 1
       end

@@ -11,6 +11,7 @@ class Project
 
   def report_for(type:)
     report_path = path.join("gl-#{type}-report.json")
+
     if report_path.exist?
       JSON.parse(report_path.read)
     else

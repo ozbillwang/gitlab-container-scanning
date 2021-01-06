@@ -3,22 +3,22 @@
 set -e
 
 cd "$(dirname "$0")/.."
+echo $(pwd)
 
-if command -v apk; then
-  apk add \
-    bash \
-    build-base \
+if command -v apt-get; then
+  apt-get clean
+  apt-get update -q
+  apt-get install -y --no-install-recommends \
     curl \
-    git \
-    ruby \
-    ruby-rake \
-    ruby-bigdecimal \
-    ruby-bundler \
-    ruby-dev \
-    ruby-json
+    gnupg2
+fi
+
+if [ ! -f /usr/sbin/haproxy ] && command -v apt-get; then
+  curl https://haproxy.debian.net/bernat.debian.org.gpg | apt-key add -
+  echo deb http://haproxy.debian.net buster-backports-2.2 main | tee /etc/apt/sources.list.d/haproxy.list
+  apt-get update -y && apt-get install -y --no-install-recommends build-essential haproxy=2.2.\*
 fi
 
 git submodule update --init
 bundle config --local jobs "$(nproc)"
 bundle install --no-cache  --quiet
-ruby -v

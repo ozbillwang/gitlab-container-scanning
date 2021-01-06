@@ -1,22 +1,32 @@
 # frozen_string_literal: true
-
 RSpec.shared_context 'with scanner' do
-  before(:all) { Docker.new(pwd: Pathname.pwd).build(tag: "gcs:latest") }
+  # before(:all) { Docker.new(pwd: Pathname.pwd).build(tag: "gcs:latest") }
 
-  subject { project.report_for(type: 'container-scanning') }
+  # subject { project.report_for(type: 'container-scanning') }
+  subject { runner.report_for(type: 'container-scanning') }
 
-  let(:docker) { Docker.new(pwd: pwd) }
+  # let(:docker) { Docker.new(pwd: pwd) }
   let(:pwd) { Pathname.new(File.dirname(__FILE__)).join('../../..') }
-  let(:project) { Project.new }
+  # let(:runner) { runner.scan(env: env) }
+  # let(:project) { Project.new }
   let(:project_fixture) { 'docker' }
-  let(:env) { {} }
-  let(:command) { 'gtcs scan' }
+
+    # let(:env) do
+    #   {
+    #     'DOCKERFILE_PATH' => runner.project_path.join('alpine-Dockerfile').to_s,
+    #     'DOCKER_IMAGE' => 'alpine:latest'
+    #   }
+    # end
+  # let(:env) { {} }
+  # let(:command) { 'gtcs scan' }
 
   around do |example|
-    project.mount(dir: fixture_file(project_fixture))
-    docker.run(project: project, command: command, env: env)
+    runner.mount(dir: fixture_file(project_fixture))
+
+    require 'byebug' ; byebug
+    runner.scan(env: env)
     example.run
-  ensure
-    project.cleanup
+  # ensure
+  #   project.cleanup
   end
 end

@@ -33,10 +33,10 @@ build-tmp-image:
     - docker push $TMP_IMAGE
 
 integration test:
-  image: docker:stable
+  image: $TMP_IMAGE
   stage: integration-test
-  services:
-    - docker:19.03.5-dind
+  # services:
+    # - docker:19.03.5-dind
   variables:
     IMAGE_TAG: $TMP_IMAGE
   needs: ['build-tmp-image']
