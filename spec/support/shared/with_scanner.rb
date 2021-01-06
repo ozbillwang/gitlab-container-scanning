@@ -22,11 +22,9 @@ RSpec.shared_context 'with scanner' do
 
   around do |example|
     runner.mount(dir: fixture_file(project_fixture))
-
-    require 'byebug' ; byebug
     runner.scan(env: env)
     example.run
-  # ensure
-  #   project.cleanup
+  ensure
+    runner.cleanup
   end
 end

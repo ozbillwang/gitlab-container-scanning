@@ -19,26 +19,26 @@ RSpec.configure do |config|
     expectations.syntax = :expect
   end
 
-  # config.define_derived_metadata(file_path: %r{/spec/integration}) do |metadata|
-  #   metadata[:type] = :integration
-  # end
+  config.define_derived_metadata(file_path: %r{/spec/integration}) do |metadata|
+    metadata[:type] = :integration
+  end
 
-  # config.define_derived_metadata(file_path: %r{/spec/integration/network}) do |metadata|
-  #   metadata[:type] = :network
-  # end
+  config.define_derived_metadata(file_path: %r{/spec/integration/network}) do |metadata|
+    metadata[:type] = :network
+  end
 
-  # config.include ProxyHelper, type: :network
+  config.include ProxyHelper, type: :network
   config.include IntegrationTestHelper
   config.include FixtureFileHelper
   config.include ExitCodeMatchers
 
-  # config.before(:all, type: :network) do
-  #   ProxyServer.instance.start
-  # end
+  config.before(:all, type: :network) do
+    ProxyServer.instance.start
+  end
 
-  # config.after(:all, type: :network) do
-  #   ProxyServer.instance.stop
-  # end
+  config.after(:all, type: :network) do
+    ProxyServer.instance.stop
+  end
 
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true

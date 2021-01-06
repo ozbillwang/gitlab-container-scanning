@@ -10,7 +10,6 @@ class ProxyServer
   attr_accessor :pid
 
   def start
-    puts "=======STARTING SERVER ========="
     DOMAINS.each { |domain| add_host(domain, '127.0.0.1') }
     Dir.chdir Gcs.root.join('tmp') do
       host = 'wildcard.test'
@@ -24,7 +23,7 @@ class ProxyServer
     end
     config_file = Gcs.root.join("spec/fixtures/haproxy.cfg")
     puts "config_file #{config_file}"
-    self.pid = spawn("/usr/sbin/haproxy -f #{config_file}")
+    self.pid = spawn("/usr/sbin/haproxy -D -f #{config_file}")
     wait_for_server
     pid
   end
