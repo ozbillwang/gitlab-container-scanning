@@ -16,7 +16,7 @@ class Docker
 
   def build(tag:)
     Dir.chdir pwd do
-      if ENV['CI']
+      if ENV['CI_SERVER']
         cmd = "docker build -t #{ENV.fetch('IMAGE_TAG', tag)} ."
       else
         cmd = "docker build -t #{tag} ."
