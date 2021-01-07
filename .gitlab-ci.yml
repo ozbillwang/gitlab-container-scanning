@@ -14,10 +14,10 @@ stages:
   # - release-major    # update Docker images and distro packages of the major release
 
 tests:
-  image: ruby:2.5.5-alpine
+  image: ruby:2.7.2-alpine
   stage: unit-test
   script:
-    - gem update bundler
+    - apk add git
     - bundle config --local jobs "$(nproc)"
     - bundle install --no-cache  --quiet
     - bundle exec rake unit
