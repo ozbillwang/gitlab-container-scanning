@@ -57,6 +57,7 @@ class ProjectHelper
     chdir do
       expanded_env = {
         'CI_PROJECT_DIR' => project_path.to_s,
+        'CONSOLE_LEVEL' => 'debug',
         'RUBYOPT' => "-I#{Gcs.lib}",
       }.merge(env)
       return {} unless execute(expanded_env, "#{Gcs.lib.join('../exe/gtcs')} scan")

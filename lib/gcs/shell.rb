@@ -16,15 +16,11 @@
       def execute(command, env: {})
         expanded_command = expand(command)
         collapsible_section(expanded_command) do
-          logger.debug(expanded_command)
+          logger.info(expanded_command)
           stdout, stderr, status = Open3.capture3(default_env.merge(env), expanded_command)
           record(stdout, stderr, status)
           [stdout, stderr, status]
         end
-      end
-
-      def sh(command, env: {})
-        execute("sh -c '#{expand(command)}'", env: env)
       end
 
       def custom_certificate_installed?

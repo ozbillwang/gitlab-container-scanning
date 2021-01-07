@@ -8,7 +8,6 @@ RSpec.describe 'alpine' do
       {
         'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
         'DOCKER_IMAGE' => 'docker.test/alpine:latest',
-        'LOG_LEVEL' => 'debug'
       }
     end
   end

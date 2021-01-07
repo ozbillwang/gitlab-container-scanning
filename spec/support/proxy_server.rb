@@ -47,9 +47,7 @@ class ProxyServer
 
   def wait_for_server
     DOMAINS.each do |domain|
-      puts "Warming up #{domain}..."
       print "." until system("curl -s -k https://#{domain} > /dev/null")
-      puts "#{domain} is ready!"
     end
   end
 end
