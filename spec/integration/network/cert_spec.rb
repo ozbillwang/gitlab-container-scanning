@@ -7,8 +7,7 @@ RSpec.describe 'alpine' do
     let(:env) do
       {
         'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
-        'DOCKERFILE_PATH' => runner.project_path.join('alpine-Dockerfile').to_s,
-        'DOCKER_IMAGE' => 'custom.docker/alpine',
+        'DOCKER_IMAGE' => 'docker.test/alpine:latest',
         'LOG_LEVEL' => 'debug'
       }
     end

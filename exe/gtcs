@@ -10,6 +10,6 @@ end
 begin
   Gcs::Cli.start(ARGV)
 rescue StandardError => e
-  Console.logger.error(e.message)
+  Gcs.logger.error(e.message)
   exit 1
 end
