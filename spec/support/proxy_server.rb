@@ -11,6 +11,8 @@ class ProxyServer
 
   def start
     DOMAINS.each { |domain| add_host(domain, '127.0.0.1') }
+    FileUtils.mkdir(Gcs.root.join('tmp')) unless Pathname.new(Gcs.root.join('tmp')).exist?
+
     Dir.chdir Gcs.root.join('tmp') do
       host = 'wildcard.test'
       subject_alternative_names = DOMAINS.map { |x| "DNS:#{x}" }.join(',')
