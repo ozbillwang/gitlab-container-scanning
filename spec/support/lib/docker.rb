@@ -17,13 +17,11 @@ class Docker
   def build(tag:)
     Dir.chdir pwd do
       if ENV['CI']
-        Console.logger.info('Running in CI try to fetch already build image')
         cmd = "docker build -t #{ENV.fetch('IMAGE_TAG', tag)} ."
       else
         cmd = "docker build -t #{tag} ."
         ENV['IMAGE_TAG'] = tag
       end
-      Console.logger.info("building docker image with #{tag}")
       system(cmd, exception: true)
     end
   end

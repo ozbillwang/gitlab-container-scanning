@@ -14,15 +14,13 @@ class ProjectHelper
   end
 
   def report_for(type:)
-    # TODO continue here
-    # report_path = project_path.join('gl-container-scanning-report.json')
     report_path = project_path.join("gl-#{type}-report.json")
 
     if report_path.exist?
       JSON.parse(report_path.read)
     else
       puts "Report not found in: #{report_path}"
-      puts path.glob('*')
+      puts project_path.glob('*')
       {}
     end
   end
@@ -57,11 +55,14 @@ class ProjectHelper
 
   def scan(env: {})
     chdir do
-      return {} unless execute({ 'CI_PROJECT_DIR' => project_path.to_s }.merge(env), "gtcs scan")
+      expanded_env = {
+        'CI_PROJECT_DIR' => project_path.to_s,
+        'RUBYOPT' => "-I#{Gcs.lib}",
+      }.merge(env)
+      return {} unless execute(expanded_env, "#{Gcs.lib.join('../exe/gtcs')} scan")
 
       report_path = project_path.join('gl-container-scanning-report.json')
       return {} unless report_path.exist?
-
     end
   end
 

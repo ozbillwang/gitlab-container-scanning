@@ -33,8 +33,8 @@ class ProxyServer
     Process.wait(pid)
     system("rm -f /usr/local/share/ca-certificates/custom.*")
     system("rm -f /usr/lib/ssl/certs/custom.*")
-    system("update-ca-certificates -v")
-    system("c_rehash -v")
+    system("update-ca-certificates")
+    system("c_rehash")
   end
 
   private
