@@ -21,7 +21,7 @@ class ProxyServer
       ].join("&&"))
     end
     config_file = Gcs.root.join("spec/fixtures/haproxy.cfg")
-    self.pid = spawn("/usr/sbin/haproxy -D -f #{config_file}")
+    self.pid = spawn("/usr/sbin/haproxy -f #{config_file}")
     wait_for_server
     pid
   end

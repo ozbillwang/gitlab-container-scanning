@@ -43,9 +43,8 @@
             execute([:openssl, :x509, '-in', File.expand_path(path), '-text', '-noout'])
           end
         end
-        execute([:mkdir, "-p", "/etc/docker/certs.d/docker.test:443/"])
-        execute([:cp, custom_certificate_path.to_s, "/etc/docker/certs.d/docker.test:443/ca.crt"])
-        execute([:cp, custom_certificate_path.to_s, "/usr/lib/ssl/certs/"])
+
+        execute([:cp, custom_certificate_path.to_s, '/usr/lib/ssl/certs/'])
         execute([:c_rehash, '-v'])
       end
 

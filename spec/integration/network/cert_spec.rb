@@ -7,7 +7,7 @@ RSpec.describe 'alpine' do
     let(:env) do
       {
         'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
-        'DOCKER_IMAGE' => 'docker.test/alpine:latest',
+        'DOCKER_IMAGE' => 'docker.test/library/alpine:latest'
       }
     end
   end
