@@ -10,8 +10,8 @@ stages:
   - unit-test             # check, test, and scan the Docker images
   - build-image
   - integration-test
-  # - release-version  # release Docker images and distro packages
-  # - release-major    # update Docker images and distro packages of the major release
+  - release-version  # release Docker images and distro packages
+  - release-major    # update Docker images and distro packages of the major release
 
 tests:
   image: ruby:2.7.2-alpine
@@ -45,73 +45,58 @@ integration test:
     - bundle exec rake integration
   rules:
     - when: always
-  # artifacts:
-  #   expire_in: 1 week
-  #   paths:
-  #     - rspec.xml
-  #     - analyzer_scan_duration_in_seconds.txt
-  #   reports:
-  #     junit: rspec.xml
-  # tags:
-    # - fips
 
-# # TODO
-# # integration test:
+.docker_tag:
+  image: docker:stable
+  stage: release-version
+  services:
+    - docker:19.03.5-dind
+  script:
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - export SOURCE_IMAGE=$TMP_IMAGE
+    - export TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
+    - docker pull $SOURCE_IMAGE
+    - docker tag $SOURCE_IMAGE $TARGET_IMAGE
+    - docker push $TARGET_IMAGE
 
-# # TODO
-# # test-custom-ca-bundle
+tag branch:
+  extends: .docker_tag
+  variables:
+    # CAUTION: by preferring `SLUG` over `NAME` we can properly handle non-alphanumeric
+    # characters, but this may limit our tags to 63chars or raise potential conflicts.
+    IMAGE_TAG: $CI_COMMIT_REF_SLUG
+  rules:
+    - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+      when: never
+    - if: $CI_COMMIT_BRANCH
 
-# .docker_tag:
-#   image: docker:stable
-#   stage: release-version
-#   services:
-#     - docker:19.03.5-dind
-#   script:
-#     - docker info
-#     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-#     - export SOURCE_IMAGE=$TMP_IMAGE
-#     - export TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
-#     - docker pull $SOURCE_IMAGE
-#     - docker tag $SOURCE_IMAGE $TARGET_IMAGE
-#     - docker push $TARGET_IMAGE
+tag edge:
+  extends: .docker_tag
+  variables:
+    IMAGE_TAG: edge
+  rules:
+    - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
 
-# tag branch:
-#   extends: .docker_tag
-#   variables:
-#     # CAUTION: by preferring `SLUG` over `NAME` we can properly handle non-alphanumeric
-#     # characters, but this may limit our tags to 63chars or raise potential conflicts.
-#     IMAGE_TAG: $CI_COMMIT_REF_SLUG
-#   rules:
-#     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
-#       when: never
-#     - if: $CI_COMMIT_BRANCH
+tag version:
+  extends: .docker_tag
+  before_script:
+    - export IMAGE_TAG=${CI_COMMIT_TAG/v/}
+    - echo "Checking that $CI_COMMIT_TAG is last in the changelog"
+    - test "$(grep '^## v' CHANGELOG.md |head -n 1)" = "## $CI_COMMIT_TAG"
+  rules:
+    - if: $CI_COMMIT_TAG
 
-# tag edge:
-#   extends: .docker_tag
-#   variables:
-#     IMAGE_TAG: edge
-#   rules:
-#     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+.release:
+  extends: .docker_tag
+  stage: release-major
+  rules:
+    - if: $CI_COMMIT_TAG
 
-# tag version:
-#   extends: .docker_tag
-#   before_script:
-#     - export IMAGE_TAG=${CI_COMMIT_TAG/v/}
-#     - echo "Checking that $CI_COMMIT_TAG is last in the changelog"
-#     - test "$(grep '^## v' CHANGELOG.md |head -n 1)" = "## $CI_COMMIT_TAG"
-#   rules:
-#     - if: $CI_COMMIT_TAG
+major:
+  extends: .release
+  variables:
+    IMAGE_TAG: $MAJOR
 
-# .release:
-#   extends: .docker_tag
-#   stage: release-major
-#   rules:
-#     - if: $CI_COMMIT_TAG
-
-# major:
-#   extends: .release
-#   variables:
-#     IMAGE_TAG: $MAJOR
-
-# latest:
-#   extends: .release
+latest:
+  extends: .release
