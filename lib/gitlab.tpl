@@ -32,17 +32,17 @@
                   {{- end }},
       {{- /* TODO: Define confidence */}}
       "confidence": "Unknown",
-
       {{- /* this is added for easy conversion */ -}}
       "remediateMetadata": {{ if .FixedVersion -}}
             { "package_name": "{{ .PkgName }}",
-              "package_version": "{{.InstalledVersion}}"
+              "package_version": "{{.InstalledVersion}}",
               "fixed_version": "{{ .FixedVersion }}",
               "summary": "Upgrade {{ .PkgName }} to {{ .FixedVersion }}"
             {{- else -}}
               {
             {{- end }}
       },
+      {{- /* this is added for easy conversion */ -}}
       "solution": {{ if .FixedVersion -}}
                     "Upgrade {{ .PkgName }} to {{ .FixedVersion }}"
                   {{- else -}}

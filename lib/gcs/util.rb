@@ -11,6 +11,7 @@ module Gcs
 
       def write_file(name = Gcs::DEFAULT_REPORT_NAME, content = nil)
         full_path = Pathname.pwd.join(name)
+        Gcs.logger.info("writing results to #{full_path}")
         FileUtils.mkdir_p(full_path.dirname)
         IO.write(full_path, block_given? ? yield : content)
       end
