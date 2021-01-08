@@ -3,8 +3,7 @@ RSpec.describe Gcs::Remediation do
   let(:docker_file_path) { fixture_file('docker/remediation-Dockerfile') }
 
   after :each do
-    if ENV['CI_SERVER']  == nil
-      puts "======= #{ENV['CI_SERVER']} ========="
+    if ENV['CI_SERVER'].nil?
      `git checkout #{multi_build_docker_file_path.to_path}`
      `git checkout #{docker_file_path.to_path}`
     end

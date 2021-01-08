@@ -20,7 +20,7 @@ tests:
     - apk add git
     - bundle config --local jobs "$(nproc)"
     - bundle install --no-cache  --quiet
-    - bundle exec rake unit
+    - bundle exec rake unit_test
 
 build-tmp-image:
   image: docker:stable

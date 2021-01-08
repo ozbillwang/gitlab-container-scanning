@@ -12,9 +12,15 @@ RSpec::Core::RakeTask.new(:spec_integration) do |t|
 end
 
 task default: :spec
-task unit: :spec_unit
-task integration: :spec_integration
+task unit_test: :spec_unit
+task integration_test: :spec_integration
 
-# task :integration do
-#   Rake::Task["spec_integration"].invoke
-# end
+task :integration do
+  if ENV['CI_SERVER']
+    Rake::Task['spec_integration'].invoke
+  else
+    commands =  ["docker build -q -t gcs .",
+    "docker run --rm -it --privileged --volume \"$PWD:/gcs/\" gcs:latest bash -c \"gcs/script/setup_integration; cd gcs; bundle exec rake integration_test\""]
+    system(commands.join(';'))
+  end
+end
