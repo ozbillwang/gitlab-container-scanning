@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Webgoat' do
-  context "when scanning a Webgoat image" do
+  context "when scanning a Webgoat image", integration: true do
     include_examples "as container scanner"
 
     let(:project_fixture) { fixture_file('docker/webgoat_project') }
