@@ -22,14 +22,6 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
-    expect(subject['vulnerabilities']).to all(include('category' => 'container_scanning'))
-  end
-
-  specify do
-    expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
-  end
-
-  specify do
     subject['vulnerabilities'].each do |vulnerability|
       expect(vulnerability['id']).not_to be_nil
       expect(vulnerability['message']).not_to be_nil
@@ -51,6 +43,9 @@ RSpec.shared_examples 'as container scanner' do |item|
         expect(link['url']).not_to be_nil
       end
     end
+
+    expect(subject['vulnerabilities']).to all(include('category' => 'container_scanning'))
+    expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
   end
 
   specify do

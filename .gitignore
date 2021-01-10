@@ -10,6 +10,7 @@ tmp/*
 
 # rspec failure tracking
 .vscode
+*.gem
 .rspec_status
 .byebug_history
 tmp.json
