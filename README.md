@@ -1,4 +1,5 @@
 # Gcs
+```
 +-------------------------------------------------------+
 |                                                       |
 |          Docker image (debian with ruby 2.7.2)        |
@@ -13,7 +14,7 @@
 |                                                       |
 |                                                       |
 +-------------------------------------------------------+
-
+```
 Gcs is a gem that uses Trivy to create reports that is parsable by Gitlab.
 Gem itself doesn't have any scanning functionality it just adds simple functionality in top of Trivy such as
 - remediations
