@@ -10,6 +10,17 @@ module Gcs
         "#{application_repository.strip}:#{application_tag.strip}"
       end
 
+      def project_dir
+        pd = ENV.fetch('CI_PROJECT_DIR') { Pathname.pwd }
+        if pd.is_a?(String)
+          return Pathname.new(pd) if Pathname.new(pd).exist?
+
+          return Pathname.pwd
+        end
+
+        pd
+      end
+
       def docker_file
         docker_file_path = ENV.fetch('DOCKERFILE_PATH') { 'Dockerfile' }
         if Pathname.new(docker_file_path).exist?
