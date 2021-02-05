@@ -11,6 +11,7 @@ require 'pathname'
 require 'set'
 require 'base64'
 require 'tempfile'
+require 'terminal-table'
 require 'zeitwerk'
 
 loader = Zeitwerk::Loader.for_gem

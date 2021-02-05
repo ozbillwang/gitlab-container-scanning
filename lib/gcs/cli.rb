@@ -14,6 +14,7 @@ module Gcs
       if status.success?
         if File.exist?(Trivy::DEFAULT_OUTPUT_NAME)
           gitlab_format = Converter.new(File.read(Trivy::DEFAULT_OUTPUT_NAME), nil, measured_time).convert
+          Gcs::Util.write_table(gitlab_format)
           Gcs::Util.write_file do
             JSON.dump(gitlab_format)
           end

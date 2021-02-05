@@ -24,10 +24,11 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'thor', '~> 1.0'
   spec.add_runtime_dependency 'zeitwerk', '~> 2.4'
   spec.add_runtime_dependency 'console', '~> 1.8'
+  spec.add_runtime_dependency 'terminal-table', '~> 3.0'
+
   spec.add_development_dependency 'single_cov', '~> 1.6'
   spec.add_development_dependency 'json-schema', '~> 2.8'
   spec.add_development_dependency 'dry-schema', '~> 1.5'
-  # spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
