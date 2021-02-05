@@ -1,7 +1,7 @@
 require 'ostruct'
 require 'forwardable'
 require 'thor'
-require 'console'
+require 'logger'
 require 'open3'
 require 'json'
 require 'uri'
@@ -30,7 +30,7 @@ module Gcs
     end
 
     def logger
-      @logger ||= Console.logger
+      @logger ||= Logger.new(STDOUT)
     end
 
     def shell
@@ -40,5 +40,5 @@ module Gcs
 end
 
 loader.eager_load
-
+Gcs.logger.formatter = Gcs::LoggerFormatter.formatter
 Gcs::Environment.setup_log_level

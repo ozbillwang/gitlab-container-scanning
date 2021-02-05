@@ -32,7 +32,8 @@ module Gcs
 
       def setup_log_level
         ENV['TRIVY_DEBUG'] = true if log_level == :debug
-        ENV['CONSOLE_LEVEL'] = log_level
+        # binding.irb
+        Gcs.logger.level = log_level.upcase
       end
 
       private
