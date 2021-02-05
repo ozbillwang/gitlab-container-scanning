@@ -9,8 +9,8 @@ module Gcs
         { start_time: start_time, end_time: end_time }
       end
 
-      def write_file(name = Gcs::DEFAULT_REPORT_NAME, content = nil)
-        full_path = Pathname.pwd.join(name)
+      def write_file(name = Gcs::DEFAULT_REPORT_NAME, content = nil, location)
+        full_path = location.join(name)
         Gcs.logger.debug("writing results to #{full_path}")
         FileUtils.mkdir_p(full_path.dirname)
         IO.write(full_path, block_given? ? yield : content)

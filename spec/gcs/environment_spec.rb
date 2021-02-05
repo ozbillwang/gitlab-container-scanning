@@ -64,4 +64,9 @@ RSpec.describe Gcs::Environment do
 
     expect(ENV['CONSOLE_LEVEL']).to eq('info')
   end
+
+  it 'returns current directory if given project path doesn\'t exists' do
+    allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return('gitlab/my_project')
+    expect(Gcs::Environment.project_dir).to eq(Pathname.pwd)
+  end
 end
