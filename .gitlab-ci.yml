@@ -37,12 +37,9 @@ integration test:
   stage: integration-test
   variables:
     IMAGE_TAG: $TMP_IMAGE
-  needs: ['build-tmp-image']
   script:
     - ./script/setup_integration
     - bundle exec rake integration
-  rules:
-    - when: always
 
 .docker_tag:
   image: docker:stable
