@@ -1,37 +1,15 @@
-# Gcs
-```
-+-------------------------------------------------------+
-|                                                       |
-|          Docker image (debian with ruby 2.7.2)        |
-|                                                       |
-|    +-------------+           +----------------+       |
-|    |             |           |                |       |
-|    | Gcs Gem     -------------   Trivy Binary |       |
-|    |             |           |                |       |
-|    +-------------+           +----------------+       |
-|                                                       |
-|                                                       |
-|                                                       |
-|                                                       |
-+-------------------------------------------------------+
-```
-Gcs is a gem that uses Trivy to create reports that is parsable by Gitlab.
-Gem itself doesn't have any scanning functionality it just adds simple functionality in top of Trivy such as
-- remediations
-- generating Gitlab parsable report
-- allowlist.yml to ignore certain vulns (to be implemented)
-- configuring certificate for offline environment
+# Container Scanning
 
-Everthing is shipped as a docker container so that gitlab-ci can use it
+This analyzer is a Ruby gem that uses [Trivy](https://github.com/aquasecurity/trivy) to create reports that are parsable by GitLab. In addition to Trivy this project also depends on [Security report schemas](https://gitlab.com/gitlab-org/security-products/security-report-schemas) and currently, this ruby gem runs within a docker container based on [ruby:2.7.2-slim](https://hub.docker.com/layers/ruby/library/ruby/2.7.2-slim/images/sha256-4c103e549aad7ba3604c291130d666d349645004f28d5a86a800ff6c70c6c518?context=explore). Therefore, the final docker image can be used through [gitlab-ci.yml](https://docs.gitlab.com/ee/ci/quick_start/index.html#create-a-gitlab-ciyml-file).
 
-# Ci configuration
+## Direct usage through gitlab-ci.yml
 
-For now you can use following configuration to try scanning your project. Make sure your have a step where you build image of your project.
+After becoming familiar with [how to use gitlab-ci.yaml](https://docs.gitlab.com/ee/ci/quick_start/index.html#create-a-gitlab-ciyml-file) as part of your project and making sure that there is a [build image](https://docs.gitlab.com/ee/topics/autodevops/customize.html#using-components-of-auto-devops) of your project, the following can be used:
 
 ```
-gcs_container_scanning:
+container_scanning:
   stage: test
-  image: "registry.gitlab.com/caneldem/gcs:edge"
+  image: "<TBD>"
   allow_failure: true
   script:
     - gtcs scan
@@ -41,10 +19,9 @@ gcs_container_scanning:
     paths: [gl-container-scanning-report.json]
 ```
 
-# Available variables
+## Current Settings
 
-You can [configure](#customizing-the-container-scanning-settings) container
-scanning by using the following environment variables:
+You can configure container scanning by using the following environment variables:
 
 | Environment Variable           | Default       | Description |
 | ------------------------------ | ------------- | ----------- |
@@ -59,26 +36,10 @@ scanning by using the following environment variables:
 | `TRIVY_DEBUG`                   | `"false"`     | Set to true to enable more verbose output from klar. |
 | `SECURE_LOG_LEVEL`             | `info`        | Set the minimum logging level. Messages of this logging level or higher are output. From highest to lowest severity, the logging levels are: `fatal`, `error`, `warn`, `info`, `debug`. [Introduced](https://gitlab.com/gitlab-org/gitlab/-/issues/10880) in GitLab 13.1. |
 
-# Development
+## License
 
-`docker build -t gcs . && docker run --rm -it  gcs bash` -> for interacting gcs gem locally `gtcs help` for list of commands
+See the [LICENSE](LICENSE) file for more details.
 
-`docker build -t gcs . && docker run --rm -it --volume "$PWD:/gcs/" gcs bash` -> mounting source code to docker in case you want to alter code and quickly try your changes
+## Contributing
 
-`bundle exec rake unit_test` for unit tests
-
-`bundle exec rake integration` for integration tests (make sure you have docker installed)
-
-# Todos
-
-- [x] Add json schema validation
-- [x] Add remediation support
-- [x] DOCKERFILE_PATH variable
-- [x] Add DOCKERFILE_PATH variable
-- [x] Add ADDITIONAL_CA_CERT_BUNDLE variable
-- [x] Add tests for offline environment
-- [x] Add more integration test for different image
-- [] Add allowlist.yml support
-- [] Proper project setup in case we go with this project
-
-
+Contributions are welcome, see the [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
