@@ -5,6 +5,7 @@ module IntegrationTestHelper
 end
 
 class ProjectHelper
+  include Helpers
   attr_reader :project_path, :virtual_path
 
   def initialize(project_path = Pathname.pwd.join('tmp').join(SecureRandom.uuid))
@@ -31,7 +32,10 @@ class ProjectHelper
     IO.write(full_path, block_given? ? yield : content)
   end
 
-  def mount(dir:)
+  def mount(dir:, add_allow_list: false)
+    if add_allow_list
+      FileUtils.cp_r(fixture_file('vulnerability-allowlist.yml'), project_path)
+    end
     FileUtils.cp_r("#{dir}/.", project_path)
   end
 

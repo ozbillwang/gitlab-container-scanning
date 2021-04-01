@@ -1,5 +1,7 @@
 module Gcs
   class Environment
+    ALLOW_LIST_FILENAME = "vulnerability-allowlist.yml"
+
     class << self
       def default_docker_image
         return ENV['DOCKER_IMAGE'] unless ENV['DOCKER_IMAGE'].nil?
@@ -19,6 +21,10 @@ module Gcs
         end
 
         pd
+      end
+
+      def allow_list_file_path
+        "#{project_dir}/#{ALLOW_LIST_FILENAME}"
       end
 
       def docker_file

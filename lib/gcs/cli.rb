@@ -14,10 +14,13 @@ module Gcs
       if status.success?
         if File.exist?(Trivy::DEFAULT_OUTPUT_NAME)
           gitlab_format = Converter.new(File.read(Trivy::DEFAULT_OUTPUT_NAME), nil, measured_time).convert
-          Gcs::Util.write_table(gitlab_format)
-          Gcs::Util.write_file(Environment.project_dir) do
-            JSON.dump(gitlab_format)
+          if File.exist?(Environment.allow_list_file_path)
+            allow_list = YAML.load_file(Environment.allow_list_file_path)
+            Gcs.logger.info("#{Environment.allow_list_file_path} file found")
           end
+
+          Gcs::Util.write_table(gitlab_format, allow_list)
+          Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
         end
       else
         Gcs.logger.info('Scan failed please re-run scanner with debug mode to see more details')

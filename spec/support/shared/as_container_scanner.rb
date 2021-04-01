@@ -67,4 +67,8 @@ RSpec.shared_examples 'as container scanner' do |item|
 
     expect(end_time.to_i - start_time.to_i).to be < max_seconds
   end
+
+  specify do
+    expect(subject['vulnerabilities'].any?{|vuln| vuln['cve'] == 'CVE-2019-13232'}).to be false
+  end
 end

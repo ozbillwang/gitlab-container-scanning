@@ -5,7 +5,7 @@ RSpec.shared_context 'with scanner' do
   let(:pwd) { Pathname.new(File.dirname(__FILE__)).join('../../..') }
 
   around do |example|
-    runner.mount(dir: project_fixture)
+    runner.mount(dir: project_fixture, add_allow_list: true)
     runner.scan(env: env)
     example.run
   ensure

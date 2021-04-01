@@ -3,6 +3,7 @@ PATH
   specs:
     gcs (0.1.0)
       console (~> 1.8)
+      term-ansicolor (~> 1.7)
       terminal-table (~> 3.0)
       thor (~> 1.0)
       zeitwerk (~> 2.4)
@@ -13,7 +14,7 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     concurrent-ruby (1.1.7)
-    console (1.10.1)
+    console (1.10.2)
       fiber-local
     diff-lcs (1.4.4)
     dry-configurable (0.11.6)
@@ -66,9 +67,14 @@ GEM
       rspec-support (~> 3.10.0)
     rspec-support (3.10.0)
     single_cov (1.6.0)
+    sync (0.5.0)
+    term-ansicolor (1.7.1)
+      tins (~> 1.0)
     terminal-table (3.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     thor (1.1.0)
+    tins (1.28.0)
+      sync
     unicode-display_width (1.7.0)
     zeitwerk (2.4.2)
 
