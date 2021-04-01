@@ -69,4 +69,11 @@ RSpec.describe Gcs::Environment do
     allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return('gitlab/my_project')
     expect(Gcs::Environment.project_dir).to eq(Pathname.pwd)
   end
+
+  describe '.allow_list_file_path' do
+    it 'returns allow list file within the project path' do
+      allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return('gitlab/my_project')
+      expect(Gcs::Environment.allow_list_file_path).to eq("#{Pathname.pwd}/vulnerability-allowlist.yml")
+    end
+  end
 end

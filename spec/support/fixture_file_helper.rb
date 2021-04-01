@@ -7,6 +7,10 @@ module FixtureFileHelper
     fixture_file(path).read
   end
 
+  def fixture_file_yaml_content(path)
+    YAML.load(fixture_file_content(path))
+  end
+
   def create_temporary_config_file(content, file_name)
     file = Tempfile.new(file_name)
     file.write(content.to_json)

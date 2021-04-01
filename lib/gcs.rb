@@ -13,6 +13,8 @@ require 'base64'
 require 'tempfile'
 require 'terminal-table'
 require 'zeitwerk'
+require 'yaml'
+require 'term/ansicolor'
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup

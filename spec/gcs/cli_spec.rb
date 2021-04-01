@@ -1,17 +1,57 @@
 # frozen_string_literal: true
 
 RSpec.describe Gcs::Cli do
-  let(:commit_sha) { '85cbadce93fec0d78225fc00897221d8a74cb1f9' }
-  let(:ci_registry_image) { 'registry.gitlab.com/defen/trivy-test' }
-  let(:ci_commit_ref_slug) { 'master ' }
-  let(:tag) { latest }
+  let(:arguments) { ['scan', 'ubuntu:latest'] }
+  let(:execution) { -> { Gcs::Cli.start(arguments) } }
 
-  it 'exists when scan fails' do
-    arguments = ['scan', 'ubuntu:latest']
-    allow(Gcs::Trivy).to receive(:scan_image).with('ubuntu:latest').and_return([nil, nil, double(success?: false)])
+  before do
+    allow(Gcs::Trivy).to receive(:scan_image).with('ubuntu:latest').and_return([nil, nil, double(success?: status)])
+  end
 
-    execution = -> { Gcs::Cli.start(arguments) }
-    expect(Gcs::Trivy).to receive(:scan_image).with('ubuntu:latest')
-    expect(execution).to terminate.with_code(1)
+  context 'when scan fails' do
+    let(:status) { false }
+
+    specify do
+      expect(execution).to terminate.with_code(1) 
+    end
+  end
+
+  context 'when scan succeeds' do
+    let(:status) { true }
+
+    before do
+      allow(Gcs::Converter).to receive_message_chain(:new, :convert).and_return({})
+      allow(File).to receive(:exist?).with('tmp.json').and_return(true)
+      allow(File).to receive(:read).with('tmp.json')
+    end
+
+    context 'with allow list file' do
+      let(:allow_list_file) { fixture_file('vulnerability-allowlist.yml').to_s }
+
+      before do
+        allow(File).to receive(:exist?).with(allow_list_file).and_return(true)
+        allow(File).to receive(:read).with(allow_list_file).and_call_original
+        allow(Gcs::Environment).to receive(:allow_list_file_path).and_return(allow_list_file)
+      end
+
+      specify do
+        expect(Gcs::Util).to receive(:write_table).with({}, fixture_file_yaml_content('vulnerability-allowlist.yml'))
+        expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json', {},  Pathname.pwd, fixture_file_yaml_content('vulnerability-allowlist.yml'))
+        expect(execution).not_to terminate
+      end
+    end
+
+    context 'without allow list file' do
+      before do
+        allow(File).to receive(:exist?).with('nonexisting-file-allowlist.yml').and_return(false)
+        allow(Gcs::Environment).to receive(:allow_list_file_path).and_return('nonexisting-file-allowlist.yml')
+      end
+
+      specify do
+        expect(Gcs::Util).to receive(:write_table).with({}, nil)
+        expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json', {},  Pathname.pwd, nil)
+        expect(execution).not_to terminate
+      end
+    end
   end
 end

@@ -19,7 +19,8 @@ tests:
   script:
     - apk add git
     - bundle config --local jobs "$(nproc)"
-    - bundle install --no-cache  --quiet
+    - bundle config set no-cache 'true'
+    - bundle install --quiet
     - bundle exec rake unit_test
 
 build-tmp-image:
