@@ -2,7 +2,6 @@
 
 RSpec.describe 'alpine' do
   context 'when scanning an Alpine based image', integration: true do
-    let(:pwd) { Pathname.new(File.dirname(__FILE__)).join('../../..') }
 
     subject { runner.report_for(type: 'container-scanning') }
 

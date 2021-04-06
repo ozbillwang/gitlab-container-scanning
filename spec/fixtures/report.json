@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "vulnerabilities": [
+    {
+      "category": "container_scanning",
+      "message": "",
+      "description": "Incorrect sanitation of the 302 redirect field in HTTP transport method of apt versions 1.4.8 and earlier can lead to content injection by a MITM attacker, potentially leading to remote code execution on the target machine.",
+      "cve": "CVE-2019-3462",
+      "severity": "High",
+      "confidence": "Unknown","remediateMetadata": { "package_name": "apt",
+              "package_version": "1.4.8",
+              "fixed_version": "1.4.9",
+              "summary": "Upgrade apt to 1.4.9"
+      },"solution": "Upgrade apt to 1.4.9",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "apt"
+          },
+          "version": "1.4.8"
+        },
+        "operating_system": "Unknown",
+        "image": "192.168.2.12:5000/root/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e (debian 9.4)"
+      },
+      "identifiers": [
+        {
+          "type": "cve",
+          "name": "CVE-2019-3462",
+          "value": "CVE-2019-3462",
+          "url": ""
+        }
+      ],
+      "links": [{
+          "url": "http://www.securityfocus.com/bid/106690"
+        }
+      ]
+    },
+    {
+      "category": "container_scanning",
+      "message": "",
+      "description": "APT had several integer overflows and underflows while parsing .deb packages, aka GHSL-2020-168 GHSL-2020-169, in files apt-pkg/contrib/extracttar.cc, apt-pkg/deb/debfile.cc, and apt-pkg/contrib/arfile.cc. This issue affects: apt 1.2.32ubuntu0 versions prior to 1.2.32ubuntu0.2; 1.6.12ubuntu0 versions prior to 1.6.12ubuntu0.2; 2.0.2ubuntu0 versions prior to 2.0.2ubuntu0.2; 2.1.10ubuntu0 versions prior to 2.1.10ubuntu0.1;",
+      "cve": "CVE-2020-27350",
+      "severity": "Medium",
+      "confidence": "Unknown","remediateMetadata": { "package_name": "apt",
+              "package_version": "1.4.8",
+              "fixed_version": "1.4.11",
+              "summary": "Upgrade apt to 1.4.11"
+      },"solution": "Upgrade apt to 1.4.11",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "apt"
+          },
+          "version": "1.4.8"
+        },
+        "operating_system": "Unknown",
+        "image": "192.168.2.12:5000/root/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e (debian 9.4)"
+      },
+      "identifiers": [
+        {
+          "type": "cve",
+          "name": "CVE-2020-27350",
+          "value": "CVE-2020-27350",
+          "url": ""
+        }
+      ],
+      "links": [{
+          "url": "https://bugs.launchpad.net/bugs/1899193"
+        }
+      ]
+    }
+  ],
+  "remediations": [],
+  "scan": {
+  "scanner": {
+    "id": "trivy",
+    "name": "Trivy",
+    "url": "https://github.com/aquasecurity/trivy/",
+    "vendor": {
+      "name": "GitLab"
+    },
+    "version": "0.13.0"
+  },
+  "type": "container_scanning",
+  "start_time": "",
+  "end_time": "",
+  "status": "success"
+  }
+}

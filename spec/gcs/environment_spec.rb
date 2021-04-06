@@ -3,7 +3,6 @@ RSpec.describe Gcs::Environment do
   let(:ci_registry_image) { 'registry.gitlab.com/defen/trivy-test' }
   let(:ci_commit_ref_slug) { 'master' }
   let(:docker_file_path) { 'CustomDocker' }
-  let(:tag) { latest }
 
   before do
     allow(ENV).to receive(:[]).and_call_original
