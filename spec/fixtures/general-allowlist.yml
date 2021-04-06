@@ -1,0 +1,2 @@
+generalallowlist:
+  CVE-2019-3462: apt
