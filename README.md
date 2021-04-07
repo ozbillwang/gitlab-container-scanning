@@ -33,7 +33,7 @@ You can configure container scanning by using the following environment variable
 | `TRIVY_PASSWORD`              | `""` | Password for accessing a Docker registry requiring authentication. |
 | `TRIVY_USERNAME`                  | `""` | Username for accessing a Docker registry requiring authentication. |
 | `DOCKERFILE_PATH`              | `Dockerfile`  | The path to the `Dockerfile` to be used for generating remediations. By default, the scanner looks for a file named `Dockerfile` in the root directory of the project, so this variable should only be configured if your `Dockerfile` is in a non-standard location, such as a subdirectory. See [Solutions for vulnerabilities](#solutions-for-vulnerabilities-auto-remediation) for more details. |
-| `TRIVY_DEBUG`                   | `"false"`     | Set to true to enable more verbose output from klar. |
+| `TRIVY_DEBUG`                   | `"false"`     | Set to true to enable more verbose output from Trivy. |
 | `SECURE_LOG_LEVEL`             | `info`        | Set the minimum logging level. Messages of this logging level or higher are output. From highest to lowest severity, the logging levels are: `fatal`, `error`, `warn`, `info`, `debug`. [Introduced](https://gitlab.com/gitlab-org/gitlab/-/issues/10880) in GitLab 13.1. |
 
 ## License
