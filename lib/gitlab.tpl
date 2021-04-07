@@ -13,7 +13,7 @@
     {{- end }}
     {
       "category": "container_scanning",
-      "message": {{ .Title | printf "%q" }},
+      "message": "{{ printf "%s in %s-%s" .VulnerabilityID .PkgName .InstalledVersion }}",
       "description": {{ .Description | printf "%q" }},
       {{- /* cve is a deprecated key, use id instead */}}
       "cve": "{{ .VulnerabilityID }}",
