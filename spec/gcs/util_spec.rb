@@ -131,7 +131,7 @@ RSpec.describe Gcs::Util do
           before do
             report['vulnerabilities'].map!{|vuln| vuln.delete('cve'); vuln }
           end
-  
+
           specify do
             expect(subject).to be false
           end
@@ -141,9 +141,9 @@ RSpec.describe Gcs::Util do
           before do
             report['vulnerabilities'].map!{|vuln| vuln['location']['dependency'].delete('package'); vuln }
           end
-  
-          specify do
-            expect(subject).to be false
+
+          it 'ignores missing package_name' do
+            expect(subject).to be true
           end
         end
 
@@ -151,7 +151,7 @@ RSpec.describe Gcs::Util do
           before do
             report['vulnerabilities'].map!{|vuln| vuln['cve'][0] = 'A'; vuln }
           end
-  
+
           specify do
             expect(subject).to be false
           end
@@ -177,8 +177,8 @@ RSpec.describe Gcs::Util do
           report['vulnerabilities'].map!{|vuln| vuln['location']['dependency']['package']['name'] = 'unzip'; vuln }
         end
 
-        specify do
-          expect(subject).to be false
+        it 'ignores different package_name' do
+          expect(subject).to be true
         end
       end
     end

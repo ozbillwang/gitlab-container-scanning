@@ -46,12 +46,11 @@ module Gcs
         return false unless @allow_list_cve
 
         cve = vuln.dig('cve')
-        package_name = vuln.dig('location', 'dependency', 'package', 'name')
         docker_image = vuln.dig('location', 'image')&.gsub(/\s\S*/, '')
 
-        return false unless cve && package_name
+        return false unless cve
 
-        included_in_general?(cve, package_name) || included_in_images?(cve, package_name, docker_image)
+        included_in_general?(cve) || included_in_images?(cve, docker_image)
       end
 
       def update_allow_list(allow_list)
@@ -63,17 +62,17 @@ module Gcs
 
       private
 
-      def included_in_general?(cve, package_name)
+      def included_in_general?(cve)
         return false unless @allow_list_cve[:general] && @allow_list_cve[:general][cve]
 
-        @allow_list_cve[:general][cve].include?(package_name)
-      end 
+        @allow_list_cve[:general].key?(cve)
+      end
 
-      def included_in_images?(cve, package_name, docker_image)
+      def included_in_images?(cve, docker_image)
         return false unless @allow_list_cve[:images] && docker_image
 
         image = @allow_list_cve[:images].keys.find{|key| docker_image.include?(key)}
-        !!@allow_list_cve.dig(:images, image, cve)&.include?(package_name)
+        !!@allow_list_cve.dig(:images, image)&.key?(cve)
       end
     end
   end
