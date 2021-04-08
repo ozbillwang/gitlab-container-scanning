@@ -23,7 +23,7 @@ class ProxyServer
       ].join("&&"))
     end
     config_file = Gcs.root.join("spec/fixtures/haproxy.cfg")
-    self.pid = spawn("/usr/sbin/haproxy -f #{config_file}")
+    self.pid = spawn("sudo /usr/sbin/haproxy -f #{config_file}")
     wait_for_server
     pid
   end
@@ -31,7 +31,7 @@ class ProxyServer
   def stop(pid = self.pid)
     return unless pid
 
-    Process.kill("TERM", pid)
+    system("sudo kill -9 #{pid}")
     Process.wait(pid)
     system("rm -f /usr/local/share/ca-certificates/custom.*")
     system("rm -f /usr/lib/ssl/certs/custom.*")
@@ -44,7 +44,7 @@ class ProxyServer
   def add_host(name, ip)
     return if system("grep #{name} /etc/hosts")
 
-    system("echo '#{ip} #{name}' >> /etc/hosts")
+    system("echo '#{ip} #{name}' | sudo tee -a /etc/hosts")
   end
 
   def wait_for_server
