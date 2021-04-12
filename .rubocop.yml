@@ -1,0 +1,4 @@
+---
+inherit_gem:
+  gitlab-styles:
+    - rubocop-default.yml

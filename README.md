@@ -9,7 +9,7 @@ After becoming familiar with [how to use gitlab-ci.yaml](https://docs.gitlab.com
 ```
 container_scanning:
   stage: test
-  image: "<TBD>"
+  image: registry.gitlab.com/gitlab-org/security-products/analyzers/container-scanning:latest
   allow_failure: true
   script:
     - gtcs scan
@@ -35,6 +35,7 @@ You can configure container scanning by using the following environment variable
 | `DOCKERFILE_PATH`              | `Dockerfile`  | The path to the `Dockerfile` to be used for generating remediations. By default, the scanner looks for a file named `Dockerfile` in the root directory of the project, so this variable should only be configured if your `Dockerfile` is in a non-standard location, such as a subdirectory. See [Solutions for vulnerabilities](#solutions-for-vulnerabilities-auto-remediation) for more details. |
 | `TRIVY_DEBUG`                   | `"false"`     | Set to true to enable more verbose output from Trivy. |
 | `SECURE_LOG_LEVEL`             | `info`        | Set the minimum logging level. Messages of this logging level or higher are output. From highest to lowest severity, the logging levels are: `fatal`, `error`, `warn`, `info`, `debug`. [Introduced](https://gitlab.com/gitlab-org/gitlab/-/issues/10880) in GitLab 13.1. |
+| `GIT_STRATEGY`                 | `none`     | Set to `fetch` when including `vulnerability-allowlist.yml` file. |
 
 ## License
 
