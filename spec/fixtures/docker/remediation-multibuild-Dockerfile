@@ -6,7 +6,7 @@ COPY . project
 WORKDIR /project
 
 FROM centos:centos8
-ENV PATH="/opt/gitlab:${PATH}"
-COPY --from=builder /project  /opt/gitlab/
+ENV PATH="/home/gitlab:${PATH}"
+COPY --from=builder /project  /home/gitlab/
 RUN yum install -y ca-certificates git-core xz ruby
 WORKDIR /

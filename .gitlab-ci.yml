@@ -39,7 +39,7 @@ integration test:
   variables:
     IMAGE_TAG: $TMP_IMAGE
   script:
-    - ./script/setup_integration
+    - sudo ./script/setup_integration
     - bundle exec rake integration
 
 .docker_tag:
