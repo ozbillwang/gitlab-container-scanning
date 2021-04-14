@@ -1,3 +1,4 @@
+---
 images:
   192.168.2.12:5000/root/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e:
     CVE-2019-3462: apt

@@ -30,6 +30,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'single_cov', '~> 1.6'
   spec.add_development_dependency 'json-schema', '~> 2.8'
   spec.add_development_dependency 'dry-schema', '~> 1.5'
+  spec.add_development_dependency 'gitlab-styles', '~> 6.2.0'
+
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']

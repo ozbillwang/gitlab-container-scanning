@@ -17,7 +17,7 @@ $ docker run --rm -it gcs bash
 Similar to the above but mounting the source code for fast development:
 
 ```
-$ docker run --rm -it --volume "$PWD:/gcs/" gcs bash
+$ docker run --rm -it --volume "$PWD:/home/gitlab/gcs/" gcs bash
 ```
 
 When inside the container the following provides a list of commands:
@@ -25,6 +25,28 @@ When inside the container the following provides a list of commands:
 ```
 $ gtcs help
 ```
+
+### Running tests within docker container
+
+From within the container:
+```
+$ cd /home/gitlab/gcs
+$ bundle
+```
+
+Unit tests:
+
+```
+$ bundle exec rake unit_test
+```
+
+Integration tests:
+
+```
+$ sudo ./script/setup_integration
+$ bundle exec rake integration
+```
+
 
 ### Running tests without a docker container
 

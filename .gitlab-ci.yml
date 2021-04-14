@@ -1,3 +1,12 @@
+---
+# Workaround to the detached pipeline as described in
+# https://gitlab.com/gitlab-org/gitlab/-/issues/34756
+workflow:
+  rules:
+    - if: '$CI_MERGE_REQUEST_EVENT_TYPE == "detached"'
+      when: never
+    - when: always
+
 # When using dind, it's wise to use the overlayfs driver for
 # improved performance.
 variables:
@@ -7,21 +16,63 @@ variables:
   TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp:$CI_COMMIT_SHA
 
 stages:
-  - unit-test             # check, test, and scan the Docker images
+  # check, test, and scan the Docker images
+  - initial-test
   - build-image
   - integration-test
-  - release-version  # release Docker images and distro packages
-  - release-major    # update Docker images and distro packages of the major release
+  # release Docker images and distro packages
+  - release-version
+  # update Docker images and distro packages of the major release
+  - release-major
 
-tests:
+# Yamllint of CI-related yaml and changelogs.
+# This uses rules from project root `.yamllint`.
+lint-yaml:
+  image: pipelinecomponents/yamllint:latest
+  stage: initial-test
+  variables:
+    LINT_PATHS: .gitlab-ci.yml .rubocop.yml spec/fixtures
+  script:
+    - yamllint -f colored $LINT_PATHS
+
+unit test:
   image: ruby:2.7.2-alpine
-  stage: unit-test
+  stage: initial-test
   script:
     - apk add git
     - bundle config --local jobs "$(nproc)"
     - bundle config set no-cache 'true'
     - bundle install --quiet
     - bundle exec rake unit_test
+
+gitlab styles:
+  image: ruby:2.7.2-alpine
+  stage: initial-test
+  allow_failure: true
+  script:
+    - bundle config --local jobs "$(nproc)"
+    - bundle config set no-cache 'true'
+    - bundle install --quiet
+    - bundle exec rubocop
+
+dependency_scanning:
+  stage: initial-test
+
+gemnasium-dependency_scanning:
+  rules:
+    - changes:
+        - Gemfile.lock
+
+bundler-audit-dependency_scanning:
+  rules:
+    - changes:
+        - Gemfile.lock
+
+license_scanning:
+  stage: initial-test
+  rules:
+    - changes:
+        - Gemfile.lock
 
 build-tmp-image:
   image: docker:stable
@@ -59,8 +110,9 @@ integration test:
 tag branch:
   extends: .docker_tag
   variables:
-    # CAUTION: by preferring `SLUG` over `NAME` we can properly handle non-alphanumeric
-    # characters, but this may limit our tags to 63chars or raise potential conflicts.
+    # CAUTION: by preferring `SLUG` over `NAME` we can properly handle
+    # non-alphanumeric characters, but this may limit our tags to 63 chars
+    # or raise potential conflicts.
     IMAGE_TAG: $CI_COMMIT_REF_SLUG
   rules:
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
@@ -94,3 +146,7 @@ major:
 
 latest:
   extends: .release
+
+include:
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
