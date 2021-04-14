@@ -2,20 +2,23 @@
 
 RSpec.describe Gcs::Cli do
   let(:arguments) { ['scan', 'ubuntu:latest'] }
-  let(:execution) { -> { Gcs::Cli.start(arguments) } }
+  let(:execution) { -> { described_class.start(arguments) } }
 
+  # rubocop: disable CodeReuse/ActiveRecord
   before do
     allow(Gcs::Trivy).to receive(:scan_image).with('ubuntu:latest').and_return([nil, nil, double(success?: status)])
   end
+  # rubocop: enable CodeReuse/ActiveRecord
 
   context 'when scan fails' do
     let(:status) { false }
 
     specify do
-      expect(execution).to terminate.with_code(1) 
+      expect(execution).to terminate.with_code(1)
     end
   end
 
+  # rubocop: disable CodeReuse/ActiveRecord
   context 'when scan succeeds' do
     let(:status) { true }
 
@@ -36,7 +39,10 @@ RSpec.describe Gcs::Cli do
 
       specify do
         expect(Gcs::Util).to receive(:write_table).with({}, fixture_file_yaml_content('vulnerability-allowlist.yml'))
-        expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json', {},  Pathname.pwd, fixture_file_yaml_content('vulnerability-allowlist.yml'))
+        expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json',
+                                                       {},
+                                                       Pathname.pwd,
+                                                       fixture_file_yaml_content('vulnerability-allowlist.yml'))
         expect(execution).not_to terminate
       end
     end
@@ -49,9 +55,10 @@ RSpec.describe Gcs::Cli do
 
       specify do
         expect(Gcs::Util).to receive(:write_table).with({}, nil)
-        expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json', {},  Pathname.pwd, nil)
+        expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json', {}, Pathname.pwd, nil)
         expect(execution).not_to terminate
       end
     end
   end
+  # rubocop: enable CodeReuse/ActiveRecord
 end

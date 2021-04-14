@@ -25,10 +25,8 @@ class Project
     FileUtils.cp_r("#{dir}/.", path)
   end
 
-  def chdir
-    Dir.chdir path do
-      yield
-    end
+  def chdir(&block)
+    Dir.chdir path, &block
   end
 
   def cleanup

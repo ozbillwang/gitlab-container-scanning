@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module IntegrationTestHelper
   def runner(*args)
     @runner ||= ProjectHelper.new(*args)
@@ -33,17 +34,14 @@ class ProjectHelper
   end
 
   def mount(dir:, add_allow_list: false)
-    if add_allow_list
-      FileUtils.cp_r(fixture_file('vulnerability-allowlist.yml'), project_path)
-    end
+    FileUtils.cp_r(fixture_file('vulnerability-allowlist.yml'), project_path) if add_allow_list
+
     FileUtils.cp_r("#{dir}/.", project_path)
   end
 
-  def chdir
+  def chdir(&block)
     puts "changing directory to #{project_path}"
-    Dir.chdir project_path do
-      yield
-    end
+    Dir.chdir project_path, &block
   end
 
   def clone(repo, branch: 'master')
@@ -62,7 +60,7 @@ class ProjectHelper
       expanded_env = {
         'CI_PROJECT_DIR' => project_path.to_s,
         'CONSOLE_LEVEL' => 'debug',
-        'RUBYOPT' => "-I#{Gcs.lib}",
+        'RUBYOPT' => "-I#{Gcs.lib}"
       }.merge(env)
       return {} unless execute(expanded_env, "#{Gcs.lib.join('../exe/gtcs')} scan")
 

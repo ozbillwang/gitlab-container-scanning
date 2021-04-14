@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Gcs
   class Environment
     ALLOW_LIST_FILENAME = "vulnerability-allowlist.yml"
@@ -28,7 +29,7 @@ module Gcs
       end
 
       def docker_file
-        docker_file_path = ENV.fetch('DOCKERFILE_PATH') { 'Dockerfile' }
+        docker_file_path = ENV.fetch('DOCKERFILE_PATH', 'Dockerfile')
         if Pathname.new(docker_file_path).exist?
           docker_file_path
         else

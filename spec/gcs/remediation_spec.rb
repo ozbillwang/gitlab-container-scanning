@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 RSpec.describe Gcs::Remediation do
   let(:multi_build_docker_file_path) { fixture_file('docker/remediation-multibuild-Dockerfile') }
   let(:docker_file_path) { fixture_file('docker/remediation-Dockerfile') }
 
-  after :each do
+  after do
     if ENV['CI_SERVER'].nil?
-     `git checkout #{multi_build_docker_file_path.to_path}`
-     `git checkout #{docker_file_path.to_path}`
+      `git checkout #{multi_build_docker_file_path.to_path}`
+      `git checkout #{docker_file_path.to_path}`
     end
   end
 
@@ -36,16 +37,16 @@ RSpec.describe Gcs::Remediation do
 
   describe 'for single build docker file' do
     let(:remediation) do
-        described_class.new(
-          {
-            'package_name' => 'apt',
-            'package_version' => '1.0.0',
-            'fixed_version' => '2.2.1',
-            'operating_system' => 'debian',
-            'summary' => 'Upgrade apt to 2.2.1'
-          },
-          docker_file_path
-        )
+      described_class.new(
+        {
+          'package_name' => 'apt',
+          'package_version' => '1.0.0',
+          'fixed_version' => '2.2.1',
+          'operating_system' => 'debian',
+          'summary' => 'Upgrade apt to 2.2.1'
+        },
+        docker_file_path
+      )
     end
 
     it 'remediatiates docker file' do

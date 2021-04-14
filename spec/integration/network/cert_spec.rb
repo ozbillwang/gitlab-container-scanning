@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'alpine' do
-  context 'when scanning an Alpine based image', integration: true do
-
+  context 'when scanning an Alpine based image', :integration do
     subject { runner.report_for(type: 'container-scanning') }
 
     before(:all) do

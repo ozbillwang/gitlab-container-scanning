@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'ostruct'
 require 'forwardable'
 require 'thor'
@@ -20,11 +21,11 @@ loader = Zeitwerk::Loader.for_gem
 loader.setup
 
 module Gcs
-  DEFAULT_REPORT_NAME = 'gl-container-scanning-report.json'.freeze
+  DEFAULT_REPORT_NAME = 'gl-container-scanning-report.json'
 
   class << self
     def root
-      Pathname.new(File.expand_path('../..', __FILE__))
+      Pathname.new(File.expand_path('..', __dir__))
     end
 
     def lib
@@ -32,7 +33,7 @@ module Gcs
     end
 
     def logger
-      @logger ||= Logger.new(STDOUT)
+      @logger ||= Logger.new($stdout)
     end
 
     def shell
