@@ -34,3 +34,5 @@ ENV HOME "/home/gitlab"
 
 RUN gem install /home/gitlab/gcs.gem
 WORKDIR /home/gitlab
+CMD ["gtcs", "scan"]
+

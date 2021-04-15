@@ -55,7 +55,7 @@ RSpec.shared_examples 'as container scanner' do |item|
     expect(subject['scan']['scanner']['name']).to eql('Trivy')
     expect(subject['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
     expect(subject['scan']['scanner']['vendor']['name']).to eql('GitLab')
-    expect(subject['scan']['scanner']['version']).to eql('0.13.0')
+    expect(subject['scan']['scanner']['version']).to eql('0.16.0')
     expect(subject['scan']['start_time']).not_to be_nil
     expect(subject['scan']['status']).to eql('success')
     expect(subject['scan']['type']).to eql('container_scanning')
