@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Gcs
   class LoggerFormatter
     COLOR_ESCAPES = {
@@ -12,7 +13,7 @@ module Gcs
       cyan: 36,
       white: 37,
       default: 39
-    }
+    }.freeze
 
     LOG_LEVEL_COLOR = {
       UNKNOWN: :white,
@@ -21,21 +22,19 @@ module Gcs
       WARN: :yellow,
       INFO: :green,
       DEBUG: :blue
-    }
+    }.freeze
 
     class << self
       def color(clr, text = nil)
-        "\x1B[" + (COLOR_ESCAPES[clr] || 0).to_s + 'm' +
-          (text ? text + "\x1B[0m" : '')
+        "\e[#{(COLOR_ESCAPES[clr] || 0)}m#{(text ? "#{text}\e[0m" : '')}"
       end
 
       def bc(clr, text = nil)
-        "\x1B[" + ((COLOR_ESCAPES[clr] || 0) + 10).to_s + 'm' +
-          (text ? text + "\x1B[0m" : '')
+        "\e[#{((COLOR_ESCAPES[clr] || 0) + 10)}m#{(text ? "#{text}\e[0m" : '')}"
       end
 
       def formatter
-        Proc.new do |severity, datetime, progname, msg|
+        proc do |severity, datetime, progname, msg|
           "[#{color(LOG_LEVEL_COLOR[severity.to_sym], severity)}] [Trivy] [#{datetime}] [#{progname}]  ▶  #{msg}\n"
         end
       end

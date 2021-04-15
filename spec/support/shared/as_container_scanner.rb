@@ -69,6 +69,6 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
-    expect(subject['vulnerabilities']).not_to include('cve' => 'CVE-2019-3462', 'location' => {'dependency' =>{ 'package' => {'name' => 'apt'}}})
+    expect(subject['vulnerabilities']).not_to include('cve' => 'CVE-2019-3462', 'location' => { 'dependency' => { 'package' => { 'name' => 'apt' } } })
   end
 end

@@ -13,7 +13,7 @@ module Gcs
 
       def write_file(name, content, location, allow_list)
         update_allow_list(allow_list)
-        content['vulnerabilities']&.delete_if{|vuln| is_allowed?(vuln)}
+        content['vulnerabilities']&.delete_if { |vuln| is_allowed?(vuln) }
         full_path = location.join(name)
         Gcs.logger.debug("writing results to #{full_path}")
         FileUtils.mkdir_p(full_path.dirname)
@@ -31,21 +31,21 @@ module Gcs
 
           description = description.scan(/.{1,70}/).join("\n") if description.size > 70
           is_allowed = is_allowed?(vuln) ? "Approved".green : "Unapproved".red
-          [is_allowed,"#{severity} #{cve}", package_name, version, description]
+          [is_allowed, "#{severity} #{cve}", package_name, version, description]
         end
 
-        rows = report.fetch('vulnerabilities', []).map { |x| extract_row.(x) }
+        rows = report.fetch('vulnerabilities', []).map { |x| extract_row.call(x) }
 
         return if rows.empty?
 
-        table = Terminal::Table.new(headings: ['STATUS','CVE SEVERITY', 'PACKAGE NAME', 'PACKAGE VERSION', 'CVE DESCRIPTION'], rows: rows, style: {alignment: :center, all_separators: true})
+        table = Terminal::Table.new(headings: ['STATUS', 'CVE SEVERITY', 'PACKAGE NAME', 'PACKAGE VERSION', 'CVE DESCRIPTION'], rows: rows, style: { alignment: :center, all_separators: true })
         puts table.render
       end
 
       def is_allowed?(vuln)
         return false unless @allow_list_cve
 
-        cve = vuln.dig('cve')
+        cve = vuln['cve']
         docker_image = vuln.dig('location', 'image')&.gsub(/\s\S*/, '')
 
         return false unless cve
@@ -71,7 +71,7 @@ module Gcs
       def included_in_images?(cve, docker_image)
         return false unless @allow_list_cve[:images] && docker_image
 
-        image = @allow_list_cve[:images].keys.find{|key| docker_image.include?(key)}
+        image = @allow_list_cve[:images].keys.find { |key| docker_image.include?(key) }
         !!@allow_list_cve.dig(:images, image)&.key?(cve)
       end
     end

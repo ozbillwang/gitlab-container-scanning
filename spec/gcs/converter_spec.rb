@@ -59,19 +59,19 @@ RSpec.describe Gcs::Converter do
   it 'converts into valid format' do
     gitlab_format = described_class.new(trivy_output_alpine, nil, {}).convert
     result = schema.call(gitlab_format)
-    expect(result.success?).to be_truthy
+    expect(result).to be_success
   end
 
   it 'converts into valid format for centos' do
     gitlab_format = described_class.new(trivy_output_centos, nil, {}).convert
     result = schema.call(gitlab_format)
-    expect(result.success?).to be_truthy
+    expect(result).to be_success
   end
 
   it 'converts into valid format for debian based images' do
     gitlab_format = described_class.new(trivy_output_debian, nil, {}).convert
     result = schema.call(gitlab_format)
 
-    expect(result.success?).to be_truthy
+    expect(result).to be_success
   end
 end

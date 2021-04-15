@@ -49,7 +49,7 @@ module Gcs
     def to_hash
       {
         fixes: fixes.to_a.map(&:to_hash),
-        summary: remediate_metadata.dig('summary'),
+        summary: remediate_metadata['summary'],
         diff: create_git_diff
       }
     end
@@ -74,8 +74,7 @@ module Gcs
           "#{match}\n#{remediation_formula}"
         end
       end
-    )
-
+      )
     end
 
     def remediation_formula

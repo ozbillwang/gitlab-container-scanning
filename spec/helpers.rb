@@ -42,10 +42,8 @@ module Helpers
       @response = response
     end
 
-    def each_line
-      @response.each do |value|
-        yield value
-      end
+    def each_line(&block)
+      @response.each(&block)
     end
   end
 end

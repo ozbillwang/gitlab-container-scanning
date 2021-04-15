@@ -6,7 +6,7 @@ class Docker
     'CI_PROJECT_DIR' => '/tmp/app',
     'SECURE_LOG_LEVEL' => 'debug'
   }.freeze
-  DEFAULT_IMAGE_NAME = 'gcs:latest'.freeze
+  DEFAULT_IMAGE_NAME = 'gcs:latest'
 
   attr_reader :pwd
 
@@ -22,11 +22,12 @@ class Docker
         cmd = "docker build -t #{tag} ."
         ENV['IMAGE_TAG'] = tag
       end
+
       system(cmd, exception: true)
     end
   end
 
-  def run(project:, env: {}, command:)
+  def run(project:, command:, env: {})
     env_options = DEFAULT_ENV.merge(env).map { |(key, value)| "--env #{key}='#{value}'" }
     Dir.chdir pwd do
       arguments = [

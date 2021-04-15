@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module FixtureFileHelper
   def fixture_file(path)
     Pathname.new(__FILE__).parent.join('../fixtures', path)
@@ -8,7 +9,7 @@ module FixtureFileHelper
   end
 
   def fixture_file_yaml_content(path)
-    YAML.load(fixture_file_content(path))
+    YAML.safe_load(fixture_file_content(path))
   end
 
   def fixture_file_json_content(path)
