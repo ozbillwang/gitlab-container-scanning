@@ -3,6 +3,8 @@ class String; include Term::ANSIColor; end
 
 module Gcs
   class Util
+    HEADINGS = ['STATUS', 'CVE SEVERITY', 'PACKAGE NAME', 'PACKAGE VERSION', 'CVE DESCRIPTION'].freeze
+
     class << self
       def measure_runtime
         start_time = Time.now.strftime('%Y-%m-%dT%H:%M:%S')
@@ -13,7 +15,7 @@ module Gcs
 
       def write_file(name, content, location, allow_list)
         update_allow_list(allow_list)
-        content['vulnerabilities']&.delete_if { |vuln| is_allowed?(vuln) }
+        content['vulnerabilities']&.delete_if { |vuln| allowed?(vuln) }
         full_path = location.join(name)
         Gcs.logger.debug("writing results to #{full_path}")
         FileUtils.mkdir_p(full_path.dirname)
@@ -30,7 +32,7 @@ module Gcs
           description = vuln.fetch('description', '')
 
           description = description.scan(/.{1,70}/).join("\n") if description.size > 70
-          is_allowed = is_allowed?(vuln) ? "Approved".green : "Unapproved".red
+          is_allowed = allowed?(vuln) ? "Approved".green : "Unapproved".red
           [is_allowed, "#{severity} #{cve}", package_name, version, description]
         end
 
@@ -38,11 +40,11 @@ module Gcs
 
         return if rows.empty?
 
-        table = Terminal::Table.new(headings: ['STATUS', 'CVE SEVERITY', 'PACKAGE NAME', 'PACKAGE VERSION', 'CVE DESCRIPTION'], rows: rows, style: { alignment: :center, all_separators: true })
+        table = Terminal::Table.new(headings: HEADINGS, rows: rows, style: { alignment: :center, all_separators: true })
         puts table.render
       end
 
-      def is_allowed?(vuln)
+      def allowed?(vuln)
         return false unless @allow_list_cve
 
         cve = vuln['cve']

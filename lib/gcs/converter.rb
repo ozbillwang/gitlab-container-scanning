@@ -29,7 +29,8 @@ module Gcs
 
         next if fixed_version.nil? || fixed_version.empty?
 
-        rm = Remediation.new(trivy_vuln['remediateMetadata'].merge({ 'operating_system' => converted_vuln.operating_system }))
+        rm = Remediation.new(trivy_vuln['remediateMetadata'].merge({ 'operating_system' =>
+                                                                       converted_vuln.operating_system }))
         # there is exsiting remedition addressing more than one vulnerability
         if remediations.key?(rm.compare_id)
           remediations[rm.compare_id].add_fix(converted_vuln.cve, converted_vuln.id)

@@ -83,7 +83,8 @@ module Gcs
         'ubuntu' => "apt-get update && apt-get upgrade -y #{package_name} && rm -rf /var/lib/apt/lists/*",
         'oracle' => "apt-get update && apt-get upgrade -y #{package_name} && rm -rf /var/lib/apt/lists/*",
         'alpine' => "apk --no-cache update && apk --no-cache add #{package_name}=#{fixed_version}",
-        'centos' => "yum -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; yum update -y #{package_name}; } && yum clean all"
+        'centos' => "yum -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; yum update -y #{package_name}; }" \
+                    " && yum clean all"
       }
 
       remediation_commands[operating_system]

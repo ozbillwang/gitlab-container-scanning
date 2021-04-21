@@ -44,11 +44,17 @@ Integration tests:
 
 ```
 $ sudo ./script/setup_integration
-$ bundle exec rake integration
+$ bundle exec rake integration_test
 ```
 
 
 ### Running tests without a docker container
+
+In case `ruby` is not installed, we recommend using `asdf` as the following:
+   1. [Install `asdf`](https://asdf-vm.com/#/core-manage-asdf?id=install)
+   1. Create `.tool-versions` file and add `ruby x.x.x` where `x.x.x` is the version which can be found in the [Dockerfile](../Dockerfile)
+   1. Run `$ asdf install`
+   1. Run `$ bundle`
 
 Unit tests:
 

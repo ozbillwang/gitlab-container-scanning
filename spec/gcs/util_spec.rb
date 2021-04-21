@@ -6,6 +6,7 @@ RSpec.describe Gcs::Util do
 
   describe 'writes file to given location' do
     let(:tmp_dir) { Dir.mktmpdir }
+    let(:full_path) { Pathname.new(tmp_dir).join(Gcs::DEFAULT_REPORT_NAME) }
 
     subject { described_class.write_file(Gcs::DEFAULT_REPORT_NAME, report, Gcs::Environment.project_dir, allow_list) }
 
@@ -24,7 +25,7 @@ RSpec.describe Gcs::Util do
       let(:allow_list) { nil }
 
       specify do
-        expect(fixture_file_content(Pathname.new(tmp_dir).join(Gcs::DEFAULT_REPORT_NAME))).to match(/CVE-2019-3462/)
+        expect(fixture_file_content(full_path)).to match(/CVE-2019-3462/)
       end
     end
 
@@ -33,7 +34,7 @@ RSpec.describe Gcs::Util do
         let(:allow_list) { fixture_file_yaml_content("#{context}.yml") }
 
         specify do
-          expect(fixture_file_content(Pathname.new(tmp_dir).join(Gcs::DEFAULT_REPORT_NAME))).not_to match(/CVE-2019-3462/)
+          expect(fixture_file_content(full_path)).not_to match(/CVE-2019-3462/)
         end
       end
     end
@@ -62,6 +63,9 @@ RSpec.describe Gcs::Util do
   end
 
   describe '.update_allow_list' do
+    let(:docker_img) { "192.168.2.12:5000/root/webgoat-8.0" }
+    let(:docker_img_sha) { "#{docker_img}@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e" }
+
     before do
       described_class.update_allow_list(allow_list)
     end
@@ -76,7 +80,9 @@ RSpec.describe Gcs::Util do
 
     context 'with general allow list only' do
       specify do
-        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(general: { "CVE-2019-3462" => "apt" }, images: nil)
+        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(general: {
+                                                                                     "CVE-2019-3462" => "apt"
+                                                                                   }, images: nil)
       end
     end
 
@@ -84,7 +90,13 @@ RSpec.describe Gcs::Util do
       let(:allow_list) { fixture_file_yaml_content('image-allowlist.yml') }
 
       specify do
-        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(general: nil, images: { "192.168.2.12:5000/root/webgoat-8.0" => { "CVE-2019-3462" => "apt" } })
+        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(
+          general: nil,
+          images: {
+            docker_img => {
+              "CVE-2019-3462" => "apt"
+            }
+          })
       end
     end
 
@@ -92,7 +104,13 @@ RSpec.describe Gcs::Util do
       let(:allow_list) { fixture_file_yaml_content('image-sha-allowlist.yml') }
 
       specify do
-        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(general: nil, images: { "192.168.2.12:5000/root/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e" => { "CVE-2019-3462" => "apt" } })
+        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(
+          general: nil,
+          images: {
+            docker_img_sha => {
+              "CVE-2019-3462" => "apt"
+            }
+          })
       end
     end
 
@@ -100,13 +118,20 @@ RSpec.describe Gcs::Util do
       let(:allow_list) { fixture_file_yaml_content('vulnerability-allowlist.yml') }
 
       specify do
-        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(general: { "CVE-2019-3462" => "apt" }, images: { "192.168.2.12:5000/root/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e" => { "CVE-2019-3462" => "apt" } })
+        expect(described_class.instance_variable_get(:@allow_list_cve)).to include(
+          general: { "CVE-2019-3462" => "apt" },
+          images:
+          {
+            docker_img_sha => {
+              "CVE-2019-3462" => "apt"
+            }
+          })
       end
     end
   end
 
-  describe '.is_allowed?' do
-    subject { described_class.is_allowed?(report['vulnerabilities'].first) }
+  describe '.allowed?' do
+    subject { described_class.allowed?(report['vulnerabilities'].first) }
 
     before do
       described_class.update_allow_list(allow_list)
@@ -130,7 +155,10 @@ RSpec.describe Gcs::Util do
 
         context 'with missing cve' do
           before do
-            report['vulnerabilities'].map! { |vuln| vuln.delete('cve'); vuln }
+            report['vulnerabilities'].map! do |vuln|
+              vuln.delete('cve')
+              vuln
+            end
           end
 
           specify do
@@ -140,7 +168,10 @@ RSpec.describe Gcs::Util do
 
         context 'with missing package_name' do
           before do
-            report['vulnerabilities'].map! { |vuln| vuln['location']['dependency'].delete('package'); vuln }
+            report['vulnerabilities'].map! do |vuln|
+              vuln['location']['dependency'].delete('package')
+              vuln
+            end
           end
 
           it 'ignores missing package_name' do
@@ -150,7 +181,10 @@ RSpec.describe Gcs::Util do
 
         context 'with a different cve' do
           before do
-            report['vulnerabilities'].map! { |vuln| vuln['cve'][0] = 'A'; vuln }
+            report['vulnerabilities'].map! do |vuln|
+              vuln['cve'][0] = 'A'
+              vuln
+            end
           end
 
           specify do
@@ -165,7 +199,10 @@ RSpec.describe Gcs::Util do
 
       context 'with missing docker image' do
         before do
-          report['vulnerabilities'].map! { |vuln| vuln['location'].delete('image'); vuln }
+          report['vulnerabilities'].map! do |vuln|
+            vuln['location'].delete('image')
+            vuln
+          end
         end
 
         specify do
@@ -175,7 +212,10 @@ RSpec.describe Gcs::Util do
 
       context 'with a different package_name' do
         before do
-          report['vulnerabilities'].map! { |vuln| vuln['location']['dependency']['package']['name'] = 'unzip'; vuln }
+          report['vulnerabilities'].map! do |vuln|
+            vuln['location']['dependency']['package']['name'] = 'unzip'
+            vuln
+          end
         end
 
         it 'ignores different package_name' do
@@ -189,7 +229,10 @@ RSpec.describe Gcs::Util do
 
       context 'with missing docker image' do
         before do
-          report['vulnerabilities'].map! { |vuln| vuln['location'].delete('image'); vuln }
+          report['vulnerabilities'].map! do |vuln|
+            vuln['location'].delete('image')
+            vuln
+          end
         end
 
         specify do
@@ -199,7 +242,10 @@ RSpec.describe Gcs::Util do
 
       context 'with a docker image with a different sha256' do
         before do
-          report['vulnerabilities'].map! { |vuln| vuln['location']['image'].gsub!(/\S\s\(/, 'A ('); vuln }
+          report['vulnerabilities'].map! do |vuln|
+            vuln['location']['image'].gsub!(/\S\s\(/, 'A (')
+            vuln
+          end
         end
 
         specify do

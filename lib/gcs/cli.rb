@@ -4,9 +4,9 @@ module Gcs
   class Cli < Thor
     desc 'scan IMAGE', 'Scan a image'
     def scan(image_name = ::Gcs::Environment.default_docker_image)
-      stdout, _stderr, status = nil
+      stdout, stderr, status = nil
       measured_time = Gcs::Util.measure_runtime do
-        stdout, _stderr, status = Trivy.scan_image(image_name)
+        stdout, stderr, status = Trivy.scan_image(image_name)
       end
 
       Gcs.logger.info(stdout)
@@ -24,7 +24,7 @@ module Gcs
         end
       else
         Gcs.logger.info('Scan failed please re-run scanner with debug mode to see more details')
-        Gcs.logger.error(_stderr)
+        Gcs.logger.error(stderr)
         Gcs.logger.error(stdout)
         exit 1
       end
