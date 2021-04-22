@@ -51,7 +51,8 @@ class ProjectHelper
         execute({}, 'git', 'checkout', branch)
       end
     else
-      execute({}, 'git', 'clone', '--quiet', '--depth=1', '--single-branch', '--branch', branch, repo, project_path.to_s)
+      execute({}, 'git', 'clone', '--quiet', '--depth=1',
+              '--single-branch', '--branch', branch, repo, project_path.to_s)
     end
   end
 

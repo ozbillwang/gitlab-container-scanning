@@ -13,7 +13,7 @@ module FixtureFileHelper
   end
 
   def fixture_file_json_content(path)
-    JSON.load(fixture_file_content(path))
+    JSON.parse(fixture_file_content(path))
   end
 
   def create_temporary_config_file(content, file_name)
@@ -22,10 +22,6 @@ module FixtureFileHelper
     file.rewind
 
     file
-  end
-
-  def fixture_file_content(path)
-    fixture_file(path).read
   end
 
   def to_path(path)

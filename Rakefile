@@ -22,12 +22,13 @@ task :integration do
     Rake::Task['spec_integration'].invoke
   else
     commands = ["docker build -q -t gcs .",
-                "docker run
-                  --rm
-                  -it
-                  --privileged
-                  --volume \"$PWD:/home/gitlab/gcs/\"
-                  gcs:latest bash -c \"sudo gcs/script/setup_integration; cd gcs; bundle exec rake integration_test\""]
+                "docker run \
+                  --rm \
+                  -it \
+                  --privileged \
+                  --volume \"$PWD:/home/gitlab/gcs/\" \
+                  gcs:latest bash -c \"sudo gcs/script/setup_integration; cd gcs; bundle;" \
+                    "bundle exec rake integration_test\""]
     system(commands.join(';'))
   end
 end

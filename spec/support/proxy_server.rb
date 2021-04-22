@@ -18,7 +18,8 @@ class ProxyServer
       subject_alternative_names = DOMAINS.map { |x| "DNS:#{x}" }.join(',')
       system([
         "rm -f #{host}.*",
-        "/usr/bin/openssl req -x509 -newkey rsa:4096 -keyout #{host}.key -out #{host}.crt -days 999 -nodes -subj '/C=/ST=/L=/O=/OU=/CN=*.test' -addext 'subjectAltName=#{subject_alternative_names}'",
+        "/usr/bin/openssl req -x509 -newkey rsa:4096 -keyout #{host}.key -out #{host}.crt -days 999 -nodes" \
+        " -subj '/CN=*.test' -addext 'subjectAltName=#{subject_alternative_names}'",
         "cat #{host}.* > #{host}.pem"
       ].join("&&"))
     end
