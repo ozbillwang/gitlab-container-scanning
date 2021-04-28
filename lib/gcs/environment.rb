@@ -29,12 +29,12 @@ module Gcs
       end
 
       def docker_file
-        docker_file_path = ENV.fetch('DOCKERFILE_PATH', 'Dockerfile')
-        if Pathname.new(docker_file_path).exist?
-          docker_file_path
-        else
-          Gcs.logger.error("Can not find Dockerfile in #{docker_file_path}")
-        end
+        docker_file = ENV.fetch('DOCKERFILE_PATH', "#{project_dir}/Dockerfile")
+        docker_file_path = Pathname.new(docker_file)
+
+        Gcs.logger.error("Can not find Dockerfile in #{docker_file_path}") unless docker_file_path.exist?
+
+        docker_file_path
       end
 
       def setup_log_level

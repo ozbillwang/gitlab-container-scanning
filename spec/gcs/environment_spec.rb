@@ -3,7 +3,8 @@ RSpec.describe Gcs::Environment do
   let(:commit_sha) { '85cbadce93fec0d78225fc00897221d8a74cb1f9' }
   let(:ci_registry_image) { 'registry.gitlab.com/defen/trivy-test' }
   let(:ci_commit_ref_slug) { 'master' }
-  let(:docker_file_path) { 'CustomDocker' }
+  let(:custom_docker_file_path) { 'CustomDocker' }
+  let(:docker_file_path) { "#{described_class.project_dir}/Dockerfile" }
 
   before do
     allow(ENV).to receive(:[]).and_call_original
@@ -42,17 +43,30 @@ RSpec.describe Gcs::Environment do
       expect(described_class.default_docker_image).to eq(image)
     end
 
-    it 'uses dockerfile path variable for remediations' do
-      allow(ENV).to receive(:fetch).with('DOCKERFILE_PATH', 'Dockerfile').and_return(docker_file_path)
-      allow_any_instance_of(Pathname).to receive(:exist?).and_return(true)
+    context 'with dockerfile present' do
+      before do
+        allow_any_instance_of(Pathname).to receive(:exist?).and_return(true)
+      end
 
-      expect(described_class.docker_file).to eq('CustomDocker')
+      it 'uses dockerfile path variable for remediations' do
+        allow(ENV).to receive(:fetch).with('DOCKERFILE_PATH', docker_file_path).and_return(custom_docker_file_path)
+        expect(described_class.docker_file.to_s).to eq(custom_docker_file_path)
+      end
+
+      it 'uses default value for dockerfile path' do
+        expect(described_class.docker_file.to_s).to eq(docker_file_path)
+      end
     end
 
-    it 'uses default value for dockerfile path' do
-      allow_any_instance_of(Pathname).to receive(:exist?).and_return(true)
+    context 'with dockerfile not present' do
+      before do
+        allow_any_instance_of(Pathname).to receive(:exist?).and_return(false)
+      end
 
-      expect(described_class.docker_file).to eq('Dockerfile')
+      it 'does not process the remediations' do
+        expect(Gcs.logger).to receive(:error)
+        expect(described_class.docker_file.exist?).to be false
+      end
     end
 
     xit 'exists the program when variables not set' do

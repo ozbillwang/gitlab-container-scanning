@@ -28,13 +28,13 @@ RSpec.describe Gcs::Remediation do
       remediation.add_fix('123', '456')
       expected_diff = 'ZGlmZiAtLWdpdCBhL3NwZWMvZml4dHVyZXMvZG9ja2VyL3JlbWVkaWF0aW9uLW11bHRpYnVpbGQtRG9ja2VyZmlsZSBiL' \
                       '3NwZWMvZml4dHVyZXMvZG9ja2VyL3JlbWVkaWF0aW9uLW11bHRpYnVpbGQtRG9ja2VyZmlsZQppbmRleCBkNTZkY2UxLi' \
-                      '4zMzYwY2Y0IDEwMDY0NAotLS0gYS9zcGVjL2ZpeHR1cmVzL2RvY2tlci9yZW1lZGlhdGlvbi1tdWx0aWJ1aWxkLURvY2t' \
+                      '5mODI0NDdhIDEwMDY0NAotLS0gYS9zcGVjL2ZpeHR1cmVzL2RvY2tlci9yZW1lZGlhdGlvbi1tdWx0aWJ1aWxkLURvY2t' \
                       'lcmZpbGUKKysrIGIvc3BlYy9maXh0dXJlcy9kb2NrZXIvcmVtZWRpYXRpb24tbXVsdGlidWlsZC1Eb2NrZXJmaWxlCkBA' \
                       'IC02LDYgKzYsNyBAQCBDT1BZIC4gcHJvamVjdAogV09SS0RJUiAvcHJvamVjdAogCiBGUk9NIGNlbnRvczpjZW50b3M4C' \
-                      'it5dW0gLXkgY2hlY2stdXBkYXRlIHx8IHsgcmM9JD87IFsgJHJjIC1uZXEgMTAwIF0gJiYgZXhpdCAkcmM7IHl1bSB1cG' \
-                      'RhdGUgLXkgY3VybDsgfSAmJiB5dW0gY2xlYW4gYWxsCiBFTlYgUEFUSD0iL2hvbWUvZ2l0bGFiOiR7UEFUSH0iCiBDT1B' \
-                      'ZIC0tZnJvbT1idWlsZGVyIC9wcm9qZWN0ICAvaG9tZS9naXRsYWIvCiBSVU4geXVtIGluc3RhbGwgLXkgY2EtY2VydGlm' \
-                      'aWNhdGVzIGdpdC1jb3JlIHh6IHJ1Ynk='
+                      'itSVU4geXVtIC15IGNoZWNrLXVwZGF0ZSB8fCB7IHJjPSQ/OyBbICRyYyAtbmVxIDEwMCBdICYmIGV4aXQgJHJjOyB5dW0' \
+                      'gdXBkYXRlIC15IGN1cmw7IH0gJiYgeXVtIGNsZWFuIGFsbAogRU5WIFBBVEg9Ii9ob21lL2dpdGxhYjoke1BBVEh9IgogQ' \
+                      '09QWSAtLWZyb209YnVpbGRlciAvcHJvamVjdCAgL2hvbWUvZ2l0bGFiLwogUlVOIHl1bSBpbnN0YWxsIC15IGNhLWNlcnR' \
+                      'pZmljYXRlcyBnaXQtY29yZSB4eiBydWJ5'
       expect(remediation.to_hash).to include(
         fixes: [{ 'cve' => '123', 'id' => '456' }],
         summary: 'Upgrade curl to 2.2.1',
@@ -60,11 +60,12 @@ RSpec.describe Gcs::Remediation do
     it 'remediatiates docker file' do
       remediation.add_fix('123', '456')
       expected_diff = 'ZGlmZiAtLWdpdCBhL3NwZWMvZml4dHVyZXMvZG9ja2VyL3JlbWVkaWF0aW9uLURvY2tlcmZpbGUgYi9zcGVjL2ZpeHR1c' \
-                      'mVzL2RvY2tlci9yZW1lZGlhdGlvbi1Eb2NrZXJmaWxlCmluZGV4IDA3YjJmZDUuLjA0NTMxMGYgMTAwNjQ0Ci0tLSBhL3' \
+                      'mVzL2RvY2tlci9yZW1lZGlhdGlvbi1Eb2NrZXJmaWxlCmluZGV4IDA3YjJmZDUuLjk4NDU1MzYgMTAwNjQ0Ci0tLSBhL3' \
                       'NwZWMvZml4dHVyZXMvZG9ja2VyL3JlbWVkaWF0aW9uLURvY2tlcmZpbGUKKysrIGIvc3BlYy9maXh0dXJlcy9kb2NrZXI' \
                       'vcmVtZWRpYXRpb24tRG9ja2VyZmlsZQpAQCAtMSw0ICsxLDUgQEAKIEZST00gcnVieToyLjUuNS1zbGltIGFzIGJ1aWxk' \
-                      'ZXIKK2FwdC1nZXQgdXBkYXRlICYmIGFwdC1nZXQgdXBncmFkZSAteSBhcHQgJiYgcm0gLXJmIC92YXIvbGliL2FwdC9sa' \
-                      'XN0cy8qCiBSVU4gYXB0LWdldCB1cGRhdGUgJiYgYXB0LWdldCBpbnN0YWxsIC15IC1xIFwKICAgd2dldCBcCiAgIGdpdA=='
+                      'ZXIKK1JVTiBhcHQtZ2V0IHVwZGF0ZSAmJiBhcHQtZ2V0IHVwZ3JhZGUgLXkgYXB0ICYmIHJtIC1yZiAvdmFyL2xpYi9hc' \
+                      'HQvbGlzdHMvKgogUlVOIGFwdC1nZXQgdXBkYXRlICYmIGFwdC1nZXQgaW5zdGFsbCAteSAtcSBcCiAgIHdnZXQgXAogIC' \
+                      'BnaXQ='
       expect(remediation.to_hash).to include(
         fixes: [{ 'cve' => '123', 'id' => '456' }],
         summary: 'Upgrade apt to 2.2.1',
