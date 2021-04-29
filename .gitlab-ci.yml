@@ -84,7 +84,7 @@ build-tmp-image:
     - docker build -q -t $TMP_IMAGE .
     - docker push $TMP_IMAGE
 
-integration test:
+.integration_test:
   image: $TMP_IMAGE
   stage: integration-test
   variables:
@@ -92,6 +92,30 @@ integration test:
   script:
     - sudo ./script/setup_integration
     - bundle exec rake integration
+
+alpine test:
+  extends: .integration_test
+  script:
+    - sudo ./script/setup_integration
+    - bundle exec rake spec_integration_alpine
+
+centos test:
+  extends: .integration_test
+  script:
+    - sudo ./script/setup_integration
+    - bundle exec rake spec_integration_centos
+
+webgoat test:
+  extends: .integration_test
+  script:
+    - sudo ./script/setup_integration
+    - bundle exec rake spec_integration_webgoat
+
+ca_cert test:
+  extends: .integration_test
+  script:
+    - sudo ./script/setup_integration
+    - bundle exec rake spec_integration_ca_cert
 
 .docker_tag:
   image: docker:stable
