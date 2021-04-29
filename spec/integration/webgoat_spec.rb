@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Webgoat' do
-  context "when scanning a Webgoat image", :integration do
+  context "when scanning a Webgoat image", integration: :webgoat do
     let(:image) { "registry.gitlab.com/gitlab-org/security-products/dast/webgoat-8.0" }
     let(:env) do
       {

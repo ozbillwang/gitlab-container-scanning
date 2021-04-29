@@ -12,6 +12,12 @@ RSpec::Core::RakeTask.new(:spec_integration) do |t|
   t.rspec_opts = '--tag integration'
 end
 
+%w[alpine centos webgoat ca_cert].each do |flag|
+  RSpec::Core::RakeTask.new("spec_integration_#{flag}") do |t|
+    t.rspec_opts = "--tag integration:#{flag}"
+  end
+end
+
 task default: :spec
 task unit_test: :spec_unit
 task integration_test: :spec_integration

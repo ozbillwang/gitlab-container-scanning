@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'centos' do
-  context 'when scanning an Centos based image', :integration do
+  context 'when scanning an Centos based image', integration: :centos do
     let(:env) do
       {
         'DOCKERFILE_PATH' => runner.project_path.join('centos8-Dockerfile').to_s,
