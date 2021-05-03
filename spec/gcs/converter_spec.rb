@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-
+# rubocop: disable RSpec/LeakyConstantDeclaration
+# rubocop: disable Lint/ConstantDefinitionInBlock
 RSpec.describe Gcs::Converter do
   let(:trivy_output_alpine) { fixture_file_content('trivy-alpine.json') }
   let(:trivy_output_centos) { fixture_file_content('trivy-centos.json') }
@@ -75,3 +76,5 @@ RSpec.describe Gcs::Converter do
     expect(result).to be_success
   end
 end
+# rubocop: enable RSpec/LeakyConstantDeclaration
+# rubocop: enable Lint/ConstantDefinitionInBlock

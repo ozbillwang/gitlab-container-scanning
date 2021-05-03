@@ -24,7 +24,8 @@ module Gcs
 
     def_delegators(:@remediate_metadata, :operating_system, :package_name, :package_version, :fixed_version)
     def initialize(remediate_metadata, docker_file)
-      @remediate_metadata = OpenStruct.new(remediate_metadata)
+      @remediate_metadata = Struct.new(*remediate_metadata.keys.map(&:to_sym), keyword_init: true)
+                              .new(remediate_metadata)
       @docker_file = docker_file
       @fixes = Set.new
     end

@@ -48,7 +48,6 @@ unit test:
 gitlab styles:
   image: ruby:2.7.2-alpine
   stage: initial-test
-  allow_failure: true
   script:
     - bundle config --local jobs "$(nproc)"
     - bundle config set no-cache 'true'
