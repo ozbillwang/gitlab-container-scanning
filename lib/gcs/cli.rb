@@ -13,7 +13,9 @@ module Gcs
 
       if status.success?
         if File.exist?(Trivy::DEFAULT_OUTPUT_NAME)
-          gitlab_format = Converter.new(File.read(Trivy::DEFAULT_OUTPUT_NAME), nil, measured_time).convert
+          gitlab_format = Converter.new(File.read(Trivy::DEFAULT_OUTPUT_NAME),
+                                        Environment.docker_file, measured_time).convert
+
           if File.exist?(Environment.allow_list_file_path)
             allow_list = YAML.load_file(Environment.allow_list_file_path)
             Gcs.logger.info("#{Environment.allow_list_file_path} file found")

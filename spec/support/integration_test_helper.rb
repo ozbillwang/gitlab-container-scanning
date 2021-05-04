@@ -37,6 +37,13 @@ class ProjectHelper
     FileUtils.cp_r(fixture_file('vulnerability-allowlist.yml'), project_path) if add_allow_list
 
     FileUtils.cp_r("#{dir}/.", project_path)
+    chdir do
+      execute({}, 'git', 'init')
+      execute({}, 'git', 'add', '.')
+      execute({}, 'git', 'config', '--global', 'user.name', 'test')
+      execute({}, 'git', 'config', '--global', 'user.email', 'test@test.com')
+      execute({}, 'git', 'commit', '-m', 'test')
+    end
   end
 
   def chdir(&block)

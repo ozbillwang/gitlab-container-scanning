@@ -22,7 +22,7 @@ module Gcs
       end
     end
 
-    def_delegators(:@remediate_metadata, :operating_system, :package_name, :package_version, :fixed_version)
+    def_delegators(:@remediate_metadata, :package_name, :package_version, :fixed_version)
     def initialize(remediate_metadata, docker_file)
       @remediate_metadata = Struct.new(*remediate_metadata.keys.map(&:to_sym), keyword_init: true)
                               .new(remediate_metadata)
@@ -32,7 +32,7 @@ module Gcs
 
     def compare_id
       # Gcs.logger.info("making compare_id from #{remediate_metadata.keys} #{remediate_metadata.values}")
-      Digest::SHA1.hexdigest(remediate_metadata.values.join(':'))
+      Digest::SHA1.hexdigest(remediation_formula)
     end
 
     def add_fix(cve, id)
@@ -72,10 +72,14 @@ module Gcs
     def write_remediation
       IO.write(docker_file.to_path, File.open(docker_file) do |f|
         f.read.gsub(LAST_FROM_KEYWORD_LINE) do |match|
-          "#{match}\n#{remediation_formula}"
+          "#{match}\nRUN #{remediation_formula}"
         end
       end
       )
+    end
+
+    def operating_system
+      remediate_metadata.operating_system.match(/\S*/).to_s
     end
 
     def remediation_formula
