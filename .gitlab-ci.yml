@@ -21,7 +21,7 @@ workflow:
 variables:
   # The context of these variables is global to the downstream job
   DOCKER_DRIVER: overlay2
-  MAJOR: 1
+  MAJOR: 4
   TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp:$CI_COMMIT_SHA
 
 stages:
@@ -33,6 +33,8 @@ stages:
   - release-version
   # update Docker images and distro packages of the major release
   - release-major
+  # for scheduled pipeline, we release same image everyday to keep
+  # vulnerability db updated
   - maintenance
 
 # Yamllint of CI-related yaml and changelogs.
@@ -183,6 +185,14 @@ update_changelog:
     - bundle exec rake changelog
   rules:
     - if: $CI_COMMIT_TAG
+
+db-update:
+  extends: .docker_tag
+  stage: maintenance
+  before_script:
+    - export IMAGE_TAG=${git describe --tags | head -n 1 | sed 's/\..*//'}
+  rules:
+    - if: $UPDATE_DB
 
 latest:
   extends: .release
