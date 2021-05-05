@@ -2,20 +2,20 @@
 
 module Gcs
   class Cli < Thor
-    desc 'scan IMAGE', 'Scan a image'
+    OUTPUT_FILE = "tmp.json"
+
+    desc 'scan IMAGE', 'Scan an image'
     def scan(image_name = ::Gcs::Environment.default_docker_image)
       stdout, stderr, status = nil
       measured_time = Gcs::Util.measure_runtime do
-        stdout, stderr, status = Trivy.scan_image(image_name)
+        stdout, stderr, status = Environment.scanner.scan_image(image_name, OUTPUT_FILE)
       end
 
       Gcs.logger.info(stdout)
 
       if status.success?
-        if File.exist?(Trivy::DEFAULT_OUTPUT_NAME)
-          gitlab_format = Converter.new(File.read(Trivy::DEFAULT_OUTPUT_NAME),
-                                        Environment.docker_file, measured_time).convert
-
+        if File.exist?(OUTPUT_FILE)
+          gitlab_format = Converter.new(File.read(OUTPUT_FILE), Environment.docker_file, measured_time).convert
           if File.exist?(Environment.allow_list_file_path)
             allow_list = YAML.load_file(Environment.allow_list_file_path)
             Gcs.logger.info("#{Environment.allow_list_file_path} file found")

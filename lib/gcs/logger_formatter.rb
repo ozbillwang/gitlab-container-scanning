@@ -35,7 +35,7 @@ module Gcs
 
       def formatter
         proc do |severity, datetime, progname, msg|
-          "[#{color(LOG_LEVEL_COLOR[severity.to_sym], severity)}] [Trivy] [#{datetime}] [#{progname}]  ▶  #{msg}\n"
+          "[#{color(LOG_LEVEL_COLOR[severity.to_sym], severity)}] [#{datetime}] [#{progname}]  ▶  #{msg}\n"
         end
       end
     end
