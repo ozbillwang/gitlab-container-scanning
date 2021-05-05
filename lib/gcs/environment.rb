@@ -43,6 +43,16 @@ module Gcs
         Gcs.logger.level = log_level.upcase
       end
 
+      # rubocop: disable Rails/Exit
+      def scanner
+        scanner = ENV.fetch('SCANNER', 'trivy')
+        Object.const_get("Gcs::#{scanner.capitalize}")
+      rescue NameError
+        Gcs.logger.error("Invalid scanner '#{scanner}'")
+        exit 1
+      end
+      # rubocop: enable Rails/Exit
+
       private
 
       def log_level

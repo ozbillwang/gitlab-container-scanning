@@ -4,9 +4,6 @@ module Gcs
   class Converter
     attr_accessor :source, :docker_file, :opt
 
-    # @source trivy output
-    # @target gcs output
-    # opt additional information about scan
     def initialize(source, docker_file, opt = {})
       @source = source
       @docker_file = docker_file
@@ -20,16 +17,16 @@ module Gcs
 
       vulns = []
       remediations = {}
-      parsed_report['vulnerabilities'].each do |trivy_vuln|
-        converted_vuln = Vulnerability.new(trivy_vuln)
+      parsed_report['vulnerabilities'].each do |vulnerability|
+        converted_vuln = Vulnerability.new(vulnerability)
 
         vulns << converted_vuln
 
-        fixed_version = trivy_vuln.dig('remediateMetadata', 'fixed_version')
+        fixed_version = vulnerability.dig('remediateMetadata', 'fixed_version')
 
         next if fixed_version.nil? || fixed_version.empty? || !docker_file.exist?
 
-        rm = Remediation.new(trivy_vuln['remediateMetadata'].merge({ 'operating_system' =>
+        rm = Remediation.new(vulnerability['remediateMetadata'].merge({ 'operating_system' =>
                                                                        converted_vuln.operating_system }), docker_file)
         # there is exsiting remedition addressing more than one vulnerability
         if remediations.key?(rm.compare_id)

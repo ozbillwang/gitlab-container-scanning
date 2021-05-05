@@ -101,4 +101,24 @@ RSpec.describe Gcs::Environment do
     end
     # rubocop: enable CodeReuse/ActiveRecord
   end
+
+  describe '.scanner' do
+    context 'without SCANNER' do
+      it 'returns GCS::Trivy' do
+        expect(described_class.scanner.new).to be_an_instance_of Gcs::Trivy
+      end
+    end
+
+    context 'with an invalid SCANNER' do
+      before do
+        # rubocop: disable CodeReuse/ActiveRecord
+        allow(ENV).to receive(:fetch).with('SCANNER', 'trivy').and_return('clair')
+        # rubocop: enable CodeReuse/ActiveRecord
+      end
+
+      it 'throws an error' do
+        expect { described_class.scanner }.to raise SystemExit
+      end
+    end
+  end
 end
