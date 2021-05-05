@@ -24,6 +24,7 @@ stages:
   - release-version
   # update Docker images and distro packages of the major release
   - release-major
+  - maintenance
 
 # Yamllint of CI-related yaml and changelogs.
 # This uses rules from project root `.yamllint`.
@@ -166,6 +167,13 @@ major:
   extends: .release
   variables:
     IMAGE_TAG: $MAJOR
+
+update_changelog:
+  stage: maintenance
+  script:
+    - bundle exec rake changelog
+  rules:
+    - if: $CI_COMMIT_TAG
 
 latest:
   extends: .release
