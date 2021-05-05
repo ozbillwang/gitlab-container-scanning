@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
+require 'net/http'
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -36,6 +37,22 @@ task :integration do
                   gcs:latest bash -c \"sudo gcs/script/setup_integration; cd gcs; bundle;" \
                     "bundle exec rake integration_test\""]
     system(commands.join(';'))
+  end
+end
+
+desc 'Creates CHANGELOG.md through Gitlab Api'
+task :changelog do
+  if ENV['API_TOKEN'] && ENV['CI_PROJECT_ID'] && ENV['CI_COMMIT_TAG']
+    uri = URI("https://gitlab.com/api/v4/projects/#{CI_PROJECT_ID}/repository/changelog")
+    req = Net::HTTP::Post.new(uri)
+    req['PRIVATE-TOKEN'] = ENV['API_TOKEN']
+    req['Content-Type'] = 'application/json'
+    req.set_form_data(version: ENV['CI_BUILD_TAG'])
+    res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(req)
+    end
+
+    puts "Changelog will be updated" if res.code == "200"
   end
 end
 # rubocop: enable Rails/RakeEnvironment
