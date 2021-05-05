@@ -1,4 +1,13 @@
 ---
+
+.ruby-alpine:
+  image: ruby:2.7.2-alpine
+  before_script:
+    - apk add git
+    - bundle config --local jobs "$(nproc)"
+    - bundle config set no-cache 'true'
+    - bundle install --quiet
+
 # Workaround to the detached pipeline as described in
 # https://gitlab.com/gitlab-org/gitlab/-/issues/34756
 workflow:
@@ -36,23 +45,23 @@ lint-yaml:
   script:
     - yamllint -f colored $LINT_PATHS
 
-unit test:
-  image: ruby:2.7.2-alpine
+check-commit-message:
+  extends: .ruby-alpine
   stage: initial-test
   script:
-    - apk add git
-    - bundle config --local jobs "$(nproc)"
-    - bundle config set no-cache 'true'
-    - bundle install --quiet
+    - bundle exec rake commit_message
+  allow_failure: true
+
+unit test:
+  extends: .ruby-alpine
+  stage: initial-test
+  script:
     - bundle exec rake unit_test
 
 gitlab styles:
-  image: ruby:2.7.2-alpine
+  extends: .ruby-alpine
   stage: initial-test
   script:
-    - bundle config --local jobs "$(nproc)"
-    - bundle config set no-cache 'true'
-    - bundle install --quiet
     - bundle exec rubocop
 
 dependency_scanning:
