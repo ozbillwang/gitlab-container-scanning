@@ -10,12 +10,10 @@ RSpec.describe Gcs::Util do
 
     subject { described_class.write_file(Gcs::DEFAULT_REPORT_NAME, report, Gcs::Environment.project_dir, allow_list) }
 
-    # rubocop: disable CodeReuse/ActiveRecord
     before do
       allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return(tmp_dir)
       subject
     end
-    # rubocop: enable CodeReuse/ActiveRecord
 
     after do
       FileUtils.remove_entry tmp_dir

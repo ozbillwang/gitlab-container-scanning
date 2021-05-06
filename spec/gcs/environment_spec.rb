@@ -12,7 +12,6 @@ RSpec.describe Gcs::Environment do
   end
 
   describe '.default_docker_image' do
-    # rubocop: disable CodeReuse/ActiveRecord
     it 'uses given DOCKER_IMAGE env variable' do
       allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return('alpine:latest')
 
@@ -74,32 +73,25 @@ RSpec.describe Gcs::Environment do
       execution = -> { described_class.default_docker_image }
       expect(execution).to terminate.with_code(1)
     end
-    # rubocop: enable CodeReuse/ActiveRecord
   end
 
-  # rubocop: disable CodeReuse/ActiveRecord
   xit 'setup log level' do
     allow(ENV).to receive(:fetch).with('SECURE_LOG_LEVEL').and_return('info')
     described_class.setup_log_level
 
     expect(ENV['CONSOLE_LEVEL']).to eq('info')
   end
-  # rubocop: enable CodeReuse/ActiveRecord
 
-  # rubocop: disable CodeReuse/ActiveRecord
   it 'returns current directory if given project path doesn\'t exists' do
     allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return('gitlab/my_project')
     expect(described_class.project_dir).to eq(Pathname.pwd)
   end
-  # rubocop: enable CodeReuse/ActiveRecord
 
   describe '.allow_list_file_path' do
-    # rubocop: disable CodeReuse/ActiveRecord
     it 'returns allow list file within the project path' do
       allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return('gitlab/my_project')
       expect(described_class.allow_list_file_path).to eq("#{Pathname.pwd}/vulnerability-allowlist.yml")
     end
-    # rubocop: enable CodeReuse/ActiveRecord
   end
 
   describe '.scanner' do
@@ -111,9 +103,7 @@ RSpec.describe Gcs::Environment do
 
     context 'with an invalid SCANNER' do
       before do
-        # rubocop: disable CodeReuse/ActiveRecord
         allow(ENV).to receive(:fetch).with('SCANNER', 'trivy').and_return('clair')
-        # rubocop: enable CodeReuse/ActiveRecord
       end
 
       it 'throws an error' do

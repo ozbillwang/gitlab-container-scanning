@@ -24,7 +24,6 @@ task default: :spec
 task unit_test: :spec_unit
 task integration_test: :spec_integration
 
-# rubocop: disable Rails/RakeEnvironment
 task :integration do
   if ENV['CI_SERVER']
     Rake::Task['spec_integration'].invoke
@@ -43,11 +42,13 @@ end
 
 desc 'Checks if commit message complies with the format for generating automatic CHANGELOG.md'
 task :commit_message do
-  exp = /Changelog: (Added|Changed|Deprecated|Removed|Fixed|Security)/
+  exp = /Changelog: (added|fixed|changed|deprecated|removed|security|performance|other)/im
   regex_check = lambda do |content|
     unless content.match?(exp)
       puts "\e[31m!!!Commit message is not correct for auto generating changelog!!!\e[0m"
       puts "\e[31m Please include Changelog: (Added or Changed|Deprecated|Removed|Fixed|Security) commit body \e[0m"
+
+      exit 1
     end
   end
 
@@ -61,12 +62,13 @@ task :commit_message do
   end
 end
 
+
 desc 'Creates CHANGELOG.md through Gitlab Api'
 task :changelog do
   if ENV['API_TOKEN'] && ENV['CI_PROJECT_ID'] && ENV['CI_COMMIT_TAG']
     uri = URI("https://gitlab.com/api/v4/projects/#{CI_PROJECT_ID}/repository/changelog")
     req = Net::HTTP::Post.new(uri)
-    req['PRIVATE-TOKEN'] = ENV['API_TOKEN']
+    req['PRIVATE-TOKEN'] = ENV['GITLAB_TOKEN']
     req['Content-Type'] = 'application/json'
     req.set_form_data(version: ENV['CI_BUILD_TAG'])
     res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
@@ -76,4 +78,3 @@ task :changelog do
     puts "Changelog will be updated" if res.code == "200"
   end
 end
-# rubocop: enable Rails/RakeEnvironment

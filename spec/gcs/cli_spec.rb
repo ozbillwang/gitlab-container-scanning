@@ -5,14 +5,12 @@ RSpec.describe Gcs::Cli do
   let(:execution) { -> { described_class.start(arguments) } }
 
   [Gcs::Trivy].each do |scanner|
-    # rubocop: disable CodeReuse/ActiveRecord
     before do
       allow(Gcs::Environment).to receive(:scanner).and_return(scanner)
       allow(scanner).to receive(:scan_image).with('ubuntu:latest', 'tmp.json').and_return([nil,
                                                                                            nil,
                                                                                            double(success?: status)])
     end
-    # rubocop: enable CodeReuse/ActiveRecord
 
     context 'when scan fails' do
       let(:status) { false }
@@ -22,7 +20,6 @@ RSpec.describe Gcs::Cli do
       end
     end
 
-    # rubocop: disable CodeReuse/ActiveRecord
     context 'when scan succeeds' do
       let(:status) { true }
 
@@ -64,6 +61,5 @@ RSpec.describe Gcs::Cli do
         end
       end
     end
-    # rubocop: enable CodeReuse/ActiveRecord
   end
 end
