@@ -2,6 +2,7 @@
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'net/http'
+require 'pathname'
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -37,6 +38,26 @@ task :integration do
                   gcs:latest bash -c \"sudo gcs/script/setup_integration; cd gcs; bundle;" \
                     "bundle exec rake integration_test\""]
     system(commands.join(';'))
+  end
+end
+
+desc 'Checks if commit message complies with the format for generating automatic CHANGELOG.md'
+task :commit_message do
+  exp = /Changelog: (Added|Changed|Deprecated|Removed|Fixed|Security)/
+  regex_check = lambda do |content|
+    unless content.match?(exp)
+      puts "\e[31m!!!Commit message is not correct for auto generating changelog!!!\e[0m"
+      puts "\e[31m Please include Changelog: (Added or Changed|Deprecated|Removed|Fixed|Security) commit body \e[0m"
+    end
+  end
+
+  if ENV['CI'] && ENV['CI_COMMIT_MESSAGE'] && (ENV['CI_COMMIT_BRANCH'] != ENV['CI_DEFAULT_BRANCH'])
+    regex_check.call(ENV['CI_COMMIT_MESSAGE'])
+  else
+    return unless Pathname('.git/COMMIT_EDITMSG').exist?
+
+    content = File.read('.git/COMMIT_EDITMSG')
+    regex_check.call(content)
   end
 end
 
