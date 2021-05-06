@@ -25,12 +25,10 @@ module Gcs
           Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
         end
       else
-        # rubocop: disable Rails/Exit
         Gcs.logger.info('Scan failed please re-run scanner with debug mode to see more details')
         Gcs.logger.error(stderr)
         Gcs.logger.error(stdout)
         exit 1
-        # rubocop: enable Rails/Exit
       end
     end
   end

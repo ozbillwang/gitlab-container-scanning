@@ -39,11 +39,9 @@ module Gcs
 
       def setup_log_level
         ENV['TRIVY_DEBUG'] = true if log_level == :debug
-        # binding.irb
         Gcs.logger.level = log_level.upcase
       end
 
-      # rubocop: disable Rails/Exit
       def scanner
         scanner = ENV.fetch('SCANNER', 'trivy')
         Object.const_get("Gcs::#{scanner.capitalize}")
@@ -51,7 +49,6 @@ module Gcs
         Gcs.logger.error("Invalid scanner '#{scanner}'")
         exit 1
       end
-      # rubocop: enable Rails/Exit
 
       private
 
@@ -59,7 +56,6 @@ module Gcs
         ENV.fetch('SECURE_LOG_LEVEL', 'info')
       end
 
-      # rubocop: disable Rails/Exit
       def default_application_repository
         "#{ENV.fetch('CI_REGISTRY_IMAGE')}/#{ENV.fetch('CI_COMMIT_REF_SLUG')}"
       rescue KeyError => e
@@ -73,7 +69,6 @@ module Gcs
         Gcs.logger.error("Can't find variable #{e.inspect}")
         exit 1
       end
-      # rubocop: enable Rails/Exit
     end
   end
 end

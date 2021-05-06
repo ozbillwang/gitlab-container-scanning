@@ -2,3 +2,14 @@
 inherit_gem:
   gitlab-styles:
     - rubocop-default.yml
+
+CodeReuse/ActiveRecord:
+  Enabled: false
+
+Rails/Exit:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - 'Rakefile'
+    - 'bin/*'
