@@ -3,6 +3,7 @@ require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'net/http'
 require 'pathname'
+require 'json'
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -46,9 +47,7 @@ task :commit_message do
   regex_check = lambda do |content|
     unless content.match?(exp)
       puts "\e[31m!!!Commit message is not correct for auto generating changelog!!!\e[0m"
-      puts "\e[31m Please include Changelog: (Added or Changed|Deprecated|Removed|Fixed|Security) commit body \e[0m"
-
-      exit 1
+      abort "\e[31m Please include Changelog: (Added or Changed|Deprecated|Removed|Fixed|Security) commit body \e[0m"
     end
   end
 
@@ -74,8 +73,30 @@ task :changelog do
       http.request(req)
     end
 
+    puts "#{res.body}"
     puts "Changelog will be updated" if res.code == "200"
   else
     puts "Env variables are missing  project_id: #{ENV['CI_PROJECT_ID']} tag: #{ENV['CI_COMMIT_TAG']} token_nil: #{ENV['GITLAB_TOKEN'].nil?}"
+  end
+end
+
+desc 'Triggers api for rebuilding last tag for updating vulnerability db'
+task :trigger_db_update do
+  base_url = "https://gitlab.com/api/v4/projects/#{ENV['CI_PROJECT_ID']}"
+
+  if ENV['TRIGGER_DB_UPDATE'] && ENV['CI_PIPELINE_SOURCE'] == "schedule"
+    uri = URI("#{base_url}/releases")
+    res = Net::HTTP.get_response(uri)
+
+    if res.code == '200'
+      latest_release_tag = JSON.parse(res.body).first['tag_name']
+      puts "Triggering a build for #{latest_release_tag}"
+      uri = URI("#{base_url}/trigger/pipeline")
+      res = Net::HTTP.post_form(uri, token: ENV['CI_JOB_TOKEN'], ref: latest_release_tag)
+
+      abort "Can't trigger pipeline" if res.code != "200"
+    else
+      abort "Failed to retrieve latest release tag"
+    end
   end
 end

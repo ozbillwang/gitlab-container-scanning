@@ -23,6 +23,8 @@ GEM
     concurrent-ruby (1.1.7)
     console (1.12.0)
       fiber-local
+    crack (0.4.5)
+      rexml
     diff-lcs (1.4.4)
     dry-configurable (0.11.6)
       concurrent-ruby (~> 1.0)
@@ -62,6 +64,7 @@ GEM
       rubocop-performance (~> 1.9.2)
       rubocop-rails (~> 2.9)
       rubocop-rspec (~> 1.44)
+    hashdiff (1.0.1)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     json-schema (2.8.1)
@@ -125,6 +128,10 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.7.0)
+    webmock (3.12.2)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     zeitwerk (2.4.2)
 
 PLATFORMS
@@ -138,6 +145,7 @@ DEPENDENCIES
   rake (~> 12.0)
   rspec (~> 3.0)
   single_cov (~> 1.6)
+  webmock (~> 3.12)
 
 BUNDLED WITH
    2.1.4
