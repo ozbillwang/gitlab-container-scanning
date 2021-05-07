@@ -180,6 +180,7 @@ major:
     IMAGE_TAG: $MAJOR
 
 update_changelog:
+  extends: .ruby-alpine
   stage: maintenance
   script:
     - bundle exec rake changelog
