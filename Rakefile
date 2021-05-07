@@ -62,19 +62,20 @@ task :commit_message do
   end
 end
 
-
 desc 'Creates CHANGELOG.md through Gitlab Api'
 task :changelog do
-  if ENV['API_TOKEN'] && ENV['CI_PROJECT_ID'] && ENV['CI_COMMIT_TAG']
-    uri = URI("https://gitlab.com/api/v4/projects/#{CI_PROJECT_ID}/repository/changelog")
+  if ENV['GITLAB_TOKEN'] && ENV['CI_PROJECT_ID'] && ENV['CI_COMMIT_TAG']
+    uri = URI("https://gitlab.com/api/v4/projects/#{ENV['CI_PROJECT_ID']}/repository/changelog")
     req = Net::HTTP::Post.new(uri)
     req['PRIVATE-TOKEN'] = ENV['GITLAB_TOKEN']
     req['Content-Type'] = 'application/json'
-    req.set_form_data(version: ENV['CI_BUILD_TAG'])
+    req.set_form_data(version: ENV['CI_COMMIT_TAG'])
     res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.request(req)
     end
 
     puts "Changelog will be updated" if res.code == "200"
+  else
+    puts "Env variables are missing  project_id: #{ENV['CI_PROJECT_ID']} tag: #{ENV['CI_COMMIT_TAG']} token_nil: #{ENV['GITLAB_TOKEN'].nil?}"
   end
 end
