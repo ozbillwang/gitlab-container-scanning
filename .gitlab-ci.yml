@@ -1,12 +1,7 @@
 ---
-
-.ruby-alpine:
-  image: ruby:2.7.2-alpine
-  before_script:
-    - apk add git
-    - bundle config --local jobs "$(nproc)"
-    - bundle config set no-cache 'true'
-    - bundle install --quiet
+include:
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
 
 # Workaround to the detached pipeline as described in
 # https://gitlab.com/gitlab-org/gitlab/-/issues/34756
@@ -37,15 +32,31 @@ stages:
   # vulnerability db updated
   - maintenance
 
+.not-on-schedule:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: on_success
+
+.ruby-alpine:
+  extends: .not-on-schedule
+  image: ruby:2.7.2-alpine
+  before_script:
+    - apk add git
+    - bundle config --local jobs "$(nproc)"
+    - bundle config set no-cache 'true'
+    - bundle install --quiet
+
 # Yamllint of CI-related yaml and changelogs.
-# This uses rules from project root `.yamllint`.
 lint-yaml:
+  extends: .not-on-schedule
   image: pipelinecomponents/yamllint:latest
   stage: initial-test
   variables:
     LINT_PATHS: .gitlab-ci.yml .rubocop.yml spec/fixtures
   script:
-    - yamllint -f colored $LINT_PATHS
+    - yamllint -c .yamllint -f colored $LINT_PATHS
 
 check-commit-message:
   extends: .ruby-alpine
@@ -71,21 +82,28 @@ dependency_scanning:
 
 gemnasium-dependency_scanning:
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - changes:
         - Gemfile.lock
 
 bundler-audit-dependency_scanning:
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - changes:
         - Gemfile.lock
 
 license_scanning:
   stage: initial-test
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - changes:
         - Gemfile.lock
 
 build-tmp-image:
+  extends: .not-on-schedule
   image: docker:stable
   stage: build-image
   services:
@@ -96,6 +114,7 @@ build-tmp-image:
     - docker push $TMP_IMAGE
 
 .integration_test:
+  extends: .not-on-schedule
   image: $TMP_IMAGE
   stage: integration-test
   variables:
@@ -129,6 +148,7 @@ ca_cert test:
     - bundle exec rake spec_integration_ca_cert
 
 .docker_tag:
+  extends: .not-on-schedule
   image: docker:stable
   stage: release-version
   services:
@@ -159,6 +179,8 @@ tag edge:
   variables:
     IMAGE_TAG: edge
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
 
 tag version:
@@ -185,19 +207,29 @@ update_changelog:
   script:
     - bundle exec rake changelog
   rules:
+    # consider pipelines triggered via API to be coming from trigger-db-update; they would have
+    # already been run on the original pipeline when the tag first appeared. Also ignore schedule
+    # pipelines.
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "api"'
+      when: never
     - if: $CI_COMMIT_TAG
 
-db-update:
-  extends: .docker_tag
+
+trigger-db-update:
   stage: maintenance
-  before_script:
-    - export IMAGE_TAG=${git describe --tags | head -n 1 | sed 's/\..*//'}
+  image: alpine:latest
+  script: |-
+    apk add jq curl
+    LATEST_RELEASE_TAG=$(curl -s "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/releases" \
+      | jq --raw-output '.[0].tag_name')
+    if [[ -z "$LATEST_RELEASE_TAG" ]]; then echo 'Failed to retrieve latest release tag'; exit 1; fi
+    echo "Triggering a build for $LATEST_RELEASE_TAG"
+    curl --request POST --form "token=$CI_JOB_TOKEN" --form "ref=$LATEST_RELEASE_TAG" \
+      "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/trigger/pipeline"
   rules:
-    - if: $UPDATE_DB
+    - if: '$TRIGGER_DB_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'
 
 latest:
   extends: .release
-
-include:
-  - template: Security/Dependency-Scanning.gitlab-ci.yml
-  - template: Security/License-Scanning.gitlab-ci.yml
