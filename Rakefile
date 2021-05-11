@@ -3,7 +3,20 @@ require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'net/http'
 require 'pathname'
+require 'yaml'
+require 'open3'
+require 'date'
 require 'json'
+
+def git(cmd, *args)
+  output, status = Open3.capture2e('git', cmd, *args)
+
+  unless status.success?
+    abort "Failed to run `git #{cmd}`: #{output}"
+  end
+
+  output.strip
+end
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -58,6 +71,41 @@ task :commit_message do
 
     content = File.read('.git/COMMIT_EDITMSG')
     regex_check.call(content)
+  end
+end
+
+desc 'Update Trivy binary to latest version'
+task :update_trivy do
+  uri = URI("https://api.github.com/repos/aquasecurity/trivy/releases/latest")
+  res = Net::HTTP.get_response(uri)
+  if res.code == '200'
+    res = JSON.parse(res.body)
+    current_trivy_version = File.read('TRIVY_VERSION').strip
+    if res['tag_name'] != current_trivy_version
+      version = res['tag_name'][1..]
+      puts "Version has changed from #{current_trivy_version} to #{version}"
+      branch_name = "update-trivy-to-#{version}-#{Date.today}"
+      puts "creating #{branch_name} branch"
+
+      if ENV['CI']
+        branch_name = "#{CI_JOB_NAME}-#{CI_PIPELINE_IID}"
+        puts "Configuring git for bot user"
+        git('config', "--global user.email", "gitlab-bot@gitlab.com")
+        git('config', "--global user.name", "GitLab Bot")
+        git('config', "--global credential.username", "gitlab-bot")
+      end
+
+      git('checkout', '-b', branch_name, 'master')
+      File.truncate('TRIVY_VERSION', 0)
+      File.write('TRIVY_VERSION', version)
+      git('add', './TRIVY_VERSION')
+      git('commit', '-m', "Update Trivy version #{Date.today}")
+      if ENV['CI']
+       git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{CI_COMMIT_REF_NAME} #{CI_PROJECT_URL}/https:\/\/gitlab.com/https://gitlab-bot:#{GITLAB_TOKEN}@gitlab.com}.git", branch_name)
+      end
+    end
+  else
+    puts "Can't get latest release from Github"
   end
 end
 
