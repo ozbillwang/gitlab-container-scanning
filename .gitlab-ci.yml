@@ -110,7 +110,8 @@ build-tmp-image:
     - docker:19.03.5-dind
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build -q -t $TMP_IMAGE .
+    - version=$(cat TRIVY_VERSION)
+    - docker build --build-arg TRIVY_VERSION=$version -q -t $TMP_IMAGE .
     - docker push $TMP_IMAGE
 
 .integration_test:

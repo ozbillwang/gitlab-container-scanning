@@ -1,5 +1,6 @@
 FROM ruby:2.7.2-slim as builder
-ENV TRIVY_VERSION=0.16.0
+ARG TRIVY_VERSION
+ENV TRIVY_VERSION=${TRIVY_VERSION:-0.16.0}
 ENV TRIVY_CACHE_DIR='/gcs/.cache'
 RUN apt-get update && apt-get install -y -q \
   wget \
