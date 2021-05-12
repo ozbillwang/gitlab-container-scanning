@@ -218,16 +218,9 @@ update_changelog:
 
 
 trigger-db-update:
+  extends: .ruby-alpine
   stage: maintenance
-  image: alpine:latest
-  script: |-
-    apk add jq curl
-    LATEST_RELEASE_TAG=$(curl -s "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/releases" \
-      | jq --raw-output '.[0].tag_name')
-    if [[ -z "$LATEST_RELEASE_TAG" ]]; then echo 'Failed to retrieve latest release tag'; exit 1; fi
-    echo "Triggering a build for $LATEST_RELEASE_TAG"
-    curl --request POST --form "token=$CI_JOB_TOKEN" --form "ref=$LATEST_RELEASE_TAG" \
-      "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/trigger/pipeline"
+  script: bundle exec rake trigger_db_update
   rules:
     - if: '$TRIGGER_DB_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'
 

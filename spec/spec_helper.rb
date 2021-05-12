@@ -9,6 +9,7 @@ require 'json-schema'
 require 'securerandom'
 require 'helpers'
 require 'singleton'
+require 'webmock/rspec'
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
