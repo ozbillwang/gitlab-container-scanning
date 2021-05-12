@@ -3,7 +3,7 @@
 set -e
 
 cd "$(dirname "$0")/.."
-echo $(pwd)
+pwd
 
 if command -v apt-get; then
   apt-get clean
