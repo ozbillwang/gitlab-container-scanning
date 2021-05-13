@@ -44,4 +44,4 @@ end
 
 loader.eager_load
 Gcs.logger.formatter = Gcs::LoggerFormatter.formatter
-Gcs::Environment.setup_log_level
+Gcs::Environment.setup

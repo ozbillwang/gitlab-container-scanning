@@ -5,7 +5,9 @@ RSpec.describe 'centos' do
     let(:env) do
       {
         'DOCKERFILE_PATH' => runner.project_path.join('centos8-Dockerfile').to_s,
-        'DOCKER_IMAGE' => 'centos:centos8'
+        'DOCKER_IMAGE' => 'centos:centos8',
+        'DOCKER_USER' => '',
+        'DOCKER_PASSWORD' => ''
       }
     end
 

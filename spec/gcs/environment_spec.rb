@@ -75,6 +75,34 @@ RSpec.describe Gcs::Environment do
     end
   end
 
+  describe '#setup_environment' do
+    subject { described_class.setup_trivy_docker_registy }
+
+    before do
+      allow(ENV).to receive(:fetch).and_call_original
+    end
+
+    context 'with credentials configured' do
+      it 'sets Trivy credentials to given values' do
+        allow(ENV).to receive(:fetch).with('DOCKER_USER').and_return('some user')
+        allow(ENV).to receive(:fetch).with('DOCKER_PASSWORD').and_return('a password')
+
+        subject
+
+        expect(ENV['TRIVY_USERNAME']).to eq('some user')
+        expect(ENV['TRIVY_PASSWORD']).to eq('a password')
+      end
+    end
+
+    context 'with either user or password missing'
+    it 'continues execution when DOCKER_USER is not set' do
+      subject
+
+      expect(ENV['TRIVY_USERNAME']).to eq(nil)
+      expect(ENV['TRIVY_PASSWORD']).to eq(nil)
+    end
+  end
+
   xit 'setup log level' do
     allow(ENV).to receive(:fetch).with('SECURE_LOG_LEVEL').and_return('info')
     described_class.setup_log_level
