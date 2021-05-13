@@ -59,6 +59,13 @@ lint-yaml:
   script:
     - yamllint -c .yamllint -f colored $LINT_PATHS
 
+shellcheck:
+  extends: .not-on-schedule
+  stage: initial-test
+  image: koalaman/shellcheck-alpine:stable
+  script:
+    - shellcheck script/*
+
 check-commit-message:
   extends: .ruby-alpine
   stage: initial-test
