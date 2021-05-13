@@ -7,6 +7,7 @@ require 'yaml'
 require 'open3'
 require 'date'
 require 'json'
+require 'gcs/version'
 
 TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
 
@@ -53,6 +54,13 @@ task :integration do
                   gcs:latest bash -c \"sudo gcs/script/setup_integration; cd gcs; bundle;" \
                     "bundle exec rake integration_test\""]
     system(commands.join(';'))
+  end
+end
+
+desc 'Check if tagged version and Gem version are the same'
+task :check_version do
+  if ENV['CI_COMMIT_TAG'].strip != Gcs::VERSION.strip
+    abort 'Branch tagged and Gem version are not the same'
   end
 end
 
