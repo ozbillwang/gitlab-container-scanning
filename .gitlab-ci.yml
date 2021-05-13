@@ -17,7 +17,8 @@ variables:
   # The context of these variables is global to the downstream job
   DOCKER_DRIVER: overlay2
   MAJOR: 4
-  TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp:$CI_COMMIT_SHA
+  TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
+  SCANNER: trivy
 
 stages:
   # check, test, and scan the Docker images
@@ -102,7 +103,12 @@ license_scanning:
     - changes:
         - Gemfile.lock
 
-build-tmp-image:
+.grype_scanner:
+  allow_failure: true
+  variables:
+    SCANNER: grype
+
+.build-tmp-image:
   extends: .not-on-schedule
   image: docker:stable
   stage: build-image
@@ -110,9 +116,16 @@ build-tmp-image:
     - docker:19.03.5-dind
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - version=$(cat TRIVY_VERSION)
-    - docker build --build-arg TRIVY_VERSION=$version -q -t $TMP_IMAGE .
+    - docker build --build-arg SCANNER -q -t $TMP_IMAGE .
     - docker push $TMP_IMAGE
+
+build-trivy-image:
+  extends: .build-tmp-image
+
+build-grype-image:
+  extends: 
+    - .build-tmp-image
+    - .grype_scanner
 
 .integration_test:
   extends: .not-on-schedule
@@ -124,29 +137,61 @@ build-tmp-image:
     - sudo ./script/setup_integration
     - bundle exec rake integration
 
-alpine test:
+.alpine_test:
   extends: .integration_test
   script:
     - sudo ./script/setup_integration
     - bundle exec rake spec_integration_alpine
 
-centos test:
+.centos_test:
   extends: .integration_test
   script:
     - sudo ./script/setup_integration
     - bundle exec rake spec_integration_centos
 
-webgoat test:
+.webgoat_test:
   extends: .integration_test
   script:
     - sudo ./script/setup_integration
     - bundle exec rake spec_integration_webgoat
 
-ca_cert test:
+.ca_cert_test:
   extends: .integration_test
   script:
     - sudo ./script/setup_integration
     - bundle exec rake spec_integration_ca_cert
+
+alpine trivy:
+  extends: .alpine_test
+
+alpine grype:
+  extends:
+    - .alpine_test
+    - .grype_scanner
+
+centos trivy:
+  extends: .centos_test
+
+centos grype:
+  extends:
+    - .centos_test
+    - .grype_scanner
+
+webgoat trivy:
+  extends: .webgoat_test
+
+webgoat grype:
+  extends:
+    - .webgoat_test
+    - .grype_scanner
+
+ca cert trivy:
+  extends: .ca_cert_test
+
+ca cert grype:
+  extends:
+    - .ca_cert_test
+    - .grype_scanner
 
 .docker_tag:
   extends: .not-on-schedule

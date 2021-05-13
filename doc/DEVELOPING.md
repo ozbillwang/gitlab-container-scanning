@@ -5,7 +5,13 @@
 For building a new image with the ruby gem:
 
 ```
-$ docker build -t gcs .
+$ docker build --build-arg SCANNER -t gcs .
+```
+
+Note that `trivy` is built by default by both not setting `$SCANNER` or setting it to `trivy`. To build a different scanner define `$SCANNER` as the following:
+
+```
+export SCANNER=myscanner
 ```
 
 For creating and accessing a new container based on the `gcs` image:
@@ -73,11 +79,9 @@ bundle exec rake integration
 At the moment adding scanners requires the following:
 
 1. Build stage:
-   1. Update the existing `Dockerfile` or adding a specific one.
-   1. It might require updating `script/build.sh` to generalize the downloading of different packages. It would be great to have this logic based on `$SCANNER`.
-   1. The new scanner should generate its own docker image instead of overwritting the root image.
-   1. Create a new ruby file under `lib/gcs` and feel free to work on abstracting the code as you see fit.
+   1. Update `script/setup.sh` to generalize the downloading and placing of files required. Scanner selection is performed through `$SCANNER`. Note that each scanner will have its own docker image even if they share most of the source code.
+   1. Create a new ruby file under `lib/gcs` similar to `trivy.rb` with the main call, and feel to adjust `environment.rb` and other files as needed.
 1. Running stage:
-   1. In case `$SCANNER` has not been set as a environment variable (not as an argument), set it with the scanner name. The default value is `trivy`.
+   1. Similar to the previous stage, the running scanner will be based on `$SCANNER` which has been already set during the build stage. The default value is `trivy`.
 1. Documentation:
-   1. Although there is very little information that would have to be updated in this repository, the main GitLab repository has a couple places which might require change. Feel free to ask any member of this team for help on that.
+   1. Although there is very little information that would have to be updated in this repository, the main GitLab repository has a couple places which might require changes. Feel free to ask any member of this team for help on that.
