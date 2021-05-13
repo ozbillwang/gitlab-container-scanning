@@ -8,6 +8,8 @@ require 'open3'
 require 'date'
 require 'json'
 
+TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
+
 def git(cmd, *args)
   output, status = Open3.capture2e('git', cmd, *args)
 
@@ -80,7 +82,7 @@ task :update_trivy do
   res = Net::HTTP.get_response(uri)
   if res.code == '200'
     res = JSON.parse(res.body)
-    current_trivy_version = File.read('TRIVY_VERSION').strip
+    current_trivy_version = File.read(TRIVY_VERSION_FILE).strip
     if res['tag_name'] != current_trivy_version
       version = res['tag_name'][1..]
       puts "Version has changed from #{current_trivy_version} to #{version}"
@@ -96,9 +98,9 @@ task :update_trivy do
       end
 
       git('checkout', '-b', branch_name, 'master')
-      File.truncate('TRIVY_VERSION', 0)
-      File.write('TRIVY_VERSION', version)
-      git('add', './TRIVY_VERSION')
+      File.truncate(TRIVY_VERSION_FILE, 0)
+      File.write(TRIVY_VERSION_FILE, version)
+      git('add', TRIVY_VERSION_FILE)
       git('commit', '-m', "Update Trivy version #{Date.today}")
       if ENV['CI']
        git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{CI_COMMIT_REF_NAME} #{CI_PROJECT_URL}/https:\/\/gitlab.com/https://gitlab-bot:#{GITLAB_TOKEN}@gitlab.com}.git", branch_name)
