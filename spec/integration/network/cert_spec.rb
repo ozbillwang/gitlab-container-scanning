@@ -9,7 +9,9 @@ RSpec.describe 'alpine' do
       runner.scan(
         env: {
           'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
-          'DOCKER_IMAGE' => 'docker.test/library/alpine:latest'
+          'DOCKER_IMAGE' => 'docker.test/library/alpine:latest',
+          'DOCKER_USER' => '',
+          'DOCKER_PASSWORD' => ''
         }
       )
     end

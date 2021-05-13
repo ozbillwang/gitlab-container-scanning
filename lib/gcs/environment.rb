@@ -37,6 +37,22 @@ module Gcs
         docker_file_path
       end
 
+      def setup
+        # TODO abstract this further when Grype variables introduced
+        setup_trivy_docker_registy
+        setup_log_level
+      end
+
+      def setup_trivy_docker_registy
+        username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] }
+        password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] }
+
+        return if username.nil? || username.empty? || password.nil? || password.empty?
+
+        ENV['TRIVY_USERNAME'] = username
+        ENV['TRIVY_PASSWORD'] = password
+      end
+
       def setup_log_level
         ENV['TRIVY_DEBUG'] = true if log_level == :debug
         Gcs.logger.level = log_level.upcase
