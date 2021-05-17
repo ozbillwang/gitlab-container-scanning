@@ -98,7 +98,7 @@ task :update_trivy do
       puts "creating #{branch_name} branch"
 
       if ENV['CI']
-        branch_name = "#{CI_JOB_NAME}-#{CI_PIPELINE_IID}"
+        branch_name = "#{ENV['CI_JOB_NAME']}-#{ENV['CI_PIPELINE_IID']}"
         puts "Configuring git for bot user"
         git('config', "--global user.email", "gitlab-bot@gitlab.com")
         git('config', "--global user.name", "GitLab Bot")
@@ -149,10 +149,18 @@ task :trigger_db_update do
     if res.code == '200'
       latest_release_tag = JSON.parse(res.body).first['tag_name']
       puts "Triggering a build for #{latest_release_tag}"
-      uri = URI("#{base_url}/trigger/pipeline")
-      res = Net::HTTP.post_form(uri, token: ENV['CI_JOB_TOKEN'], ref: latest_release_tag)
+      uri = URI("#{base_url}/pipeline?ref=#{latest_release_tag}")
+      req = Net::HTTP::Post.new(uri)
+      req['PRIVATE-TOKEN'] = ENV['CI_JOB_TOKEN']
+      req['Content-Type'] = 'application/json'
 
-      abort "Can't trigger pipeline" if res.code != "200"
+      res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+        http.request(req)
+      end
+
+      if res.code != "200"
+        abort res.body
+      end
     else
       abort "Failed to retrieve latest release tag"
     end
