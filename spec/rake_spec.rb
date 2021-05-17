@@ -29,8 +29,8 @@ RSpec.describe 'Rake tasks' do
     .with(headers: { 'Accept' => '*/*' })
     .to_return(status: 200, body: [{ 'tag_name' => '4.1.5' }].to_json, headers: {})
 
-    post_req = stub_request(:post, 'https://gitlab.com/api/v4/projects/123/trigger/pipeline')
-    .with(body: { 'ref' => "4.1.5", 'token' => 'job_token' }, headers: { 'Accept' => '*/*' })
+    post_req = stub_request(:post, 'https://gitlab.com/api/v4/projects/123/pipeline?ref=4.1.5')
+    .with(body: {}, headers: { 'Accept' => '*/*' })
     .to_return(status: 200, body: "", headers: {})
 
     allow(ENV).to receive(:[]).with('TRIGGER_DB_UPDATE').and_return(true)
