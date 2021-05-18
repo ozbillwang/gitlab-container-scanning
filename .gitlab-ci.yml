@@ -182,6 +182,7 @@ webgoat grype:
 ca cert trivy:
   variables:
     SPEC_NAME: spec_integration_ca_cert
+    CS_QUIET: "true"
   extends: .integration_test
 
 ca cert grype:
