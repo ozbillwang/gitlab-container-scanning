@@ -98,7 +98,6 @@ task :update_trivy do
       puts "creating #{branch_name} branch"
 
       if ENV['CI']
-        branch_name = "#{ENV['CI_JOB_NAME']}-#{ENV['CI_PIPELINE_IID']}"
         puts "Configuring git for bot user"
         git('config', "--global user.email", "gitlab-bot@gitlab.com")
         git('config', "--global user.name", "GitLab Bot")
@@ -111,7 +110,7 @@ task :update_trivy do
       git('add', TRIVY_VERSION_FILE)
       git('commit', '-m', "Update Trivy version #{Date.today}")
       if ENV['CI']
-       git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{CI_COMMIT_REF_NAME} #{CI_PROJECT_URL}/https:\/\/gitlab.com/https://gitlab-bot:#{GITLAB_TOKEN}@gitlab.com}.git", branch_name)
+       git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{ENV['CI_COMMIT_REF_NAME']} #{ENV['CI_PROJECT_URL']}/https:\/\/gitlab.com/https://gitlab-bot:#{ENV['GITLAB_TOKEN']}@gitlab.com}.git", branch_name)
       end
     end
   else
@@ -151,7 +150,7 @@ task :trigger_db_update do
       puts "Triggering a build for #{latest_release_tag}"
       uri = URI("#{base_url}/pipeline?ref=#{latest_release_tag}")
       req = Net::HTTP::Post.new(uri)
-      req['PRIVATE-TOKEN'] = ENV['CI_JOB_TOKEN']
+      req['PRIVATE-TOKEN'] = ENV['GITLAB_TOKEN']
       req['Content-Type'] = 'application/json'
 
       res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
