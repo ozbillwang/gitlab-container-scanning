@@ -99,9 +99,9 @@ task :update_trivy do
 
       if ENV['CI']
         puts "Configuring git for bot user"
-        git('config', "--global user.email", "gitlab-bot@gitlab.com")
-        git('config', "--global user.name", "GitLab Bot")
-        git('config', "--global credential.username", "gitlab-bot")
+        git('config', "--global", "user.email", "gitlab-bot@gitlab.com")
+        git('config', "--global", "user.name", "GitLab Bot")
+        git('config', "--global", "credential.username", "gitlab-bot")
       end
 
       git('checkout', '-b', branch_name, 'master')
@@ -157,7 +157,9 @@ task :trigger_db_update do
         http.request(req)
       end
 
-      if res.code != "200"
+      if res.code.start_with?("20")
+        res.body
+      else
         abort res.body
       end
     else
