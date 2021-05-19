@@ -104,6 +104,7 @@ task :update_trivy do
         git('config', "--global", "credential.username", "gitlab-bot")
       end
 
+      git('fetch', 'origin/master')
       git('checkout', '-b', branch_name, 'master')
       File.truncate(TRIVY_VERSION_FILE, 0)
       File.write(TRIVY_VERSION_FILE, version)
