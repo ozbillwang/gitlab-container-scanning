@@ -45,7 +45,17 @@ RSpec.describe Gcs::Util do
       let(:allow_list) { nil }
 
       specify do
-        expect { subject }.to output(/Unapproved/).to_stdout
+        expect { subject }.to output(/unapproved/i).to_stdout
+      end
+    end
+
+    context 'with QUIET mode' do
+      let(:allow_list) { nil }
+
+      specify do
+        allow(ENV).to receive(:[]).with('CS_QUIET').and_return(true)
+
+        expect { subject }.not_to output(/unapproved/i).to_stdout
       end
     end
 
