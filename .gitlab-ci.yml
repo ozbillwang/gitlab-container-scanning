@@ -138,6 +138,7 @@ build-grype-image:
   stage: integration-test
   variables:
     IMAGE_TAG: $TMP_IMAGE
+    CS_QUIET: "true"
   script:
     - sudo ./script/setup_integration
     - bundle exec rake integration
@@ -182,7 +183,6 @@ webgoat grype:
 ca cert trivy:
   variables:
     SPEC_NAME: spec_integration_ca_cert
-    CS_QUIET: "true"
   extends: .integration_test
 
 ca cert grype:
