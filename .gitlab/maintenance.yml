@@ -16,13 +16,22 @@ update_changelog:
 update_trivy_binary:
   extends: .ruby-alpine
   stage: maintenance
-  script: bundle exec rake update_trivy
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  variables:
+    TITLE: "re"
+    TARGET_BRANCH: "$CI_COMMIT_REF_SLUG"
+    SOURCE_BRANCH: "upgrade-to-common-$COMMON_COMMIT_TAG-$CI_JOB_ID"
+  script:
+    # - bundle exec rake update_trivy
+    - git config --global user.email "gitlab-bot@gitlab.com"
+    - git config --global user.name "GitLab Bot"
+    - git checkout -b $SOURCE_BRANCH
+    - echo 'adasd' >> version/TRIVY_VERSION
+    - git commit -m "$TITLE" version/TRIVY_VERSION
+    - git push -o merge_request.create -o merge_request.remove_source_branch -o merge_request.title="$TITLE" -o merge_request.label="backend" -o merge_request.label="devops::secure" -o merge_request.target="$TARGET_BRANCH" ${CI_PROJECT_URL/https:\/\/gitlab.com/https://gitlab-bot:$GITLAB_TOKEN@gitlab.com}.git $SOURCE_BRANCH
 
-trigger-db-update:
-  extends: .ruby-alpine
-  stage: maintenance
-  script: bundle exec rake trigger_db_update
-  rules:
-    - if: '$TRIGGER_DB_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'
+# trigger-db-update:
+#   extends: .ruby-alpine
+#   stage: maintenance
+#   script: bundle exec rake trigger_db_update
+#   rules:
+#     - if: '$TRIGGER_DB_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'

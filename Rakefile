@@ -99,19 +99,30 @@ task :update_trivy do
 
       if ENV['CI']
         puts "Configuring git for bot user"
+        git('fetch')
         git('config', "--global", "user.email", "gitlab-bot@gitlab.com")
         git('config', "--global", "user.name", "GitLab Bot")
         git('config', "--global", "credential.username", "gitlab-bot")
       end
 
-      git('fetch', 'origin/master')
-      git('checkout', '-b', branch_name, 'master')
+      git('checkout', '-b', branch_name, 'origin/master')
+      puts git('branch')
       File.truncate(TRIVY_VERSION_FILE, 0)
       File.write(TRIVY_VERSION_FILE, version)
       git('add', TRIVY_VERSION_FILE)
       git('commit', '-m', "Update Trivy version #{Date.today}")
       if ENV['CI']
-       git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{ENV['CI_COMMIT_REF_NAME']} #{ENV['CI_PROJECT_URL']}/https:\/\/gitlab.com/https://gitlab-bot:#{ENV['GITLAB_TOKEN']}@gitlab.com}.git", branch_name)
+        # git commit -m "$TITLE" go.sum go.mod
+
+       git("push",
+        "-o", "merge_request.create",
+        "-o", "merge_request.remove_source_branch",
+        "-o" ,"merge_request.target=#{ENV['CI_COMMIT_REF_SLUG']} #{ENV['CI_PROJECT_URL']}/https://gitlab.com/https://gitlab-bot:#{ENV['GITLAB_TOKEN']}@gitlab.com}.git", "origin", branch_name)
+        #
+    # - git push -o merge_request.create -o merge_request.remove_source_branch -o merge_request.title="hello world" -o merge_request.target="$TARGET_BRANCH" ${CI_PROJECT_URL/https:\/\/gitlab.com/https://gitlab-bot:$GITLAB_TOKEN@gitlab.com}.git $SOURCE_BRANCH
+        # https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning.git
+        # https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning.git/':
+        # git push -o ci-skip http://root:$ACCESS_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git HEAD:master
       end
     end
   else
