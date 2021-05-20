@@ -42,7 +42,7 @@ stages:
   extends: .not-on-schedule
   image: ruby:2.7.3-alpine
   before_script:
-    - apk add git
+    - apk add git build-base
     - bundle config --local jobs "$(nproc)"
     - bundle config set no-cache 'true'
     - bundle install --quiet

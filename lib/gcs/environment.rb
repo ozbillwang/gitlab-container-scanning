@@ -56,7 +56,7 @@ module Gcs
       end
 
       def setup_log_level
-        ENV['TRIVY_DEBUG'] = true if log_level == :debug
+        ENV['TRIVY_DEBUG'] = trivy_debug_value
         Gcs.logger.level = log_level.upcase
       end
 
@@ -72,6 +72,10 @@ module Gcs
 
       def log_level
         ENV.fetch('SECURE_LOG_LEVEL', 'info')
+      end
+
+      def trivy_debug_value
+        'true' if log_level == 'debug'
       end
 
       def default_application_repository

@@ -111,11 +111,40 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    xit 'setup log level' do
-      allow(ENV).to receive(:fetch).with('SECURE_LOG_LEVEL').and_return('info')
-      described_class.setup_log_level
+    describe 'setting up the log level' do
+      using RSpec::Parameterized::TableSyntax
 
-      expect(ENV['CONSOLE_LEVEL']).to eq('info')
+      around do |example|
+        old_logger_level = Gcs.logger.level
+
+        example.run
+      ensure
+        Gcs.logger.level = old_logger_level
+      end
+
+      where(:log_level, :trivy_debug) do
+        'debug'  | 'true'
+        'info'   | nil
+        'warn'   | nil
+        'error'  | nil
+        'fatal'  | nil
+      end
+
+      with_them do
+        before do
+          allow(ENV).to receive(:fetch).with('SECURE_LOG_LEVEL', 'info').and_return(log_level)
+
+          described_class.setup_log_level
+        end
+
+        it 'sets the Gcs logger level' do
+          expect(Gcs.logger.public_send("#{log_level}?")).to be_truthy
+        end
+
+        it 'sets the `TRIVY_DEBUG` environment variable correctly' do
+          expect(ENV['TRIVY_DEBUG']).to eq(trivy_debug)
+        end
+      end
     end
 
     it 'returns current directory if given project path doesn\'t exists' do
