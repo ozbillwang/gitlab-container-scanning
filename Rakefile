@@ -110,7 +110,7 @@ task :update_trivy do
       git('add', TRIVY_VERSION_FILE)
       git('commit', '-m', "Update Trivy version #{Date.today}")
       if ENV['CI']
-       git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{ENV['CI_COMMIT_REF_NAME']} #{ENV['CI_PROJECT_URL']}/https:\/\/gitlab.com/https://gitlab-bot:#{ENV['GITLAB_TOKEN']}@gitlab.com}.git", branch_name)
+       git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{ENV['CI_COMMIT_REF_NAME']} #{ENV['CI_PROJECT_URL']}/https:\/\/gitlab.com/https://gitlab-bot:#{ENV['CS_TOKEN']}@gitlab.com}.git", branch_name)
       end
     end
   else
@@ -120,10 +120,10 @@ end
 
 desc 'Creates CHANGELOG.md through Gitlab Api'
 task :changelog do
-  if ENV['GITLAB_TOKEN'] && ENV['CI_PROJECT_ID'] && ENV['CI_COMMIT_TAG']
+  if ENV['CS_TOKEN'] && ENV['CI_PROJECT_ID'] && ENV['CI_COMMIT_TAG']
     uri = URI("https://gitlab.com/api/v4/projects/#{ENV['CI_PROJECT_ID']}/repository/changelog")
     req = Net::HTTP::Post.new(uri)
-    req['PRIVATE-TOKEN'] = ENV['GITLAB_TOKEN']
+    req['PRIVATE-TOKEN'] = ENV['CS_TOKEN']
     req['Content-Type'] = 'application/json'
     req.set_form_data(version: ENV['CI_COMMIT_TAG'])
     res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
@@ -133,7 +133,7 @@ task :changelog do
     puts "#{res.body}"
     puts "Changelog will be updated" if res.code == "200"
   else
-    puts "Env variables are missing  project_id: #{ENV['CI_PROJECT_ID']} tag: #{ENV['CI_COMMIT_TAG']} token_nil: #{ENV['GITLAB_TOKEN'].nil?}"
+    puts "Env variables are missing  project_id: #{ENV['CI_PROJECT_ID']} tag: #{ENV['CI_COMMIT_TAG']} token_nil: #{ENV['CS_TOKEN'].nil?}"
   end
 end
 
@@ -150,7 +150,7 @@ task :trigger_db_update do
       puts "Triggering a build for #{latest_release_tag}"
       uri = URI("#{base_url}/pipeline?ref=#{latest_release_tag}")
       req = Net::HTTP::Post.new(uri)
-      req['PRIVATE-TOKEN'] = ENV['GITLAB_TOKEN']
+      req['PRIVATE-TOKEN'] = ENV['CS_TOKEN']
       req['Content-Type'] = 'application/json'
 
       res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|

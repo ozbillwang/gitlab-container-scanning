@@ -13,13 +13,6 @@ update_changelog:
       when: never
     - if: $CI_COMMIT_TAG
 
-update_trivy_binary:
-  extends: .ruby-alpine
-  stage: maintenance
-  script: bundle exec rake update_trivy
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-
 trigger-db-update:
   extends: .ruby-alpine
   stage: maintenance
