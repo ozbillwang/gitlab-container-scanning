@@ -7,7 +7,8 @@ RSpec.describe 'Rake tasks' do
   end
 
   before do
-    allow(ENV).to receive(:[]).with('GITLAB_TOKEN').and_return('token')
+    allow(ENV).to receive(:[]).and_call_original
+    allow(ENV).to receive(:[]).with('CS_TOKEN').and_return('token')
     allow(ENV).to receive(:[]).with('CI_PROJECT_ID').and_return('123')
     allow(ENV).to receive(:[]).with('CI_COMMIT_TAG').and_return('5.0.0')
   end
