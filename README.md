@@ -1,6 +1,6 @@
 # Container Scanning
 
-This analyzer is a Ruby gem that uses [Trivy](https://github.com/aquasecurity/trivy) to create reports that are parsable by GitLab. In addition to Trivy this project also depends on [Security report schemas](https://gitlab.com/gitlab-org/security-products/security-report-schemas) and currently, this ruby gem runs within a docker container based on [ruby:2.7.2-slim](https://hub.docker.com/layers/ruby/library/ruby/2.7.2-slim/images/sha256-4c103e549aad7ba3604c291130d666d349645004f28d5a86a800ff6c70c6c518?context=explore). Therefore, the final docker image can be used through [gitlab-ci.yml](https://docs.gitlab.com/ee/ci/quick_start/index.html#create-a-gitlab-ciyml-file).
+This analyzer is a Ruby gem that uses [Trivy](https://github.com/aquasecurity/trivy) to create reports that are parsable by GitLab. In addition to Trivy this project also depends on [Security report schemas](https://gitlab.com/gitlab-org/security-products/security-report-schemas) and currently, this ruby gem runs within a docker container based on [ruby:2.7.3-slim](https://hub.docker.com/layers/ruby/library/ruby/2.7.3-slim/images/sha256-622020c80822135248c7e84e3bf4ac4447cc1f76a369fcc3cb24a876d0ec5345?context=explore). Therefore, the final docker image can be used through [gitlab-ci.yml](https://docs.gitlab.com/ee/ci/quick_start/index.html#create-a-gitlab-ciyml-file).
 
 ## Direct usage through gitlab-ci.yml
 
@@ -56,7 +56,7 @@ To release a new version:
 ### Image updates
 
 The vulnerabilities database is included in the docker image. In order to provide the latest
-advisories, a daily build of the latest [release](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/releases) 
+advisories, a daily build of the latest [release](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/releases)
 is triggered and the resulting images are pushed to the
 [container registry](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/container_registry)
 under the following tags:
@@ -67,7 +67,7 @@ under the following tags:
 
 A scheduled pipeline executed on the default (`master`) branch with a CI variable `TRIGGER_DB_UPDATE` set to any value
 will trigger a pipeline that will execute a single job in the `maintenance` stage called `trigger-db-update`. This job
-will find the [last released version(https://docs.gitlab.com/ee/api/releases/#list-releases)] and trigger a pipeline 
+will find the [last released version(https://docs.gitlab.com/ee/api/releases/#list-releases)] and trigger a pipeline
 using the tag of the latest release as a ref.
 
 This job depends on the `GITLAB_TOKEN`. The variable must *not* be protected because the job runs on tag builds, not

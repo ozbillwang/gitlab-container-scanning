@@ -1,14 +1,25 @@
 ARG SCANNER=trivy
 
-FROM ruby:2.7.2-slim as builder
-RUN rm -rf /var/lib/apt/lists/*
-COPY . gcs
-WORKDIR /gcs
+FROM ruby:2.7.3-slim AS base
+
+FROM base AS builder
 ENV PATH="/gcs/:${PATH}"
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN mkdir /gcs
+WORKDIR /gcs
+
+COPY Gemfile Gemfile.lock gcs.gemspec ./
+COPY lib/gcs/version.rb lib/gcs/version.rb
+RUN bundle install --jobs 20 --retry 5
+
+COPY . ./
+
 SHELL ["/bin/bash", "-c"]
 RUN gem build gcs.gemspec -o gcs.gem
 
-FROM ruby:2.7.2-slim
+
+FROM base
 ARG SCANNER
 ENV SCANNER=${SCANNER}
 ENV PATH="/home/gitlab:${PATH}"
