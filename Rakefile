@@ -57,13 +57,6 @@ task :integration do
   end
 end
 
-desc 'Check if tagged version and Gem version are the same'
-task :check_version do
-  if ENV['CI_COMMIT_TAG'].strip != Gcs::VERSION.strip
-    abort 'Branch tagged and Gem version are not the same'
-  end
-end
-
 desc 'Checks if commit message complies with the format for generating automatic CHANGELOG.md'
 task :commit_message do
   exp = /Changelog: (added|fixed|changed|deprecated|removed|security|performance|other)/im
