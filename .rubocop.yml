@@ -13,3 +13,6 @@ AllCops:
   Exclude:
     - 'Rakefile'
     - 'bin/*'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
