@@ -39,9 +39,14 @@ module Gcs
     def shell
       @shell ||= Shell.new
     end
+
+    def version
+      logger.info("GCS Version: #{Gcs::VERSION}")
+    end
   end
 end
 
 loader.eager_load
+Gcs.version
 Gcs.logger.formatter = Gcs::LoggerFormatter.formatter
 Gcs::Environment.setup
