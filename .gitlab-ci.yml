@@ -87,11 +87,13 @@ dependency_scanning:
   stage: initial-test
 
 gemnasium-dependency_scanning:
+  variables:
+    GIT_STRATEGY: fetch
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
     - changes:
         - Gemfile.lock
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
 
 bundler-audit-dependency_scanning:
   rules:
