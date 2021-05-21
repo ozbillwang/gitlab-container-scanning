@@ -62,7 +62,7 @@ shellcheck:
   stage: initial-test
   image: koalaman/shellcheck-alpine:stable
   script:
-    - shellcheck script/*
+    - shellcheck -e SC1071 script/*
 
 check-commit-message:
   extends: .ruby-alpine
@@ -229,8 +229,9 @@ tag edge:
 tag version:
   extends: .docker_tag
   before_script:
+    - apk add ruby
     - export IMAGE_TAG=${CI_COMMIT_TAG/v/}
-    - bundle exec rake check_version
+    - ruby ./script/check_version
   rules:
     - if: $CI_COMMIT_TAG
 

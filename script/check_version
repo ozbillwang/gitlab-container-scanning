@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../lib/gcs/version"
+
+if ENV['CI_COMMIT_TAG'].nil? || ENV['CI_COMMIT_TAG'].strip != Gcs::VERSION.strip
+  abort 'Branch tagged and Gem version are not the same'
+end
