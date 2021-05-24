@@ -19,3 +19,11 @@ trigger-db-update:
   script: bundle exec rake trigger_db_update
   rules:
     - if: '$TRIGGER_DB_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'
+
+update-trivy-binary:
+  allow_failure: true
+  extends: .ruby-alpine
+  stage: maintenance
+  script: bundle exec rake update_trivy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
