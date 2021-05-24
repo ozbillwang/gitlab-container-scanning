@@ -92,18 +92,24 @@ task :update_trivy do
 
       if ENV['CI']
         puts "Configuring git for bot user"
-        git('config', "--global", "user.email", "gitlab-bot@gitlab.com")
-        git('config', "--global", "user.name", "GitLab Bot")
-        git('config', "--global", "credential.username", "gitlab-bot")
+        git('config', "--global", "user.email", "csbot@gitlab.com")
+        git('config', "--global", "user.name", "CS bot Bot")
+        git('config', "--global", "credential.username", "project_#{ENV['CI_PROJECT_ID']}_bot")
       end
 
       git('checkout', '-b', branch_name, 'master')
       File.truncate(TRIVY_VERSION_FILE, 0)
       File.write(TRIVY_VERSION_FILE, version)
       git('add', TRIVY_VERSION_FILE)
-      git('commit', '-m', "Update Trivy version #{Date.today}")
+      git('commit', '-m', "Update Trivy version #{Date.today}\nChangelog: changed")
       if ENV['CI']
-       git('push', '-o', "merge_request.create -o merge_request.remove_source_branch -o merge_request.target=#{ENV['CI_COMMIT_REF_NAME']} #{ENV['CI_PROJECT_URL']}/https:\/\/gitlab.com/https://gitlab-bot:#{ENV['CS_TOKEN']}@gitlab.com}.git", branch_name)
+       remote_git = "https://project_#{ENV['CI_PROJECT_ID']}_bot:#{ENV['CS_TOKEN']}@#{ENV['CI_SERVER_HOST']}/#{ENV['CI_PROJECT_PATH']}.git"
+       git('push',
+        "-o","merge_request.create",
+        "-o", "merge_request.remove_source_branch",
+        "-o", "merge_request.label=devops::protect",
+        "-o", "merge_request.title=Upgrade trivy to #{version}",
+        "-o" ,"merge_request.target=#{ENV['CI_DEFAULT_BRANCH']}", remote_git, branch_name)
       end
     end
   else
