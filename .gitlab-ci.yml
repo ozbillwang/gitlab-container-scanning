@@ -82,7 +82,7 @@ gitlab styles:
   extends: .ruby-alpine
   stage: initial-test
   script:
-    - bundle exec rubocop
+    - git diff-tree -r --no-commit-id --name-only head origin/master | bundle exec rubocop -P
 
 dependency_scanning:
   stage: initial-test
