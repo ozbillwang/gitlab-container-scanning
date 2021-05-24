@@ -5,6 +5,7 @@ variables:
   TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
   SCANNER: trivy
+  GIT_STRATEGY: fetch
 
 include:
   - template: Security/Dependency-Scanning.gitlab-ci.yml
@@ -82,8 +83,7 @@ gitlab styles:
   extends: .ruby-alpine
   stage: initial-test
   script:
-    - git fetch origin/master
-    - git diff-tree -r --no-commit-id --name-only ${CI_COMMIT_SHA} origin/master | bundle exec rubocop -P
+    - git diff-tree -r --no-commit-id --name-only ${CI_COMMIT_SHA} master | bundle exec rubocop -P
 
 dependency_scanning:
   stage: initial-test
