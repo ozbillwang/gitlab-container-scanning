@@ -1,3 +1,14 @@
+## 4.1.9 (2021-05-24)
+
+### changed (2 changes)
+
+- [Publish images to new production registry](gitlab-org/security-products/analyzers/container-scanning@132787fa7f3b93052f15272e1e08032019b9b9d6) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2482))
+- [Set development & runtime Ruby versions as 2.7.3](gitlab-org/security-products/analyzers/container-scanning@fe27e4c242d50b4a8627776f74520281acc6a0b6) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2469))
+
+### added (1 change)
+
+- [Show version information in CI logs](gitlab-org/security-products/analyzers/container-scanning@f02e80870ada160cc64bb3589597325a40dd2ae3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2476))
+
 ## 4.1.8 (2021-05-21)
 
 ### fixed (1 change)
