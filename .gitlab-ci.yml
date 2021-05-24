@@ -261,3 +261,5 @@ major:
 
 latest:
   extends: .release
+  variables:
+    IMAGE_TAG: latest
