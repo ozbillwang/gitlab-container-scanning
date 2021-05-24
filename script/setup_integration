@@ -20,6 +20,8 @@ if [ ! -f /usr/sbin/haproxy ] && command -v apt-get; then
 fi
 
 git submodule update --init
+
+bundle config set path vendor/ruby
 bundle config --local jobs "$(nproc)"
 bundle config set no-cache 'true'
 bundle install --quiet
