@@ -3,6 +3,7 @@
 variables:
   MAJOR: 4
   TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
+  DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
   SCANNER: trivy
 
 include:
@@ -207,6 +208,17 @@ ca cert grype:
     - docker pull $SOURCE_IMAGE
     - docker tag $SOURCE_IMAGE $TARGET_IMAGE
     - docker push $TARGET_IMAGE
+    - |
+      # code below only runs on protected branches/tags
+      if [ -n "$CS_DEPLOY_USERNAME" ] && [ -n "$CS_DEPLOY_PASSWORD" ] && [ -n "$IMAGE_TAG" ]; then
+        TARGET_IMAGE_DEFAULT="${DEPLOY_REGISTRY_IMAGE}:${IMAGE_TAG}"
+        TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}"
+        docker login -u "$CS_DEPLOY_USERNAME" -p "$CS_DEPLOY_PASSWORD" "$DEPLOY_REGISTRY_IMAGE"
+        docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_DEFAULT"
+        docker push "$TARGET_IMAGE_DEFAULT"
+        docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_SCANNER"
+        docker push "$TARGET_IMAGE_SCANNER"
+      fi
 
 tag branch:
   extends: .docker_tag
