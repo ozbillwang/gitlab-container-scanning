@@ -42,8 +42,13 @@ stages:
 .ruby-alpine:
   extends: .not-on-schedule
   image: ruby:2.7.3-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - vendor/ruby
   before_script:
     - apk add git build-base
+    - bundle config set path 'vendor/ruby'
     - bundle config --local jobs "$(nproc)"
     - bundle config set no-cache 'true'
     - bundle install --quiet
@@ -136,10 +141,6 @@ build-grype-image:
 .integration_test:
   extends: .not-on-schedule
   image: $TMP_IMAGE
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - vendor/ruby
   stage: integration-test
   variables:
     IMAGE_TAG: $TMP_IMAGE
