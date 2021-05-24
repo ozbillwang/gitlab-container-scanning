@@ -76,6 +76,7 @@ unit test:
   extends: .ruby-alpine
   stage: initial-test
   script:
+    - apk add util-linux
     - echo "33333333"
     - lscpu
     - bundle exec rake unit_test
