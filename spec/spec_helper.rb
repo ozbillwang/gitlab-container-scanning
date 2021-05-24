@@ -10,6 +10,7 @@ require 'securerandom'
 require 'helpers'
 require 'singleton'
 require 'webmock/rspec'
+require 'rspec-parameterized'
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
