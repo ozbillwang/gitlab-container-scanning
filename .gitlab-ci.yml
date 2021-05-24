@@ -76,6 +76,8 @@ unit test:
   extends: .ruby-alpine
   stage: initial-test
   script:
+    - echo "33333333"
+    - lscpu
     - bundle exec rake unit_test
 
 gitlab styles:
