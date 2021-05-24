@@ -21,7 +21,9 @@ fi
 
 git submodule update --init
 
-bundle config set path vendor/ruby
+bundle config set --local path vendor/ruby
+bundle exec rake -v
+# bundle config set path vendor/ruby
 bundle config --local jobs "$(nproc)"
 bundle config set no-cache 'true'
 bundle install --quiet
