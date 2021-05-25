@@ -42,6 +42,14 @@ RSpec.describe Gcs::Environment do
       expect(described_class.default_docker_image).to eq(image)
     end
 
+    describe '#severity_level' do
+      it 'returns value for given severity level' do
+        allow(ENV).to receive(:[]).with('CS_SEVERITY_THRESHOLD').and_return('low')
+
+        expect(described_class.severity_level).to eq(1)
+      end
+    end
+
     context 'with dockerfile present' do
       before do
         allow_any_instance_of(Pathname).to receive(:exist?).and_return(true)

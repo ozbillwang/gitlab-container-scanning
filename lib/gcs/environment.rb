@@ -45,6 +45,19 @@ module Gcs
         setup_log_level
       end
 
+      def severity_level
+        threshold = ENV['CS_SEVERITY_THRESHOLD']
+
+        return 0 if threshold.nil?
+
+        unless Gcs::Trivy::SEVERITY_LEVELS.key?(threshold.upcase.strip)
+          Gcs.logger.info('Invalid CS_SEVERITY_THRESHOLD')
+          return 0
+        end
+
+        Gcs::Trivy::SEVERITY_LEVELS[threshold.upcase.strip]
+      end
+
       def setup_trivy_docker_registy
         username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] }
         password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] }
