@@ -92,6 +92,7 @@ task :update_trivy do
 
       if ENV['CI']
         puts "Configuring git for bot user"
+        git('fetch')
         git('config', "--global", "user.email", "csbot@gitlab.com")
         git('config', "--global", "user.name", "CS bot Bot")
         git('config', "--global", "credential.username", "project_#{ENV['CI_PROJECT_ID']}_bot")
