@@ -98,7 +98,7 @@ task :update_trivy do
         git('config', "--global", "credential.username", "project_#{ENV['CI_PROJECT_ID']}_bot")
       end
 
-      git('checkout', '-b', branch_name, 'master')
+      git('checkout', '-b', branch_name)
       File.truncate(TRIVY_VERSION_FILE, 0)
       File.write(TRIVY_VERSION_FILE, version)
       git('add', TRIVY_VERSION_FILE)
