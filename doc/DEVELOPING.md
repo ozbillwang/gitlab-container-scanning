@@ -37,6 +37,7 @@ $ gtcs help
 From within the container:
 ```
 $ cd /home/gitlab/gcs
+$ sudo apt-get update && sudo apt-get install -y -q build-essential
 $ bundle
 ```
 
