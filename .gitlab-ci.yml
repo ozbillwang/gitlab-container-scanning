@@ -188,7 +188,6 @@ webgoat grype:
     - .integration_test
 
 ca cert trivy:
-  allow_failure: true  # FIXME: https://gitlab.com/gitlab-org/gitlab/-/issues/331677
   variables:
     SPEC_NAME: spec_integration_ca_cert
   extends: .integration_test
