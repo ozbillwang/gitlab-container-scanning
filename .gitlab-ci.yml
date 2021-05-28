@@ -42,7 +42,7 @@ stages:
 
 .ruby-alpine:
   extends: .not-on-schedule
-  image: ruby:2.7.3-alpine
+  image: ruby:3.0.1-alpine
   before_script:
     - apk add git build-base
     - bundle config --local jobs "$(nproc)"
