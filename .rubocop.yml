@@ -3,10 +3,10 @@ inherit_gem:
   gitlab-styles:
     - rubocop-default.yml
 
-CodeReuse/ActiveRecord:
+Rails:
   Enabled: false
 
-Rails/Exit:
+CodeReuse/ActiveRecord:
   Enabled: false
 
 AllCops:
