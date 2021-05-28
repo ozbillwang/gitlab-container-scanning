@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-ruby "2.7.3"
+ruby "3.0.1"
 
 # Specify your gem's dependencies in gcs.gemspec
 gemspec
