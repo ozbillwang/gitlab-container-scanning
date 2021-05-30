@@ -1,3 +1,13 @@
+## 4.1.10 (2021-05-30)
+
+### fixed (1 change)
+
+- [Fix daily update for `latest` tag](gitlab-org/security-products/analyzers/container-scanning@548be2311c59d507374ce33cd8d9f3ab71ee14a3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2487))
+
+### Added (1 change)
+
+- [Set `TRIVY_DEBUG` correctly based on `SECURE_LOG_LEVEL` env variable](gitlab-org/security-products/analyzers/container-scanning@d747a49f0b8cbb21c6f44579b31c49e7d4817203) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2471))
+
 ## 4.1.9 (2021-05-24)
 
 ### changed (2 changes)
