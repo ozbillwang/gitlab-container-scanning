@@ -19,13 +19,16 @@ RSpec.describe Gcs::Environment do
     end
 
     it 'uses CI_APPLICATION_REPOSITORY and CI_APPLICATION_TAG when DOCKER_IMAGE env variable is not given' do
+      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_REPOSITORY').and_return('ghcr.io/aquasecurity/trivy')
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
 
       expect(described_class.default_docker_image).to eq('ghcr.io/aquasecurity/trivy:latest')
     end
 
-    it 'uses CI_REGISTRY_IMAGE and CI_COMMIT_REF_SLUG when CI_APPLICATION_REPOSITORY is empty' do
+    it 'uses CI_REGISTRY_IMAGE and CI_COMMIT_REF_SLUG when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
+      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+      allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
       allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
       allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
@@ -33,7 +36,9 @@ RSpec.describe Gcs::Environment do
       expect(described_class.default_docker_image).to eq('registry.gitlab.com/defen/trivy-test/master:latest')
     end
 
-    it 'uses CI_COMMIT_SHA when CI_APPLICATION_REPOSITORY is empty' do
+    it 'uses CI_COMMIT_SHA when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
+      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+      allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
       allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
       allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
       allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
