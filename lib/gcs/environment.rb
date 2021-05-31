@@ -41,7 +41,7 @@ module Gcs
 
       def setup
         # TODO abstract this further when Grype variables introduced
-        setup_trivy_docker_registy
+        setup_trivy_docker_registry
         setup_log_level
       end
 
@@ -58,7 +58,10 @@ module Gcs
         Gcs::Trivy::SEVERITY_LEVELS[threshold.upcase.strip]
       end
 
-      def setup_trivy_docker_registy
+      def setup_trivy_docker_registry
+        ENV['TRIVY_INSECURE'] = ENV.fetch('CS_DOCKER_INSECURE', 'false')
+        ENV['TRIVY_NON_SSL'] = ENV.fetch('CS_REGISTRY_INSECURE', 'false')
+
         username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] }
         password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] }
 
