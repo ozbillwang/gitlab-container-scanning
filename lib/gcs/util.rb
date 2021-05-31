@@ -43,9 +43,8 @@ module Gcs
         return if rows.empty?
 
         table = Terminal::Table.new(headings: HEADINGS, rows: rows, style: { alignment: :center, all_separators: true })
-        # rubocop: disable Rails/Output
+
         puts table.render
-        # rubocop: enable Rails/Output
       end
 
       def allowed?(vuln)
