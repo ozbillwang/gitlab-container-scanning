@@ -2,15 +2,17 @@
 
 variables:
   MAJOR: 4
-  TMP_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
+  DOCKER_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
   SCANNER: trivy
   GIT_STRATEGY: fetch
 
 include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
   - template: Security/Dependency-Scanning.gitlab-ci.yml
   - template: Security/License-Scanning.gitlab-ci.yml
   - local: .gitlab/maintenance.yml
+
 
 # Workaround to the detached pipeline as described in
 # https://gitlab.com/gitlab-org/gitlab/-/issues/34756
@@ -24,7 +26,7 @@ stages:
   # check, test, and scan the Docker images
   - initial-test
   - build-image
-  - integration-test
+  - test
   # release Docker images and distro packages
   - release-version
   # update Docker images and distro packages of the major release
@@ -93,14 +95,14 @@ gemnasium-dependency_scanning:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - changes:
-        - Gemfile.lock
+      - Gemfile.lock
 
 bundler-audit-dependency_scanning:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - changes:
-        - Gemfile.lock
+      - Gemfile.lock
 
 license_scanning:
   stage: initial-test
@@ -108,7 +110,8 @@ license_scanning:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - changes:
-        - Gemfile.lock
+      - Gemfile.lock
+      when: manual
 
 .grype_scanner:
   allow_failure: true
@@ -123,8 +126,8 @@ license_scanning:
     - docker:19.03.5-dind
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg SCANNER -q -t $TMP_IMAGE .
-    - docker push $TMP_IMAGE
+    - docker build --build-arg SCANNER -q -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
 
 build-trivy-image:
   extends: .build-tmp-image
@@ -136,14 +139,14 @@ build-grype-image:
 
 .integration_test:
   extends: .not-on-schedule
-  image: $TMP_IMAGE
+  image: $DOCKER_IMAGE
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - vendor/ruby
-  stage: integration-test
+  stage: test
   variables:
-    IMAGE_TAG: $TMP_IMAGE
+    IMAGE_TAG: $DOCKER_IMAGE
     CS_QUIET: "true"
   script:
     - sudo ./script/setup_integration
@@ -208,7 +211,7 @@ ca cert grype:
   script:
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - export SOURCE_IMAGE=$TMP_IMAGE
+    - export SOURCE_IMAGE=$DOCKER_IMAGE
     - export TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
     - docker pull $SOURCE_IMAGE
     - docker tag $SOURCE_IMAGE $TARGET_IMAGE
