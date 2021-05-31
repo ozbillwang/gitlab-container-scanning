@@ -84,7 +84,7 @@ RSpec.describe Gcs::Environment do
   end
 
   describe '#setup_environment' do
-    subject { described_class.setup_trivy_docker_registy }
+    subject { described_class.setup_trivy_docker_registry }
 
     describe 'credentials' do
       before do
@@ -115,6 +115,51 @@ RSpec.describe Gcs::Environment do
 
           expect(ENV['TRIVY_USERNAME']).to eq(nil)
           expect(ENV['TRIVY_PASSWORD']).to eq(nil)
+        end
+      end
+    end
+
+    describe 'insecure registry' do
+      before do
+        allow(ENV).to receive(:fetch).with('CS_DOCKER_INSECURE', 'false').and_return(docker_insecure)
+        allow(ENV).to receive(:fetch).with('CS_REGISTRY_INSECURE', 'false').and_return(registry_insecure)
+
+        ENV['TRIVY_INSECURE'] = ENV['TRIVY_NON_SSL'] = nil
+      end
+
+      context 'with insecure docker enabled' do
+        let(:docker_insecure) { 'true' }
+        let(:registry_insecure) { 'false' }
+
+        it 'sets Trivy TRIVY_INSECURE variable to true' do
+          subject
+
+          expect(ENV['TRIVY_INSECURE']).to eq('true')
+          expect(ENV['TRIVY_NON_SSL']).to eq('false')
+        end
+      end
+
+      context 'with insecure registry enabled' do
+        let(:docker_insecure) { 'false' }
+        let(:registry_insecure) { 'true' }
+
+        it 'sets Trivy TRIVY_NON_SSL variable to true' do
+          subject
+
+          expect(ENV['TRIVY_INSECURE']).to eq('false')
+          expect(ENV['TRIVY_NON_SSL']).to eq('true')
+        end
+      end
+
+      context 'with either docker_insecure or registry_insecure are missing' do
+        let(:docker_insecure) { nil }
+        let(:registry_insecure) { nil }
+
+        it 'does not set trivy variables' do
+          subject
+
+          expect(ENV['TRIVY_INSECURE']).to eq(nil)
+          expect(ENV['TRIVY_NON_SSL']).to eq(nil)
         end
       end
     end
