@@ -146,10 +146,10 @@ build-grype-image:
 .integration_test:
   extends: .not-on-schedule
   image: $DOCKER_IMAGE
-#  cache:
-#    key: ${CI_COMMIT_REF_SLUG}
-#    paths:
-#      - vendor/ruby
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - vendor/ruby
   stage: test
   variables:
     IMAGE_TAG: $DOCKER_IMAGE
@@ -157,6 +157,7 @@ build-grype-image:
   script:
     - sudo ./script/setup_integration
     - bundle config set path 'vendor/ruby'
+    - sudo chmod -R g+rw vendor/ruby/
     - bundle install --quiet
     - bundle exec rake $SPEC_NAME
   artifacts:

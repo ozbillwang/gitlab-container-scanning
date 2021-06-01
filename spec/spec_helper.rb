@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'simplecov'
 require 'bundler/setup'
 require 'gcs'
 require 'json'
@@ -11,7 +12,6 @@ require 'helpers'
 require 'singleton'
 require 'webmock/rspec'
 require 'rspec-parameterized'
-require 'simplecov'
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
