@@ -19,19 +19,30 @@ module Gcs
                output_file_name,
                image_name]
 
-        Gcs.logger.info("Trivy version: #{trivy_version}")
-        Gcs.logger.info("Running with: #{cmd.join(' ')}")
+        Gcs.logger.debug(cmd.join(' '))
+        Gcs.logger.info(
+          <<~HEREDOC
+          Scanning container from registry #{Gcs::Environment.default_docker_image} \
+          for vulnerabilities with gcs #{Gcs::VERSION} and Trivy #{version_info[:binary_version]}, \
+          advisories updated at #{version_info[:db_updated_at]}
+          HEREDOC
+        )
         Gcs.shell.execute(cmd)
       end
 
       private
 
-      def trivy_version
+      def version_info
         stdout, _, status = Gcs.shell.execute(["trivy", "--version"])
 
         return "" unless status.success?
 
-        stdout.split("\n").first.chomp
+        version_info = stdout.split("\n")
+        binary_version = version_info.first.chomp
+        db_updated_at = Date.parse(version_info[4].chomp).to_s
+        { binary_version: binary_version, db_updated_at: db_updated_at }
+      rescue Date::Error
+        { binary_version: 'unknown', db_updated_at: 'unknown' }
       end
 
       def severity_level_arg
