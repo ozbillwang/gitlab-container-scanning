@@ -80,6 +80,12 @@ unit test:
   stage: initial-test
   script:
     - bundle exec rake unit_test
+  artifacts:
+    paths:
+      - coverage/coverage.xml
+    expire_in: 1 week
+    reports:
+      cobertura: coverage/coverage.xml
 
 gitlab styles:
   extends: .ruby-alpine
@@ -153,6 +159,12 @@ build-grype-image:
     - bundle config set path 'vendor/ruby'
     - bundle install --quiet
     - bundle exec rake $SPEC_NAME
+  artifacts:
+    paths:
+      - coverage/coverage.xml
+    expire_in: 1 week
+    reports:
+      cobertura: coverage/coverage.xml
 
 alpine trivy:
   variables:

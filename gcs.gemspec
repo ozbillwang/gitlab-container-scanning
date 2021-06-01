@@ -31,7 +31,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'dry-schema', '~> 1.5'
   spec.add_development_dependency 'gitlab-styles', '~> 6.2.0'
   spec.add_development_dependency 'json-schema', '~> 2.8'
-  spec.add_development_dependency 'single_cov', '~> 1.6'
+  spec.add_development_dependency 'simplecov', '~> 0.18'
+  spec.add_development_dependency 'simplecov-cobertura', '~> 1.3'
   spec.add_development_dependency 'webmock', '~> 3.12'
 
   spec.bindir        = 'exe'

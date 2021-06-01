@@ -11,6 +11,7 @@ require 'helpers'
 require 'singleton'
 require 'webmock/rspec'
 require 'rspec-parameterized'
+require 'simplecov'
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
