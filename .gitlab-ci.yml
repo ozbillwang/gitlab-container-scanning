@@ -146,10 +146,10 @@ build-grype-image:
 .integration_test:
   extends: .not-on-schedule
   image: $DOCKER_IMAGE
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - vendor/ruby
+#  cache:
+#    key: ${CI_COMMIT_REF_SLUG}
+#    paths:
+#      - vendor/ruby
   stage: test
   variables:
     IMAGE_TAG: $DOCKER_IMAGE
