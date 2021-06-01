@@ -16,3 +16,11 @@ AllCops:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 10
+
+Style/LineEndConcatenation:
+  Exclude:
+    - 'spec/**/*'
+
+Style/StringConcatenation:
+  Exclude:
+    - 'spec/**/*'
