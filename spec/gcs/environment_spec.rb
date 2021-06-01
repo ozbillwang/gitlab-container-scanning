@@ -124,49 +124,38 @@ RSpec.describe Gcs::Environment do
       end
     end
 
+    shared_context 'with clean ENV setup' do |from:, to:, value:|
+      around do |example|
+        old_from = ENV[from]
+        old_to = ENV[to]
+
+        ENV[from] = value
+        ENV[to] = nil
+
+        example.run
+      ensure
+        ENV[from] = old_from
+        ENV[to] = old_to
+      end
+    end
+
+    shared_examples_for 'ENV mapping' do |from:, to:, values:, default:|
+      values.zip(values).to_h.merge(nil => default).each do |env_val, expected_val|
+        context "when the ENV var is `#{env_val.inspect}`" do
+          include_context 'with clean ENV setup', from: from, to: to, value: env_val
+
+          it "sets #{to} as `#{expected_val.inspect}`" do
+            expect { subject }.to change { ENV[to] }.from(nil).to(expected_val)
+          end
+        end
+      end
+    end
+
     describe 'insecure registry' do
-      before do
-        allow(ENV).to receive(:fetch).with('CS_DOCKER_INSECURE', 'false').and_return(docker_insecure)
-        allow(ENV).to receive(:fetch).with('CS_REGISTRY_INSECURE', 'false').and_return(registry_insecure)
+      values = %w[true false]
 
-        ENV['TRIVY_INSECURE'] = ENV['TRIVY_NON_SSL'] = nil
-      end
-
-      context 'with insecure docker enabled' do
-        let(:docker_insecure) { 'true' }
-        let(:registry_insecure) { 'false' }
-
-        it 'sets Trivy TRIVY_INSECURE variable to true' do
-          subject
-
-          expect(ENV['TRIVY_INSECURE']).to eq('true')
-          expect(ENV['TRIVY_NON_SSL']).to eq('false')
-        end
-      end
-
-      context 'with insecure registry enabled' do
-        let(:docker_insecure) { 'false' }
-        let(:registry_insecure) { 'true' }
-
-        it 'sets Trivy TRIVY_NON_SSL variable to true' do
-          subject
-
-          expect(ENV['TRIVY_INSECURE']).to eq('false')
-          expect(ENV['TRIVY_NON_SSL']).to eq('true')
-        end
-      end
-
-      context 'with either docker_insecure or registry_insecure are missing' do
-        let(:docker_insecure) { nil }
-        let(:registry_insecure) { nil }
-
-        it 'does not set trivy variables' do
-          subject
-
-          expect(ENV['TRIVY_INSECURE']).to eq(nil)
-          expect(ENV['TRIVY_NON_SSL']).to eq(nil)
-        end
-      end
+      it_behaves_like 'ENV mapping', from: 'CS_DOCKER_INSECURE', to: 'TRIVY_INSECURE', values: values, default: 'false'
+      it_behaves_like 'ENV mapping', from: 'CS_REGISTRY_INSECURE', to: 'TRIVY_NON_SSL', values: values, default: 'false'
     end
 
     describe 'setting up the log level' do
