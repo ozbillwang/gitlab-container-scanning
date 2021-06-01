@@ -157,8 +157,8 @@ build-grype-image:
   script:
     - sudo ./script/setup_integration
     - bundle config set path 'vendor/ruby'
-    - sudo chmod -R g+rw vendor/ruby/
     - bundle install --quiet
+    - sudo chmod -R g+rw vendor/ruby/
     - bundle exec rake $SPEC_NAME
   artifacts:
     paths:
