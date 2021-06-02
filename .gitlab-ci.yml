@@ -39,6 +39,11 @@ stages:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
+    - if: $SCANNER == 'grype'
+      allow_failure: true
+    - if: $SCANNER == 'trivy'
+      variables:
+        DEFAULT_IMAGE: "true"
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: on_success
 
@@ -113,11 +118,6 @@ license_scanning:
       - Gemfile.lock
       when: manual
 
-.grype_scanner:
-  allow_failure: true
-  variables:
-    SCANNER: grype
-
 .build-tmp-image:
   extends: .not-on-schedule
   image: docker:stable
@@ -129,16 +129,20 @@ license_scanning:
     - docker build --build-arg SCANNER -q -t $DOCKER_IMAGE .
     - docker push $DOCKER_IMAGE
 
-build-trivy-image:
-  extends: .build-tmp-image
+.scanners-matrix:
+  parallel:
+    matrix:
+      - SCANNER: [trivy, grype]
 
-build-grype-image:
+build-scanner-image:
   extends:
     - .build-tmp-image
-    - .grype_scanner
+    - .scanners-matrix
 
 .integration_test:
-  extends: .not-on-schedule
+  extends:
+    - .not-on-schedule
+    - .scanners-matrix
   image: $DOCKER_IMAGE
   cache:
     key: ${CI_COMMIT_REF_SLUG}
@@ -154,56 +158,30 @@ build-grype-image:
     - bundle install --quiet
     - bundle exec rake $SPEC_NAME
 
-alpine trivy:
+alpine:
   variables:
     SPEC_NAME: spec_integration_alpine
   extends: .integration_test
 
-alpine grype:
-  variables:
-    SPEC_NAME: spec_integration_alpine
-  extends:
-    - .integration_test
-    - .grype_scanner
-
-centos trivy:
+centos:
   variables:
     SPEC_NAME: spec_integration_centos
   extends: .integration_test
 
-centos grype:
-  variables:
-    SPEC_NAME: spec_integration_centos
-  extends:
-    - .grype_scanner
-    - .integration_test
-
-webgoat trivy:
+webgoat:
   variables:
     SPEC_NAME: spec_integration_webgoat
   extends: .integration_test
 
-webgoat grype:
-  variables:
-    SPEC_NAME: spec_integration_webgoat
-  extends:
-    - .grype_scanner
-    - .integration_test
-
-ca cert trivy:
+ca cert:
   variables:
     SPEC_NAME: spec_integration_ca_cert
   extends: .integration_test
-
-ca cert grype:
-  variables:
-    SPEC_NAME: spec_integration_ca_cert
-  extends:
-    - .grype_scanner
-    - .integration_test
 
 .docker_tag:
-  extends: .not-on-schedule
+  extends:
+    - .not-on-schedule
+    - .scanners-matrix
   image: docker:stable
   stage: release-version
   services:
@@ -212,18 +190,23 @@ ca cert grype:
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - export SOURCE_IMAGE=$DOCKER_IMAGE
-    - export TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
     - docker pull $SOURCE_IMAGE
-    - docker tag $SOURCE_IMAGE $TARGET_IMAGE
-    - docker push $TARGET_IMAGE
+    - |
+      if [ "$DEFAULT_IMAGE" = "true" ]; then
+        TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
+        docker tag $SOURCE_IMAGE $TARGET_IMAGE
+        docker push $TARGET_IMAGE
+      fi
     - |
       # code below only runs on protected branches/tags
       if [ -n "$CS_DEPLOY_USERNAME" ] && [ -n "$CS_DEPLOY_PASSWORD" ] && [ -n "$IMAGE_TAG" ]; then
-        TARGET_IMAGE_DEFAULT="${DEPLOY_REGISTRY_IMAGE}:${IMAGE_TAG}"
-        TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}"
         docker login -u "$CS_DEPLOY_USERNAME" -p "$CS_DEPLOY_PASSWORD" "$DEPLOY_REGISTRY_IMAGE"
-        docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_DEFAULT"
-        docker push "$TARGET_IMAGE_DEFAULT"
+        if [ "$DEFAULT_IMAGE" = "true" ]; then
+          TARGET_IMAGE_DEFAULT="${DEPLOY_REGISTRY_IMAGE}:${IMAGE_TAG}"
+          docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_DEFAULT"
+          docker push "$TARGET_IMAGE_DEFAULT"
+        fi
+        TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}"
         docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_SCANNER"
         docker push "$TARGET_IMAGE_SCANNER"
       fi
