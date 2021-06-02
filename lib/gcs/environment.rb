@@ -46,16 +46,20 @@ module Gcs
       end
 
       def severity_level
-        threshold = ENV['CS_SEVERITY_THRESHOLD']
-
-        return 0 if threshold.nil?
-
-        unless Gcs::Trivy::SEVERITY_LEVELS.key?(threshold.upcase.strip)
+        unless Gcs::Trivy::SEVERITY_LEVELS.key?(severity_level_name)
           Gcs.logger.info('Invalid CS_SEVERITY_THRESHOLD')
           return 0
         end
 
-        Gcs::Trivy::SEVERITY_LEVELS[threshold.upcase.strip]
+        Gcs::Trivy::SEVERITY_LEVELS[severity_level_name]
+      end
+
+      def severity_level_name
+        threshold = ENV['CS_SEVERITY_THRESHOLD']
+
+        return 'UNKNOWN' if threshold.nil?
+
+        threshold.upcase.strip
       end
 
       def setup_trivy_docker_registry
