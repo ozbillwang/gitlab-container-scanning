@@ -23,8 +23,8 @@ module Gcs
         Gcs.logger.info(
           <<~HEREDOC
           Scanning container from registry #{Gcs::Environment.default_docker_image} \
-          for vulnerabilities with gcs #{Gcs::VERSION} and Trivy #{version_info[:binary_version]}, \
-          advisories updated at #{version_info[:db_updated_at]}
+          for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
+          with gcs #{Gcs::VERSION} and Trivy #{version_info[:binary_version]}, advisories updated at #{version_info[:db_updated_at]}
           HEREDOC
         )
         Gcs.shell.execute(cmd)
