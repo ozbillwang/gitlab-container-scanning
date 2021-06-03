@@ -1,3 +1,9 @@
+## 4.2.0 (2021-06-03)
+
+### added (1 change)
+
+- [Add support for CS_DOCKER_INSECURE and CS_REGISTRY_INSECURE](gitlab-org/security-products/analyzers/container-scanning@1f74da406afd4278e6ca02e5dba322003fafbf4b) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2497))
+
 ## 4.1.10 (2021-05-30)
 
 ### fixed (1 change)
