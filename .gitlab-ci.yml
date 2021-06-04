@@ -5,6 +5,7 @@ variables:
   DOCKER_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
   SCANNER: trivy
+  DEFAULT_SCANNER: trivy
   GIT_STRATEGY: fetch
 
 include:
@@ -40,11 +41,8 @@ stages:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
-    - if: $SCANNER == 'grype'
+    - if: '$SCANNER == "grype"'
       allow_failure: true
-    - if: $SCANNER == 'trivy'
-      variables:
-        DEFAULT_IMAGE: "true"
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: on_success
 
@@ -193,7 +191,7 @@ ca cert:
     - export SOURCE_IMAGE=$DOCKER_IMAGE
     - docker pull $SOURCE_IMAGE
     - |
-      if [ "$DEFAULT_IMAGE" = "true" ]; then
+      if [ "$DEFAULT_SCANNER" = "$SCANNER" ]; then
         TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
         docker tag $SOURCE_IMAGE $TARGET_IMAGE
         docker push $TARGET_IMAGE
@@ -202,7 +200,7 @@ ca cert:
       # code below only runs on protected branches/tags
       if [ -n "$CS_DEPLOY_USERNAME" ] && [ -n "$CS_DEPLOY_PASSWORD" ] && [ -n "$IMAGE_TAG" ]; then
         docker login -u "$CS_DEPLOY_USERNAME" -p "$CS_DEPLOY_PASSWORD" "$DEPLOY_REGISTRY_IMAGE"
-        if [ "$DEFAULT_IMAGE" = "true" ]; then
+        if [ "$DEFAULT_SCANNER" = "$SCANNER" ]; then
           TARGET_IMAGE_DEFAULT="${DEPLOY_REGISTRY_IMAGE}:${IMAGE_TAG}"
           docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_DEFAULT"
           docker push "$TARGET_IMAGE_DEFAULT"
