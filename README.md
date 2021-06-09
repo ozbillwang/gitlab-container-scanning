@@ -1,6 +1,6 @@
 # Container Scanning
 
-This analyzer is a Ruby gem that uses container scanner tools such as [Trivy](https://github.com/aquasecurity/trivy) to create reports that are parseable by GitLab. This project also depends on [Security report schemas](https://gitlab.com/gitlab-org/security-products/security-report-schemas). 
+This analyzer is a Ruby gem that uses container scanner tools such as [Trivy](https://github.com/aquasecurity/trivy) to create reports that are parseable by GitLab. This project also depends on [Security report schemas](https://gitlab.com/gitlab-org/security-products/security-report-schemas).
 
 The resulting analyzer docker image is used with the [official template](https://docs.gitlab.com/ee/user/application_security/container_scanning/#configuration).
 
@@ -35,6 +35,7 @@ is triggered and the resulting images are pushed to the
 under the following tags:
 
 - `MAJOR`: current major version (e.g.: `4`)
+- `MAJOR.MINOR`: current major version (e.g.: `4.1`)
 - `MAJOR.MINOR.PATCH`: latest version (e.g.: `4.1.7`)
 - `latest`: default tag when pulling an image without specifying a tag
 
