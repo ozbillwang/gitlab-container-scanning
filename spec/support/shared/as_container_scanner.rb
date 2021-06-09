@@ -45,21 +45,42 @@ RSpec.shared_examples 'as container scanner' do |item|
     end
 
     expect(subject['vulnerabilities']).to all(include('category' => 'container_scanning'))
-    expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
+  end
+
+  shared_examples 'as trivy scanner' do
+    specify do
+      expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
+
+      expect(subject['scan']['scanner']['version']).to eql('0.18.3')
+      expect(subject['scan']['scanner']['id']).to eql('trivy')
+      expect(subject['scan']['scanner']['name']).to eql('Trivy')
+      expect(subject['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
+      expect(subject['scan']['scanner']['vendor']['name']).to eql('GitLab')
+    end
+  end
+
+  shared_examples 'as grype scanner' do
+    specify do
+      expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
+
+      expect(subject['scan']['scanner']['version']).to eql('0.12.1')
+      expect(subject['scan']['scanner']['id']).to eql('grype')
+      expect(subject['scan']['scanner']['name']).to eql('Grype')
+      expect(subject['scan']['scanner']['url']).to eql('https://github.com/anchore/grype')
+      expect(subject['scan']['scanner']['vendor']['name']).to eql('Anchore')
+    end
   end
 
   specify do
     expect(subject['scan']).not_to be_nil
     expect(subject['scan']['end_time']).not_to be_nil
-    expect(subject['scan']['scanner']['id']).to eql('trivy')
-    expect(subject['scan']['scanner']['name']).to eql('Trivy')
-    expect(subject['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
-    expect(subject['scan']['scanner']['vendor']['name']).to eql('GitLab')
-    expect(subject['scan']['scanner']['version']).to eql('0.16.0')
     expect(subject['scan']['start_time']).not_to be_nil
     expect(subject['scan']['status']).to eql('success')
     expect(subject['scan']['type']).to eql('container_scanning')
   end
+
+  it_behaves_like 'as trivy scanner' if ENV['SCANNER'] == 'trivy'
+  it_behaves_like 'as grype scanner' if ENV['SCANNER'] == 'grype'
 
   specify do
     start_time = DateTime.parse(subject['scan']['start_time']).to_time
