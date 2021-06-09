@@ -249,6 +249,14 @@ major:
   variables:
     IMAGE_TAG: $MAJOR
 
+minor:
+  extends: .release
+  before_script:
+    # remove semver metadata (e.g. 1.2.3+meta -> 1.2.3)
+    - export RELEASE=${CI_COMMIT_TAG/+*/}
+    # Cut off last dot and whatever follows it
+    - export IMAGE_TAG=${RELEASE%.*}
+
 latest:
   extends: .release
   variables:
