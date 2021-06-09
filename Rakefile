@@ -14,9 +14,7 @@ TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
 def git(cmd, *args)
   output, status = Open3.capture2e('git', cmd, *args)
 
-  unless status.success?
-    abort "Failed to run `git #{cmd}`: #{output}"
-  end
+  abort "Failed to run `git #{cmd}`: #{output}" unless status.success?
 
   output.strip
 end
@@ -81,9 +79,12 @@ desc 'Update Trivy binary to latest version'
 task :update_trivy do
   uri = URI("https://api.github.com/repos/aquasecurity/trivy/releases/latest")
   res = Net::HTTP.get_response(uri)
+  project_id = ENV['CI_PROJECT_ID']
+
   if res.code == '200'
     res = JSON.parse(res.body)
     current_trivy_version = File.read(TRIVY_VERSION_FILE).strip
+
     if res['tag_name'] != current_trivy_version
       version = res['tag_name'][1..]
       puts "Version has changed from #{current_trivy_version} to #{version}"
@@ -95,7 +96,7 @@ task :update_trivy do
         git('fetch')
         git('config', "--global", "user.email", "csbot@gitlab.com")
         git('config', "--global", "user.name", "CS bot Bot")
-        git('config', "--global", "credential.username", "project_#{ENV['CI_PROJECT_ID']}_bot")
+        git('config', "--global", "credential.username", "project_#{project_id}_bot")
       end
 
       git('checkout', '-b', branch_name)
@@ -103,14 +104,16 @@ task :update_trivy do
       File.write(TRIVY_VERSION_FILE, version)
       git('add', TRIVY_VERSION_FILE)
       git('commit', '-m', "Update Trivy version #{Date.today}\nChangelog: changed")
+
       if ENV['CI']
-       remote_git = "https://project_#{ENV['CI_PROJECT_ID']}_bot:#{ENV['CS_TOKEN']}@#{ENV['CI_SERVER_HOST']}/#{ENV['CI_PROJECT_PATH']}.git"
-       git('push',
-        "-o","merge_request.create",
-        "-o", "merge_request.remove_source_branch",
-        "-o", "merge_request.label=devops::protect",
-        "-o", "merge_request.title=Upgrade trivy to #{version}",
-        "-o" ,"merge_request.target=#{ENV['CI_DEFAULT_BRANCH']}", remote_git, branch_name)
+        project_path = ENV['CI_PROJECT_PATH']
+        remote_git = "https://project_#{project_id}_bot:#{ENV['CS_TOKEN']}@#{ENV['CI_SERVER_HOST']}/#{project_path}.git"
+        git('push',
+            "-o", "merge_request.create",
+            "-o", "merge_request.remove_source_branch",
+            "-o", "merge_request.label=devops::protect",
+            "-o", "merge_request.title=Upgrade trivy to #{version}",
+            "-o", "merge_request.target=#{ENV['CI_DEFAULT_BRANCH']}", remote_git, branch_name)
       end
     end
   else
@@ -130,10 +133,11 @@ task :changelog do
       http.request(req)
     end
 
-    puts "#{res.body}"
+    puts res.body.to_s
     puts "Changelog will be updated" if res.code == "200"
   else
-    puts "Env variables are missing  project_id: #{ENV['CI_PROJECT_ID']} tag: #{ENV['CI_COMMIT_TAG']} token_nil: #{ENV['CS_TOKEN'].nil?}"
+    puts "Env variables are missing project_id: #{ENV['CI_PROJECT_ID']} " \
+         "tag: #{ENV['CI_COMMIT_TAG']} token_nil: #{ENV['CS_TOKEN'].nil?}"
   end
 end
 
