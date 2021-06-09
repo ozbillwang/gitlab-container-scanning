@@ -39,9 +39,9 @@ RSpec.describe Gcs::Trivy do
 
       expect(Gcs.shell).to receive(:execute).with(cmd)
       expect(Gcs.logger).to receive(:info).with(
-        "Scanning container from registry alpine:latest for vulnerabilities with " +
-        "severity level UNKNOWN or higher, " +
-        "with gcs #{Gcs::VERSION} and Trivy Version: 0.15.0, " +
+        "Scanning container from registry alpine:latest for vulnerabilities with " \
+        "severity level UNKNOWN or higher, " \
+        "with gcs #{Gcs::VERSION} and Trivy Version: 0.15.0, " \
         "advisories updated at 2021-05-19\n"
       )
 

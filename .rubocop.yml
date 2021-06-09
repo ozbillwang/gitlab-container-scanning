@@ -3,24 +3,21 @@ inherit_gem:
   gitlab-styles:
     - rubocop-default.yml
 
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.0
+  Exclude:
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'bin/**/*'
+  CacheRootDirectory: tmp
+  MaxFilesInCache: 25000
+
 Rails:
   Enabled: false
 
 CodeReuse/ActiveRecord:
   Enabled: false
 
-AllCops:
-  Exclude:
-    - 'Rakefile'
-    - 'bin/*'
-
 RSpec/MultipleMemoizedHelpers:
   Max: 10
-
-Style/LineEndConcatenation:
-  Exclude:
-    - 'spec/**/*'
-
-Style/StringConcatenation:
-  Exclude:
-    - 'spec/**/*'
