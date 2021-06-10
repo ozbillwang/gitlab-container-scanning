@@ -10,7 +10,7 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN mkdir /gcs
 WORKDIR /gcs
 
-COPY Gemfile Gemfile.lock gcs.gemspec ./
+COPY Gemfile gcs.gemspec ./
 COPY lib/gcs/version.rb lib/gcs/version.rb
 RUN bundle install --jobs 20 --retry 5
 
