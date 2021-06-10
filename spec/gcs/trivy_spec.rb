@@ -30,6 +30,7 @@ RSpec.describe Gcs::Trivy do
   describe 'scanning with trivy' do
     it 'runs trivy binary with given severity levels' do
       allow(Gcs::Environment).to receive(:severity_level).and_return(1)
+      allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = ["trivy i -s LOW,MEDIUM,HIGH,CRITICAL --skip-update --vuln-type os --no-progress --format template -t",
              trivy_template_file,
@@ -37,7 +38,13 @@ RSpec.describe Gcs::Trivy do
              output_file_name,
              image_name]
 
-      expect(Gcs.shell).to receive(:execute).with(cmd)
+      expect(Gcs.shell).to receive(:execute).with(cmd, {
+                                                    "TRIVY_DEBUG" => "",
+                                                    "TRIVY_INSECURE" => "false",
+                                                    "TRIVY_NON_SSL" => "false",
+                                                    "TRIVY_PASSWORD" => nil,
+                                                    "TRIVY_USERNAME" => nil
+                                                  })
       expect(Gcs.logger).to receive(:info).with(
         "Scanning container from registry alpine:latest for vulnerabilities with " \
         "severity level UNKNOWN or higher, " \
@@ -50,6 +57,7 @@ RSpec.describe Gcs::Trivy do
 
     it 'runs trivy binary without severity level' do
       allow(Gcs::Environment).to receive(:severity_level).and_return(0)
+      allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = ["trivy i  --skip-update --vuln-type os --no-progress --format template -t",
              trivy_template_file,
@@ -57,7 +65,13 @@ RSpec.describe Gcs::Trivy do
              output_file_name,
              image_name]
 
-      expect(Gcs.shell).to receive(:execute).with(cmd)
+      expect(Gcs.shell).to receive(:execute).with(cmd, {
+                                                    "TRIVY_DEBUG" => "",
+                                                    "TRIVY_INSECURE" => "false",
+                                                    "TRIVY_NON_SSL" => "false",
+                                                    "TRIVY_PASSWORD" => nil,
+                                                    "TRIVY_USERNAME" => nil
+                                                  })
 
       subject
     end

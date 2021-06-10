@@ -88,112 +88,33 @@ RSpec.describe Gcs::Environment do
     end
   end
 
-  describe '#setup_environment' do
-    subject { described_class.setup_trivy_docker_registry }
+  describe '.setup' do
+    around do |example|
+      old_logger_level = Gcs.logger.level
 
-    describe 'credentials' do
+      example.run
+    ensure
+      Gcs.logger.level = old_logger_level
+    end
+
+    where(:log_level) do
+      %w[debug info warn error fatal]
+    end
+
+    with_them do
       before do
-        allow(ENV).to receive(:fetch).with('DOCKER_USER').and_return(user)
-        allow(ENV).to receive(:fetch).with('DOCKER_PASSWORD').and_return(password)
+        allow(ENV).to receive(:fetch).with('SECURE_LOG_LEVEL', 'info').and_return(log_level)
 
-        ENV['TRIVY_USERNAME'] = ENV['TRIVY_PASSWORD'] = nil
+        described_class.setup
       end
 
-      context 'with credentials configured' do
-        let(:user) { 'some user' }
-        let(:password) { 'a password' }
-
-        it 'sets Trivy credentials to given values' do
-          subject
-
-          expect(ENV['TRIVY_USERNAME']).to eq(user)
-          expect(ENV['TRIVY_PASSWORD']).to eq(password)
-        end
-      end
-
-      context 'with either user or password missing' do
-        let(:user) { nil }
-        let(:password) { nil }
-
-        it 'continues execution when DOCKER_USER is not set' do
-          subject
-
-          expect(ENV['TRIVY_USERNAME']).to eq(nil)
-          expect(ENV['TRIVY_PASSWORD']).to eq(nil)
-        end
+      it 'sets the Gcs logger level' do
+        expect(Gcs.logger.public_send("#{log_level}?")).to be_truthy
       end
     end
+  end
 
-    shared_context 'with clean ENV setup' do |from:, to:, value:|
-      around do |example|
-        old_from = ENV[from]
-        old_to = ENV[to]
-
-        ENV[from] = value
-        ENV[to] = nil
-
-        example.run
-      ensure
-        ENV[from] = old_from
-        ENV[to] = old_to
-      end
-    end
-
-    shared_examples_for 'ENV mapping' do |from:, to:, values:, default:|
-      values.zip(values).to_h.merge(nil => default).each do |env_val, expected_val|
-        context "when the ENV var is `#{env_val.inspect}`" do
-          include_context 'with clean ENV setup', from: from, to: to, value: env_val
-
-          it "sets #{to} as `#{expected_val.inspect}`" do
-            expect { subject }.to change { ENV[to] }.from(nil).to(expected_val)
-          end
-        end
-      end
-    end
-
-    describe 'insecure registry' do
-      values = %w[true false]
-
-      it_behaves_like 'ENV mapping', from: 'CS_DOCKER_INSECURE', to: 'TRIVY_INSECURE', values: values, default: 'false'
-      it_behaves_like 'ENV mapping', from: 'CS_REGISTRY_INSECURE', to: 'TRIVY_NON_SSL', values: values, default: 'false'
-    end
-
-    describe 'setting up the log level' do
-      using RSpec::Parameterized::TableSyntax
-
-      around do |example|
-        old_logger_level = Gcs.logger.level
-
-        example.run
-      ensure
-        Gcs.logger.level = old_logger_level
-      end
-
-      where(:log_level, :trivy_debug) do
-        'debug'  | 'true'
-        'info'   | nil
-        'warn'   | nil
-        'error'  | nil
-        'fatal'  | nil
-      end
-
-      with_them do
-        before do
-          allow(ENV).to receive(:fetch).with('SECURE_LOG_LEVEL', 'info').and_return(log_level)
-
-          described_class.setup_log_level
-        end
-
-        it 'sets the Gcs logger level' do
-          expect(Gcs.logger.public_send("#{log_level}?")).to be_truthy
-        end
-
-        it 'sets the `TRIVY_DEBUG` environment variable correctly' do
-          expect(ENV['TRIVY_DEBUG']).to eq(trivy_debug)
-        end
-      end
-    end
-
+  describe '.project_dir' do
     it 'returns current directory if given project path doesn\'t exists' do
       allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return('gitlab/my_project')
       expect(described_class.project_dir).to eq(Pathname.pwd)
@@ -207,10 +128,70 @@ RSpec.describe Gcs::Environment do
     end
   end
 
+  describe '.docker_registry_credentials' do
+    context 'with default CI credentials set' do
+      let(:ci_registry_user) { 'some registry user' }
+      let(:ci_registry_password) { 'a registry password' }
+
+      before do
+        ENV['CI_REGISTRY_USER'] = ci_registry_user
+        ENV['CI_REGISTRY_PASSWORD'] = ci_registry_password
+      end
+
+      context 'with Docker credentials configured' do
+        let(:docker_user) { 'some Docker user' }
+        let(:docker_password) { 'a Docker password' }
+
+        before do
+          allow(ENV).to receive(:fetch).with('DOCKER_USER').and_return(docker_user)
+          allow(ENV).to receive(:fetch).with('DOCKER_PASSWORD').and_return(docker_password)
+        end
+
+        it 'returns configured Docker credentials' do
+          credentials = described_class.docker_registry_credentials
+
+          expect(credentials['username']).to eq(docker_user)
+          expect(credentials['password']).to eq(docker_password)
+        end
+      end
+
+      it 'returns default CI credentials' do
+        credentials = described_class.docker_registry_credentials
+
+        expect(credentials['username']).to eq(ci_registry_user)
+        expect(credentials['password']).to eq(ci_registry_password)
+      end
+    end
+
+    context 'with either user or password missing' do
+      before do
+        ENV['CI_REGISTRY_USER'] = ENV['CI_REGISTRY_PASSWORD'] = nil
+      end
+
+      it 'returns nil credentials' do
+        expect(described_class.docker_registry_credentials).to eq(nil)
+      end
+    end
+  end
+
   describe '.scanner' do
-    context 'without SCANNER' do
+    context 'with SCANNER set to trivy' do
+      before do
+        allow(ENV).to receive(:fetch).with('SCANNER', 'trivy').and_return('trivy')
+      end
+
       it 'returns GCS::Trivy' do
         expect(described_class.scanner.new).to be_an_instance_of Gcs::Trivy
+      end
+    end
+
+    context 'with SCANNER set to grype' do
+      before do
+        allow(ENV).to receive(:fetch).with('SCANNER', 'trivy').and_return('grype')
+      end
+
+      it 'returns GCS::Grype' do
+        expect(described_class.scanner.new).to be_an_instance_of Gcs::Grype
       end
     end
 

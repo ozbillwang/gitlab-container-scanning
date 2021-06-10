@@ -13,7 +13,7 @@ module Gcs
       trust!(certificate) if present?(certificate)
     end
 
-    def execute(command, env: {})
+    def execute(command, env = {})
       expanded_command = expand(command)
       collapsible_section(expanded_command) do
         logger.info(expanded_command)
@@ -55,6 +55,7 @@ module Gcs
     def record(stdout, stderr, status)
       if status
         logger.debug(stdout)
+        logger.debug(stderr)
       else
         logger.error(stderr)
       end

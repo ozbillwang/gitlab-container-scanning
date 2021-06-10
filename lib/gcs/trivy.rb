@@ -27,7 +27,7 @@ module Gcs
           with gcs #{Gcs::VERSION} and Trivy #{version_info[:binary_version]}, advisories updated at #{version_info[:db_updated_at]}
           HEREDOC
         )
-        Gcs.shell.execute(cmd)
+        Gcs.shell.execute(cmd, environment)
       end
 
       private
@@ -51,6 +51,23 @@ module Gcs
         allowed_severities = SEVERITY_LEVELS.select { |k, v| v >= Gcs::Environment.severity_level }.keys.join(',')
 
         "-s #{allowed_severities}"
+      end
+
+      def environment
+        docker_registry_credentials = Gcs::Environment.docker_registry_credentials
+        docker_registry_security_config = Gcs::Environment.docker_registry_security_config
+
+        {
+          "TRIVY_USERNAME" => docker_registry_credentials && docker_registry_credentials['username'],
+          "TRIVY_PASSWORD" => docker_registry_credentials && docker_registry_credentials['password'],
+          "TRIVY_DEBUG" => debug_enabled.to_s,
+          "TRIVY_INSECURE" => docker_registry_security_config[:docker_insecure].to_s,
+          "TRIVY_NON_SSL" => docker_registry_security_config[:registry_insecure].to_s
+        }
+      end
+
+      def debug_enabled
+        true if Gcs::Environment.log_level == "debug"
       end
     end
   end
