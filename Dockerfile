@@ -1,6 +1,6 @@
 ARG SCANNER=trivy
 
-FROM ruby:3.0.1-slim AS base
+FROM ruby:3.0-slim AS base
 
 FROM base AS builder
 ENV PATH="/gcs/:${PATH}"
