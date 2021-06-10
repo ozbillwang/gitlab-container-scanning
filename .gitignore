@@ -17,3 +17,4 @@ vendor
 .byebug_history
 tmp.json
 gl-container-scanning-report.json
+Gemfile.lock
