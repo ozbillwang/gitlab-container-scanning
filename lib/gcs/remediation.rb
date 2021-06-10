@@ -79,7 +79,7 @@ module Gcs
     end
 
     def operating_system
-      remediate_metadata.operating_system.match(/\S*/).to_s
+      remediate_metadata.operating_system.match(/[a-z]*/).to_s
     end
 
     def remediation_formula

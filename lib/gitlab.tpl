@@ -98,7 +98,7 @@
     "vendor": {
       "name": "GitLab"
     },
-    "version": "0.16.0"
+    "version": "0.18.3"
   },
   "type": "container_scanning",
   "start_time": "",
