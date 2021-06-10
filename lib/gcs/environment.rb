@@ -40,8 +40,6 @@ module Gcs
       end
 
       def setup
-        # TODO abstract this further when Grype variables introduced
-        setup_trivy_docker_registry
         setup_log_level
       end
 
@@ -62,22 +60,20 @@ module Gcs
         threshold.upcase.strip
       end
 
-      def setup_trivy_docker_registry
-        ENV['TRIVY_INSECURE'] = ENV.fetch('CS_DOCKER_INSECURE', 'false')
-        ENV['TRIVY_NON_SSL'] = ENV.fetch('CS_REGISTRY_INSECURE', 'false')
-
+      def docker_registry_credentials
         username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] }
         password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] }
 
         return if username.nil? || username.empty? || password.nil? || password.empty?
 
-        ENV['TRIVY_USERNAME'] = username
-        ENV['TRIVY_PASSWORD'] = password
+        { "username" => username, "password" => password }
       end
 
-      def setup_log_level
-        ENV['TRIVY_DEBUG'] = trivy_debug_value
-        Gcs.logger.level = log_level.upcase
+      def docker_registry_security_config
+        docker_insecure = ENV.fetch('CS_DOCKER_INSECURE', 'false').to_s.casecmp?("true")
+        registry_insecure = ENV.fetch('CS_REGISTRY_INSECURE', 'false').to_s.casecmp?("true")
+
+        { docker_insecure: docker_insecure, registry_insecure: registry_insecure }
       end
 
       def scanner
@@ -88,14 +84,14 @@ module Gcs
         exit 1
       end
 
-      private
-
       def log_level
-        ENV.fetch('SECURE_LOG_LEVEL', 'info')
+        ENV.fetch('SECURE_LOG_LEVEL', 'info').downcase
       end
 
-      def trivy_debug_value
-        'true' if log_level == 'debug'
+      private
+
+      def setup_log_level
+        Gcs.logger.level = log_level.upcase
       end
 
       def default_application_repository

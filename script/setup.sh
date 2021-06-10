@@ -16,8 +16,20 @@ setup_trivy_files() {
   rm -f /tmp/*
 }
 
+download_grype() {
+  echo "Dowloading Grype"
+  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /home/gitlab v0.12.1
+}
+
+download_grype_db() {
+  echo "Downloading Grype database"
+  grype db update -v
+}
+
 setup_grype_files() {
   echo "Setting up Grype files"
+  download_grype
+  download_grype_db
 }
 
 select_scanner() {

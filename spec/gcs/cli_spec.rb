@@ -4,7 +4,7 @@ RSpec.describe Gcs::Cli do
   let(:arguments) { ['scan', 'ubuntu:latest'] }
   let(:execution) { -> { described_class.start(arguments) } }
 
-  [Gcs::Trivy].each do |scanner|
+  [Gcs::Trivy, Gcs::Grype].each do |scanner|
     before do
       allow(Gcs::Environment).to receive(:scanner).and_return(scanner)
       allow(scanner).to receive(:scan_image).with('ubuntu:latest', 'tmp.json').and_return([nil,

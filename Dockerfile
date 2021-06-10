@@ -27,6 +27,7 @@ ENV PATH="/home/gitlab:${PATH}"
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   wget \
+  curl \
   ca-certificates \
   git-core \
   sudo \
