@@ -45,6 +45,7 @@ RSpec.describe Gcs::Trivy do
                                                     "TRIVY_PASSWORD" => nil,
                                                     "TRIVY_USERNAME" => nil
                                                   })
+      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).once
       expect(Gcs.logger).to receive(:info).with(
         "Scanning container from registry alpine:latest for vulnerabilities with " \
         "severity level UNKNOWN or higher, " \
