@@ -18,13 +18,14 @@ module Gcs
                "-o",
                output_file_name,
                image_name]
+        trivy_version = version_info
 
         Gcs.logger.debug(cmd.join(' '))
         Gcs.logger.info(
           <<~HEREDOC
           Scanning container from registry #{Gcs::Environment.default_docker_image} \
           for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
-          with gcs #{Gcs::VERSION} and Trivy #{version_info[:binary_version]}, advisories updated at #{version_info[:db_updated_at]}
+          with gcs #{Gcs::VERSION} and Trivy #{trivy_version[:binary_version]}, advisories updated at #{trivy_version[:db_updated_at]}
           HEREDOC
         )
         Gcs.shell.execute(cmd, environment)
