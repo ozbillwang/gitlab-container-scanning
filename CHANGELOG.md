@@ -1,3 +1,18 @@
+## 4.2.2 (2021-06-10)
+
+### Added (1 change)
+
+- [Updating the version with the latest changes (including Grype)](gitlab-org/security-products/analyzers/container-scanning@64b3271322a5d2f0f2531af07480d52dd4f57754) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2513))
+
+### fixed (2 changes)
+
+- [Remove redundant invocation of trivy version command](gitlab-org/security-products/analyzers/container-scanning@fe8d3f79b23509d7c84b90e83ff7c8c6cca01113) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2512))
+- [Fix image name and operating_system name edge case error](gitlab-org/security-products/analyzers/container-scanning@eacc9481e422a911bde36271bc564a7453157ad6) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2510))
+
+### added (1 change)
+
+- [This commit adds grype to the supported scanners.](gitlab-org/security-products/analyzers/container-scanning@1d517c2a9dbdf5acefc3c391da60377421860e80) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2480))
+
 ## 4.2.1 (2021-06-04)
 
 No changes.
