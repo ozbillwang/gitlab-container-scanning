@@ -98,24 +98,20 @@ gemnasium-dependency_scanning:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
-    - changes:
-      - Gemfile.lock
+    - when: always
 
 bundler-audit-dependency_scanning:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
-    - changes:
-      - Gemfile.lock
+    - when: always
 
 license_scanning:
   stage: initial-test
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
-    - changes:
-      - Gemfile.lock
-      when: manual
+    - when: always
 
 .build-tmp-image:
   extends: .not-on-schedule
