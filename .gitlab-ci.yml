@@ -26,6 +26,7 @@ workflow:
 
 stages:
   # check, test, and scan the Docker images
+  - pre-build
   - initial-test
   - build-image
   - test
@@ -92,7 +93,7 @@ gitlab styles:
     - bundle exec rubocop
 
 install-bundle-dependencies:
-  stage: initial-test
+  stage: pre-build
   image: ruby:3.0-slim
   script:
     - bundle install
