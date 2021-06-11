@@ -91,8 +91,19 @@ gitlab styles:
   script:
     - bundle exec rubocop
 
+install-bundle-dependencies:
+  stage: initial-test
+  image: ruby:3.0-slim
+  script:
+    - bundle install
+  artifacts:
+    paths:
+      - Gemfile.lock
+
 dependency_scanning:
   stage: initial-test
+  needs:
+    - job: install-bundle-dependencies
 
 gemnasium-dependency_scanning:
   rules:
