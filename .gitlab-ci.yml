@@ -96,6 +96,7 @@ install-bundle-dependencies:
   stage: pre-build
   image: ruby:3.0-slim
   script:
+    - apt-get update && apt-get install -y -q build-essential
     - bundle install
   artifacts:
     paths:
