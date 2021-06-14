@@ -43,15 +43,6 @@ module Gcs
         setup_log_level
       end
 
-      def severity_level
-        unless Gcs::Trivy::SEVERITY_LEVELS.key?(severity_level_name)
-          Gcs.logger.info('Invalid CS_SEVERITY_THRESHOLD')
-          return 0
-        end
-
-        Gcs::Trivy::SEVERITY_LEVELS[severity_level_name]
-      end
-
       def severity_level_name
         threshold = ENV['CS_SEVERITY_THRESHOLD']
 
