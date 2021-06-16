@@ -34,7 +34,7 @@ module Gcs
       private
 
       def version_info
-        stdout, _, status = Gcs.shell.execute(["trivy", "--version"])
+        stdout, _, status = Gcs.shell.execute(%w[trivy --version])
 
         return "" unless status.success?
 
@@ -47,11 +47,21 @@ module Gcs
       end
 
       def severity_level_arg
-        return '' if Gcs::Environment.severity_level.zero?
+        return '' if severity_level.zero?
 
-        allowed_severities = SEVERITY_LEVELS.select { |k, v| v >= Gcs::Environment.severity_level }.keys.join(',')
+        allowed_severities = SEVERITY_LEVELS.select { |k, v| v >= severity_level }.keys.join(',')
 
         "-s #{allowed_severities}"
+      end
+
+      def severity_level
+        severity_level_name = Gcs::Environment.severity_level_name
+        unless SEVERITY_LEVELS.key?(severity_level_name)
+          Gcs.logger.info('Invalid CS_SEVERITY_THRESHOLD')
+          return 0
+        end
+
+        SEVERITY_LEVELS[severity_level_name]
       end
 
       def environment

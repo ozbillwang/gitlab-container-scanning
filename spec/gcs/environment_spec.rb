@@ -47,11 +47,17 @@ RSpec.describe Gcs::Environment do
       expect(described_class.default_docker_image).to eq(image)
     end
 
-    describe '#severity_level' do
+    describe '#severity_level_name' do
       it 'returns value for given severity level' do
         allow(ENV).to receive(:[]).with('CS_SEVERITY_THRESHOLD').and_return('low')
 
-        expect(described_class.severity_level).to eq(1)
+        expect(described_class.severity_level_name).to eq("LOW")
+      end
+
+      it 'returns unknown for nil value' do
+        allow(ENV).to receive(:[]).with('CS_SEVERITY_THRESHOLD').and_return(nil)
+
+        expect(described_class.severity_level_name).to eq("UNKNOWN")
       end
     end
 

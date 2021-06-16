@@ -6,11 +6,36 @@ module Gcs
       def scan_image(image_name, output_file_name)
         template_file = File.join(Gcs.lib, 'gitlab.grype.tpl').to_s
         cmd = ["grype #{verbosity_flag} registry:#{image_name} -o template -t #{template_file} > #{output_file_name}"]
-        Gcs.logger.info("Running grype with: #{cmd.join(' ')}")
+        Gcs.logger.info(
+          <<~HEREDOC
+          Scanning container from registry #{Gcs::Environment.default_docker_image} \
+          for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
+          with gcs #{Gcs::VERSION} and Grype #{version_info}, advisories updated at #{db_updated_at}
+          HEREDOC
+        )
+
         Gcs.shell.execute(cmd, environment)
       end
 
       private
+
+      def version_info
+        stdout, _, status = Gcs.shell.execute(%w[grype version])
+
+        return 'unknown' unless status.success?
+
+        stdout.split("\n")[1].split.join(" ")
+      end
+
+      def db_updated_at
+        stdout, _, status = Gcs.shell.execute("grype db status")
+
+        return 'unknown' unless status.success?
+
+        Date.parse(stdout.split("\n")[1].chomp).to_s
+      rescue Date::Error
+        'unknown'
+      end
 
       def environment
         docker_registry_credentials = Gcs::Environment.docker_registry_credentials

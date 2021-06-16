@@ -29,7 +29,7 @@ RSpec.describe Gcs::Trivy do
 
   describe 'scanning with trivy' do
     it 'runs trivy binary with given severity levels' do
-      allow(Gcs::Environment).to receive(:severity_level).and_return(1)
+      allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = ["trivy i -s LOW,MEDIUM,HIGH,CRITICAL --skip-update --vuln-type os --no-progress --format template -t",
@@ -48,7 +48,7 @@ RSpec.describe Gcs::Trivy do
       expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).once
       expect(Gcs.logger).to receive(:info).with(
         "Scanning container from registry alpine:latest for vulnerabilities with " \
-        "severity level UNKNOWN or higher, " \
+        "severity level LOW or higher, " \
         "with gcs #{Gcs::VERSION} and Trivy Version: 0.15.0, " \
         "advisories updated at 2021-05-19\n"
       )
@@ -57,7 +57,7 @@ RSpec.describe Gcs::Trivy do
     end
 
     it 'runs trivy binary without severity level' do
-      allow(Gcs::Environment).to receive(:severity_level).and_return(0)
+      allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = ["trivy i  --skip-update --vuln-type os --no-progress --format template -t",
