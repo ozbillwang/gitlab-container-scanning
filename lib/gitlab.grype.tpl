@@ -5,27 +5,29 @@
   "vulnerabilities": [
   {{- $lastIndexOfMatches := getLastIndex .Matches}}
   {{- range $i, $_ := .Matches }}
+    {{- $fixedInVersion := "" -}}
+    {{- if ge (len .Vulnerability.Fix.Versions) 1 -}}{{- $fixedInVersion = index .Vulnerability.Fix.Versions 0 -}}{{- end -}}
     {
       "category": "container_scanning",
       "message": "{{ .Vulnerability.ID }} in {{ .Artifact.Name }}-{{ .Artifact.Version }}",
       "description": {{ .Vulnerability.Description | printf "%q" }},
       "cve": "{{ .Vulnerability.ID }}",
       "severity": {{ if eq .Vulnerability.Severity "Negligible" -}}
-                    "Low" {{- /* Since GitLab lacks a 'negligible' severity, this was the closest value in meaning. */ -}}
+                    "Low" {{- /* Since GitLab lacks a 'negligible' severity, 'Low' was the closest value in meaning. */ -}}
                   {{- else -}}
                     "{{ .Vulnerability.Severity }}"
                   {{- end }},
       "confidence": "Unknown",
-      "remediateMetadata": {{ if not .Vulnerability.FixedInVersion -}} {} {{- else -}}
+      "remediateMetadata": {{ if not $fixedInVersion -}} {} {{- else -}}
       {
         "package_name": "{{ .Artifact.Name }}",
         "package_version": "{{ .Artifact.Version }}",
-        "fixed_version": "{{ .Vulnerability.FixedInVersion }}",
-        "summary": "Upgrade {{ .Artifact.Name }} to {{ .Vulnerability.FixedInVersion }}"
+        "fixed_version": "{{ $fixedInVersion }}",
+        "summary": "Upgrade {{ .Artifact.Name }} to {{ $fixedInVersion }}"
       }
       {{- end }},
-      "solution": {{ if .Vulnerability.FixedInVersion -}}
-                    "Upgrade {{ .Artifact.Name }} to {{ .Vulnerability.FixedInVersion }}"
+      "solution": {{ if $fixedInVersion -}}
+                    "Upgrade {{ .Artifact.Name }} to {{ $fixedInVersion }}"
                   {{- else -}}
                     "No solution provided"
                   {{- end }},
@@ -61,11 +63,11 @@
         {{- end }}
       ],
       "links": [
-        {{- $lastIndexOfLinks := getLastIndex .Vulnerability.Links}}
-        {{- range $j, $_ := .Vulnerability.Links }}
+        {{- $lastIndexOfURLs := getLastIndex .Vulnerability.URLs}}
+        {{- range $j, $_ := .Vulnerability.URLs }}
         {
           "url": "{{ . }}"
-        }{{if ne $lastIndexOfLinks $j}},{{end}}
+        }{{if ne $lastIndexOfURLs $j}},{{end}}
         {{- end }}
       ]
     }{{if ne $lastIndexOfMatches $i}},{{end}}
@@ -80,7 +82,7 @@
       "vendor": {
         "name": "Anchore"
       },
-      "version": "0.12.1"
+      "version": "0.13.0"
     },
     "type": "container_scanning",
     "start_time": "",

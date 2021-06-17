@@ -18,7 +18,7 @@ setup_trivy_files() {
 
 download_grype() {
   echo "Dowloading Grype"
-  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /home/gitlab v0.12.1
+  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /home/gitlab v0.13.0
 }
 
 download_grype_db() {

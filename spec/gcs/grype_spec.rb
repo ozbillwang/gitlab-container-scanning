@@ -6,23 +6,23 @@ RSpec.describe Gcs::Grype do
   let(:version_data) do
     <<~HEREDOC
       Application:          grype
-      Version:              0.12.1
-      BuildDate:            2021-05-25T18:17:35Z
-      GitCommit:            7bdfffb43dcf75bfd4c8a3eec8f8ee0e2b97ab01
+      Version:              0.13.0
+      BuildDate:            2021-06-02T01:57:12Z
+      GitCommit:            3d21b8397d65770d292184b09a4f676bce6f3ec8
       GitTreeState:         clean
       Platform:             linux/amd64
       GoVersion:            go1.16.4
       Compiler:             gc
-      Supported DB Schema:  2
+      Supported DB Schema:  3
     HEREDOC
   end
 
   let(:db_status) do
     <<~HEREDOC
-      Location:  /home/gitlab/.cache/grype/db/2
-      Built:     2021-06-15 08:25:06 +0000 UTC
-      Schema:    2
-      Checksum:  sha256:14bb5d045ce7a00d54b4fd72cfbecffba475ae6b65ea68da9153563ac1677154
+      Location:  /home/gitlab/.cache/grype/db/3
+      Built:     2021-06-16 08:33:35 +0000 UTC
+      Schema:    3
+      Checksum:  sha256:759221b59f22d7d426ba092d2bd28b4b074cf7b5b783f7e0e3ddc1b1bd30178c
       Status:    valid
     HEREDOC
   end
@@ -59,8 +59,8 @@ RSpec.describe Gcs::Grype do
       expect(Gcs.logger).to receive(:info).with(
         "Scanning container from registry alpine:latest for vulnerabilities " \
         "with severity level UNKNOWN or higher, " \
-        "with gcs #{Gcs::VERSION} and Grype Version: 0.12.1, " \
-        "advisories updated at 2021-06-15\n"
+        "with gcs #{Gcs::VERSION} and Grype Version: 0.13.0, " \
+        "advisories updated at 2021-06-16\n"
       )
 
       subject
@@ -86,8 +86,8 @@ RSpec.describe Gcs::Grype do
       expect(Gcs.logger).to receive(:info).with(
         "Scanning container from registry alpine:latest for vulnerabilities " \
         "with severity level UNKNOWN or higher, " \
-        "with gcs #{Gcs::VERSION} and Grype Version: 0.12.1, " \
-        "advisories updated at 2021-06-15\n"
+        "with gcs #{Gcs::VERSION} and Grype Version: 0.13.0, " \
+        "advisories updated at 2021-06-16\n"
       )
 
       subject
