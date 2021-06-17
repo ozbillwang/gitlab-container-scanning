@@ -63,7 +63,7 @@ RSpec.shared_examples 'as container scanner' do |item|
     specify do
       expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
 
-      expect(subject['scan']['scanner']['version']).to eql('0.12.1')
+      expect(subject['scan']['scanner']['version']).to eql('0.13.0')
       expect(subject['scan']['scanner']['id']).to eql('grype')
       expect(subject['scan']['scanner']['name']).to eql('Grype')
       expect(subject['scan']['scanner']['url']).to eql('https://github.com/anchore/grype')
