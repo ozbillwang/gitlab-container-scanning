@@ -16,7 +16,7 @@ module Gcs
     def execute(command, env = {})
       expanded_command = expand(command)
       collapsible_section(expanded_command) do
-        logger.info(expanded_command)
+        logger.debug(expanded_command)
         stdout, stderr, status = Open3.capture3(default_env.merge(env), expanded_command)
         record(stdout, stderr, status)
         [stdout, stderr, status]

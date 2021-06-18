@@ -20,7 +20,6 @@ module Gcs
                image_name]
         trivy_version = version_info
 
-        Gcs.logger.debug(cmd.join(' '))
         Gcs.logger.info(
           <<~HEREDOC
           Scanning container from registry #{Gcs::Environment.default_docker_image} \
@@ -57,7 +56,7 @@ module Gcs
       def severity_level
         severity_level_name = Gcs::Environment.severity_level_name
         unless SEVERITY_LEVELS.key?(severity_level_name)
-          Gcs.logger.info('Invalid CS_SEVERITY_THRESHOLD')
+          Gcs.logger.warn('Invalid CS_SEVERITY_THRESHOLD')
           return 0
         end
 
