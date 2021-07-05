@@ -1,5 +1,5 @@
 create_release:
-  stage: release-major
+  stage: maintenance
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
