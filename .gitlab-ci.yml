@@ -2,6 +2,7 @@
 
 variables:
   MAJOR: 4
+  DOCKERFILE_SOURCE: Dockerfile
   DOCKER_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
   SCANNER: trivy
@@ -48,7 +49,7 @@ stages:
 
 .ruby-alpine:
   extends: .not-on-schedule
-  image: ruby:3.0.1-alpine
+  image: ruby:2.7-alpine
   before_script:
     - apk add git build-base
     - bundle config --local jobs "$(nproc)"
@@ -124,14 +125,19 @@ license_scanning:
   services:
     - docker:19.03.5-dind
   script:
+    - |
+      if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+      fi
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg SCANNER -q -t $DOCKER_IMAGE .
-    - docker push $DOCKER_IMAGE
+    - docker build --build-arg SCANNER -f $DOCKERFILE_SOURCE -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
+    - docker push $DOCKER_IMAGE$IMAGE_TAG_POSTFIX
 
 .scanners-matrix:
   parallel:
     matrix:
       - SCANNER: [trivy, grype]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
 
 build-scanner-image:
   extends:
@@ -188,11 +194,15 @@ ca cert:
   script:
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - export SOURCE_IMAGE=$DOCKER_IMAGE
+    - |
+      if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+      fi
+    - export SOURCE_IMAGE=$DOCKER_IMAGE$IMAGE_TAG_POSTFIX
     - docker pull $SOURCE_IMAGE
     - |
       if [ "$DEFAULT_SCANNER" = "$SCANNER" ]; then
-        TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}
+        TARGET_IMAGE=$CI_REGISTRY_IMAGE:${IMAGE_TAG:-$CI_JOB_NAME}$IMAGE_TAG_POSTFIX
         docker tag $SOURCE_IMAGE $TARGET_IMAGE
         docker push $TARGET_IMAGE
       fi
@@ -201,11 +211,11 @@ ca cert:
       if [ -n "$CS_DEPLOY_USERNAME" ] && [ -n "$CS_DEPLOY_PASSWORD" ] && [ -n "$IMAGE_TAG" ]; then
         docker login -u "$CS_DEPLOY_USERNAME" -p "$CS_DEPLOY_PASSWORD" "$DEPLOY_REGISTRY_IMAGE"
         if [ "$DEFAULT_SCANNER" = "$SCANNER" ]; then
-          TARGET_IMAGE_DEFAULT="${DEPLOY_REGISTRY_IMAGE}:${IMAGE_TAG}"
+          TARGET_IMAGE_DEFAULT="${DEPLOY_REGISTRY_IMAGE}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
           docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_DEFAULT"
           docker push "$TARGET_IMAGE_DEFAULT"
         fi
-        TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}"
+        TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
         docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_SCANNER"
         docker push "$TARGET_IMAGE_SCANNER"
       fi

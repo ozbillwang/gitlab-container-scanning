@@ -34,10 +34,17 @@ class ProxyServer
 
     system("sudo kill -9 #{pid}")
     Process.wait(pid)
-    system("rm -f /usr/local/share/ca-certificates/custom.*")
-    system("rm -f /usr/lib/ssl/certs/custom.*")
-    system("update-ca-certificates")
-    system("c_rehash")
+
+    if Gcs::Environment.ubi?
+      system("rm -f /etc/pki/ca-trust/source/anchors/custom.*")
+      system("rm -f #{OpenSSL::X509::DEFAULT_CERT_DIR}/custom.*")
+      system('update-ca-trust extract')
+    else
+      system("rm -f /usr/local/share/ca-certificates/custom.*")
+      system("rm -f #{OpenSSL::X509::DEFAULT_CERT_DIR}/custom.*")
+      system("update-ca-certificates")
+      system("c_rehash")
+    end
   end
 
   private
