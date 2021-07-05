@@ -3,13 +3,13 @@ module Gcs
   class Shell
     SPLIT_SCRIPT = "'BEGIN {x=0;} /BEGIN CERT/{x++} { print > \"custom.\" x \".crt\" }'"
 
-    attr_reader :default_env, :default_certificate_path, :custom_certificate_path, :logger
+    DEFAULT_CUSTOM_CERTIFICATE_PATH = '/usr/local/share/ca-certificates/custom.crt'
+    DEFAULT_UBI_CUSTOM_CERTIFICATE_PATH = '/etc/pki/ca-trust/source/anchors/custom.crt'
+
+    attr_reader :logger
 
     def initialize(logger: Gcs.logger, certificate: ENV['ADDITIONAL_CA_CERT_BUNDLE'])
       @logger = logger
-      @custom_certificate_path =  ::Pathname.new('/usr/local/share/ca-certificates/custom.crt')
-      @default_certificate_path = ::Pathname.new('/etc/ssl/certs/ca-certificates.crt')
-      @default_env = { 'SSL_CERT_FILE' => @default_certificate_path.to_s }
       trust!(certificate) if present?(certificate)
     end
 
@@ -37,15 +37,15 @@ module Gcs
       custom_certificate_path.write(certificate)
       Dir.chdir custom_certificate_path.dirname do
         execute([:awk, SPLIT_SCRIPT, '<', custom_certificate_path])
-        execute('update-ca-certificates -v')
+        Gcs::Environment.ubi? ? execute('update-ca-trust extract') : execute('update-ca-certificates -v')
 
         Dir.glob('custom.*.crt').each do |path|
           execute([:openssl, :x509, '-in', File.expand_path(path), '-text', '-noout'])
         end
       end
 
-      execute([:cp, custom_certificate_path.to_s, '/usr/lib/ssl/certs/'])
-      execute([:c_rehash, '-v'])
+      execute([:cp, custom_certificate_path.to_s, OpenSSL::X509::DEFAULT_CERT_DIR])
+      execute([:c_rehash, '-v']) unless Gcs::Environment.ubi?
     end
 
     def present?(item)
@@ -67,6 +67,16 @@ module Gcs
       yield
     ensure
       logger.debug("\nsection_end:#{Time.now.to_i}:#{id}\r\e[0K")
+    end
+
+    def default_env
+      { 'SSL_CERT_FILE' => ::Pathname.new(OpenSSL::X509::DEFAULT_CERT_FILE).to_s }
+    end
+
+    def custom_certificate_path
+      return ::Pathname.new(DEFAULT_UBI_CUSTOM_CERTIFICATE_PATH) if Gcs::Environment.ubi?
+
+      ::Pathname.new(DEFAULT_CUSTOM_CERTIFICATE_PATH)
     end
   end
 end

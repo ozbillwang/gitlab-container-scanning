@@ -3,17 +3,19 @@
 set -e
 
 setup_trivy_files() {
+  echo "Creating temp directory"
+  TMP_FOLDER=$(mktemp -d)
   echo "Dowloading Trivy"
   trivy_version=$(cat TRIVY_VERSION)
   wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf -
   echo "Dowloading Trivy DB"
-  wget --no-verbose https://github.com/aquasecurity/trivy-db/releases/latest/download/trivy-offline.db.tgz -O - | tar -zxvf - -C /tmp/
+  wget --no-verbose https://github.com/aquasecurity/trivy-db/releases/latest/download/trivy-offline.db.tgz -O - | tar -zxvf - -C "$TMP_FOLDER"
   echo "Setting up Trivy files"
   mkdir -p ~/.cache/trivy/db
-  mv /tmp/trivy.db /tmp/metadata.json ~/.cache/trivy/db/
+  mv "$TMP_FOLDER"/trivy.db "$TMP_FOLDER"/metadata.json ~/.cache/trivy/db/
   chmod -R g+rw /home/gitlab/.cache/
   echo "Cleaning up tmp folder"
-  rm -f /tmp/*
+  rm -rf "$TMP_FOLDER"
 }
 
 download_grype() {
