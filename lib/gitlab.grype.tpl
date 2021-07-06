@@ -5,7 +5,7 @@
   "vulnerabilities": [
   {{- $t_first := true }}
   {{- range $i, $_ := .Matches }}
-    {{- if ne .Artifact.Language "" -}}
+    {{- if eq .Artifact.Language "" -}}
       {{- if $t_first -}}
         {{- $t_first = false -}}
       {{ else -}}
