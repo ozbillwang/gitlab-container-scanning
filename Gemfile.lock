@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gcs (4.3.1)
+    gcs (4.3.4)
       console (~> 1.8)
       term-ansicolor (~> 1.7)
       terminal-table (~> 3.0)
@@ -164,7 +164,7 @@ DEPENDENCIES
   webmock (~> 3.12)
 
 RUBY VERSION
-   ruby 3.0.1p64
+   ruby 2.7.4p191
 
 BUNDLED WITH
    2.2.15
