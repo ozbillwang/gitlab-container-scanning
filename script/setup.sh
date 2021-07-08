@@ -5,8 +5,8 @@ set -e
 setup_trivy_files() {
   echo "Creating temp directory"
   TMP_FOLDER=$(mktemp -d)
-  echo "Dowloading Trivy"
   trivy_version=$(cat TRIVY_VERSION)
+  echo "Dowloading and installing Trivy ${trivy_version}"
   wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf -
   echo "Dowloading Trivy DB"
   wget --no-verbose https://github.com/aquasecurity/trivy-db/releases/latest/download/trivy-offline.db.tgz -O - | tar -zxvf - -C "$TMP_FOLDER"
@@ -19,8 +19,9 @@ setup_trivy_files() {
 }
 
 download_grype() {
-  echo "Dowloading Grype"
-  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /home/gitlab v0.13.0
+  grype_version=$(cat GRYPE_VERSION)
+  echo "Dowloading and installing Grype ${grype_version}"
+  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /home/gitlab "v${grype_version}"
 }
 
 download_grype_db() {
