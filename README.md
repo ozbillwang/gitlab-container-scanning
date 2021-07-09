@@ -10,12 +10,6 @@ You can configure container scanning by using the [available CI/CD variables](ht
 
 Please do not use scanner-specific variables that are not documented as being supported by the GitLab analyzer.
 
-## Changelog guidelines
-
-All commits that get merged to the default branch should include the Changelog Git trailer.
-Make sure to follow [changelog guidelines](https://docs.gitlab.com/ee/development/changelog.html#what-warrants-a-changelog-entry).
-Commit that just updates the `VERSION` in `lib/gcs/version.rb` or any non-user facing changes should include the Changelog trailer value as `other`.
-
 ## Release
 
 To release a new version:
