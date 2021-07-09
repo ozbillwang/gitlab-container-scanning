@@ -84,6 +84,10 @@ unit test:
   stage: initial-test
   script:
     - bundle exec rake unit_test
+  artifacts:
+    when: always
+    reports:
+      junit: rspec.xml
 
 gitlab styles:
   extends: .ruby-alpine
@@ -156,6 +160,10 @@ build-scanner-image:
   variables:
     IMAGE_TAG: $DOCKER_IMAGE
     CS_QUIET: "true"
+  artifacts:
+    when: always
+    reports:
+      junit: rspec.xml
   script:
     - sudo ./script/setup_integration
     - bundle config set path 'vendor/ruby'

@@ -10,6 +10,8 @@ require 'json'
 require 'gcs/version'
 
 TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
+RSPEC_XML_PATH = ENV['CI_PROJECT_DIR'].to_s == '' ? "rspec.xml" : "#{ENV['CI_PROJECT_DIR']}/rspec.xml"
+COMMON_RSPEC_OPTIONS = "--format progress --format RspecJunitFormatter --out #{RSPEC_XML_PATH}"
 
 def git(cmd, *args)
   output, status = Open3.capture2e('git', cmd, *args)
@@ -22,16 +24,16 @@ end
 RSpec::Core::RakeTask.new(:spec)
 
 RSpec::Core::RakeTask.new(:spec_unit) do |t|
-  t.rspec_opts = '--tag ~@integration'
+  t.rspec_opts = "--tag ~@integration #{COMMON_RSPEC_OPTIONS}"
 end
 
 RSpec::Core::RakeTask.new(:spec_integration) do |t|
-  t.rspec_opts = '--tag integration'
+  t.rspec_opts = "--tag integration #{COMMON_RSPEC_OPTIONS}"
 end
 
 %w[alpine centos webgoat ca_cert].each do |flag|
   RSpec::Core::RakeTask.new("spec_integration_#{flag}") do |t|
-    t.rspec_opts = "--tag integration:#{flag}"
+    t.rspec_opts = "--tag integration:#{flag} #{COMMON_RSPEC_OPTIONS}"
   end
 end
 
