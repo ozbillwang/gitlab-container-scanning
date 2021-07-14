@@ -1,3 +1,13 @@
+## 4.3.4 (2021-07-14)
+
+### other (5 changes)
+
+- [Update trivy version in template](gitlab-org/security-products/analyzers/container-scanning@ea73f6f6561dd19106f24818e989eb057d0341ca) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2537))
+- [Use permalink for Trivy template reference](gitlab-org/security-products/analyzers/container-scanning@b98f16aaa028ed0a7b5c7904ba25452a70d2968c) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2532))
+- [Upload test reports](gitlab-org/security-products/analyzers/container-scanning@82c3397a4d85e6278376dc50fbd202ff3b8a82e5) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2529))
+- [Follow existing pattern for setting Grype version](gitlab-org/security-products/analyzers/container-scanning@e6b6ab19427438785a1b2ab9e686f4522a3689b3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2530))
+- [Enforce adding changelog trailer](gitlab-org/security-products/analyzers/container-scanning@3fa48de1dd3d77027861e6d10b1cfda6feca02d5) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2526))
+
 ## 4.3.3 (2021-07-06)
 
 No changes.
