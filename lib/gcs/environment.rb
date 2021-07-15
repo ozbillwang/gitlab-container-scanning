@@ -67,6 +67,10 @@ module Gcs
         { docker_insecure: docker_insecure, registry_insecure: registry_insecure }
       end
 
+      def base_image
+        ENV.fetch('CS_BASE_IMAGE', nil)
+      end
+
       def scanner
         scanner = ENV.fetch('SCANNER', 'trivy')
         Object.const_get("Gcs::#{scanner.capitalize}")
