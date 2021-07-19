@@ -57,24 +57,30 @@ task :integration do
   end
 end
 
-desc 'Checks if commit message complies with the format for generating automatic CHANGELOG.md'
+desc 'Checks if at least one commit message in the MR complies with the format for generating automatic CHANGELOG.md'
 task :commit_message do
-  exp = /Changelog: (added|fixed|changed|deprecated|removed|security|performance|other)/im
-  regex_check = lambda do |content|
-    unless content.match?(exp)
-      puts "\e[31m!!!Commit message is not correct for auto generating changelog!!!\e[0m"
-      abort "\e[31m Please include Changelog: (Added or Changed|Deprecated|Removed|Fixed|Security) commit body \e[0m"
-    end
+  changelog_exp = /Changelog: (added|fixed|changed|deprecated|removed|security|performance|other)/im
+  next unless ENV['CI_PROJECT_ID'] && ENV['CI_MERGE_REQUEST_IID']
+
+  project_id = ENV['CI_PROJECT_ID']
+  mr_id = ENV['CI_MERGE_REQUEST_IID']
+  api_url = ENV['CI_API_V4_URL']
+  uri = URI("#{api_url}/projects/#{project_id}/merge_requests/#{mr_id}/commits")
+  res = Net::HTTP.get_response(uri)
+  abort("Error getting list of commits for this MR from #{uri}") unless res.code == '200'
+
+  commits = JSON.parse(res.body)
+  commit_messages = commits.collect { |commit| commit['message'] }
+  commit_messages.each do |message|
+    next if message.match?(changelog_exp)
   end
 
-  if ENV['CI'] && ENV['CI_COMMIT_MESSAGE'] && (ENV['CI_COMMIT_BRANCH'] != ENV['CI_DEFAULT_BRANCH'])
-    regex_check.call(ENV['CI_COMMIT_MESSAGE'])
-  else
-    return unless Pathname('.git/COMMIT_EDITMSG').exist?
-
-    content = File.read('.git/COMMIT_EDITMSG')
-    regex_check.call(content)
+  puts("Changelog regex: #{changelog_exp}")
+  puts("Commit messages:")
+  commit_messages.each do |message|
+    puts(message)
   end
+  abort "\e[31m None of the commits in the MR contain a valid changelog\e[0m"
 end
 
 desc 'Update Trivy binary to latest version'

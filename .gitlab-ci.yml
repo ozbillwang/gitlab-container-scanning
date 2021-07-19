@@ -1,5 +1,4 @@
 ---
-
 variables:
   MAJOR: 4
   DOCKERFILE_SOURCE: Dockerfile
@@ -78,7 +77,10 @@ check-commit-message:
   stage: initial-test
   script:
     - bundle exec rake commit_message
-  allow_failure: true
+  rules:
+  - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+    when: never
+  - if: $CI_COMMIT_BRANCH
 
 unit test:
   extends: .ruby-alpine
