@@ -72,16 +72,6 @@ shellcheck:
   script:
     - shellcheck -e SC1071 script/*
 
-check-commit-message:
-  extends: .ruby-alpine
-  stage: initial-test
-  script:
-    - bundle exec rake commit_message
-  rules:
-  - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
-    when: never
-  - if: $CI_COMMIT_BRANCH
-
 unit test:
   extends: .ruby-alpine
   stage: initial-test
@@ -123,6 +113,31 @@ license_scanning:
     - changes:
       - Gemfile.lock
       when: manual
+
+danger-review:
+  stage: initial-test
+  image: registry.gitlab.com/gitlab-org/security-products/danger-bot:$DANGER_BOT_VERSION
+  rules:
+    - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+      when: never
+    - if: $DANGER_DISABLED
+      when: never
+    - if: '$CI_COMMIT_BRANCH && $CI_PROJECT_NAMESPACE == "gitlab-org/security-products/analyzers"'
+    - when: never
+  variables:
+    DANGER_BOT_VERSION: v0.0.7
+    DANGER_CHANGELOG_MODE: trailer
+  script:
+    - cp -r /danger/ danger/
+    - mv danger/analyzers/Dangerfile Dangerfile
+    - |
+      if [ -f danger/Gemfile ]; then
+        mv danger/Gemfile Gemfile
+        bundle config set path danger/vendor/
+        bundle exec danger --fail-on-errors=true
+      else
+        danger --fail-on-errors=true
+      fi
 
 .build-tmp-image:
   extends: .not-on-schedule
