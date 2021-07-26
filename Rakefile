@@ -8,8 +8,8 @@ require 'open3'
 require 'date'
 require 'json'
 require 'gcs/version'
+require_relative 'support/lib/scanner_update'
 
-TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
 RSPEC_XML_PATH = ENV['CI_PROJECT_DIR'].to_s == '' ? "rspec.xml" : "#{ENV['CI_PROJECT_DIR']}/rspec.xml"
 COMMON_RSPEC_OPTIONS = "--format progress --format RspecJunitFormatter --out #{RSPEC_XML_PATH}"
 
@@ -59,48 +59,8 @@ end
 
 desc 'Update Trivy binary to latest version'
 task :update_trivy do
-  uri = URI("https://api.github.com/repos/aquasecurity/trivy/releases/latest")
-  res = Net::HTTP.get_response(uri)
-  project_id = ENV['CI_PROJECT_ID']
-
-  if res.code == '200'
-    res = JSON.parse(res.body)
-    current_trivy_version = File.read(TRIVY_VERSION_FILE).strip
-
-    if res['tag_name'] != current_trivy_version
-      version = res['tag_name'][1..]
-      puts "Version has changed from #{current_trivy_version} to #{version}"
-      branch_name = "update-trivy-to-#{version}-#{Date.today}"
-      puts "creating #{branch_name} branch"
-
-      if ENV['CI']
-        puts "Configuring git for bot user"
-        git('fetch')
-        git('config', "--global", "user.email", "csbot@gitlab.com")
-        git('config', "--global", "user.name", "CS bot Bot")
-        git('config', "--global", "credential.username", "project_#{project_id}_bot")
-      end
-
-      git('checkout', '-b', branch_name)
-      File.truncate(TRIVY_VERSION_FILE, 0)
-      File.write(TRIVY_VERSION_FILE, version)
-      git('add', TRIVY_VERSION_FILE)
-      git('commit', '-m', "Update Trivy version #{Date.today}\nChangelog: changed")
-
-      if ENV['CI']
-        project_path = ENV['CI_PROJECT_PATH']
-        remote_git = "https://project_#{project_id}_bot:#{ENV['CS_TOKEN']}@#{ENV['CI_SERVER_HOST']}/#{project_path}.git"
-        git('push',
-            "-o", "merge_request.create",
-            "-o", "merge_request.remove_source_branch",
-            "-o", "merge_request.label=devops::protect",
-            "-o", "merge_request.title=Upgrade trivy to #{version}",
-            "-o", "merge_request.target=#{ENV['CI_DEFAULT_BRANCH']}", remote_git, branch_name)
-      end
-    end
-  else
-    puts "Can't get latest release from Github"
-  end
+  include ScannerUpdate
+  update_trivy
 end
 
 desc 'Creates CHANGELOG.md through Gitlab Api'

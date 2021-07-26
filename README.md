@@ -48,6 +48,17 @@ This job depends on the `GITLAB_TOKEN`. The variable must *not* be protected bec
 branch, and when it first runs the tag is not protected. We could move to a `vM.m.p` pattern and protect `v*` tags but
 this is not currently in place.
 
+#### Scanner updates
+
+To update a scanner to the latest version, run `bundle exec rake update_trivy` to create a branch with the updated
+version, then push your changes and create a new MR. Example:
+```bash
+$ bundle exec rake update_trivy
+Version has changed from 0.18.1 to 0.19.1
+creating update-trivy-to-0.19.1-2021-07-19 branch
+$ git push
+```
+
 ## License
 
 See the [LICENSE](LICENSE) file for more details.
