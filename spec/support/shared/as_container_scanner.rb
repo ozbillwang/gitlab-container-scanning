@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+# TODO: DRY-up against other ruby files (e.g. Rakefile)
+TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
 
 RSpec.shared_examples 'as container scanner' do |item|
   include_context 'with scanner'
@@ -49,9 +51,11 @@ RSpec.shared_examples 'as container scanner' do |item|
 
   shared_examples 'as trivy scanner' do
     specify do
+      current_trivy_version = File.read(TRIVY_VERSION_FILE).strip
+
       expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
 
-      expect(subject['scan']['scanner']['version']).to eql('0.19.2')
+      expect(subject['scan']['scanner']['version']).to eql(current_trivy_version)
       expect(subject['scan']['scanner']['id']).to eql('trivy')
       expect(subject['scan']['scanner']['name']).to eql('Trivy')
       expect(subject['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')

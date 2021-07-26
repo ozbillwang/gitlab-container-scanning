@@ -17,7 +17,7 @@ _This notice should stay as the first item in the CONTRIBUTING.md file._
 You can view this projects license in [LICENSE.md](LICENSE)
 
 
-## Contributer Resources
+## Contributor Resources
 
 Thank you for your interest in contributing to GitLab. 
 
@@ -52,7 +52,7 @@ request that potentially fixes it.
 
 [gitlab-tracker]: https://gitlab.com/gitlab-org/gitlab/issues
 
-## Contributer Code of conduct
+## Contributor Code of conduct
 
 We want to create a welcoming environment for everyone who is interested in contributing.
 Visit our [Code of Conduct page](https://about.gitlab.com/community/contribute/code-of-conduct/) 
