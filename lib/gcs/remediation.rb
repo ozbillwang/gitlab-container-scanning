@@ -8,6 +8,21 @@ module Gcs
     # LAST_FROM_KEYWORD = /FROM(?![\s\S]+FROM[\s\S]+)/.freeze
     LAST_FROM_KEYWORD_LINE = /.*FROM.*(?![\s\S]+FROM[\s\S]+)/.freeze
 
+    REMEDIATION_COMMANDS = {
+      'apt' => "apt-get update && apt-get upgrade -y %{package_name} && rm -rf /var/lib/apt/lists/*",
+      'apk' => "apk --no-cache update && apk --no-cache add %{package_name}=%{fixed_version}",
+      'yum' => "yum -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; yum update -y %{package_name}; }" \
+                  " && yum clean all"
+    }.freeze
+
+    PACKAGE_MANAGER_MAPPINGS = {
+      'debian' => 'apt',
+      'ubuntu' => 'apt',
+      'oracle' => 'apt',
+      'alpine' => 'apk',
+      'centos' => 'yum'
+    }.freeze
+
     Fixes = Struct.new(:cve, :id) do
       def ==(other)
         id == other.id
@@ -48,6 +63,8 @@ module Gcs
     end
 
     def to_hash
+      return {} unless supported_operating_system?
+
       {
         fixes: fixes.to_a.map(&:to_hash),
         summary: remediate_metadata['summary'],
@@ -79,20 +96,22 @@ module Gcs
     end
 
     def operating_system
-      remediate_metadata.operating_system.match(/[a-z]*/).to_s
+      @operating_system ||= remediate_metadata.operating_system.match(/[a-z]*/).to_s
+    end
+
+    def supported_operating_system?(os = operating_system)
+      PACKAGE_MANAGER_MAPPINGS.include?(os)
+    end
+
+    def package_manager
+      PACKAGE_MANAGER_MAPPINGS.fetch(operating_system, "")
     end
 
     def remediation_formula
-      remediation_commands = {
-        'debian' => "apt-get update && apt-get upgrade -y #{package_name} && rm -rf /var/lib/apt/lists/*",
-        'ubuntu' => "apt-get update && apt-get upgrade -y #{package_name} && rm -rf /var/lib/apt/lists/*",
-        'oracle' => "apt-get update && apt-get upgrade -y #{package_name} && rm -rf /var/lib/apt/lists/*",
-        'alpine' => "apk --no-cache update && apk --no-cache add #{package_name}=#{fixed_version}",
-        'centos' => "yum -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; yum update -y #{package_name}; }" \
-                    " && yum clean all"
-      }
-
-      remediation_commands[operating_system]
+      format(
+        REMEDIATION_COMMANDS.fetch(package_manager, ""),
+        { package_name: package_name, fixed_version: fixed_version }
+      )
     end
   end
 end

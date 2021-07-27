@@ -73,4 +73,23 @@ RSpec.describe Gcs::Remediation do
       )
     end
   end
+
+  describe 'for unsupported operating systems' do
+    let(:remediation) do
+      described_class.new(
+        {
+          'package_name' => 'apt',
+          'package_version' => '1.0.0',
+          'fixed_version' => '2.2.1',
+          'operating_system' => 'some-unrecognized-os',
+          'summary' => 'Upgrade apt to 2.2.1'
+        },
+        docker_file_path
+      )
+    end
+
+    it 'does not crash' do
+      expect(remediation.to_hash).to eq({})
+    end
+  end
 end
