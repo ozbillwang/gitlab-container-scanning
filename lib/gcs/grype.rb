@@ -3,6 +3,10 @@
 module Gcs
   class Grype < Scanner
     class << self
+      def template_file
+        File.join(Gcs.lib, 'template', 'grype.tpl').to_s
+      end
+
       def scan_image(image_name, output_file_name)
         cmd = ["grype #{verbosity_flag} registry:#{image_name} -o template -t #{template_file} > #{output_file_name}"]
         Gcs.logger.info(

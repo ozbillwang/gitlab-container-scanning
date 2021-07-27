@@ -11,6 +11,10 @@ module Gcs
     }.freeze
 
     class << self
+      def template_file
+        "@#{File.join(Gcs.lib, 'template', 'trivy.tpl')}"
+      end
+
       def scan_image(image_name, output_file_name)
         cmd = ["trivy i #{severity_level_arg} --skip-update --vuln-type os --no-progress --format template -t",
                "@#{template_file}",
