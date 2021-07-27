@@ -256,7 +256,7 @@ tag branch:
   rules:
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
       when: never
-    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_IID
 
 tag edge:
   extends: .docker_tag
