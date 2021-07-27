@@ -123,6 +123,7 @@ danger-review:
     - if: $DANGER_DISABLED
       when: never
     - if: '$CI_COMMIT_BRANCH && $CI_PROJECT_NAMESPACE == "gitlab-org/security-products/analyzers"'
+    - if: $CI_MERGE_REQUEST_IID
     - when: never
   variables:
     DANGER_BOT_VERSION: v0.0.7
