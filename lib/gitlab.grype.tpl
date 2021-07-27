@@ -89,7 +89,7 @@
       "vendor": {
         "name": "Anchore"
       },
-      "version": "0.13.0"
+      "version": "0.15.0"
     },
     "type": "container_scanning",
     "start_time": "",

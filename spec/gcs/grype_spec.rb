@@ -6,7 +6,7 @@ RSpec.describe Gcs::Grype do
   let(:version_data) do
     <<~HEREDOC
       Application:          grype
-      Version:              0.13.0
+      Version:              0.15.0
       BuildDate:            2021-06-02T01:57:12Z
       GitCommit:            3d21b8397d65770d292184b09a4f676bce6f3ec8
       GitTreeState:         clean
@@ -59,7 +59,7 @@ RSpec.describe Gcs::Grype do
       expect(Gcs.logger).to receive(:info).with(
         "Scanning container from registry alpine:latest for vulnerabilities " \
         "with severity level UNKNOWN or higher, " \
-        "with gcs #{Gcs::VERSION} and Grype Version: 0.13.0, " \
+        "with gcs #{Gcs::VERSION} and Grype Version: 0.15.0, " \
         "advisories updated at 2021-06-16\n"
       )
 
@@ -86,7 +86,7 @@ RSpec.describe Gcs::Grype do
       expect(Gcs.logger).to receive(:info).with(
         "Scanning container from registry alpine:latest for vulnerabilities " \
         "with severity level UNKNOWN or higher, " \
-        "with gcs #{Gcs::VERSION} and Grype Version: 0.13.0, " \
+        "with gcs #{Gcs::VERSION} and Grype Version: 0.15.0, " \
         "advisories updated at 2021-06-16\n"
       )
 
