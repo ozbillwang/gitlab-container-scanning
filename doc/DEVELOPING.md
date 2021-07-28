@@ -81,8 +81,8 @@ At the moment adding scanners requires the following:
 
 1. Build stage:
    1. Update `script/setup.sh` to support fetching and placing of files required by the new scanner. Scanner selection is performed through `$SCANNER`. Note that each scanner will have its own docker image even if they share most of the source code. If applicable add a new version file similar to `version/TRIVY_VERSION` as those can be accessible from the scope of `script/setup.sh`.
-   1. Create a new ruby file under `lib/gcs` similar to `trivy.rb` with the main call to the new scanner, and feel to adjust `environment.rb` and other files as needed.
-   1. Create a template file similar to `lib/gitlab.tpl` which will format the scanner output to match what is expected by the post-processing logic which will be further ingested by GitLab through the final report.
+   1. Create a new ruby file under `lib/gcs` similar to `trivy.rb` with the main call to the new scanner.
+   1. Create a template under `lib/template` matching your scanner name. This is used to create a report suitable for ingestion by GitLab based on the output of your scanner.
    1. In case it has not been created, add a new anchor and new build and test pipeline jobs as the following example:
    ```
    .new_scanner:

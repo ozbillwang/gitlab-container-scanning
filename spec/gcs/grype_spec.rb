@@ -2,7 +2,6 @@
 RSpec.describe Gcs::Grype do
   let(:image_name) { 'alpine:latest' }
   let(:output_file_name) { 'gl-report.json' }
-  let(:template_file) { File.join(Gcs.lib, 'gitlab.grype.tpl') }
   let(:version_data) do
     <<~HEREDOC
       Application:          grype
@@ -45,7 +44,7 @@ RSpec.describe Gcs::Grype do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
       allow(Gcs::Environment).to receive(:docker_registry_security_config).and_return({ docker_insecure: false })
 
-      cmd = ["grype -v registry:#{image_name} -o template -t #{template_file} > #{output_file_name}"]
+      cmd = ["grype -v registry:#{image_name} -o template -t #{described_class.template_file} > #{output_file_name}"]
 
       expect(Gcs.shell).to receive(:execute).with(cmd, {
                                                     "GRYPE_CHECK_FOR_APP_UPDATE" => "false",
@@ -72,7 +71,7 @@ RSpec.describe Gcs::Grype do
       allow(Gcs::Environment).to receive(:docker_registry_security_config).and_return({ docker_insecure: true })
       allow(Gcs::Environment).to receive(:log_level).and_return("debug")
 
-      cmd = ["grype -vv registry:#{image_name} -o template -t #{template_file} > #{output_file_name}"]
+      cmd = ["grype -vv registry:#{image_name} -o template -t #{described_class.template_file} > #{output_file_name}"]
 
       expect(Gcs.shell).to receive(:execute).with(cmd, {
                                                     "GRYPE_CHECK_FOR_APP_UPDATE" => "false",
