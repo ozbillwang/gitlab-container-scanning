@@ -1,3 +1,9 @@
+## 4.3.5 (2021-07-28)
+
+### fixed (1 change)
+
+- [Fix crash when performing auto-remediation for an unknown OS](gitlab-org/security-products/analyzers/container-scanning@fe5fe7bfce4069c5f9398068934e3aa4e070a87e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2550))
+
 ## 4.3.4 (2021-07-14)
 
 ### other (5 changes)
