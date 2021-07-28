@@ -14,8 +14,10 @@ RSpec.describe Gcs::Environment do
   describe '.docker_image' do
     it 'uses given DOCKER_IMAGE env variable' do
       allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return('alpine:latest')
+      allow(described_class).to receive(:default_docker_image)
 
       expect(described_class.docker_image).to eq('alpine:latest')
+      expect(described_class).not_to have_received(:default_docker_image)
     end
 
     it 'returns default_docker_image when DOCKER_IMAGE env variable is not given' do
@@ -23,6 +25,7 @@ RSpec.describe Gcs::Environment do
       allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
 
       expect(described_class.docker_image).to eq(ci_registry_image)
+      expect(described_class).to have_received(:default_docker_image).once
     end
   end
 
@@ -176,16 +179,17 @@ RSpec.describe Gcs::Environment do
         end
 
         it 'uses default credentials for CI_REGISTRY' do
-          allow(described_class).to receive(:default_docker_image).and_return(internal_registry_image)
+          allow(described_class).to receive(:docker_image).and_return(internal_registry_image)
 
           credentials = described_class.docker_registry_credentials
 
+          expect(credentials).not_to be_nil
           expect(credentials['username']).to eq(ci_registry_user)
           expect(credentials['password']).to eq(ci_registry_password)
         end
 
         it 'does not use default credentials for external registries' do
-          allow(described_class).to receive(:default_docker_image).and_return(external_registry_image)
+          allow(described_class).to receive(:docker_image).and_return(external_registry_image)
 
           expect(described_class.docker_registry_credentials).to be_nil
         end

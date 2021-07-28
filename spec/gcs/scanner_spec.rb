@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 RSpec.describe Gcs::Scanner do
+  let(:image_name) { 'registry.example.com/image' }
+
   before do
     my_scanner = Class.new(described_class)
     stub_const('MyScanner', my_scanner)
@@ -13,7 +15,6 @@ RSpec.describe Gcs::Scanner do
 
   describe '.scan_image' do
     let(:log_message) { 'Scanning blah blah blah' }
-    let(:image_name) { 'registry.example.com/image' }
     let(:output_file_name) { 'path/to/gl-report.json' }
     let(:command) { 'scanner -a -b' }
     let(:environment) { { 'ZOOT' => 'pants' } }
@@ -37,6 +38,27 @@ RSpec.describe Gcs::Scanner do
       expect(Gcs.shell).to receive(:execute).with(command, environment)
 
       subject
+    end
+  end
+
+  describe '.log_message' do
+    let(:scanner_version) { '0.0.0' }
+    let(:db_updated_at) { '2021-07-28' }
+    let(:message) do
+      <<~HEREDOC
+            Scanning container from registry #{image_name} \
+            for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
+            with gcs #{Gcs::VERSION} and #{MyScanner.name} #{scanner_version}, advisories updated at #{db_updated_at}
+      HEREDOC
+    end
+
+    before do
+      allow(described_class).to receive(:scanner_version).and_return(scanner_version)
+      allow(described_class).to receive(:db_updated_at).and_return(db_updated_at)
+    end
+
+    it 'returns a formatted message containing the execution parameters' do
+      expect(MyScanner.send(:log_message, image_name)).to eq(message)
     end
   end
 end
