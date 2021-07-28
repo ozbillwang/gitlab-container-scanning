@@ -11,15 +11,23 @@ RSpec.describe Gcs::Environment do
     allow(ENV).to receive(:fetch).and_call_original
   end
 
-  describe '.default_docker_image' do
+  describe '.docker_image' do
     it 'uses given DOCKER_IMAGE env variable' do
       allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return('alpine:latest')
 
-      expect(described_class.default_docker_image).to eq('alpine:latest')
+      expect(described_class.docker_image).to eq('alpine:latest')
     end
 
-    it 'uses CI_APPLICATION_REPOSITORY and CI_APPLICATION_TAG when DOCKER_IMAGE env variable is not given' do
+    it 'returns default_docker_image when DOCKER_IMAGE env variable is not given' do
       allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+      allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
+
+      expect(described_class.docker_image).to eq(ci_registry_image)
+    end
+  end
+
+  describe '.default_docker_image' do
+    it 'uses CI_APPLICATION_REPOSITORY and CI_APPLICATION_TAG' do
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_REPOSITORY').and_return('ghcr.io/aquasecurity/trivy')
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
 
