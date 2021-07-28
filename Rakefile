@@ -58,6 +58,51 @@ task :integration do
   end
 end
 
+def prompt!
+  print "Continue? [Y/n]: "
+  confirm = $stdin.gets.chomp
+  exit unless confirm.casecmp("y").zero?
+end
+
+def previous_version
+  f = File.open("CHANGELOG.md", "r")
+  changelog = f.read
+  f.close
+
+  changelog.match(/^## (\d+\.\d+\.\d+)/).captures.first
+end
+
+desc 'Tag a new release'
+task :tag_release, :ref do |t, args|
+  args.with_defaults(ref: "HEAD")
+  ref = args[:ref]
+
+  abort 'Local branch is not up-to-date with remote. Please run `git pull`.' unless git('pull', '--dry-run').empty?
+
+  prev = previous_version
+  if prev == Gcs::VERSION
+    abort "No version changes detected.\n" \
+      'Please update ./lib/gcs/version.rb to the version number that you would like to release.'
+  end
+
+  puts "You are about to release version: #{Gcs::VERSION}"
+  puts "The previous release version was: #{prev}"
+  puts 'If this version number is incorrect, please update ./lib/gcs/version.rb'
+  prompt!
+
+  puts 'The following commits will be released. Please verify that they are correct and have changelog trailers.'
+  puts '----- BEGIN COMMIT LOG -----'
+  git('--no-pager', 'log', "#{prev}..#{ref}")
+  puts '----- END COMMIT LOG -----'
+  prompt!
+
+  puts "Tagging #{ref} with #{Gcs::VERSION} and pushing to remote"
+  git('tag', Gcs::VERSION, ref)
+  git('push', 'origin', Gcs::VERSION)
+
+  puts 'Release pipeline should be running at https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/pipelines?scope=tags&page=1'
+end
+
 desc 'Update Trivy binary to latest version'
 task :update_trivy do
   ScannerUpdate.new('trivy').update_scanner

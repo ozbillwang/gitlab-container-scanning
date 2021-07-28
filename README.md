@@ -15,9 +15,30 @@ Please do not use scanner-specific variables that are not documented as being su
 To release a new version:
 1. Update `VERSION` in `lib/gcs/version.rb`
 1. Merge changes
-1. Create a tag matching `VERSION`
-1. Create a release matching `VERSION`
-   1. Add a link to the `CHANGELOG.md` file pointing to the `VERSION` anchor.
+
+Then do one of the following
+
+### Run the release task
+
+This will run an interactive script that will guide you through the verification steps.
+
+```shell
+git checkout master && git pull
+bundle install
+
+# Release HEAD
+bundle exec rake tag_release
+
+# Release a specific commit
+bundle exec rake 'tag_release[159129607454a52199b7ba4c7d47fa88cd20a370]'
+```
+
+### Release manually from project
+
+1. Check the [commits](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/commits/master)
+   and verity that they have correct changelog trailers
+1. Create a [new tag](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/tags) matching the
+   release version
 
 ### Available image tags
 
