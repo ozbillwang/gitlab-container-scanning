@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 module Gcs
-  class Grype
+  class Grype < Scanner
     class << self
       def scan_image(image_name, output_file_name)
-        template_file = File.join(Gcs.lib, 'gitlab.grype.tpl').to_s
         cmd = ["grype #{verbosity_flag} registry:#{image_name} -o template -t #{template_file} > #{output_file_name}"]
         Gcs.logger.info(
           <<~HEREDOC

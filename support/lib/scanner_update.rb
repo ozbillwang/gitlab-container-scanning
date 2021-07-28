@@ -1,7 +1,9 @@
 # frozen_string_literal: true
+require 'gcs'
+
 module ScannerUpdate
   TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
-  TRIVY_TEMPLATE_FILE = 'lib/gitlab.tpl' # TODO: DRY-up against lib/gcs/trivy.rb:15
+  TRIVY_TEMPLATE_FILE = Gcs::Trivy.template_file
 
   def trivy_versions
     uri = URI("https://api.github.com/repos/aquasecurity/trivy/releases/latest")

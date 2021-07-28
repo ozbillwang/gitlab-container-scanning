@@ -2,16 +2,15 @@
 RSpec.describe Gcs::Trivy do
   let(:image_name) { 'alpine:latest' }
   let(:output_file_name) { 'gl-report.json' }
-  let(:trivy_template_file) { "@#{File.join(Gcs.lib, 'gitlab.tpl')}" }
   let(:version_data) do
     <<~HEREDOC
-    Version: 0.15.0
-    Vulnerability DB:
-      Type: Light
-      Version: 1
-      UpdatedAt: 2021-05-19 12:06:02.55303056 +0000 UTC
-      NextUpdate: 2021-05-20 00:06:02.55303016 +0000 UTC
-      DownloadedAt: 2021-05-19 13:51:07.44954 +0000 UTC
+      Version: 0.15.0
+      Vulnerability DB:
+        Type: Light
+        Version: 1
+        UpdatedAt: 2021-05-19 12:06:02.55303056 +0000 UTC
+        NextUpdate: 2021-05-20 00:06:02.55303016 +0000 UTC
+        DownloadedAt: 2021-05-19 13:51:07.44954 +0000 UTC
     HEREDOC
   end
 
@@ -33,7 +32,7 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = ["trivy i -s LOW,MEDIUM,HIGH,CRITICAL --skip-update --vuln-type os --no-progress --format template -t",
-             trivy_template_file,
+             "@#{described_class.template_file}",
              "-o",
              output_file_name,
              image_name]
@@ -61,7 +60,7 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = ["trivy i  --skip-update --vuln-type os --no-progress --format template -t",
-             trivy_template_file,
+             "@#{described_class.template_file}",
              "-o",
              output_file_name,
              image_name]

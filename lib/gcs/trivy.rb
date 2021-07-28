@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gcs
-  class Trivy
+  class Trivy < Scanner
     SEVERITY_LEVELS = {
       "UNKNOWN" => 0,
       "LOW" => 1,
@@ -12,9 +12,8 @@ module Gcs
 
     class << self
       def scan_image(image_name, output_file_name)
-        trivy_template_file = "@#{File.join(Gcs.lib, 'gitlab.tpl')}"
         cmd = ["trivy i #{severity_level_arg} --skip-update --vuln-type os --no-progress --format template -t",
-               trivy_template_file,
+               "@#{template_file}",
                "-o",
                output_file_name,
                image_name]
@@ -22,9 +21,9 @@ module Gcs
 
         Gcs.logger.info(
           <<~HEREDOC
-          Scanning container from registry #{Gcs::Environment.default_docker_image} \
-          for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
-          with gcs #{Gcs::VERSION} and Trivy #{trivy_version[:binary_version]}, advisories updated at #{trivy_version[:db_updated_at]}
+            Scanning container from registry #{Gcs::Environment.default_docker_image} \
+            for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
+            with gcs #{Gcs::VERSION} and Trivy #{trivy_version[:binary_version]}, advisories updated at #{trivy_version[:db_updated_at]}
           HEREDOC
         )
         Gcs.shell.execute(cmd, environment)

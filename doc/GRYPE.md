@@ -28,12 +28,12 @@ To update Grype within the context of this GitLab integration, follow these step
 
 1. Set the content of [`GRYPE_VERSION`](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/version/GRYPE_VERSION) to the new version. Use the format `0.13.0`, rather than `v0.13.0` or `0.13`.
 
-1. The version is also referenced within the template ([`gitlab.grype.tpl`](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/lib/gitlab.grype.tpl)) that Grype processes to generate result data in the GitLab format. Specifically, the version string is specified within the JSON object at `.scan.scanner.version`. Set this value using the same format used in the step above.
+1. The version is also referenced within the template ([`grype.tpl`](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/lib/template/grype.tpl)) that Grype processes to generate result data in the GitLab format. Specifically, the version string is specified within the JSON object at `.scan.scanner.version`. Set this value using the same format used in the step above.
 
 1. Determine if the interface points between the Container Scanning code are still compatible with the version of Grype to which you're upgrading. You should be able to confirm compatibility using the existing tests (see the project's [developer documentation](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/doc/DEVELOPING.md#running-tests-within-docker-container) to learn how to run the tests). For context, there are two notable interface points between Container Scanning and Grype itself:
 
    - the [`scan_image`](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/730503eea60fce72b7370bda84d4c83c82638581/lib/gcs/grype.rb#L6) method that calls the Grype binary
-   - the [template file](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/lib/gitlab.grype.tpl) mentioned in the previous step, which is processed by Grype and used to produce output data that's fed back into the Container Scanning codebase
+   - the [template file](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/lib/template/grype.tpl) mentioned in the previous step, which is processed by Grype and used to produce output data that's fed back into the Container Scanning codebase
 
 1. Ensure that any tests that expect a particular version of Grype are updated to expect the new version. (Example instances of this include: [`./spec/support/shared/as_container_scanner.rb`](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/spec/support/shared/as_container_scanner.rb#L66), [`./spec/gcs/grype_spec.rb`](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/spec/gcs/grype_spec.rb#L9).)
 
