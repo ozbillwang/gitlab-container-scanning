@@ -11,25 +11,15 @@ module Gcs
     }.freeze
 
     class << self
-      def scan_image(image_name, output_file_name)
-        cmd = ["trivy i #{severity_level_arg} --skip-update --vuln-type os --no-progress --format template -t",
-               "@#{template_file}",
-               "-o",
-               output_file_name,
-               image_name]
-        trivy_version = version_info
-
-        Gcs.logger.info(
-          <<~HEREDOC
-            Scanning container from registry #{Gcs::Environment.default_docker_image} \
-            for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
-            with gcs #{Gcs::VERSION} and Trivy #{trivy_version[:binary_version]}, advisories updated at #{trivy_version[:db_updated_at]}
-          HEREDOC
-        )
-        Gcs.shell.execute(cmd, environment)
-      end
-
       private
+
+      def scan_command(image_name, output_file_name)
+        ["trivy i #{severity_level_arg} --skip-update --vuln-type os --no-progress --format template -t",
+         "@#{template_file}",
+         "-o",
+         output_file_name,
+         image_name]
+      end
 
       def version_info
         stdout, _, status = Gcs.shell.execute(%w[trivy --version])
@@ -77,6 +67,14 @@ module Gcs
 
       def debug_enabled
         true if Gcs::Environment.log_level == "debug"
+      end
+
+      def scanner_version
+        version_info[:binary_version]
+      end
+
+      def db_updated_at
+        version_info[:db_updated_at]
       end
     end
   end
