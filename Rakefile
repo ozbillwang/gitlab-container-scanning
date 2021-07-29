@@ -4,23 +4,16 @@ require 'rspec/core/rake_task'
 require 'net/http'
 require 'pathname'
 require 'yaml'
-require 'open3'
 require 'date'
 require 'json'
 require 'gcs'
 require 'gcs/version'
+require_relative 'support/lib/git_helper'
 require_relative 'support/lib/scanner_update'
+require_relative 'support/lib/tag_release'
 
 RSPEC_XML_PATH = ENV['CI_PROJECT_DIR'].to_s == '' ? "rspec.xml" : "#{ENV['CI_PROJECT_DIR']}/rspec.xml"
 COMMON_RSPEC_OPTIONS = "--format progress --format RspecJunitFormatter --out #{RSPEC_XML_PATH}"
-
-def git(cmd, *args)
-  output, status = Open3.capture2e('git', cmd, *args)
-
-  abort "Failed to run `git #{cmd}`: #{output}" unless status.success?
-
-  output.strip
-end
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -56,6 +49,42 @@ task :integration do
                     "bundle exec rake integration_test\""]
     system(commands.join(';'))
   end
+end
+
+desc 'Tag a new release'
+task :tag_release, :ref do |t, args|
+  include TagRelease
+  args.with_defaults(ref: "HEAD")
+  ref = args[:ref]
+
+  abort "Current branch is not the default branch. Please run `git checkout #{DEFAULT_BRANCH_NAME}`" \
+    unless default_branch?
+
+  abort 'Local branch is not up-to-date with remote. Please run `git pull`.' unless git('pull', '--dry-run').empty?
+
+  prev = previous_version
+  if prev == Gcs::VERSION
+    abort "No version changes detected.\n" \
+      'Please update ./lib/gcs/version.rb to the version number that you would like to release.'
+  end
+
+  puts "You are about to release version: #{Gcs::VERSION}"
+  puts "The previous release version was: #{prev}"
+  puts 'If this version number is incorrect, please update ./lib/gcs/version.rb'
+  prompt!
+
+  puts 'The following commits will be released. Please verify that they are correct and have changelog trailers.'
+  puts '----- BEGIN COMMIT LOG -----'
+  puts git('log', "#{prev}..#{ref}")
+  puts '----- END COMMIT LOG -----'
+  puts 'If there are missing changelogs, please manually add them to CHANGELOG.md post-release'
+  prompt!
+
+  puts "Tagging #{ref} with #{Gcs::VERSION} and pushing to remote"
+  puts git('tag', Gcs::VERSION, ref)
+  puts git('push', 'origin', Gcs::VERSION)
+
+  puts 'Release pipeline should be running at https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/pipelines?scope=tags&page=1'
 end
 
 desc 'Update Trivy binary to latest version'
