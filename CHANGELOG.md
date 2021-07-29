@@ -1,8 +1,9 @@
 ## 4.3.6 (2021-07-29)
 
-### changed (1 change)
+### changed (2 changes)
 
 - [Update Grype to 0.15.0](gitlab-org/security-products/analyzers/container-scanning@366c6f670c8e38e58057a3903eff5a2eea939833) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2555))
+- [Fix anonymous access to public docker registries](gitlab-org/security-products/analyzers/container-scanning@190816994a18bc81daae6a4eb853e237ce9e4c9a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2560))
 
 ## 4.3.5 (2021-07-28)
 
