@@ -140,8 +140,47 @@ RSpec.describe Gcs::Environment do
       let(:ci_registry_password) { 'a registry password' }
 
       before do
+        @ci_registry_user_original = ENV['CI_REGISTRY_USER']
+        @ci_registry_password_original = ENV['CI_REGISTRY_PASSWORD']
+        @docker_user_original = ENV['DOCKER_USER']
+        @docker_password_original = ENV['DOCKER_PASSWORD']
+
+        ENV['DOCKER_USER'] = nil
+        ENV['DOCKER_PASSWORD'] = nil
         ENV['CI_REGISTRY_USER'] = ci_registry_user
         ENV['CI_REGISTRY_PASSWORD'] = ci_registry_password
+      end
+
+      after do
+        ENV['CI_REGISTRY_USER'] = @ci_registry_user_original
+        ENV['CI_REGISTRY_PASSWORD'] = @ci_registry_password_original
+        ENV['DOCKER_USER'] = @docker_user_original
+        ENV['DOCKER_PASSWORD'] = @docker_password_original
+      end
+
+      context 'with Docker credentials not configured' do
+        let(:ci_registry) { 'registry.gitlab.example.com' }
+        let(:internal_registry_image) { "#{ci_registry}/some-image" }
+        let(:external_registry_image) { "external.#{ci_registry}/some-image" }
+
+        before do
+          allow(ENV).to receive(:[]).with('CI_REGISTRY').and_return(ci_registry)
+        end
+
+        it 'uses default credentials for CI_REGISTRY' do
+          allow(described_class).to receive(:default_docker_image).and_return(internal_registry_image)
+
+          credentials = described_class.docker_registry_credentials
+
+          expect(credentials['username']).to eq(ci_registry_user)
+          expect(credentials['password']).to eq(ci_registry_password)
+        end
+
+        it 'does not use default credentials for external registries' do
+          allow(described_class).to receive(:default_docker_image).and_return(external_registry_image)
+
+          expect(described_class.docker_registry_credentials).to be_nil
+        end
       end
 
       context 'with Docker credentials configured' do
@@ -159,13 +198,6 @@ RSpec.describe Gcs::Environment do
           expect(credentials['username']).to eq(docker_user)
           expect(credentials['password']).to eq(docker_password)
         end
-      end
-
-      it 'returns default CI credentials' do
-        credentials = described_class.docker_registry_credentials
-
-        expect(credentials['username']).to eq(ci_registry_user)
-        expect(credentials['password']).to eq(ci_registry_password)
       end
     end
 

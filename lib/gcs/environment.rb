@@ -52,8 +52,8 @@ module Gcs
       end
 
       def docker_registry_credentials
-        username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] }
-        password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] }
+        username = ENV.fetch('DOCKER_USER') { should_use_ci_credentials? ? ENV['CI_REGISTRY_USER'] : nil }
+        password = ENV.fetch('DOCKER_PASSWORD') {  should_use_ci_credentials? ? ENV['CI_REGISTRY_PASSWORD'] : nil }
 
         return if username.nil? || username.empty? || password.nil? || password.empty?
 
@@ -84,6 +84,12 @@ module Gcs
       end
 
       private
+
+      def should_use_ci_credentials?
+        return false if ENV['CI_REGISTRY'].nil? || ENV['CI_REGISTRY'].empty?
+
+        default_docker_image.start_with? ENV['CI_REGISTRY']
+      end
 
       def setup_log_level
         Gcs.logger.level = log_level.upcase
