@@ -11,11 +11,9 @@ terms.
 
 _This notice should stay as the first item in the CONTRIBUTING.md file._
 
-
 ## Project License
 
 You can view this projects license in [LICENSE.md](LICENSE)
-
 
 ## Contributor Resources
 
@@ -36,8 +34,7 @@ To get support for your particular problem please use the
 [getting help channels](https://about.gitlab.com/getting-help/).
 
 The [GitLab issue tracker on GitLab.com][gitlab-tracker] is the right place for bugs and feature proposals about Security Products.
-Please use the ~"section::sec", ~"devops::protect", and ~"group::container security" labels when opening a new issue to ensure it is 
-quickly reviewed by the right people.
+Please use the ~"Category:Container Scanning" labels when opening a new issue to ensure it is quickly reviewed by the right people.
 
 **[Search the issue tracker][gitlab-tracker]** for similar entries before
 submitting your own, there's a good chance somebody else had the same issue or
@@ -51,6 +48,13 @@ open the issue in order to keep track of it and then open the relevant merge
 request that potentially fixes it.
 
 [gitlab-tracker]: https://gitlab.com/gitlab-org/gitlab/issues
+
+### Merge Requests
+
+When opening a new merge request, please use the description template to provide details about your changes.
+[Danger](https://danger.systems/ruby/) will comment on your merge request to provide guidance on what you should do,
+and will also recommend a reviewer. Please add this person as a reviewer on your merge request to ensure that
+your request is reviewed.
 
 ## Contributor Code of conduct
 
