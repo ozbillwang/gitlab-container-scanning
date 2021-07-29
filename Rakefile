@@ -7,6 +7,7 @@ require 'yaml'
 require 'open3'
 require 'date'
 require 'json'
+require 'gcs'
 require 'gcs/version'
 require_relative 'support/lib/scanner_update'
 
@@ -59,8 +60,12 @@ end
 
 desc 'Update Trivy binary to latest version'
 task :update_trivy do
-  include ScannerUpdate
-  update_trivy
+  ScannerUpdate.new('trivy').update_scanner
+end
+
+desc 'Update grype binary to latest version'
+task :update_grype do
+  ScannerUpdate.new('grype').update_scanner
 end
 
 desc 'Creates CHANGELOG.md through Gitlab Api'

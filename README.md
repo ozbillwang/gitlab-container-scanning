@@ -50,7 +50,7 @@ this is not currently in place.
 
 #### Scanner updates
 
-To update a scanner to the latest version, run `bundle exec rake update_trivy` to create a branch with the updated
+To update a scanner to the latest version, run `bundle exec rake update_<scanner_name>` to create a branch with the updated
 version, then push your changes and create a new MR. Example:
 ```bash
 $ bundle exec rake update_trivy
