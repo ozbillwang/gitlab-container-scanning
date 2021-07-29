@@ -140,46 +140,43 @@ RSpec.describe Gcs::Environment do
       let(:ci_registry_password) { 'a registry password' }
 
       before do
-        @ci_registry_user_original = ENV['CI_REGISTRY_USER']
-        @ci_registry_password_original = ENV['CI_REGISTRY_PASSWORD']
-        @docker_user_original = ENV['DOCKER_USER']
-        @docker_password_original = ENV['DOCKER_PASSWORD']
-
-        ENV['DOCKER_USER'] = nil
-        ENV['DOCKER_PASSWORD'] = nil
-        ENV['CI_REGISTRY_USER'] = ci_registry_user
-        ENV['CI_REGISTRY_PASSWORD'] = ci_registry_password
-      end
-
-      after do
-        ENV['CI_REGISTRY_USER'] = @ci_registry_user_original
-        ENV['CI_REGISTRY_PASSWORD'] = @ci_registry_password_original
-        ENV['DOCKER_USER'] = @docker_user_original
-        ENV['DOCKER_PASSWORD'] = @docker_password_original
+        ENV.delete('DOCKER_USER')
+        ENV.delete('DOCKER_PASSWORD')
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_USER').and_return(ci_registry_user)
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_PASSWORD').and_return(ci_registry_password)
       end
 
       context 'with Docker credentials not configured' do
         let(:ci_registry) { 'registry.gitlab.example.com' }
-        let(:internal_registry_image) { "#{ci_registry}/some-image" }
-        let(:external_registry_image) { "external.#{ci_registry}/some-image" }
 
         before do
           allow(ENV).to receive(:[]).with('CI_REGISTRY').and_return(ci_registry)
+          allow(described_class).to receive(:default_docker_image).and_return(registry_image)
         end
 
-        it 'uses default credentials for CI_REGISTRY' do
-          allow(described_class).to receive(:default_docker_image).and_return(internal_registry_image)
+        context 'with Gitlab registry' do
+          let(:registry_image) { "#{ci_registry}/some-image" }
 
-          credentials = described_class.docker_registry_credentials
-
-          expect(credentials['username']).to eq(ci_registry_user)
-          expect(credentials['password']).to eq(ci_registry_password)
+          it 'uses default credentials' do
+            expect(described_class.docker_registry_credentials).to include({ 'username' => ci_registry_user,
+                                                                             'password' => ci_registry_password })
+          end
         end
 
-        it 'does not use default credentials for external registries' do
-          allow(described_class).to receive(:default_docker_image).and_return(external_registry_image)
+        context 'with an external registry' do
+          let(:registry_image) { "external.#{ci_registry}/some-image" }
 
-          expect(described_class.docker_registry_credentials).to be_nil
+          it 'does not use default credentials' do
+            expect(described_class.docker_registry_credentials).to be_nil
+          end
+        end
+
+        context 'with external registry similar to Gitlab registry domain' do
+          let(:registry_image) { "#{ci_registry}.anotherdomain.com/some-image" }
+
+          it 'does not use default credentials' do
+            expect(described_class.docker_registry_credentials).to be_nil
+          end
         end
       end
 
@@ -193,21 +190,21 @@ RSpec.describe Gcs::Environment do
         end
 
         it 'returns configured Docker credentials' do
-          credentials = described_class.docker_registry_credentials
-
-          expect(credentials['username']).to eq(docker_user)
-          expect(credentials['password']).to eq(docker_password)
+          expect(described_class.docker_registry_credentials).to include({ 'username' => docker_user,
+                                                                           'password' => docker_password })
         end
       end
     end
 
     context 'with either user or password missing' do
-      before do
-        ENV['CI_REGISTRY_USER'] = ENV['CI_REGISTRY_PASSWORD'] = nil
-      end
+      %w[CI_REGISTRY_USER CI_REGISTRY_PASSWORD].each do |env_variable|
+        before do
+          allow(ENV).to receive(:[]).with(env_variable).and_return(nil)
+        end
 
-      it 'returns nil credentials' do
-        expect(described_class.docker_registry_credentials).to eq(nil)
+        it 'returns nil credentials' do
+          expect(described_class.docker_registry_credentials).to be_nil
+        end
       end
     end
   end
