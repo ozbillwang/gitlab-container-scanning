@@ -36,9 +36,14 @@ bundle exec rake 'tag_release[159129607454a52199b7ba4c7d47fa88cd20a370]'
 ### Release manually from project
 
 1. Check the [commits](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/commits/master)
-   and verity that they have correct changelog trailers
+   and verify that they have changelog trailers (e.g. `Changelog: changed`)
+   - If there commits which have user-facing changes but do not have a changelog, note down which ones.
+   - After release pipeline is completed, open a merge requests to update [CHANGELOG.md](CHANGELOG.md)
+     with any missing changelogs (if applicable)
 1. Create a [new tag](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/tags) matching the
-   release version
+   version in [`lib/gcs/version.rb`](lib/gcs/version.rb)
+1. A [tag pipeline](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/pipelines?scope=tags&page=1)
+   will perform the release
 
 ### Available image tags
 
