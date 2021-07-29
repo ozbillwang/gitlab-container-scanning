@@ -52,8 +52,8 @@ module Gcs
       end
 
       def docker_registry_credentials
-        username = ENV.fetch('DOCKER_USER') { should_use_ci_credentials? ? ENV['CI_REGISTRY_USER'] : nil }
-        password = ENV.fetch('DOCKER_PASSWORD') {  should_use_ci_credentials? ? ENV['CI_REGISTRY_PASSWORD'] : nil }
+        username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] if should_use_ci_credentials? }
+        password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] if should_use_ci_credentials? }
 
         return if username.nil? || username.empty? || password.nil? || password.empty?
 
