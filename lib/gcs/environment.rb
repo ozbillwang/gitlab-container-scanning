@@ -91,7 +91,6 @@ module Gcs
 
       def should_use_ci_credentials?
         return false if ENV['CI_REGISTRY'].nil? || ENV['CI_REGISTRY'].empty?
-
         docker_image.start_with? "#{ENV['CI_REGISTRY']}/"
       end
 

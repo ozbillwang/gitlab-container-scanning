@@ -151,22 +151,10 @@ RSpec.describe Gcs::Environment do
       let(:ci_registry_password) { 'a registry password' }
 
       before do
-        @ci_registry_user_original = ENV['CI_REGISTRY_USER']
-        @ci_registry_password_original = ENV['CI_REGISTRY_PASSWORD']
-        @docker_user_original = ENV['DOCKER_USER']
-        @docker_password_original = ENV['DOCKER_PASSWORD']
-
-        ENV['DOCKER_USER'] = nil
-        ENV['DOCKER_PASSWORD'] = nil
-        ENV['CI_REGISTRY_USER'] = ci_registry_user
-        ENV['CI_REGISTRY_PASSWORD'] = ci_registry_password
-      end
-
-      after do
-        ENV['CI_REGISTRY_USER'] = @ci_registry_user_original
-        ENV['CI_REGISTRY_PASSWORD'] = @ci_registry_password_original
-        ENV['DOCKER_USER'] = @docker_user_original
-        ENV['DOCKER_PASSWORD'] = @docker_password_original
+        allow(ENV).to receive(:[]).with('DOCKER_USER').and_return(nil)
+        allow(ENV).to receive(:[]).with('DOCKER_PASSWORD').and_return(nil)
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_USER').and_return(ci_registry_user)
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_PASSWORD').and_return(ci_registry_password)
       end
 
       context 'with Docker credentials not configured' do
@@ -213,9 +201,13 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    context 'with either user or password missing' do
+    context 'with either CI user or password missing' do
       before do
-        ENV['CI_REGISTRY_USER'] = ENV['CI_REGISTRY_PASSWORD'] = nil
+        # DOCKER_IMAGE, CI_REGISTRY are needed lest should_use_ci_credentials? skips the code
+        allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return('registry.example.com/image')
+        allow(ENV).to receive(:[]).with('CI_REGISTRY').and_return('registry.example.com')
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_USER').and_return(nil)
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_PASSWORD').and_return(nil)
       end
 
       it 'returns nil credentials' do
