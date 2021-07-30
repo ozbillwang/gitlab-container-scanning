@@ -20,12 +20,14 @@ RSpec.describe Gcs::Environment do
       expect(described_class).not_to have_received(:default_docker_image)
     end
 
-    it 'returns default_docker_image when DOCKER_IMAGE env variable is not given' do
-      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
-      allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
+    context 'when DOCKER_IMAGE env variable is not given' do
+      it 'returns default_docker_image' do
+        allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+        allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
 
-      expect(described_class.docker_image).to eq(ci_registry_image)
-      expect(described_class).to have_received(:default_docker_image).once
+        expect(described_class.docker_image).to eq(ci_registry_image)
+        expect(described_class).to have_received(:default_docker_image).once
+      end
     end
   end
 
@@ -37,25 +39,26 @@ RSpec.describe Gcs::Environment do
       expect(described_class.default_docker_image).to eq('ghcr.io/aquasecurity/trivy:latest')
     end
 
-    it 'uses CI_REGISTRY_IMAGE and CI_COMMIT_REF_SLUG when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
-      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
-      allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
-      allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
-      allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
-      allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
+    context 'when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
+      before do
+        allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+        allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
+        allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
+        allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
+      end
 
-      expect(described_class.default_docker_image).to eq('registry.gitlab.com/defen/trivy-test/master:latest')
-    end
+      it 'uses CI_REGISTRY_IMAGE and CI_COMMIT_REF_SLUG' do
+        allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
 
-    it 'uses CI_COMMIT_SHA when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
-      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
-      allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
-      allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
-      allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
-      allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
-      image = 'registry.gitlab.com/defen/trivy-test/master:85cbadce93fec0d78225fc00897221d8a74cb1f9'
+        expect(described_class.default_docker_image).to eq('registry.gitlab.com/defen/trivy-test/master:latest')
+      end
 
-      expect(described_class.default_docker_image).to eq(image)
+      it 'uses CI_COMMIT_SHA' do
+        allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
+        image = 'registry.gitlab.com/defen/trivy-test/master:85cbadce93fec0d78225fc00897221d8a74cb1f9'
+
+        expect(described_class.default_docker_image).to eq(image)
+      end
     end
 
     describe '#severity_level_name' do
