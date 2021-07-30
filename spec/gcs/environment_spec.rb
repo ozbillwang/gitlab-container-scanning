@@ -161,26 +161,40 @@ RSpec.describe Gcs::Environment do
         let(:ci_registry) { 'registry.gitlab.example.com' }
         let(:internal_registry_image) { "#{ci_registry}/some-image" }
         let(:external_registry_image) { "external.#{ci_registry}/some-image" }
+        let(:external_similar_registry_image) { "#{ci_registry}.anotherdomain.com/some-image" }
 
         before do
           allow(ENV).to receive(:[]).with('CI_REGISTRY').and_return(ci_registry)
         end
 
-        it 'uses default credentials for CI_REGISTRY' do
-          allow(described_class).to receive(:docker_image).and_return(internal_registry_image)
+        context 'with Gitlab registry' do
+          it 'uses default credentials' do
+            allow(described_class).to receive(:docker_image).and_return(internal_registry_image)
 
-          credentials = described_class.docker_registry_credentials
+            credentials = described_class.docker_registry_credentials
 
-          expect(credentials).not_to be_nil
-          expect(credentials['username']).to eq(ci_registry_user)
-          expect(credentials['password']).to eq(ci_registry_password)
+            expect(credentials).not_to be_nil
+            expect(credentials['username']).to eq(ci_registry_user)
+            expect(credentials['password']).to eq(ci_registry_password)
+          end
         end
 
-        it 'does not use default credentials for external registries' do
-          allow(described_class).to receive(:docker_image).and_return(external_registry_image)
+        context 'with an external registry' do
+          it 'does not use default credentials' do
+            allow(described_class).to receive(:docker_image).and_return(external_registry_image)
 
-          expect(described_class.docker_registry_credentials).to be_nil
+            expect(described_class.docker_registry_credentials).to be_nil
+          end
         end
+
+        context 'with external registry similar to Gitlab registry' do
+          it 'does not use default credentials' do
+            allow(described_class).to receive(:docker_image).and_return(external_similar_registry_image)
+
+            expect(described_class.docker_registry_credentials).to be_nil
+          end
+        end
+
       end
 
       context 'with Docker credentials configured' do
@@ -201,7 +215,7 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    context 'with either CI user or password missing' do
+    context 'with default CI credentials missing' do
       before do
         # DOCKER_IMAGE, CI_REGISTRY are needed lest should_use_ci_credentials? skips the code
         allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return('registry.example.com/image')
