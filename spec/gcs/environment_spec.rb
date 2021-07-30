@@ -159,15 +159,15 @@ RSpec.describe Gcs::Environment do
 
       context 'with Docker credentials not configured' do
         let(:ci_registry) { 'registry.gitlab.example.com' }
-        let(:internal_registry_image) { "#{ci_registry}/some-image" }
         let(:external_registry_image) { "external.#{ci_registry}/some-image" }
-        let(:external_similar_registry_image) { "#{ci_registry}.anotherdomain.com/some-image" }
 
         before do
           allow(ENV).to receive(:[]).with('CI_REGISTRY').and_return(ci_registry)
         end
 
         context 'with Gitlab registry' do
+          let(:internal_registry_image) { "#{ci_registry}/some-image" }
+
           it 'uses default credentials' do
             allow(described_class).to receive(:docker_image).and_return(internal_registry_image)
 
@@ -188,13 +188,14 @@ RSpec.describe Gcs::Environment do
         end
 
         context 'with external registry similar to Gitlab registry' do
+          let(:external_similar_registry_image) { "#{ci_registry}.anotherdomain.com/some-image" }
+
           it 'does not use default credentials' do
             allow(described_class).to receive(:docker_image).and_return(external_similar_registry_image)
 
             expect(described_class.docker_registry_credentials).to be_nil
           end
         end
-
       end
 
       context 'with Docker credentials configured' do
@@ -207,10 +208,8 @@ RSpec.describe Gcs::Environment do
         end
 
         it 'returns configured Docker credentials' do
-          credentials = described_class.docker_registry_credentials
-
-          expect(credentials['username']).to eq(docker_user)
-          expect(credentials['password']).to eq(docker_password)
+          expect(described_class.docker_registry_credentials).to include({ 'username' => docker_user,
+                                                                           'password' => docker_password })
         end
       end
     end
