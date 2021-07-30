@@ -24,9 +24,21 @@ RSpec.describe Gcs::Trivy do
     allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).and_return([version_data, nil, status])
   end
 
-  subject { described_class.scan_image(image_name, output_file_name) }
+  describe '.db_updated_at' do
+    it 'returns the value extracted from the scanner output' do
+      expect(described_class.send(:db_updated_at)).to eq('2021-05-19')
+    end
+  end
+
+  describe '.scanner_version' do
+    it 'returns the value extracted from the scanner output' do
+      expect(described_class.send(:scanner_version)).to eq('Version: 0.15.0')
+    end
+  end
 
   describe 'scanning with trivy' do
+    subject { described_class.scan_image(image_name, output_file_name) }
+
     it 'runs trivy binary with given severity levels' do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
@@ -44,13 +56,7 @@ RSpec.describe Gcs::Trivy do
                                                     "TRIVY_PASSWORD" => nil,
                                                     "TRIVY_USERNAME" => nil
                                                   })
-      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).once
-      expect(Gcs.logger).to receive(:info).with(
-        "Scanning container from registry alpine:latest for vulnerabilities with " \
-        "severity level LOW or higher, " \
-        "with gcs #{Gcs::VERSION} and Trivy Version: 0.15.0, " \
-        "advisories updated at 2021-05-19\n"
-      )
+      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
 
       subject
     end

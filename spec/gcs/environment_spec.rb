@@ -11,40 +11,54 @@ RSpec.describe Gcs::Environment do
     allow(ENV).to receive(:fetch).and_call_original
   end
 
-  describe '.default_docker_image' do
+  describe '.docker_image' do
     it 'uses given DOCKER_IMAGE env variable' do
       allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return('alpine:latest')
+      allow(described_class).to receive(:default_docker_image)
 
-      expect(described_class.default_docker_image).to eq('alpine:latest')
+      expect(described_class.docker_image).to eq('alpine:latest')
+      expect(described_class).not_to have_received(:default_docker_image)
     end
 
-    it 'uses CI_APPLICATION_REPOSITORY and CI_APPLICATION_TAG when DOCKER_IMAGE env variable is not given' do
-      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+    context 'when DOCKER_IMAGE env variable is not given' do
+      it 'returns default_docker_image' do
+        allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+        allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
+
+        expect(described_class.docker_image).to eq(ci_registry_image)
+        expect(described_class).to have_received(:default_docker_image).once
+      end
+    end
+  end
+
+  describe '.default_docker_image' do
+    it 'uses CI_APPLICATION_REPOSITORY and CI_APPLICATION_TAG' do
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_REPOSITORY').and_return('ghcr.io/aquasecurity/trivy')
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
 
       expect(described_class.default_docker_image).to eq('ghcr.io/aquasecurity/trivy:latest')
     end
 
-    it 'uses CI_REGISTRY_IMAGE and CI_COMMIT_REF_SLUG when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
-      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
-      allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
-      allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
-      allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
-      allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
+    context 'when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
+      before do
+        allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
+        allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
+        allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
+        allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
+      end
 
-      expect(described_class.default_docker_image).to eq('registry.gitlab.com/defen/trivy-test/master:latest')
-    end
+      it 'uses CI_REGISTRY_IMAGE and CI_COMMIT_REF_SLUG' do
+        allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
 
-    it 'uses CI_COMMIT_SHA when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
-      allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return(nil)
-      allow(ENV).to receive(:[]).with('CI_APPLICATION_REPOSITORY').and_return(nil)
-      allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
-      allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
-      allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
-      image = 'registry.gitlab.com/defen/trivy-test/master:85cbadce93fec0d78225fc00897221d8a74cb1f9'
+        expect(described_class.default_docker_image).to eq('registry.gitlab.com/defen/trivy-test/master:latest')
+      end
 
-      expect(described_class.default_docker_image).to eq(image)
+      it 'uses CI_COMMIT_SHA' do
+        allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
+        image = 'registry.gitlab.com/defen/trivy-test/master:85cbadce93fec0d78225fc00897221d8a74cb1f9'
+
+        expect(described_class.default_docker_image).to eq(image)
+      end
     end
 
     describe '#severity_level_name' do
@@ -140,46 +154,50 @@ RSpec.describe Gcs::Environment do
       let(:ci_registry_password) { 'a registry password' }
 
       before do
-        @ci_registry_user_original = ENV['CI_REGISTRY_USER']
-        @ci_registry_password_original = ENV['CI_REGISTRY_PASSWORD']
-        @docker_user_original = ENV['DOCKER_USER']
-        @docker_password_original = ENV['DOCKER_PASSWORD']
-
-        ENV['DOCKER_USER'] = nil
-        ENV['DOCKER_PASSWORD'] = nil
-        ENV['CI_REGISTRY_USER'] = ci_registry_user
-        ENV['CI_REGISTRY_PASSWORD'] = ci_registry_password
-      end
-
-      after do
-        ENV['CI_REGISTRY_USER'] = @ci_registry_user_original
-        ENV['CI_REGISTRY_PASSWORD'] = @ci_registry_password_original
-        ENV['DOCKER_USER'] = @docker_user_original
-        ENV['DOCKER_PASSWORD'] = @docker_password_original
+        allow(ENV).to receive(:[]).with('DOCKER_USER').and_return(nil)
+        allow(ENV).to receive(:[]).with('DOCKER_PASSWORD').and_return(nil)
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_USER').and_return(ci_registry_user)
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_PASSWORD').and_return(ci_registry_password)
       end
 
       context 'with Docker credentials not configured' do
         let(:ci_registry) { 'registry.gitlab.example.com' }
-        let(:internal_registry_image) { "#{ci_registry}/some-image" }
         let(:external_registry_image) { "external.#{ci_registry}/some-image" }
 
         before do
           allow(ENV).to receive(:[]).with('CI_REGISTRY').and_return(ci_registry)
         end
 
-        it 'uses default credentials for CI_REGISTRY' do
-          allow(described_class).to receive(:default_docker_image).and_return(internal_registry_image)
+        context 'with Gitlab registry' do
+          let(:internal_registry_image) { "#{ci_registry}/some-image" }
 
-          credentials = described_class.docker_registry_credentials
+          it 'uses default credentials' do
+            allow(described_class).to receive(:docker_image).and_return(internal_registry_image)
 
-          expect(credentials['username']).to eq(ci_registry_user)
-          expect(credentials['password']).to eq(ci_registry_password)
+            credentials = described_class.docker_registry_credentials
+
+            expect(credentials).not_to be_nil
+            expect(credentials['username']).to eq(ci_registry_user)
+            expect(credentials['password']).to eq(ci_registry_password)
+          end
         end
 
-        it 'does not use default credentials for external registries' do
-          allow(described_class).to receive(:default_docker_image).and_return(external_registry_image)
+        context 'with an external registry' do
+          it 'does not use default credentials' do
+            allow(described_class).to receive(:docker_image).and_return(external_registry_image)
 
-          expect(described_class.docker_registry_credentials).to be_nil
+            expect(described_class.docker_registry_credentials).to be_nil
+          end
+        end
+
+        context 'with external registry similar to Gitlab registry' do
+          let(:external_similar_registry_image) { "#{ci_registry}.anotherdomain.com/some-image" }
+
+          it 'does not use default credentials' do
+            allow(described_class).to receive(:docker_image).and_return(external_similar_registry_image)
+
+            expect(described_class.docker_registry_credentials).to be_nil
+          end
         end
       end
 
@@ -193,17 +211,19 @@ RSpec.describe Gcs::Environment do
         end
 
         it 'returns configured Docker credentials' do
-          credentials = described_class.docker_registry_credentials
-
-          expect(credentials['username']).to eq(docker_user)
-          expect(credentials['password']).to eq(docker_password)
+          expect(described_class.docker_registry_credentials).to include({ 'username' => docker_user,
+                                                                           'password' => docker_password })
         end
       end
     end
 
-    context 'with either user or password missing' do
+    context 'with default CI credentials missing' do
       before do
-        ENV['CI_REGISTRY_USER'] = ENV['CI_REGISTRY_PASSWORD'] = nil
+        # DOCKER_IMAGE, CI_REGISTRY are needed lest should_use_ci_credentials? skips the code
+        allow(ENV).to receive(:[]).with('DOCKER_IMAGE').and_return('registry.example.com/image')
+        allow(ENV).to receive(:[]).with('CI_REGISTRY').and_return('registry.example.com')
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_USER').and_return(nil)
+        allow(ENV).to receive(:[]).with('CI_REGISTRY_PASSWORD').and_return(nil)
       end
 
       it 'returns nil credentials' do

@@ -4,9 +4,13 @@ module Gcs
     ALLOW_LIST_FILENAME = "vulnerability-allowlist.yml"
 
     class << self
-      def default_docker_image
+      def docker_image
         return ENV['DOCKER_IMAGE'] unless ENV['DOCKER_IMAGE'].nil?
 
+        default_docker_image
+      end
+
+      def default_docker_image
         application_repository = ENV.fetch('CI_APPLICATION_REPOSITORY') { default_application_repository }
         application_tag = ENV.fetch('CI_APPLICATION_TAG') { default_docker_tag }
 
@@ -88,7 +92,7 @@ module Gcs
       def should_use_ci_credentials?
         return false if ENV['CI_REGISTRY'].nil? || ENV['CI_REGISTRY'].empty?
 
-        default_docker_image.start_with? "#{ENV['CI_REGISTRY']}/"
+        docker_image.start_with? "#{ENV['CI_REGISTRY']}/"
       end
 
       def setup_log_level

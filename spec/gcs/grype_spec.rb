@@ -37,9 +37,21 @@ RSpec.describe Gcs::Grype do
     allow(Gcs.shell).to receive(:execute).with("grype db status").and_return([db_status, nil, status])
   end
 
-  subject { described_class.scan_image(image_name, output_file_name) }
+  describe '.db_updated_at' do
+    it 'returns the value extracted from the scanner output' do
+      expect(described_class.send(:db_updated_at)).to eq('2021-06-16')
+    end
+  end
+
+  describe '.scanner_version' do
+    it 'returns the value extracted from the scanner output' do
+      expect(described_class.send(:scanner_version)).to eq('Version: 0.15.0')
+    end
+  end
 
   describe 'scanning with grype' do
+    subject { described_class.scan_image(image_name, output_file_name) }
+
     it 'runs grype binary with empty docker credentials' do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
       allow(Gcs::Environment).to receive(:docker_registry_security_config).and_return({ docker_insecure: false })
@@ -55,12 +67,6 @@ RSpec.describe Gcs::Grype do
                                                   })
       expect(Gcs.shell).to receive(:execute).with(%w[grype version]).once
       expect(Gcs.shell).to receive(:execute).with("grype db status").once
-      expect(Gcs.logger).to receive(:info).with(
-        "Scanning container from registry alpine:latest for vulnerabilities " \
-        "with severity level UNKNOWN or higher, " \
-        "with gcs #{Gcs::VERSION} and Grype Version: 0.15.0, " \
-        "advisories updated at 2021-06-16\n"
-      )
 
       subject
     end
@@ -82,12 +88,6 @@ RSpec.describe Gcs::Grype do
                                                   })
       expect(Gcs.shell).to receive(:execute).with(%w[grype version]).once
       expect(Gcs.shell).to receive(:execute).with("grype db status").once
-      expect(Gcs.logger).to receive(:info).with(
-        "Scanning container from registry alpine:latest for vulnerabilities " \
-        "with severity level UNKNOWN or higher, " \
-        "with gcs #{Gcs::VERSION} and Grype Version: 0.15.0, " \
-        "advisories updated at 2021-06-16\n"
-      )
 
       subject
     end

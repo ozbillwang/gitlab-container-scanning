@@ -5,7 +5,7 @@ module Gcs
     OUTPUT_FILE = "tmp.json"
 
     desc 'scan IMAGE', 'Scan an image'
-    def scan(image_name = ::Gcs::Environment.default_docker_image)
+    def scan(image_name = ::Gcs::Environment.docker_image)
       stdout, stderr, status = nil
       measured_time = Gcs::Util.measure_runtime do
         stdout, stderr, status = Environment.scanner.scan_image(image_name, OUTPUT_FILE)

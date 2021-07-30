@@ -3,22 +3,13 @@
 module Gcs
   class Grype < Scanner
     class << self
-      def scan_image(image_name, output_file_name)
-        cmd = ["grype #{verbosity_flag} registry:#{image_name} -o template -t #{template_file} > #{output_file_name}"]
-        Gcs.logger.info(
-          <<~HEREDOC
-          Scanning container from registry #{Gcs::Environment.default_docker_image} \
-          for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
-          with gcs #{Gcs::VERSION} and Grype #{version_info}, advisories updated at #{db_updated_at}
-          HEREDOC
-        )
-
-        Gcs.shell.execute(cmd, environment)
-      end
-
       private
 
-      def version_info
+      def scan_command(image_name, output_file_name)
+        ["grype #{verbosity_flag} registry:#{image_name} -o template -t #{template_file} > #{output_file_name}"]
+      end
+
+      def scanner_version
         stdout, _, status = Gcs.shell.execute(%w[grype version])
 
         return 'unknown' unless status.success?
