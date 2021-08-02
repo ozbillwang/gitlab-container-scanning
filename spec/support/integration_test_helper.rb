@@ -40,8 +40,8 @@ class ProjectHelper
     chdir do
       execute({}, 'git', 'init')
       execute({}, 'git', 'add', '.')
-      execute({}, 'git', 'config', '--global', 'user.name', 'test')
-      execute({}, 'git', 'config', '--global', 'user.email', 'test@test.com')
+      execute({}, 'git', 'config', 'user.name', 'test')
+      execute({}, 'git', 'config', 'user.email', 'test@test.com')
       execute({}, 'git', 'commit', '-m', 'test')
     end
   end
