@@ -43,12 +43,25 @@ RSpec.describe Gcs::Cli do
           allow(File).to receive(:read).with('tmp.json')
         end
 
+        context 'with invalid allow list file' do
+          before do
+            allow(File).to receive(:read).and_return('"') # smallest broken yaml
+          end
+
+          include_examples 'QUIET mode'
+
+          specify do
+            expect(Gcs::Util).to receive(:write_table).with({}, nil)
+            expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {}, Pathname.pwd, nil)
+            expect(Gcs.logger).to receive(:debug).with(match(/Allowlist failed with /))
+            expect(execution).not_to terminate
+          end
+        end
+
         context 'with allow list file' do
           let(:allow_list_file) { fixture_file('vulnerability-allowlist.yml').to_s }
 
           before do
-            allow(File).to receive(:exist?).with(allow_list_file).and_return(true)
-            allow(File).to receive(:read).with(allow_list_file).and_call_original
             allow(Gcs::AllowList).to receive(:file_path).and_return(allow_list_file)
           end
 
@@ -56,17 +69,17 @@ RSpec.describe Gcs::Cli do
 
           specify do
             expect(Gcs::Util).to receive(:write_table).with({}, instance_of(Gcs::AllowList))
-            expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json',
-                                                           {},
+            expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {},
                                                            Pathname.pwd,
                                                            instance_of(Gcs::AllowList))
+            expect(Gcs.logger).to receive(:info)
+            expect(Gcs.logger).to receive(:info).with(match(/Using allowlist /))
             expect(execution).not_to terminate
           end
         end
 
         context 'without allow list file' do
           before do
-            allow(File).to receive(:exist?).with('nonexisting-file-allowlist.yml').and_return(false)
             allow(Gcs::AllowList).to receive(:file_path).and_return('nonexisting-file-allowlist.yml')
           end
 
@@ -74,7 +87,8 @@ RSpec.describe Gcs::Cli do
 
           specify do
             expect(Gcs::Util).to receive(:write_table).with({}, nil)
-            expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json', {}, Pathname.pwd, nil)
+            expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {}, Pathname.pwd, nil)
+            expect(Gcs.logger).to receive(:debug).with(match(/Allowlist failed with /))
             expect(execution).not_to terminate
           end
         end

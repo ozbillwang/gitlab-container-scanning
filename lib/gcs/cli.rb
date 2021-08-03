@@ -11,7 +11,7 @@ module Gcs
         stdout, stderr, status = Environment.scanner.scan_image(image_name, OUTPUT_FILE)
       end
 
-      Gcs.logger.info(stdout)
+      Gcs.logger.info(stdout) # FIXME: this prints a blank line on occasion
 
       if status.success?
         if File.exist?(OUTPUT_FILE)
@@ -20,9 +20,8 @@ module Gcs
           begin
             allow_list = AllowList.new
             Gcs.logger.info("Using allowlist #{AllowList.file_path}")
-          rescue Errno::ENOENT
-            allow_list = nil
-            Gcs.logger.debug("#{AllowList.file_path} not found")
+          rescue StandardError => e
+            Gcs.logger.debug("Allowlist failed with #{e.message} for #{AllowList.file_path} ")
           end
 
           Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET'] # FIXME: undocumented env var
