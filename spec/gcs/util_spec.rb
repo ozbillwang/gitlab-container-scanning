@@ -49,16 +49,6 @@ RSpec.describe Gcs::Util do
       end
     end
 
-    context 'with QUIET mode' do
-      let(:allow_list) { nil }
-
-      specify do
-        allow(ENV).to receive(:[]).with('CS_QUIET').and_return(true)
-
-        expect { subject }.not_to output(/unapproved/i).to_stdout
-      end
-    end
-
     %w[general-allowlist image-allowlist image-sha-allowlist].each do |context|
       context "with #{context}" do
         let(:allow_list) { fixture_file_allow_list("#{context}.yml") }

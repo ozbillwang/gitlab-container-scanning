@@ -22,8 +22,6 @@ module Gcs
       end
 
       def write_table(report, allow_list)
-        return if ENV['CS_QUIET']
-
         extract_row = lambda do |vuln|
           cve = vuln.fetch('cve', '')
           severity = vuln.fetch('severity', '')
