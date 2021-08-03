@@ -10,8 +10,6 @@ module Gcs
     end
 
     def allowed?(vuln)
-      return false unless @allow_list_cve
-
       cve = vuln['cve']
       docker_image = vuln.dig('location', 'image')&.gsub(/\s\S*/, '')
 
