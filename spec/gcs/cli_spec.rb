@@ -35,15 +35,15 @@ RSpec.describe Gcs::Cli do
         before do
           allow(File).to receive(:exist?).with(allow_list_file).and_return(true)
           allow(File).to receive(:read).with(allow_list_file).and_call_original
-          allow(Gcs::Environment).to receive(:allow_list_file_path).and_return(allow_list_file)
+          allow(Gcs::AllowList).to receive(:file_path).and_return(allow_list_file)
         end
 
         specify do
-          expect(Gcs::Util).to receive(:write_table).with({}, fixture_file_yaml_content('vulnerability-allowlist.yml'))
+          expect(Gcs::Util).to receive(:write_table).with({}, instance_of(Gcs::AllowList))
           expect(Gcs::Util).to receive(:write_file).with('gl-container-scanning-report.json',
                                                          {},
                                                          Pathname.pwd,
-                                                         fixture_file_yaml_content('vulnerability-allowlist.yml'))
+                                                         instance_of(Gcs::AllowList))
           expect(execution).not_to terminate
         end
       end
@@ -51,7 +51,7 @@ RSpec.describe Gcs::Cli do
       context 'without allow list file' do
         before do
           allow(File).to receive(:exist?).with('nonexisting-file-allowlist.yml').and_return(false)
-          allow(Gcs::Environment).to receive(:allow_list_file_path).and_return('nonexisting-file-allowlist.yml')
+          allow(Gcs::AllowList).to receive(:file_path).and_return('nonexisting-file-allowlist.yml')
         end
 
         specify do

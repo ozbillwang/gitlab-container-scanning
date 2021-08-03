@@ -16,16 +16,20 @@ module Gcs
       if status.success?
         if File.exist?(OUTPUT_FILE)
           gitlab_format = Converter.new(File.read(OUTPUT_FILE), Environment.docker_file, measured_time).convert
-          if File.exist?(Environment.allow_list_file_path)
-            allow_list = YAML.load_file(Environment.allow_list_file_path)
-            Gcs.logger.info("#{Environment.allow_list_file_path} file found")
+
+          begin
+            allow_list = AllowList.new
+            Gcs.logger.info("Using allowlist #{AllowList.file_path}")
+          rescue Errno::ENOENT
+            allow_list = nil
+            Gcs.logger.debug("#{AllowList.file_path} not found")
           end
 
-          Gcs::Util.write_table(gitlab_format, allow_list)
+          Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET'] # FIXME: undocumented env var
           Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
         end
       else
-        Gcs.logger.info('Scan failed please re-run scanner with debug mode to see more details')
+        Gcs.logger.info('Scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
         Gcs.logger.error(stderr)
         Gcs.logger.error(stdout)
         exit 1
