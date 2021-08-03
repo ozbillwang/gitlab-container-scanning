@@ -8,10 +8,6 @@ module FixtureFileHelper
     fixture_file(path).read
   end
 
-  def fixture_file_yaml_content(path)
-    YAML.safe_load(fixture_file_content(path))
-  end
-
   def fixture_file_json_content(path)
     JSON.parse(fixture_file_content(path))
   end

@@ -14,8 +14,7 @@ module Gcs
       end
 
       def write_file(name, content, location, allow_list)
-        update_allow_list(allow_list)
-        content['vulnerabilities']&.delete_if { |vuln| allowed?(vuln) }
+        content['vulnerabilities']&.delete_if { |vuln| allow_list&.allowed?(vuln) }
         full_path = location.join(name)
         Gcs.logger.debug("writing results to #{full_path}")
         FileUtils.mkdir_p(full_path.dirname)
@@ -23,9 +22,6 @@ module Gcs
       end
 
       def write_table(report, allow_list)
-        return if ENV['CS_QUIET']
-
-        update_allow_list(allow_list)
         extract_row = lambda do |vuln|
           cve = vuln.fetch('cve', '')
           severity = vuln.fetch('severity', '')
@@ -34,7 +30,7 @@ module Gcs
           description = vuln.fetch('description', '')
 
           description = description.scan(/.{1,70}/).join("\n") if description.size > 70
-          is_allowed = allowed?(vuln) ? "Approved".green : "Unapproved".red
+          is_allowed = allow_list&.allowed?(vuln) ? "Approved".green : "Unapproved".red
           [is_allowed, "#{severity} #{cve}", package_name, version, description]
         end
 
@@ -45,39 +41,6 @@ module Gcs
         table = Terminal::Table.new(headings: HEADINGS, rows: rows, style: { alignment: :center, all_separators: true })
 
         puts table.render
-      end
-
-      def allowed?(vuln)
-        return false unless @allow_list_cve
-
-        cve = vuln['cve']
-        docker_image = vuln.dig('location', 'image')&.gsub(/\s\S*/, '')
-
-        return false unless cve
-
-        included_in_general?(cve) || included_in_images?(cve, docker_image)
-      end
-
-      def update_allow_list(allow_list)
-        @allow_list_cve = {
-          general: allow_list&.[]("generalallowlist"),
-          images: allow_list&.[]("images")
-        }
-      end
-
-      private
-
-      def included_in_general?(cve)
-        return false unless @allow_list_cve[:general] && @allow_list_cve[:general][cve]
-
-        @allow_list_cve[:general].key?(cve)
-      end
-
-      def included_in_images?(cve, docker_image)
-        return false unless @allow_list_cve[:images] && docker_image
-
-        image = @allow_list_cve[:images].keys.find { |key| docker_image.include?(key) }
-        !!@allow_list_cve.dig(:images, image)&.key?(cve)
       end
     end
   end

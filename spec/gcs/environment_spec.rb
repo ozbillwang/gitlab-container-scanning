@@ -141,13 +141,6 @@ RSpec.describe Gcs::Environment do
     end
   end
 
-  describe '.allow_list_file_path' do
-    it 'returns allow list file within the project path' do
-      allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return('gitlab/my_project')
-      expect(described_class.allow_list_file_path).to eq("#{Pathname.pwd}/vulnerability-allowlist.yml")
-    end
-  end
-
   describe '.docker_registry_credentials' do
     context 'with default CI credentials set' do
       let(:ci_registry_user) { 'some registry user' }
