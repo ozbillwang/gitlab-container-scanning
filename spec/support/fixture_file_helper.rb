@@ -8,10 +8,6 @@ module FixtureFileHelper
     fixture_file(path).read
   end
 
-  def fixture_file_allow_list(path)
-    Gcs::AllowList.new(fixture_file(path))
-  end
-
   def fixture_file_json_content(path)
     JSON.parse(fixture_file_content(path))
   end

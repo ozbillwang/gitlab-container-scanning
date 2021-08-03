@@ -2,7 +2,7 @@
 
 RSpec.describe Gcs::Util do
   let(:report) { fixture_file_json_content('report.json') }
-  let(:allow_list) { fixture_file_allow_list('general-allowlist.yml') }
+  let(:allow_list) { double(Gcs::AllowList, allowed?: true) }
 
   describe 'writes file to given location' do
     let(:tmp_dir) { Dir.mktmpdir }
@@ -27,13 +27,9 @@ RSpec.describe Gcs::Util do
       end
     end
 
-    %w[general-allowlist image-allowlist image-sha-allowlist].each do |context|
-      context "with #{context}" do
-        let(:allow_list) { fixture_file_allow_list("#{context}.yml") }
-
-        specify do
-          expect(fixture_file_content(full_path)).not_to match(/CVE-2019-3462/)
-        end
+    context 'with allow list' do
+      specify do
+        expect(fixture_file_content(full_path)).not_to match(/CVE-2019-3462/)
       end
     end
   end
@@ -49,13 +45,9 @@ RSpec.describe Gcs::Util do
       end
     end
 
-    %w[general-allowlist image-allowlist image-sha-allowlist].each do |context|
-      context "with #{context}" do
-        let(:allow_list) { fixture_file_allow_list("#{context}.yml") }
-
-        specify do
-          expect { subject }.to output(/Approved/).to_stdout
-        end
+    context 'with allow list' do
+      specify do
+        expect { subject }.to output(/Approved/).to_stdout
       end
     end
   end
