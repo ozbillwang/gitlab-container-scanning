@@ -1,3 +1,13 @@
+## 4.3.7 (2021-08-04)
+
+### changed (1 change)
+
+- [Update log messages for allow list usage](gitlab-org/security-products/analyzers/container-scanning@da466176dc76426cf36e17b70c6c480d3175f295) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2569))
+
+### security (1 change)
+
+- [Upgrade `addressable` gem](gitlab-org/security-products/analyzers/container-scanning@a17b8b8c28c2a7c0c4b2d16d06262da766cf888a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2565))
+
 ## 4.3.6 (2021-07-29)
 
 ### changed (2 changes)
