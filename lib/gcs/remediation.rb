@@ -5,7 +5,6 @@ module Gcs
     extend Forwardable
     attr_accessor :remediate_metadata, :cve, :id, :fixes, :docker_file
 
-    # LAST_FROM_KEYWORD = /FROM(?![\s\S]+FROM[\s\S]+)/.freeze
     LAST_FROM_KEYWORD_LINE = /.*FROM.*(?![\s\S]+FROM[\s\S]+)/.freeze
 
     REMEDIATION_COMMANDS = {
@@ -18,9 +17,9 @@ module Gcs
     PACKAGE_MANAGER_MAPPINGS = {
       'debian' => 'apt',
       'ubuntu' => 'apt',
-      'oracle' => 'apt',
       'alpine' => 'apk',
-      'centos' => 'yum'
+      'centos' => 'yum',
+      'oracle' => 'yum'
     }.freeze
 
     Fixes = Struct.new(:cve, :id) do
