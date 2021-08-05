@@ -19,7 +19,8 @@ module Gcs
       'ubuntu' => 'apt',
       'alpine' => 'apk',
       'centos' => 'yum',
-      'oracle' => 'yum'
+      'oracle' => 'yum',
+      'redhat' => 'yum'
     }.freeze
 
     Fixes = Struct.new(:cve, :id) do
