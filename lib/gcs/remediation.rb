@@ -18,6 +18,7 @@ module Gcs
       'debian' => 'apt',
       'ubuntu' => 'apt',
       'alpine' => 'apk',
+      'amazon' => 'yum',
       'centos' => 'yum',
       'oracle' => 'yum',
       'redhat' => 'yum'
