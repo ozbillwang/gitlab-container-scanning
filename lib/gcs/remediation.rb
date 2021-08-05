@@ -10,6 +10,8 @@ module Gcs
     REMEDIATION_COMMANDS = {
       'apt' => "apt-get update && apt-get upgrade -y %{package_name} && rm -rf /var/lib/apt/lists/*",
       'apk' => "apk --no-cache update && apk --no-cache add %{package_name}=%{fixed_version}",
+      'tdnf' => "tdnf -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; tdnf update -y %{package_name}; }" \
+                  " && tdnf clean all",
       'yum' => "yum -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; yum update -y %{package_name}; }" \
                   " && yum clean all",
       'zypper' => "zypper ref --force && zypper install -y --force %{package_name}=%{fixed_version}"
@@ -19,6 +21,7 @@ module Gcs
       'debian' => 'apt',
       'ubuntu' => 'apt',
       'alpine' => 'apk',
+      'photon' => 'tdnf',
       'amazon' => 'yum',
       'centos' => 'yum',
       'oracle' => 'yum',
