@@ -75,12 +75,12 @@ module Gcs
     # updates docker file and creates git diff in Base64 to be used as patch
     def create_git_diff
       write_remediation
-      stdout, _stderr, status = Gcs.shell.execute(['git diff', docker_file.to_path])
+      stdout, stderr, status = Gcs.shell.execute(['git diff', docker_file.to_path])
 
       Gcs.logger.info(stdout)
       return Base64.strict_encode64(stdout.strip) if status.success?
 
-      Gcs.logger.error('Problem generating remediation')
+      Gcs.logger.error("Problem generating remediation: #{stderr}")
 
       ''
     end
