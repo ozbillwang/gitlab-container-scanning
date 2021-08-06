@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-RSpec.describe Gcs::Remediation do
+RSpec.describe Gcs::Remediations::Remediation do
   let(:docker_file) { fixture_file('docker/remediation-Dockerfile') }
   let(:package_name) { 'something' }
   let(:package_version) { '1.0.0' }
