@@ -1,16 +1,28 @@
 # frozen_string_literal: true
 RSpec.describe Gcs::Remediation do
-  let(:multi_build_docker_file_path) { fixture_file('docker/remediation-multibuild-Dockerfile') }
-  let(:docker_file_path) { fixture_file('docker/remediation-Dockerfile') }
+  let(:docker_file) { fixture_file('docker/remediation-Dockerfile') }
+  let(:package_name) { 'something' }
+  let(:package_version) { '1.0.0' }
+  let(:fixed_version) { '2.2.1' }
 
   after do
-    if ENV['CI_SERVER'].nil?
-      `git checkout #{multi_build_docker_file_path.to_path}`
-      `git checkout #{docker_file_path.to_path}`
-    end
+    `git checkout #{docker_file.to_path}` if ENV['CI_SERVER'].nil?
   end
 
   RSpec.shared_examples 'remediates Dockerfile' do
+    let(:remediation) do
+      described_class.new(
+        {
+          'package_name' => package_name,
+          'package_version' => package_version,
+          'fixed_version' => fixed_version,
+          'operating_system' => operating_system,
+          'summary' => "Upgrade #{package_name} to #{fixed_version}"
+        },
+        docker_file
+      )
+    end
+
     before do
       remediation.add_fix('123', '456')
     end
@@ -26,21 +38,8 @@ RSpec.describe Gcs::Remediation do
 
   describe 'for multi build docker file' do
     let(:package_name) { 'curl' }
-    let(:package_version) { '1.0.0' }
-    let(:fixed_version) { '2.2.1' }
     let(:operating_system) { 'centos' }
-    let(:remediation) do
-      described_class.new(
-        {
-          'package_name' => package_name,
-          'package_version' => package_version,
-          'fixed_version' => fixed_version,
-          'operating_system' => operating_system,
-          'summary' => "Upgrade #{package_name} to #{fixed_version}"
-        },
-        multi_build_docker_file_path
-      )
-    end
+    let(:docker_file) { fixture_file('docker/remediation-multibuild-Dockerfile') }
 
     let(:diff) do
       'ZGlmZiAtLWdpdCBhL3NwZWMvZml4dHVyZXMvZG9ja2VyL3JlbWVkaWF0aW9uLW11bHRpYnVpbGQtRG9ja2VyZmlsZSBiL' \
@@ -58,22 +57,6 @@ RSpec.describe Gcs::Remediation do
   end
 
   describe 'for single build docker file' do
-    let(:package_name) { 'something' }
-    let(:package_version) { '1.0.0' }
-    let(:fixed_version) { '2.2.1' }
-    let(:remediation) do
-      described_class.new(
-        {
-          'package_name' => package_name,
-          'package_version' => package_version,
-          'fixed_version' => fixed_version,
-          'operating_system' => operating_system,
-          'summary' => "Upgrade #{package_name} to #{fixed_version}"
-        },
-        docker_file_path
-      )
-    end
-
     context 'when using the apt package manager' do
       where(:operating_system) { %w[debian ubuntu] }
 
@@ -147,7 +130,7 @@ RSpec.describe Gcs::Remediation do
           'operating_system' => 'some-unrecognized-os',
           'summary' => 'Upgrade apt to 2.2.1'
         },
-        docker_file_path
+        docker_file
       )
     end
 
