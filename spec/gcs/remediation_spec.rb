@@ -6,7 +6,7 @@ RSpec.describe Gcs::Remediation do
   let(:fixed_version) { '2.2.1' }
 
   after do
-    `git checkout #{docker_file.to_path}` if ENV['CI_SERVER'].nil?
+    `git checkout #{docker_file.to_path}`
   end
 
   RSpec.shared_examples 'remediates Dockerfile' do
