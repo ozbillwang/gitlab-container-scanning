@@ -9,7 +9,9 @@ module Gcs
       def scan_image(image_name, output_file_name)
         disabled_remediation_info unless Gcs::Environment.docker_file.exist?
         Gcs.logger.info(log_message(image_name))
-        Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
+        stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
+
+        [stdout, improve_stderr_msg(stderr, image_name), status]
       end
 
       private
@@ -34,6 +36,20 @@ module Gcs
             for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
             with gcs #{Gcs::VERSION} and #{scanner_name} #{scanner_version}, advisories updated at #{db_updated_at}
         HEREDOC
+      end
+
+      def improve_stderr_msg(stderr, image_name)
+        return unless stderr
+
+        if stderr.include?('Access denied')
+          "The credentials set in DOCKER_USERNAME and DOCKER_PASSWORD are not valid. Please set a valid credentials."
+        elsif stderr.include?('manifest unknown')
+          "The image #{image_name} could not be found. " \
+          "To change the image being scanned, use the DOCKER_IMAGE environment variable." \
+          "For details, see https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables"
+        else
+          stderr
+        end
       end
 
       def environment
