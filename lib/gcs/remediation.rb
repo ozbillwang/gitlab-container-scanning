@@ -5,22 +5,29 @@ module Gcs
     extend Forwardable
     attr_accessor :remediate_metadata, :cve, :id, :fixes, :docker_file
 
-    # LAST_FROM_KEYWORD = /FROM(?![\s\S]+FROM[\s\S]+)/.freeze
     LAST_FROM_KEYWORD_LINE = /.*FROM.*(?![\s\S]+FROM[\s\S]+)/.freeze
 
     REMEDIATION_COMMANDS = {
       'apt' => "apt-get update && apt-get upgrade -y %{package_name} && rm -rf /var/lib/apt/lists/*",
       'apk' => "apk --no-cache update && apk --no-cache add %{package_name}=%{fixed_version}",
+      'tdnf' => "tdnf -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; tdnf update -y %{package_name}; }" \
+                  " && tdnf clean all",
       'yum' => "yum -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; yum update -y %{package_name}; }" \
-                  " && yum clean all"
+                  " && yum clean all",
+      'zypper' => "zypper ref --force && zypper install -y --force %{package_name}=%{fixed_version}"
     }.freeze
 
     PACKAGE_MANAGER_MAPPINGS = {
       'debian' => 'apt',
       'ubuntu' => 'apt',
-      'oracle' => 'apt',
       'alpine' => 'apk',
-      'centos' => 'yum'
+      'photon' => 'tdnf',
+      'amazon' => 'yum',
+      'centos' => 'yum',
+      'oracle' => 'yum',
+      'redhat' => 'yum',
+      'opensuse' => 'zypper',
+      'opensuse.leap' => 'zypper'
     }.freeze
 
     Fixes = Struct.new(:cve, :id) do
