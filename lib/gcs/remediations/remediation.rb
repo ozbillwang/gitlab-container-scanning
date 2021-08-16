@@ -4,7 +4,7 @@ module Gcs
   module Remediations
     class Remediation
       extend Forwardable
-      attr_accessor :remediate_metadata, :cve, :id, :fixes, :docker_file
+      attr_accessor :remediate_metadata, :cve, :id, :fixes
 
       LAST_FROM_KEYWORD_LINE = /.*FROM.*(?![\s\S]+FROM[\s\S]+)/.freeze
 
@@ -73,7 +73,7 @@ module Gcs
       # updates docker file and creates git diff in Base64 to be used as patch
       def create_git_diff
         write_remediation
-        stdout, stderr, status = Gcs.shell.execute(['git diff', docker_file.to_path])
+        stdout, stderr, status = Gcs.shell.execute(['git diff', @docker_file.to_path])
 
         Gcs.logger.info(stdout)
         return Base64.strict_encode64(stdout.strip) if status.success?
@@ -84,7 +84,7 @@ module Gcs
       end
 
       def write_remediation
-        IO.write(docker_file.to_path, File.open(docker_file) do |f|
+        IO.write(@docker_file.to_path, File.open(@docker_file) do |f|
           f.read.gsub(LAST_FROM_KEYWORD_LINE) do |match|
             "#{match}\nRUN #{remediation_formula}"
           end

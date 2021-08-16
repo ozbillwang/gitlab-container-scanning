@@ -6,6 +6,8 @@ module Gcs
 
     desc 'scan IMAGE', 'Scan an image'
     def scan(image_name = ::Gcs::Environment.docker_image)
+      disabled_remediation_info unless Gcs::Environment.docker_file.exist?
+
       stdout, stderr, status = nil
       measured_time = Gcs::Util.measure_runtime do
         stdout, stderr, status = Environment.scanner.scan_image(image_name, OUTPUT_FILE)
@@ -33,6 +35,17 @@ module Gcs
         Gcs.logger.error(stdout)
         exit 1
       end
+    end
+
+    private
+
+    def disabled_remediation_info
+      Gcs.logger.info(
+        <<~EOMSG
+          Remediation is disabled; #{@docker_file} cannot be found. Have you set `GIT_STRATEGY` and `DOCKERFILE_PATH`? 
+          See https://docs.gitlab.com/ee/user/application_security/container_scanning/#solutions-for-vulnerabilities-auto-remediation
+      EOMSG
+      )
     end
   end
 end

@@ -4,12 +4,16 @@ module Gcs
   module Remediations
     class Collection
       attr_accessor :remediations
-      attr_reader :unsupported_operating_systems, :disabled
+      attr_reader :unsupported_operating_systems
 
-      def initialize
+      def initialize(docker_file = Gcs::Environment.docker_file)
+        @docker_file = docker_file
         @remediations = {}
         @unsupported_operating_systems = Set.new
-        @warn_if_disabled = true
+      end
+
+      def disabled?
+        !@docker_file.exist?
       end
 
       def to_hash
@@ -17,8 +21,8 @@ module Gcs
       end
 
       def create_remediation(converted_vuln, vulnerability)
+        return if disabled?
         return unless remediation_possible?(vulnerability)
-
         return unless (new_remediation = remediation(converted_vuln, vulnerability))
 
         # there is existing remediation addressing more than one vulnerability
@@ -43,16 +47,6 @@ module Gcs
       end
 
       private
-
-      def remediation_disabled?
-        is_disabled = !Environment.docker_file.exist?
-        if @warn_if_disabled
-          Gcs.logger.info("Remediation is disabled because #{docker_file_path} cannot be found")
-          @warn_if_disabled = false
-        end
-
-        is_disabled
-      end
 
       def remediation(converted_vuln, vulnerability)
         os = converted_vuln.operating_system
