@@ -32,14 +32,6 @@ module Gcs
       }.freeze
 
       Fixes = Struct.new(:cve, :id) do
-        def ==(other)
-          id == other.id
-        end
-
-        def hash
-          id.hash
-        end
-
         def to_hash
           { 'cve' => cve, 'id' => id }
         end
@@ -60,14 +52,6 @@ module Gcs
 
       def add_fix(cve, id)
         fixes.add(Fixes.new(cve, id))
-      end
-
-      def ==(other)
-        compare_id == other.compare_id
-      end
-
-      def hash
-        compare_id.hash
       end
 
       def to_hash
@@ -99,7 +83,6 @@ module Gcs
         ''
       end
 
-      # check if os is unkown till here
       def write_remediation
         IO.write(docker_file.to_path, File.open(docker_file) do |f|
           f.read.gsub(LAST_FROM_KEYWORD_LINE) do |match|

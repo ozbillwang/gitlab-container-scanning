@@ -3,8 +3,6 @@
 module Gcs
   module Remediations
     class Collection
-      # include Enumerable
-
       attr_accessor :remediations
       attr_reader :unsupported_operating_systems, :disabled
 
@@ -17,10 +15,6 @@ module Gcs
       def to_hash
         @remediations.values.map(&:to_hash)
       end
-
-      # def each(&block)
-      #   @remediations.map(&block)
-      # end
 
       def create_remediation(converted_vuln, vulnerability)
         return unless remediation_possible?(vulnerability)
