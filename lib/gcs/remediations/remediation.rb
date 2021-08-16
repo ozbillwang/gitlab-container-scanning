@@ -46,7 +46,6 @@ module Gcs
       end
 
       def compare_id
-        # Gcs.logger.info("making compare_id from #{remediate_metadata.keys} #{remediate_metadata.values}")
         Digest::SHA1.hexdigest(remediation_formula)
       end
 
@@ -75,7 +74,7 @@ module Gcs
         write_remediation
         stdout, stderr, status = Gcs.shell.execute(['git diff', @docker_file.to_path])
 
-        Gcs.logger.info(stdout)
+        Gcs.logger.debug(stdout)
         return Base64.strict_encode64(stdout.strip) if status.success?
 
         Gcs.logger.error("Problem generating remediation: #{stderr}")
