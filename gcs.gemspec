@@ -14,11 +14,8 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
-  # spec.metadata["allowed_push_host"] = " Set to 'http://mygemserver.com'"
-
-  # spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://gitlab.com'
-  spec.metadata['changelog_uri'] = 'https://gitlab.com'
+  spec.metadata['source_code_uri'] = 'https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning'
+  spec.metadata['changelog_uri'] = 'https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/CHANGELOG.md'
 
   spec.files = Dir.glob("{bin,lib,exe}/**/*")
 
