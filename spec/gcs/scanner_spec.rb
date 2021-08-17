@@ -39,6 +39,17 @@ RSpec.describe Gcs::Scanner do
 
       subject
     end
+
+    context 'when docker file does not exist' do
+      it 'informs the user that remediation is disabled' do
+        allow(Gcs::Environment).to receive(:docker_file).and_return(Pathname.new('invalid_path'))
+        allow(Gcs.shell).to receive(:execute)
+        expect(Gcs.logger).to receive(:info).with(log_message)
+        expect(Gcs.logger).to receive(:info).with(match(/Remediation is disabled/))
+
+        subject
+      end
+    end
   end
 
   describe '.log_message' do
@@ -46,9 +57,9 @@ RSpec.describe Gcs::Scanner do
     let(:db_updated_at) { '2021-07-28' }
     let(:message) do
       <<~HEREDOC
-            Scanning container from registry #{image_name} \
-            for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
-            with gcs #{Gcs::VERSION} and #{MyScanner.name} #{scanner_version}, advisories updated at #{db_updated_at}
+        Scanning container from registry #{image_name} \
+        for vulnerabilities with severity level #{Gcs::Environment.severity_level_name} or higher, \
+        with gcs #{Gcs::VERSION} and #{MyScanner.name} #{scanner_version}, advisories updated at #{db_updated_at}
       HEREDOC
     end
 
