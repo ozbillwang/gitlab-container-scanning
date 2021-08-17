@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://gitlab.com'
   spec.license       = 'Nonstandard'
 
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.0.2")
 
   # spec.metadata["allowed_push_host"] = " Set to 'http://mygemserver.com'"
 
