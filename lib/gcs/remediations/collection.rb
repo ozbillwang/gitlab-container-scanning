@@ -12,13 +12,9 @@ module Gcs
         @unsupported_operating_systems = Set.new
       end
 
-      def disabled?
-        !@docker_file.exist?
-      end
+      def disabled? = !@docker_file.exist?
 
-      def to_hash
-        @remediations.values.map(&:to_hash)
-      end
+      def to_hash = @remediations.values.map(&:to_hash)
 
       def create_remediation(converted_vuln, vulnerability)
         return if disabled?

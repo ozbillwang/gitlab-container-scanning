@@ -11,9 +11,7 @@ def git(cmd, *args)
   output.strip
 end
 
-def default_branch?
-  current_branch == DEFAULT_BRANCH_NAME
-end
+def default_branch? = current_branch == DEFAULT_BRANCH_NAME
 
 def current_branch
   git_branch_output = git('branch')

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 module IntegrationTestHelper
-  def runner(*args)
-    @runner ||= ProjectHelper.new(*args)
-  end
+  def runner(*args) = @runner ||= ProjectHelper.new(*args)
 end
 
 class ProjectHelper
@@ -83,7 +81,5 @@ class ProjectHelper
     end
   end
 
-  def cleanup
-    FileUtils.rm_rf(project_path) if project_path.exist?
-  end
+  def cleanup = FileUtils.rm_rf(project_path) if project_path.exist?
 end

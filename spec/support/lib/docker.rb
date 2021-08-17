@@ -45,7 +45,5 @@ class Docker
 
   private
 
-  def expand(command)
-    command.flatten.map(&:to_s).join(' ')
-  end
+  def expand(command) = command.flatten.map(&:to_s).join(' ')
 end

@@ -45,13 +45,9 @@ module Gcs
         @fixes = Set.new
       end
 
-      def compare_id
-        Digest::SHA1.hexdigest(remediation_formula)
-      end
+      def compare_id = Digest::SHA1.hexdigest(remediation_formula)
 
-      def add_fix(cve, id)
-        fixes.add(Fixes.new(cve, id))
-      end
+      def add_fix(cve, id) = fixes.add(Fixes.new(cve, id))
 
       def to_hash
         return {} unless supported_operating_system?
@@ -63,9 +59,7 @@ module Gcs
         }
       end
 
-      def supported_operating_system?(os = operating_system)
-        PACKAGE_MANAGER_MAPPINGS.include?(os)
-      end
+      def supported_operating_system?(os = operating_system) = PACKAGE_MANAGER_MAPPINGS.include?(os)
 
       private
 
@@ -91,13 +85,9 @@ module Gcs
         )
       end
 
-      def operating_system
-        @operating_system ||= remediate_metadata.operating_system.match(/[a-z]*/).to_s
-      end
+      def operating_system = @operating_system ||= remediate_metadata.operating_system.match(/[a-z]*/).to_s
 
-      def package_manager
-        PACKAGE_MANAGER_MAPPINGS.fetch(operating_system, "")
-      end
+      def package_manager = PACKAGE_MANAGER_MAPPINGS.fetch(operating_system, "")
 
       def remediation_formula
         format(

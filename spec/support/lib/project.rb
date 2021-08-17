@@ -29,7 +29,5 @@ class Project
     Dir.chdir path, &block
   end
 
-  def cleanup
-    FileUtils.rm_rf(path) if path.exist?
-  end
+  def cleanup = FileUtils.rm_rf(path) if path.exist?
 end
