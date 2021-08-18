@@ -3,8 +3,7 @@
 module Gcs
   module Remediations
     class Collection
-      attr_accessor :remediations
-      attr_reader :unsupported_operating_systems
+      attr_reader :unsupported_operating_systems, :remediations, :docker_file
 
       def initialize(docker_file = Gcs::Environment.docker_file)
         @docker_file = docker_file
@@ -13,7 +12,7 @@ module Gcs
       end
 
       def disabled?
-        !@docker_file.exist?
+        !docker_file.exist?
       end
 
       def to_hash
@@ -51,7 +50,7 @@ module Gcs
       def remediation(converted_vuln, vulnerability)
         os = converted_vuln.operating_system
         new_remediation = Gcs::Remediations::Remediation.new(
-          vulnerability['remediateMetadata'].merge({ 'operating_system' => os }), @docker_file)
+          vulnerability['remediateMetadata'].merge({ 'operating_system' => os }), docker_file)
 
         unless new_remediation.supported_operating_system?
           @unsupported_operating_systems.add(os)

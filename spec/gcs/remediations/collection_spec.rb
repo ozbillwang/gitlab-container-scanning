@@ -25,18 +25,18 @@ RSpec.describe Gcs::Remediations::Collection do
     let(:vulnerability) { JSON.parse(fixture_file_content('report.json'))['vulnerabilities'][0] }
     let(:converted_vuln) { Gcs::Vulnerability.new(vulnerability) }
 
-    subject { remediation_collection.create_remediation(converted_vuln, vulnerability) }
+    subject(:create_remediation) { remediation_collection.create_remediation(converted_vuln, vulnerability) }
 
     it 'checks whether remediations are disabled' do
       expect(remediation_collection).to receive(:disabled?).once
-      subject
+      create_remediation
     end
 
     context 'when OS is unsupported' do
       let(:vulnerability) { JSON.parse(fixture_file_content('trivy-unsupported-os.json'))['vulnerabilities'][0] }
 
       before do
-        subject
+        create_remediation
       end
 
       it 'skips remediation' do
@@ -50,7 +50,7 @@ RSpec.describe Gcs::Remediations::Collection do
 
     context 'when OS is supported' do
       before do
-        subject
+        create_remediation
       end
 
       it 'adds remediation' do

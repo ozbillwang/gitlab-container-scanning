@@ -4,7 +4,7 @@ module Gcs
   module Remediations
     class Remediation
       extend Forwardable
-      attr_accessor :remediate_metadata, :cve, :id, :fixes
+      attr_reader :remediate_metadata, :cve, :id, :fixes
 
       LAST_FROM_KEYWORD_LINE = /.*FROM.*(?![\s\S]+FROM[\s\S]+)/.freeze
 
