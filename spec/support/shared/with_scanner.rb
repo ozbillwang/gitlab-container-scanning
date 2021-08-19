@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 RSpec.shared_context 'with scanner' do
-  subject { runner.report_for(type: 'container-scanning') }
+  subject(:report) { runner.report_for(type: 'container-scanning') }
 
   let(:pwd) { Pathname.new(File.dirname(__FILE__)).join('../../..') }
 

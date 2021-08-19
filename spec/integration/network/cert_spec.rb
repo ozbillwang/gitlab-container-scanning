@@ -2,7 +2,7 @@
 
 RSpec.describe 'alpine' do
   context 'when scanning an Alpine based image', integration: :ca_cert do
-    subject { runner.report_for(type: 'container-scanning') }
+    subject(:report) { runner.report_for(type: 'container-scanning') }
 
     before(:all) do
       runner.mount(dir: fixture_file('docker/alpine_project'))
@@ -16,6 +16,6 @@ RSpec.describe 'alpine' do
       )
     end
 
-    specify { expect(subject).to match_schema(:container_scanning) }
+    specify { expect(report).to match_schema(:container_scanning) }
   end
 end

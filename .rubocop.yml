@@ -21,3 +21,6 @@ CodeReuse/ActiveRecord:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 10
+
+RSpec/NamedSubject:
+  Enabled: true

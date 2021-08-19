@@ -8,11 +8,11 @@ RSpec.shared_examples 'as container scanner' do |item|
   let(:max_seconds) { 51 }
 
   specify do
-    expect(subject).to match_schema(:container_scanning)
+    expect(report).to match_schema(:container_scanning)
   end
 
   specify do
-    subject['remediations'].each do |remedy|
+    report['remediations'].each do |remedy|
       expect(remedy['summary']).not_to be_nil
       expect(remedy['diff']).not_to be_nil
 
@@ -24,7 +24,7 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
-    subject['vulnerabilities'].each do |vulnerability|
+    report['vulnerabilities'].each do |vulnerability|
       expect(vulnerability['id']).not_to be_nil
       expect(vulnerability['message']).not_to be_nil
       expect(vulnerability['description']).not_to be_nil
@@ -46,7 +46,7 @@ RSpec.shared_examples 'as container scanner' do |item|
       end
     end
 
-    expect(subject['vulnerabilities']).to all(include('category' => 'container_scanning'))
+    expect(report['vulnerabilities']).to all(include('category' => 'container_scanning'))
   end
 
   shared_examples 'as trivy scanner' do
@@ -55,32 +55,32 @@ RSpec.shared_examples 'as container scanner' do |item|
 
       expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
 
-      expect(subject['scan']['scanner']['version']).to eql(current_trivy_version)
-      expect(subject['scan']['scanner']['id']).to eql('trivy')
-      expect(subject['scan']['scanner']['name']).to eql('Trivy')
-      expect(subject['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
-      expect(subject['scan']['scanner']['vendor']['name']).to eql('GitLab')
+      expect(report['scan']['scanner']['version']).to eql(current_trivy_version)
+      expect(report['scan']['scanner']['id']).to eql('trivy')
+      expect(report['scan']['scanner']['name']).to eql('Trivy')
+      expect(report['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
+      expect(report['scan']['scanner']['vendor']['name']).to eql('GitLab')
     end
   end
 
   shared_examples 'as grype scanner' do
     specify do
-      expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
+      expect(report['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
 
-      expect(subject['scan']['scanner']['version']).to eql('0.15.0')
-      expect(subject['scan']['scanner']['id']).to eql('grype')
-      expect(subject['scan']['scanner']['name']).to eql('Grype')
-      expect(subject['scan']['scanner']['url']).to eql('https://github.com/anchore/grype')
-      expect(subject['scan']['scanner']['vendor']['name']).to eql('Anchore')
+      expect(report['scan']['scanner']['version']).to eql('0.15.0')
+      expect(report['scan']['scanner']['id']).to eql('grype')
+      expect(report['scan']['scanner']['name']).to eql('Grype')
+      expect(report['scan']['scanner']['url']).to eql('https://github.com/anchore/grype')
+      expect(report['scan']['scanner']['vendor']['name']).to eql('Anchore')
     end
   end
 
   specify do
-    expect(subject['scan']).not_to be_nil
-    expect(subject['scan']['end_time']).not_to be_nil
-    expect(subject['scan']['start_time']).not_to be_nil
-    expect(subject['scan']['status']).to eql('success')
-    expect(subject['scan']['type']).to eql('container_scanning')
+    expect(report['scan']).not_to be_nil
+    expect(report['scan']['end_time']).not_to be_nil
+    expect(report['scan']['start_time']).not_to be_nil
+    expect(report['scan']['status']).to eql('success')
+    expect(report['scan']['type']).to eql('container_scanning')
   end
 
   it_behaves_like 'as trivy scanner' if ENV['SCANNER'] == 'trivy'
@@ -94,13 +94,13 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
-    expect(subject['vulnerabilities']).not_to include('cve' => 'CVE-2019-3462',
-                                                      'location' => {
-                                                        'dependency' => {
-                                                          'package' => {
-                                                            'name' => 'apt'
-                                                          }
-                                                        }
-                                                      })
+    expect(report['vulnerabilities']).not_to include('cve' => 'CVE-2019-3462',
+                                                     'location' => {
+                                                       'dependency' => {
+                                                         'package' => {
+                                                           'name' => 'apt'
+                                                         }
+                                                       }
+                                                     })
   end
 end

@@ -50,7 +50,7 @@ RSpec.describe Gcs::Grype do
   end
 
   describe 'scanning with grype' do
-    subject { described_class.scan_image(image_name, output_file_name) }
+    subject(:scan_image) { described_class.scan_image(image_name, output_file_name) }
 
     it 'runs grype binary with empty docker credentials' do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
@@ -68,7 +68,7 @@ RSpec.describe Gcs::Grype do
       expect(Gcs.shell).to receive(:execute).with(%w[grype version]).once
       expect(Gcs.shell).to receive(:execute).with("grype db status").once
 
-      subject
+      scan_image
     end
 
     it 'runs grype binary with given severity levels' do
@@ -89,7 +89,7 @@ RSpec.describe Gcs::Grype do
       expect(Gcs.shell).to receive(:execute).with(%w[grype version]).once
       expect(Gcs.shell).to receive(:execute).with("grype db status").once
 
-      subject
+      scan_image
     end
   end
 end

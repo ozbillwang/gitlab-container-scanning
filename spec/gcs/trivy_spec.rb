@@ -37,7 +37,7 @@ RSpec.describe Gcs::Trivy do
   end
 
   describe 'scanning with trivy' do
-    subject { described_class.scan_image(image_name, output_file_name) }
+    subject(:scan_image) { described_class.scan_image(image_name, output_file_name) }
 
     it 'runs trivy binary with given severity levels' do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
@@ -58,7 +58,7 @@ RSpec.describe Gcs::Trivy do
                                                   })
       expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
 
-      subject
+      scan_image
     end
 
     it 'runs trivy binary without severity level' do
@@ -79,7 +79,7 @@ RSpec.describe Gcs::Trivy do
                                                     "TRIVY_USERNAME" => nil
                                                   })
 
-      subject
+      scan_image
     end
   end
 end
