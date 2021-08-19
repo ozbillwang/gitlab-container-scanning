@@ -1,3 +1,17 @@
+## 4.3.8 (2021-08-19)
+
+### fixed (5 changes)
+
+- [Fix Photon OS remediation](gitlab-org/security-products/analyzers/container-scanning@2bd979e29fceb9c56b8eb18d5689a282a2e18757) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2571))
+- [Fix OpenSUSE, OpenSUSE/Leap remediation](gitlab-org/security-products/analyzers/container-scanning@1f78b24904014b8ec6833b80928fbf168bd26640) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2571))
+- [Fix remediation for Amazon Linux](gitlab-org/security-products/analyzers/container-scanning@ddaac62f0f47b7833fc3cfc5e86acbac01cec2e4) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2571))
+- [Fix remediation for Red Hat and Red Hat UBI](gitlab-org/security-products/analyzers/container-scanning@265c03daa9b78e4e84f5aec7684e2444da6fcd49) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2571))
+- [Fix remediation for Oracle Linux](gitlab-org/security-products/analyzers/container-scanning@0abf66d1c6fa7270eaa5833a62d7fe728ea50edd) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2571))
+
+### changed (1 change)
+
+- [Add details to remediation error message](gitlab-org/security-products/analyzers/container-scanning@38d1b0a322df03ff7b6ffaf178fc009f06194f54) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2570))
+
 ## 4.3.7 (2021-08-04)
 
 ### changed (1 change)
