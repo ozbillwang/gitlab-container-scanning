@@ -1,3 +1,9 @@
+## 4.3.9 (2021-08-19)
+
+### fixed (1 change)
+
+- [Show path to docker file in remediation error](gitlab-org/security-products/analyzers/container-scanning@2630f5e304ff2efe16d9f2d2907963712b5629a8) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2577))
+
 ## 4.3.8 (2021-08-19)
 
 ### fixed (5 changes)
