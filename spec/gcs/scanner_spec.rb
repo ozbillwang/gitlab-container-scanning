@@ -25,19 +25,19 @@ RSpec.describe Gcs::Scanner do
       allow(described_class).to receive(:environment).and_return(environment)
     end
 
-    subject { MyScanner.scan_image(image_name, output_file_name) }
+    subject(:scan_image) { MyScanner.scan_image(image_name, output_file_name) }
 
     it 'logs an execution message before running scan' do
       expect(Gcs.logger).to receive(:info).with(log_message)
       expect(Gcs.shell).to receive(:execute)
 
-      subject
+      scan_image
     end
 
     it 'executes the scan_command with correct arguments and environment' do
       expect(Gcs.shell).to receive(:execute).with(command, environment)
 
-      subject
+      scan_image
     end
 
     context 'when docker file does not exist' do
@@ -47,7 +47,7 @@ RSpec.describe Gcs::Scanner do
         expect(Gcs.logger).to receive(:info).with(log_message)
         expect(Gcs.logger).to receive(:info).with(match(/Remediation is disabled/))
 
-        subject
+        scan_image
       end
     end
   end

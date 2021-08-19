@@ -24,7 +24,7 @@ RSpec.describe 'centos' do
       stdout, _, _ = Open3.capture3("grype registry:centos:centos8 | wc -l")
       package_vulnerabilities_count = stdout.to_i - 1
 
-      expect(subject['vulnerabilities'].count).to be < package_vulnerabilities_count
+      expect(report['vulnerabilities'].count).to be < package_vulnerabilities_count
     end
   end
 end

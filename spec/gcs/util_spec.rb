@@ -8,11 +8,13 @@ RSpec.describe Gcs::Util do
     let(:tmp_dir) { Dir.mktmpdir }
     let(:full_path) { Pathname.new(tmp_dir).join(Gcs::DEFAULT_REPORT_NAME) }
 
-    subject { described_class.write_file(Gcs::DEFAULT_REPORT_NAME, report, Gcs::Environment.project_dir, allow_list) }
+    subject(:write_file) do
+      described_class.write_file(Gcs::DEFAULT_REPORT_NAME, report, Gcs::Environment.project_dir, allow_list)
+    end
 
     before do
       allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return(tmp_dir)
-      subject
+      write_file
     end
 
     after do
@@ -35,19 +37,19 @@ RSpec.describe Gcs::Util do
   end
 
   describe '.write_table' do
-    subject { described_class.write_table(report, allow_list) }
+    subject(:write_table) { described_class.write_table(report, allow_list) }
 
     context 'without allow list' do
       let(:allow_list) { nil }
 
       specify do
-        expect { subject }.to output(/unapproved/i).to_stdout
+        expect { write_table }.to output(/unapproved/i).to_stdout
       end
     end
 
     context 'with allow list' do
       specify do
-        expect { subject }.to output(/Approved/).to_stdout
+        expect { write_table }.to output(/Approved/).to_stdout
       end
     end
   end
