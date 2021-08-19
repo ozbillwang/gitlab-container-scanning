@@ -28,13 +28,7 @@ module Gcs
 
       def docker_file
         docker_file = ENV.fetch('DOCKERFILE_PATH', "#{project_dir}/Dockerfile")
-        docker_file_path = Pathname.new(docker_file)
-
-        unless docker_file_path.exist?
-          Gcs.logger.info("Remediation is disabled because #{docker_file_path} cannot be found")
-        end
-
-        docker_file_path
+        Pathname.new(docker_file)
       end
 
       def setup
