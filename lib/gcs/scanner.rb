@@ -21,7 +21,8 @@ module Gcs
       def disabled_remediation_info
         Gcs.logger.info(
           <<~EOMSG
-          Remediation is disabled; #{@docker_file} cannot be found. Have you set `GIT_STRATEGY` and `DOCKERFILE_PATH`? 
+          Remediation is disabled; #{Gcs::Environment.docker_file} cannot be found. Have you set `GIT_STRATEGY` and 
+          `DOCKERFILE_PATH`?
           See https://docs.gitlab.com/ee/user/application_security/container_scanning/#solutions-for-vulnerabilities-auto-remediation
         EOMSG
         )
