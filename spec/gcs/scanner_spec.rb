@@ -40,6 +40,52 @@ RSpec.describe Gcs::Scanner do
       scan_image
     end
 
+    context 'when stderr is present' do
+      let(:status) { double }
+
+      before do
+        allow(status).to receive(:success?).and_return(true)
+        allow(Gcs.shell).to receive(:execute).and_return(['', stderr, status])
+      end
+
+      context 'when image is not found' do
+        let(:stderr) do
+          "unable to initialize a scanner: unable to initialize a docker scanner: 3 errors occurred:" \
+          "* unable to inspect the image (invalid_image:500eeeae44f97568feb254f2141a0603668d03a8): " \
+          "Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?" \
+          "* unable to initialize Podman client: no podman socket found: " \
+          "stat podman/podman.sock: no such file or directory" \
+          "* GET invalid_image: MANIFEST_UNKNOWN: manifest unknown; map[Tag:]"
+        end
+
+        it 'returns image not found error message' do
+          expected_err = "The image #{image_name} could not be found. " \
+          "To change the image being scanned, use the DOCKER_IMAGE environment variable." \
+          "For details, see https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables"
+
+          expect(scan_image[1]).to eq(expected_err)
+        end
+      end
+
+      context 'when credentials are invalid' do
+        let(:stderr) do
+          "unable to initialize a scanner: unable to initialize a docker scanner: 3 errors occurred:" \
+          "* unable to inspect the image (invalid_image:500eeeae44f97568feb254f2141a0603668d03a8): " \
+          "Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?" \
+          "* unable to initialize Podman client: no podman socket found: " \
+          "stat podman/podman.sock: no such file or directory" \
+          "GET https://gitlab.com/jwt/auth: UNAUTHORIZED: HTTP Basic: Access denied"
+        end
+
+        it 'returns invalid credentials error message' do
+          expected_err = "The credentials set in DOCKER_USERNAME and DOCKER_PASSWORD are not valid. "\
+                         "Please set valid credentials."
+
+          expect(scan_image[1]).to eq(expected_err)
+        end
+      end
+    end
+
     context 'when docker file does not exist' do
       it 'informs the user that remediation is disabled' do
         allow(Gcs::Environment).to receive(:docker_file).and_return(Pathname.new('invalid_path'))
