@@ -42,7 +42,7 @@ module Gcs
         return unless stderr
 
         if stderr.include?('Access denied')
-          "The credentials set in DOCKER_USERNAME and DOCKER_PASSWORD are not valid. Please set a valid credentials."
+          "The credentials set in DOCKER_USERNAME and DOCKER_PASSWORD are not valid. Please set valid credentials."
         elsif stderr.include?('manifest unknown')
           "The image #{image_name} could not be found. " \
           "To change the image being scanned, use the DOCKER_IMAGE environment variable." \
