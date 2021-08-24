@@ -79,7 +79,7 @@ RSpec.describe Gcs::Scanner do
 
         it 'returns invalid credentials error message' do
           expected_err = "The credentials set in DOCKER_USERNAME and DOCKER_PASSWORD are not valid. "\
-                         "Please set a valid credentials."
+                         "Please set valid credentials."
 
           expect(scan_image[1]).to eq(expected_err)
         end
