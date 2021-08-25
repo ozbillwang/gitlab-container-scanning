@@ -54,7 +54,8 @@ RSpec.describe Gcs::Grype do
 
     it 'runs grype binary with empty docker credentials' do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
-      allow(Gcs::Environment).to receive(:docker_registry_security_config).and_return({ docker_insecure: false })
+      allow(Gcs::Environment).to receive(:docker_registry_security_config)
+                                   .and_return({ docker_insecure: false, registry_insecure: false })
 
       cmd = ["grype -v registry:#{image_name} -o template -t #{described_class.template_file} > #{output_file_name}"]
 
@@ -63,7 +64,8 @@ RSpec.describe Gcs::Grype do
                                                     "GRYPE_DB_AUTO_UPDATE" => "false",
                                                     "GRYPE_REGISTRY_AUTH_PASSWORD" => nil,
                                                     "GRYPE_REGISTRY_AUTH_USERNAME" => nil,
-                                                    "GRYPE_REGISTRY_INSECURE_SKIP_TLS_VERIFY" => "false"
+                                                    "GRYPE_REGISTRY_INSECURE_SKIP_TLS_VERIFY" => "false",
+                                                    "GRYPE_REGISTRY_INSECURE_USE_HTTP" => "false"
                                                   })
       expect(Gcs.shell).to receive(:execute).with(%w[grype version]).once
       expect(Gcs.shell).to receive(:execute).with("grype db status").once
@@ -74,7 +76,8 @@ RSpec.describe Gcs::Grype do
     it 'runs grype binary with given severity levels' do
       allow(Gcs::Environment).to receive(:docker_registry_credentials)
                                    .and_return({ 'username' => 'username', 'password' => 'password' })
-      allow(Gcs::Environment).to receive(:docker_registry_security_config).and_return({ docker_insecure: true })
+      allow(Gcs::Environment).to receive(:docker_registry_security_config)
+                                   .and_return({ docker_insecure: true, registry_insecure: true })
       allow(Gcs::Environment).to receive(:log_level).and_return("debug")
 
       cmd = ["grype -vv registry:#{image_name} -o template -t #{described_class.template_file} > #{output_file_name}"]
@@ -84,7 +87,8 @@ RSpec.describe Gcs::Grype do
                                                     "GRYPE_DB_AUTO_UPDATE" => "false",
                                                     "GRYPE_REGISTRY_AUTH_PASSWORD" => "password",
                                                     "GRYPE_REGISTRY_AUTH_USERNAME" => "username",
-                                                    "GRYPE_REGISTRY_INSECURE_SKIP_TLS_VERIFY" => "true"
+                                                    "GRYPE_REGISTRY_INSECURE_SKIP_TLS_VERIFY" => "true",
+                                                    "GRYPE_REGISTRY_INSECURE_USE_HTTP" => "true"
                                                   })
       expect(Gcs.shell).to receive(:execute).with(%w[grype version]).once
       expect(Gcs.shell).to receive(:execute).with("grype db status").once

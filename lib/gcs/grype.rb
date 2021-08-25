@@ -36,7 +36,8 @@ module Gcs
           "GRYPE_CHECK_FOR_APP_UPDATE" => false.to_s,
           "GRYPE_REGISTRY_AUTH_USERNAME" => docker_registry_credentials && docker_registry_credentials['username'],
           "GRYPE_REGISTRY_AUTH_PASSWORD" => docker_registry_credentials && docker_registry_credentials['password'],
-          "GRYPE_REGISTRY_INSECURE_SKIP_TLS_VERIFY" => docker_registry_security_config[:docker_insecure].to_s
+          "GRYPE_REGISTRY_INSECURE_SKIP_TLS_VERIFY" => docker_registry_security_config[:docker_insecure].to_s,
+          "GRYPE_REGISTRY_INSECURE_USE_HTTP" => docker_registry_security_config[:registry_insecure].to_s
         }
       end
 
