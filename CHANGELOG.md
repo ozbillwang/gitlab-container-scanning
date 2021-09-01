@@ -1,3 +1,17 @@
+## 4.3.10 (2021-09-01)
+
+### added (1 change)
+
+- [Add Grype support for CS_REGISTRY_INSECURE](gitlab-org/security-products/analyzers/container-scanning@aeb2095458d57bd797c054689ecac2c855105674) by @kzantow ([merge request](gitlab-org/security-products/analyzers/container-scanning!2580))
+
+### changed (1 change)
+
+- [Update Grype to 0.16.0](gitlab-org/security-products/analyzers/container-scanning@e3c575cc241a261e573c0f9f4bc6d6891e7348cd) by @kzantow ([merge request](gitlab-org/security-products/analyzers/container-scanning!2579))
+
+### fixed (1 change)
+
+- [Improve error message when image not found and credentials are invalid](gitlab-org/security-products/analyzers/container-scanning@477e41aff02c13764cffe53334b65526d6bccb33) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2573))
+
 ## 4.3.9 (2021-08-19)
 
 ### fixed (1 change)
