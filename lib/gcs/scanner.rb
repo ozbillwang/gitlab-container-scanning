@@ -41,15 +41,25 @@ module Gcs
       def improve_stderr_msg(stderr, image_name)
         return unless stderr
 
-        if stderr.include?('Access denied')
-          "The credentials set in DOCKER_USERNAME and DOCKER_PASSWORD are not valid. Please set valid credentials."
-        elsif stderr.include?('manifest unknown')
+        if invalid_credentials?(stderr)
+          "The credentials set in DOCKER_USER and DOCKER_PASSWORD are either empty or not valid. " \
+          "Please set valid credentials."
+        elsif image_not_found?(stderr)
           "The image #{image_name} could not be found. " \
-          "To change the image being scanned, use the DOCKER_IMAGE environment variable." \
+          "To change the image being scanned, use the DOCKER_IMAGE environment variable. " \
           "For details, see https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables"
         else
           stderr
         end
+      end
+
+      def invalid_credentials?(stderr)
+        stderr.include?('Access denied') ||
+          stderr.include?('authentication required') || stderr.include?('incorrect username or password')
+      end
+
+      def image_not_found?(stderr)
+        stderr.include?('manifest unknown') || stderr.include?('access forbidden')
       end
 
       def environment
