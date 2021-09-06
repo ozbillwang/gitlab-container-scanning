@@ -1,3 +1,9 @@
+## 4.3.11 (2021-09-06)
+
+### fixed (1 change)
+
+- [Improve error message for inaccessible image](gitlab-org/security-products/analyzers/container-scanning@ca05b93ec84c6aed035e722f13788121aa151aea) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2581))
+
 ## 4.3.10 (2021-09-01)
 
 ### added (1 change)
