@@ -4285,6 +4285,14 @@
       },
       "version": ""
     },
+    "analyzer": {
+      "id": "gcs",
+      "name": "GitLab Container Scanning",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "4.3.12"
+    },
     "type": "container_scanning",
     "start_time": "",
     "end_time": "",

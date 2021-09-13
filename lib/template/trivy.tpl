@@ -6,7 +6,7 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
 
  */ -}}
 {
-  "version": "3.0.0",
+  "version": "14.0.3",
   "vulnerabilities": [
   {{- $t_first := true }}
   {{- range . }}
@@ -109,7 +109,9 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
     "analyzer": {
       "id": "gcs",
       "name": "GitLab Container Scanning",
-      "vendor": "GitLab",
+      "vendor": {
+        "name": "GitLab"
+      },
       "version": "$gcsVersion"
     },
     "type": "container_scanning",

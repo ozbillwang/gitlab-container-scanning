@@ -1,7 +1,7 @@
 {{- $operatingSystem := printf "%s:%s" .Distro.Name .Distro.Version }}
 {{- $image := .Source.Target.UserInput }}
 {
-  "version": "3.0.0",
+  "version": "14.0.3",
   "vulnerabilities": [
   {{- $t_first := true }}
   {{- range $i, $_ := .Matches }}
@@ -94,7 +94,9 @@
     "analyzer": {
       "id": "gcs",
       "name": "GitLab Container Scanning",
-      "vendor": "GitLab",
+      "vendor": {
+        "name": "GitLab"
+      },
       "version": "$gcsVersion"
     },
     "type": "container_scanning",
