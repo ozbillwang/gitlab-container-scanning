@@ -13,6 +13,8 @@ module Gcs
       parsed_report['scan']['start_time'] = @opt.fetch(:start_time, '')
       parsed_report['scan']['end_time'] = @opt.fetch(:end_time, '')
 
+      parsed_report['scan']['analyzer']['version'] = Gcs::VERSION
+
       vulns = []
 
       parsed_report['vulnerabilities'].each do |vulnerability|

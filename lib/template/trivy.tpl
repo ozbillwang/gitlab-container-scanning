@@ -97,18 +97,24 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
   ],
   "remediations": [],
   "scan": {
-  "scanner": {
-    "id": "trivy",
-    "name": "Trivy",
-    "url": "https://github.com/aquasecurity/trivy/",
-    "vendor": {
-      "name": "GitLab"
+    "scanner": {
+      "id": "trivy",
+      "name": "Trivy",
+      "url": "https://github.com/aquasecurity/trivy/",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "0.19.2"
     },
-    "version": "0.19.2"
-  },
-  "type": "container_scanning",
-  "start_time": "",
-  "end_time": "",
-  "status": "success"
+    "analyzer": {
+      "id": "gcs",
+      "name": "GitLab Container Scanning",
+      "vendor": "GitLab",
+      "version": "$gcsVersion"
+    },
+    "type": "container_scanning",
+    "start_time": "",
+    "end_time": "",
+    "status": "success"
   }
 }
