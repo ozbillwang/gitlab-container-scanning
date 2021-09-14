@@ -1,3 +1,9 @@
+## 4.3.12 (2021-09-14)
+
+### changed (1 change)
+
+- [Include analyzer metadata in the security report](gitlab-org/security-products/analyzers/container-scanning@d9abc6d95b5299c63e57be17053373a1c1292f81) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2583))
+
 ## 4.3.11 (2021-09-06)
 
 ### fixed (1 change)
