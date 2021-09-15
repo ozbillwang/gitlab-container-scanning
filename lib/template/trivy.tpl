@@ -106,14 +106,7 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
       },
       "version": "0.19.2"
     },
-    "analyzer": {
-      "id": "gcs",
-      "name": "GitLab Container Scanning",
-      "vendor": {
-        "name": "GitLab"
-      },
-      "version": "$gcsVersion"
-    },
+    "analyzer": {},
     "type": "container_scanning",
     "start_time": "",
     "end_time": "",

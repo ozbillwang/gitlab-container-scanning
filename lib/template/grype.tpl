@@ -91,14 +91,7 @@
       },
       "version": "0.18.0"
     },
-    "analyzer": {
-      "id": "gcs",
-      "name": "GitLab Container Scanning",
-      "vendor": {
-        "name": "GitLab"
-      },
-      "version": "$gcsVersion"
-    },
+    "analyzer": {},
     "type": "container_scanning",
     "start_time": "",
     "end_time": "",
