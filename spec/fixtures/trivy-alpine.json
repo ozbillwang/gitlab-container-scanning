@@ -1,5 +1,5 @@
 {
-  "version": "2.3",
+  "version": "14.0.3",
   "vulnerabilities": [
     {
       "id": "CVE-2018-14618",
@@ -5189,7 +5189,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": ""
+      "version": "0.19.2"
     },
     "analyzer": {
       "id": "gcs",
