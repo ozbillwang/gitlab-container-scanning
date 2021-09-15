@@ -89,7 +89,7 @@
       "vendor": {
         "name": "Anchore"
       },
-      "version": "0.16.0"
+      "version": "0.18.0"
     },
     "analyzer": {
       "id": "gcs",
