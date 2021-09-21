@@ -45,6 +45,15 @@ bundle exec rake 'tag_release[159129607454a52199b7ba4c7d47fa88cd20a370]'
 1. A [tag pipeline](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/pipelines?scope=tags&page=1)
    will perform the release
 
+### Reverting a release
+
+In the event that an undesirable change is released accidentally, the following process
+should be following to revert the release.
+
+1. Revert the change with a new commit, using `Changelog: fixed`
+1. Bump the patch version in `lib/gcs/version.rb` with a new commit
+1. Tag the latest commit with the new version and allow the tag pipeline to perform a new release
+
 ### Available image tags
 
 - `edge`: HEAD of default branch
