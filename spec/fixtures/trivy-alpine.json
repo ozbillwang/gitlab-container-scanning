@@ -5187,7 +5187,7 @@
       "name": "Trivy",
       "url": "https://github.com/aquasecurity/trivy/",
       "vendor": {
-        "name": "GitLab"
+        "name": "Aquasecurity"
       },
       "version": ""
     },
