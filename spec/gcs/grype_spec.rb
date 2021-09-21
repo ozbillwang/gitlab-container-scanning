@@ -5,7 +5,7 @@ RSpec.describe Gcs::Grype do
   let(:version_data) do
     <<~HEREDOC
       Application:          grype
-      Version:              0.18.0
+      Version:              0.19.0
       BuildDate:            2021-08-18T15:41:58Z
       GitCommit:            01a77d5c451455e6125f26178db6fe2da2b7675d
       GitTreeState:         clean
@@ -45,7 +45,7 @@ RSpec.describe Gcs::Grype do
 
   describe '.scanner_version' do
     it 'returns the value extracted from the scanner output' do
-      expect(described_class.send(:scanner_version)).to eq('Version: 0.18.0')
+      expect(described_class.send(:scanner_version)).to eq('Version: 0.19.0')
     end
   end
 
