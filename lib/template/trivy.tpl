@@ -102,7 +102,7 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
       "name": "Trivy",
       "url": "https://github.com/aquasecurity/trivy/",
       "vendor": {
-        "name": "GitLab"
+        "name": "Aquasecurity"
       },
       "version": "0.19.2"
     },
