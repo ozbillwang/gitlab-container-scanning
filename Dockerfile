@@ -4,8 +4,7 @@ FROM ruby:2.7-slim AS base
 
 FROM base AS builder
 ENV PATH="/gcs/:${PATH}"
-RUN apt-get update && apt-get install -y -q build-essential
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y -q build-essential && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /gcs
 WORKDIR /gcs
