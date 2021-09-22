@@ -87,7 +87,7 @@
       "name": "Grype",
       "url": "https://github.com/anchore/grype",
       "vendor": {
-        "name": "Anchore"
+        "name": "GitLab"
       },
       "version": "0.19.0"
     },
