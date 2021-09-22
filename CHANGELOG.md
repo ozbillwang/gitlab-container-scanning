@@ -1,3 +1,10 @@
+## 4.3.15 (2021-09-22)
+
+### fixed (2 changes)
+
+- [Show Grype under GitLab in the security report Tool filter](gitlab-org/security-products/analyzers/container-scanning@bc329b235b35dce840fa4199bc92ce4fd080618d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2591))
+- [Revert "Fix Trivy vendor name in scan report"](gitlab-org/security-products/analyzers/container-scanning@fd309d1987fb5e812dfe3d587f077b46cbc21c4d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2591))
+
 ## 4.3.14 (2021-09-21)
 
 ### fixed (1 change)
