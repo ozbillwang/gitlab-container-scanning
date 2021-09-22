@@ -59,7 +59,7 @@ RSpec.shared_examples 'as container scanner' do |item|
       expect(report['scan']['scanner']['id']).to eql('trivy')
       expect(report['scan']['scanner']['name']).to eql('Trivy')
       expect(report['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
-      expect(report['scan']['scanner']['vendor']['name']).to eql('Aquasecurity')
+      expect(report['scan']['scanner']['vendor']['name']).to eql('GitLab')
     end
   end
 
