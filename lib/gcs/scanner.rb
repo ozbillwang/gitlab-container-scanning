@@ -10,11 +10,16 @@ module Gcs
         disabled_remediation_info unless Gcs::Environment.docker_file.exist?
         Gcs.logger.info(log_message(image_name))
         stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
+        stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
 
         [stdout, improve_stderr_msg(stderr, image_name), status]
       end
 
       private
+
+      def os_scan_command(image_name)
+        ["docker run -it --rm -v /home/gitlab/:/home/gitlab #{image_name} /home/gitlab/os-scan"]
+      end
 
       def scanner_name
         name.split('::').last
