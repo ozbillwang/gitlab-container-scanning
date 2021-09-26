@@ -75,17 +75,18 @@ unit test:
   extends: .ruby-alpine
   stage: initial-test
   script:
-    - bundle exec rake unit_test
+#    - bundle exec rake unit_test
+    - echo disabled in the PoC
   artifacts:
     when: always
     reports:
       junit: rspec.xml
 
-gitlab styles:
-  extends: .ruby-alpine
-  stage: initial-test
-  script:
-    - bundle exec rubocop
+#gitlab styles:
+#  extends: .ruby-alpine
+#  stage: initial-test
+#  script:
+#    - bundle exec rubocop
 
 dependency_scanning:
   stage: initial-test
@@ -183,10 +184,11 @@ build-scanner-image:
     reports:
       junit: rspec.xml
   script:
-    - sudo ./script/setup_integration
-    - bundle config set path 'vendor/ruby'
-    - bundle install --quiet
-    - bundle exec rake $SPEC_NAME
+    - echo disabled in the PoC
+#    - sudo ./script/setup_integration
+#    - bundle config set path 'vendor/ruby'
+#    - bundle install --quiet
+#    - bundle exec rake $SPEC_NAME
 
 alpine:
   variables:
