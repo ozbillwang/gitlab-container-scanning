@@ -152,7 +152,8 @@ danger-review:
         export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
       fi
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg SCANNER -f $DOCKERFILE_SOURCE -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
+    - docker build --network host --build-arg SCANNER -f $DOCKERFILE_SOURCE
+      -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
     - docker push $DOCKER_IMAGE$IMAGE_TAG_POSTFIX
 
 .scanners-matrix:
