@@ -42,8 +42,8 @@ COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/v
 
 USER gitlab
 ENV HOME "/home/gitlab"
-RUN gem install /home/gitlab/gcs.gem
 WORKDIR /home/gitlab
 RUN ["/bin/bash","./setup.sh"]
+RUN gem install /home/gitlab/gcs.gem
 
 CMD ["gtcs", "scan"]
