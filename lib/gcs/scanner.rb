@@ -6,20 +6,26 @@ module Gcs
         File.join(Gcs.lib, 'template', "#{scanner_name.downcase}.tpl").to_s
       end
 
+      def dependencies_template_file
+        File.join(Gcs.lib, 'template', "dependencies_#{scanner_name.downcase}.tpl").to_s
+      end
+
       def scan_image(image_name, output_file_name)
         disabled_remediation_info unless Gcs::Environment.docker_file.exist?
         Gcs.logger.info(log_message(image_name))
-        stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
+
+        # TODO fix this hack
+        stdout, stderr, status = Gcs.shell.execute(os_scan_command(image_name), environment)
+        Gcs.logger.debug(stdout)
+        Gcs.logger.info(stderr)
+        Gcs.logger.info(status)
+
         stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
 
         [stdout, improve_stderr_msg(stderr, image_name), status]
       end
 
       private
-
-      def os_scan_command(image_name)
-        ["docker run -it --rm -v /home/gitlab/:/home/gitlab #{image_name} /home/gitlab/os-scan"]
-      end
 
       def scanner_name
         name.split('::').last
@@ -82,6 +88,11 @@ module Gcs
       def scan_command(image_name, output_file_name)
         raise 'Scanner class must implement the `scan_command` method'
       end
-    end
+
+      def os_scan_command(image_name)
+        Gcs.logger.warn('OS dependency report not supported but this scanner')
+      end
+
+      end
   end
 end

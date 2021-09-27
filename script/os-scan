@@ -1,4 +1,0 @@
-#!/bin/sh
-
-dpkg -l > dpkg.out
-jq -Rs '{dependency_files:{path:"Dockerfile", package_manager:"debian", dependencies:split("\n")|map(match("ii\\s+(\\S+)\\s+(\\S+)")|{(.captures[0].string):.captures[1].string})}}' dpkg.out > gl-dependency-scanning-report.json

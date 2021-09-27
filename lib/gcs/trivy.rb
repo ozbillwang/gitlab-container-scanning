@@ -21,6 +21,13 @@ module Gcs
          image_name]
       end
 
+      def os_scan_command(image_name)
+        ["trivy i --skip-update --list-all-pkgs --no-progress --format template -t",
+         "@#{dependencies_template_file}",
+         "-o #{Environment.project_dir.join(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME)}",
+         image_name]
+      end
+
       def version_info
         stdout, _, status = Gcs.shell.execute(%w[trivy --version])
 

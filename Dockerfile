@@ -38,12 +38,12 @@ RUN useradd --create-home gitlab -g root && \
     chmod -R g+rw /usr/local/share/ca-certificates/ /usr/lib/ssl/certs/ && \
     echo "gitlab ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/gitlab
 
-COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/script/os-scan /gcs/version /home/gitlab/
+COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 
 USER gitlab
 ENV HOME "/home/gitlab"
-
 RUN gem install /home/gitlab/gcs.gem
 WORKDIR /home/gitlab
 RUN ["/bin/bash","./setup.sh"]
+
 CMD ["gtcs", "scan"]

@@ -23,6 +23,7 @@ loader.setup
 
 module Gcs
   DEFAULT_REPORT_NAME = 'gl-container-scanning-report.json'
+  DEFAULT_DEPENDENCY_REPORT_NAME = 'gl-dependency-scanning-report.json'
 
   class << self
     def root
