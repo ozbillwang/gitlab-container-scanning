@@ -13,7 +13,7 @@
       ,
     {{- end }}
       {
-        "{{ .SrcName }}": " {{ .SrcVersion }}"
+        "{{ .SrcName }}": "{{ .SrcVersion }}"
       }
   {{- end }}
 {{- end }}
