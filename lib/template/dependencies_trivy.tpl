@@ -1,12 +1,11 @@
 {{- range . }}
 {
   "version": "14.0.3",
-  "type": "dependency_scanning",
-  "start_time": "",
-  "end_time": "",
-  "status": "success",
-  "vulnerabilities": [],
   "scan": {
+    "type": "dependency_scanning",
+    "start_time": "",
+    "end_time": "",
+    "status": "success",
     "scanner": {
       "id": "trivy",
       "name": "Trivy",
@@ -15,16 +14,17 @@
         "name": "GitLab"
       },
       "version": "0.19.2"
+    },
+    "analyzer": {
+        "id": "gcs",
+        "name": "GitLab Container Scanning",
+        "vendor": {
+          "name": "GitLab"
+      },
+      "version": "0.0.0"
     }
   },
-  "analyzer": {
-    "id": "gcs",
-    "name": "GitLab Container Scanning",
-    "vendor": {
-      "name": "GitLab"
-    },
-    "version": "0.0.0"
-  },
+  "vulnerabilities": [],
   "dependency_files": [
     {
       "path": "Dockerfile",
