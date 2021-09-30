@@ -39,7 +39,10 @@
           ,
         {{- end }}
         {
-        "{{ .SrcName }}": "{{ .SrcVersion }}"
+          "package": {
+            "name": "{{ .SrcName }}"
+          },
+          "version": "{{ .SrcVersion }}"
         }
       {{- end }}
       {{- end }}
