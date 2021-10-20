@@ -11,6 +11,14 @@ RSpec.describe 'Rake tasks' do
     allow(ENV).to receive(:[]).with('CS_TOKEN').and_return('token')
     allow(ENV).to receive(:[]).with('CI_PROJECT_ID').and_return('123')
     allow(ENV).to receive(:[]).with('CI_COMMIT_TAG').and_return('5.0.0')
+
+    stub_request(:get, "https://gitlab.com/api/v4/user")
+    .with(
+      headers: {
+        'Content-Type' => 'application/json',
+        'Private-Token' => 'token'
+      })
+    .to_return(status: 200, body: "", headers: {})
   end
 
   let(:changelog) { Rake::Task['changelog'] }
@@ -27,11 +35,22 @@ RSpec.describe 'Rake tasks' do
 
   it 'sends api request for triggering build' do
     get_req = stub_request(:get, "https://gitlab.com/api/v4/projects/123/releases")
-    .with(headers: { 'Accept' => '*/*' })
+    .with(
+      headers: {
+        'Accept' => '*/*',
+        'Content-Type' => 'application/json',
+        'Private-Token' => 'token'
+      })
     .to_return(status: 200, body: [{ 'tag_name' => '4.1.5' }].to_json, headers: {})
 
     post_req = stub_request(:post, 'https://gitlab.com/api/v4/projects/123/pipeline?ref=4.1.5')
-    .with(body: {}, headers: { 'Accept' => '*/*' })
+    .with(
+      body: {},
+      headers: {
+        'Accept' => '*/*',
+        'Content-Type' => 'application/json',
+        'Private-Token' => 'token'
+      })
     .to_return(status: 200, body: "", headers: {})
 
     allow(ENV).to receive(:[]).with('TRIGGER_DB_UPDATE').and_return(true)
