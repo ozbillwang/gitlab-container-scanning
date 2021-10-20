@@ -39,7 +39,7 @@ RSpec.describe Gcs::Grype do
 
   describe '.db_updated_at' do
     it 'returns the value extracted from the scanner output' do
-      expect(described_class.send(:db_updated_at)).to eq('2021-06-16')
+      expect(described_class.send(:db_updated_at)).to eq('2021-06-16T08:33:35+00:00')
     end
   end
 

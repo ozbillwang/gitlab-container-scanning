@@ -4,8 +4,15 @@ class String; include Term::ANSIColor; end
 module Gcs
   class Util
     HEADINGS = ['STATUS', 'CVE SEVERITY', 'PACKAGE NAME', 'PACKAGE VERSION', 'CVE DESCRIPTION'].freeze
+    DB_AGE_THRESHOLD_HOURS = 48
 
     class << self
+      def db_outdated?(last_updated)
+        hours_since = TimeDifference.between(Time.now, last_updated).in_hours
+        Gcs.logger.info("It has been #{hours_since} hours since the vulnerability database was last updated")
+        hours_since > DB_AGE_THRESHOLD_HOURS
+      end
+
       def measure_runtime
         start_time = Time.now.strftime('%Y-%m-%dT%H:%M:%S')
         yield

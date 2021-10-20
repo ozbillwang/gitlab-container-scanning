@@ -26,7 +26,7 @@ RSpec.describe Gcs::Trivy do
 
   describe '.db_updated_at' do
     it 'returns the value extracted from the scanner output' do
-      expect(described_class.send(:db_updated_at)).to eq('2021-05-19')
+      expect(described_class.send(:db_updated_at)).to eq('2021-05-19T12:06:02+00:00')
     end
   end
 

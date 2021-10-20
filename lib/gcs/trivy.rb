@@ -11,6 +11,10 @@ module Gcs
     }.freeze
 
     class << self
+      def db_updated_at
+        version_info[:db_updated_at]
+      end
+
       private
 
       def scan_command(image_name, output_file_name)
@@ -28,7 +32,7 @@ module Gcs
 
         version_info = stdout.split("\n")
         binary_version = version_info.first.chomp
-        db_updated_at = Date.parse(version_info[4].chomp).to_s
+        db_updated_at = DateTime.parse(version_info[4].chomp).to_s
         { binary_version: binary_version, db_updated_at: db_updated_at }
       rescue Date::Error
         { binary_version: 'unknown', db_updated_at: 'unknown' }
@@ -71,10 +75,6 @@ module Gcs
 
       def scanner_version
         version_info[:binary_version]
-      end
-
-      def db_updated_at
-        version_info[:db_updated_at]
       end
     end
   end

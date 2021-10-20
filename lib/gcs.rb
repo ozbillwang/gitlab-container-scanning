@@ -17,6 +17,7 @@ require 'zeitwerk'
 require 'yaml'
 require 'term/ansicolor'
 require 'openssl'
+require 'time_difference'
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup
