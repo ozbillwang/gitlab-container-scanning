@@ -8,7 +8,10 @@ module Gcs
 
     class << self
       def db_outdated?(last_updated)
-        hours_since = TimeDifference.between(Time.now, last_updated).in_hours
+        return true if last_updated == 'unknown'
+
+        last_updated_time = DateTime.parse(last_updated).to_time
+        hours_since = ((Time.now - last_updated_time) / 3600).floor
         Gcs.logger.info("It has been #{hours_since} hours since the vulnerability database was last updated")
         hours_since > DB_AGE_THRESHOLD_HOURS
       end
