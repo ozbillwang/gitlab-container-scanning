@@ -315,7 +315,7 @@ db-check:
   services:
     - docker:20.10-dind
   variables:
-    IMAGE_TAG: latest
+    IMAGE_TAG: bwill-vuln-db-check # should be `latest` when merged
   script:
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
