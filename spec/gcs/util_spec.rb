@@ -53,4 +53,36 @@ RSpec.describe Gcs::Util do
       end
     end
   end
+
+  describe 'db_outdated?' do
+    subject(:db_outdated?) { described_class.db_outdated?(last_updated) }
+
+    context 'when last_updated has not crossed the threshold' do
+      let(:last_updated) { (Time.now - 24 * 3600).to_datetime.to_s }
+
+      it 'returns false' do
+        expect(Gcs.logger).to \
+          receive(:info).with(match(/It has been 24 hours since the vulnerability database was last updated/))
+        expect(db_outdated?).to be_falsy
+      end
+    end
+
+    context 'when last_updated has crossed the threshold' do
+      let(:last_updated) { (Time.now - 72 * 3600).to_datetime.to_s }
+
+      it 'returns true' do
+        expect(Gcs.logger).to \
+          receive(:info).with(match(/It has been 72 hours since the vulnerability database was last updated/))
+        expect(db_outdated?).to be_truthy
+      end
+    end
+
+    context 'when last_updated is unknown' do
+      let(:last_updated) { 'unknown' }
+
+      it 'returns true' do
+        expect(db_outdated?).to be_truthy
+      end
+    end
+  end
 end
