@@ -315,7 +315,9 @@ db-check:
   services:
     - docker:20.10-dind
   variables:
-    IMAGE_TAG: bwill-vuln-db-check # should be `latest` when merged
+    IMAGE_TAG: $CI_COMMIT_SHA # should be `latest` when merged
+    # yamllint disable-line rule:line-length
+    DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/gitlab-org/security-products/analyzers/container-scanning/tmp # Remove before merging
   script:
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
