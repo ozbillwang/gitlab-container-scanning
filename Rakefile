@@ -98,14 +98,9 @@ end
 
 desc 'Creates CHANGELOG.md through Gitlab Api'
 task :changelog do
-  gitlab_client = GitlabClient.new(
-    project_id: ENV['CI_PROJECT_ID'],
-    gitlab_token: ENV['CS_TOKEN']
-  )
-
   tag = ENV['CI_COMMIT_TAG']
-  if gitlab_client.configured? && tag
-    res = gitlab_client.generate_changelog(tag)
+  if GitlabClient.ci.configured? && tag
+    res = GitlabClient.ci.generate_changelog(tag)
     puts res.body.to_s
     puts "Changelog will be updated" if res.code == "200"
   else
@@ -116,17 +111,12 @@ end
 
 desc 'Triggers api for rebuilding last tag for updating vulnerability db'
 task :trigger_db_update do
-  gitlab_client = GitlabClient.new(
-    project_id: ENV['CI_PROJECT_ID'],
-    gitlab_token: ENV['CS_TOKEN']
-  )
-
-  if ENV['TRIGGER_DB_UPDATE'] && ENV['CI_PIPELINE_SOURCE'] == "schedule" && gitlab_client.configured?
-    latest_release_tag = gitlab_client.latest_release
+  if ENV['TRIGGER_DB_UPDATE'] && ENV['CI_PIPELINE_SOURCE'] == "schedule" && GitlabClient.ci.configured?
+    latest_release_tag = GitlabClient.ci.latest_release
 
     return unless latest_release_tag
 
-    res = gitlab_client.trigger_pipeline(latest_release_tag)
+    res = GitlabClient.ci.trigger_pipeline(latest_release_tag)
     if res.code.start_with?("20")
       res.body
     else

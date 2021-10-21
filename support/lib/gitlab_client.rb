@@ -10,15 +10,20 @@ class GitlabClient
     @gitlab_token = gitlab_token
   end
 
+  def self.ci
+    @ci ||= new(
+      project_id: ENV['CI_PROJECT_ID'],
+      gitlab_token: ENV['CS_TOKEN']
+    )
+  end
+
   def inspect
     # Prevent token from being printed
     "#<#{self.class} project_id=#{@project_id}>"
   end
 
   def configured?
-    return false if @project_id.empty? || @gitlab_token.empty?
-
-    authenticated?
+    @project_id.present? && @gitlab_token.present? && authenticated?
   end
 
   def generate_changelog(version)
