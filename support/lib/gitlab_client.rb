@@ -27,7 +27,9 @@ class GitlabClient
   end
 
   def generate_changelog(version)
-    post(changelog_uri, form_data: { version: version })
+    res = post(changelog_uri, form_data: { version: version })
+
+    generic_result(res)
   end
 
   def releases
@@ -45,7 +47,9 @@ class GitlabClient
   end
 
   def trigger_pipeline(ref)
-    post(trigger_pipeline_uri(ref))
+    res = post(trigger_pipeline_uri(ref))
+
+    generic_result(res)
   end
 
   private
@@ -66,6 +70,14 @@ class GitlabClient
     req = ::Net::HTTP::Post.new(uri)
     req.set_form_data(**form_data) if form_data
     send_req(req)
+  end
+
+  def generic_result(res)
+    code = res.code.to_i
+
+    return { status: :success, message: res.body } if code >= 200 && code < 300
+
+    { status: :failure, code: code, message: res.body }
   end
 
   def send_req(req)

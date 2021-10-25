@@ -100,9 +100,9 @@ desc 'Creates CHANGELOG.md through Gitlab Api'
 task :changelog do
   tag = ENV['CI_COMMIT_TAG']
   if GitlabClient.ci.configured? && tag
-    res = GitlabClient.ci.generate_changelog(tag)
-    puts res.body.to_s
-    puts "Changelog will be updated" if res.code == "200"
+    result = GitlabClient.ci.generate_changelog(tag)
+    puts result[:message]
+    puts "Changelog will be updated" if result[:success]
   else
     puts "Env variables are missing project_id: #{ENV['CI_PROJECT_ID']} " \
          "tag: #{tag} token_nil: #{ENV['CS_TOKEN'].nil?}"
@@ -114,13 +114,12 @@ task :trigger_db_update do
   if ENV['TRIGGER_DB_UPDATE'] && ENV['CI_PIPELINE_SOURCE'] == "schedule" && GitlabClient.ci.configured?
     latest_release_tag = GitlabClient.ci.latest_release
 
-    return unless latest_release_tag
+    abort 'Could not fetch latest release tag' unless latest_release_tag
 
-    res = GitlabClient.ci.trigger_pipeline(latest_release_tag)
-    if res.code.start_with?("20")
-      res.body
-    else
-      abort res.body
-    end
+    result = GitlabClient.ci.trigger_pipeline(latest_release_tag)
+
+    abort result[:message] if result[:status] != :success
+
+    result[:message]
   end
 end
