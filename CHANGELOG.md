@@ -1,3 +1,10 @@
+## 4.3.18 (2021-10-25)
+
+### changed (2 changes)
+
+- [Update grype to version 0.23.0](gitlab-org/security-products/analyzers/container-scanning@97986be5f92919e91aeeed262b24fc7ccebbd9c0) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2598))
+- [Update trivy to version 0.20.1](gitlab-org/security-products/analyzers/container-scanning@c08423fd6b2a5c8d4f1802852dabc013c234a6b6) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2597))
+
 ## 4.3.17 (2021-09-29)
 
 ### changed (1 change)
