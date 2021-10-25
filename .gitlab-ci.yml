@@ -37,7 +37,6 @@ stages:
   # for scheduled pipeline, we release same image everyday to keep
   # vulnerability db updated
   - maintenance
-  - post-maintenance
 
 .not-on-schedule:
   rules:
@@ -139,6 +138,26 @@ danger-review:
       else
         danger --fail-on-errors=true
       fi
+
+check-db-age:
+  stage: test
+  image: docker:20.10
+  extends:
+    - .scanners-matrix
+  services:
+    - docker:20.10-dind
+  variables:
+    IMAGE_TAG: latest
+  script:
+    - |
+      if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+      fi
+    - TARGET_IMAGE="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
+    - echo "Checking $TARGET_IMAGE"
+    - docker run --pull=always ${TARGET_IMAGE} gtcs db-check
+  rules:
+    - if: '$CS_DB_CHECK_ENABLED == "true"'
 
 .build-tmp-image:
   extends: .not-on-schedule
@@ -306,24 +325,3 @@ latest:
   extends: .release
   variables:
     IMAGE_TAG: latest
-
-db-check:
-  stage: post-maintenance
-  image: docker:20.10
-  extends:
-    - .scanners-matrix
-  services:
-    - docker:20.10-dind
-  variables:
-    IMAGE_TAG: $CI_COMMIT_SHA # should be `latest` when merged
-    # yamllint disable-line rule:line-length
-    DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/gitlab-org/security-products/analyzers/container-scanning/tmp # Remove before merging
-  script:
-    - |
-      if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
-      fi
-    - TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
-    - docker run --pull=always ${TARGET_IMAGE_SCANNER} gtcs db-check
-  # rules:
-  #   - if: '$CI_PIPELINE_SOURCE == "schedule"'
