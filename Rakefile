@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
-require 'net/http'
 require 'pathname'
 require 'yaml'
 require 'date'
-require 'json'
 require 'gcs'
 require 'gcs/version'
 require_relative 'support/lib/git_helper'
+require_relative 'support/lib/gitlab_client'
 require_relative 'support/lib/scanner_update'
 require_relative 'support/lib/tag_release'
 
@@ -99,51 +98,28 @@ end
 
 desc 'Creates CHANGELOG.md through Gitlab Api'
 task :changelog do
-  if ENV['CS_TOKEN'] && ENV['CI_PROJECT_ID'] && ENV['CI_COMMIT_TAG']
-    uri = URI("https://gitlab.com/api/v4/projects/#{ENV['CI_PROJECT_ID']}/repository/changelog")
-    req = Net::HTTP::Post.new(uri)
-    req['PRIVATE-TOKEN'] = ENV['CS_TOKEN']
-    req['Content-Type'] = 'application/json'
-    req.set_form_data(version: ENV['CI_COMMIT_TAG'])
-    res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-      http.request(req)
-    end
-
-    puts res.body.to_s
-    puts "Changelog will be updated" if res.code == "200"
+  tag = ENV['CI_COMMIT_TAG']
+  if GitlabClient.ci.configured? && tag
+    result = GitlabClient.ci.generate_changelog(tag)
+    puts result[:message]
+    puts "Changelog will be updated" if result[:success]
   else
     puts "Env variables are missing project_id: #{ENV['CI_PROJECT_ID']} " \
-         "tag: #{ENV['CI_COMMIT_TAG']} token_nil: #{ENV['CS_TOKEN'].nil?}"
+         "tag: #{tag} token_nil: #{ENV['CS_TOKEN'].nil?}"
   end
 end
 
 desc 'Triggers api for rebuilding last tag for updating vulnerability db'
 task :trigger_db_update do
-  base_url = "https://gitlab.com/api/v4/projects/#{ENV['CI_PROJECT_ID']}"
+  if ENV['TRIGGER_DB_UPDATE'] && ENV['CI_PIPELINE_SOURCE'] == "schedule" && GitlabClient.ci.configured?
+    latest_release_tag = GitlabClient.ci.latest_release
 
-  if ENV['TRIGGER_DB_UPDATE'] && ENV['CI_PIPELINE_SOURCE'] == "schedule"
-    uri = URI("#{base_url}/releases")
-    res = Net::HTTP.get_response(uri)
+    abort 'Could not fetch latest release tag' unless latest_release_tag
 
-    if res.code == '200'
-      latest_release_tag = JSON.parse(res.body).first['tag_name']
-      puts "Triggering a build for #{latest_release_tag}"
-      uri = URI("#{base_url}/pipeline?ref=#{latest_release_tag}")
-      req = Net::HTTP::Post.new(uri)
-      req['PRIVATE-TOKEN'] = ENV['CS_TOKEN']
-      req['Content-Type'] = 'application/json'
+    result = GitlabClient.ci.trigger_pipeline(latest_release_tag)
 
-      res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-        http.request(req)
-      end
+    abort result[:message] if result[:status] != :success
 
-      if res.code.start_with?("20")
-        res.body
-      else
-        abort res.body
-      end
-    else
-      abort "Failed to retrieve latest release tag"
-    end
+    result[:message]
   end
 end
