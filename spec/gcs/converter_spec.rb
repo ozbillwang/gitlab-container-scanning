@@ -4,24 +4,25 @@ RSpec.describe Gcs::Converter do
   let(:trivy_output_centos) { fixture_file_content('trivy-centos.json') }
   let(:trivy_output_debian) { fixture_file_content('trivy-debian.json') }
   let(:trivy_output_unsupported_os) { fixture_file_content('trivy-unsupported-os.json') }
+  let(:scan_runtime) { { start_time: "2021-09-15T08:36:08", end_time: "2021-09-15T08:36:25" } }
 
   describe '#convert' do
     it 'converts into valid format for alpine' do
-      gitlab_format = described_class.new(trivy_output_alpine, {}).convert
-      result = Schema::ReportSchema.call(gitlab_format)
-      expect(result).to be_success
+      gitlab_format = described_class.new(trivy_output_alpine, scan_runtime).convert
+
+      expect(gitlab_format).to match_schema(:container_scanning)
     end
 
     it 'converts into valid format for centos' do
-      gitlab_format = described_class.new(trivy_output_centos, {}).convert
-      result = Schema::ReportSchema.call(gitlab_format)
-      expect(result).to be_success
+      gitlab_format = described_class.new(trivy_output_centos, scan_runtime).convert
+
+      expect(gitlab_format).to match_schema(:container_scanning)
     end
 
     it 'converts into valid format for debian based images' do
-      gitlab_format = described_class.new(trivy_output_debian, {}).convert
-      result = Schema::ReportSchema.call(gitlab_format)
-      expect(result).to be_success
+      gitlab_format = described_class.new(trivy_output_debian, scan_runtime).convert
+
+      expect(gitlab_format).to match_schema(:container_scanning)
     end
 
     context 'when there are unsupported operating systems' do

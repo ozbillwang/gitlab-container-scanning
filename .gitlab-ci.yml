@@ -75,6 +75,7 @@ unit test:
   extends: .ruby-alpine
   stage: initial-test
   script:
+    - git submodule update --init
     - bundle exec rake unit_test
   artifacts:
     when: always
