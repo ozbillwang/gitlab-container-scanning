@@ -100,7 +100,7 @@ RSpec.describe Gcs::Scanner do
 
   describe '.log_message' do
     let(:scanner_version) { '0.0.0' }
-    let(:db_updated_at) { '2021-07-28' }
+    let(:db_updated_at) { '2021-06-16T08:33:35+00:00' }
     let(:message) do
       <<~HEREDOC
         Scanning container from registry #{image_name} \

@@ -139,6 +139,26 @@ danger-review:
         danger --fail-on-errors=true
       fi
 
+check-db-age:
+  stage: test
+  image: docker:20.10
+  extends:
+    - .scanners-matrix
+  services:
+    - docker:20.10-dind
+  variables:
+    IMAGE_TAG: latest
+  script:
+    - |
+      if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+      fi
+    - TARGET_IMAGE="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
+    - echo "Checking $TARGET_IMAGE"
+    - docker run --pull=always ${TARGET_IMAGE} gtcs db-check
+  rules:
+    - if: '$CS_DB_CHECK_ENABLED == "true"'
+
 .build-tmp-image:
   extends: .not-on-schedule
   image: docker:stable

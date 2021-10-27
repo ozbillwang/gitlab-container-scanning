@@ -34,5 +34,16 @@ module Gcs
         exit 1
       end
     end
+
+    desc 'db-check', 'Check if the vulnerability database is up to date'
+    def db_check
+      last_updated = Environment.scanner.db_updated_at
+      Gcs.logger.info("Vulnerability database was lasted updated at #{last_updated}")
+
+      return unless Gcs::Util.db_outdated?(last_updated)
+
+      Gcs.logger.error("The vulnerability database is outdated")
+      exit 1
+    end
   end
 end

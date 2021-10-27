@@ -3,6 +3,16 @@
 module Gcs
   class Grype < Scanner
     class << self
+      def db_updated_at
+        stdout, _, status = Gcs.shell.execute("grype db status")
+
+        return 'unknown' unless status.success?
+
+        DateTime.parse(stdout.split("\n")[1].chomp).to_s
+      rescue Date::Error
+        'unknown'
+      end
+
       private
 
       def scan_command(image_name, output_file_name)
@@ -15,16 +25,6 @@ module Gcs
         return 'unknown' unless status.success?
 
         stdout.split("\n")[1].split.join(" ")
-      end
-
-      def db_updated_at
-        stdout, _, status = Gcs.shell.execute("grype db status")
-
-        return 'unknown' unless status.success?
-
-        Date.parse(stdout.split("\n")[1].chomp).to_s
-      rescue Date::Error
-        'unknown'
       end
 
       def environment
