@@ -7,6 +7,8 @@ module Gcs
       end
 
       def scan_image(image_name, output_file_name)
+        raise StandardError, 'This should break tests'
+
         disabled_remediation_info unless Gcs::Environment.docker_file.exist?
         Gcs.logger.info(log_message(image_name))
         stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
