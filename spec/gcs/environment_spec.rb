@@ -101,10 +101,26 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    xit 'exists the program when variables not set' do
-      expect(Gcs.logger).to receive(:error)
-      execution = -> { described_class.default_docker_image }
-      expect(execution).to terminate.with_code(1)
+    context 'when required variables are not set' do
+      before do
+        allow(ENV).to receive(:fetch).with('CI_APPLICATION_REPOSITORY').and_yield
+        allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_yield
+        allow(ENV).to receive(:fetch).with('CI_COMMIT_REF_SLUG').and_return(ci_commit_ref_slug)
+        allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
+        allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
+      end
+
+      where(:missing_variable) { %w[CI_COMMIT_REF_SLUG CI_REGISTRY_IMAGE CI_COMMIT_SHA] }
+
+      with_them do
+        it 'exits the program' do
+          allow(ENV).to receive(:fetch).with(missing_variable).and_raise(KeyError.new(key: missing_variable))
+
+          expect(Gcs.logger).to receive(:error)
+          execution = -> { described_class.default_docker_image }
+          expect(execution).to terminate.with_code(1)
+        end
+      end
     end
   end
 
@@ -253,6 +269,57 @@ RSpec.describe Gcs::Environment do
 
       it 'throws an error' do
         expect { described_class.scanner }.to raise_error(SystemExit)
+      end
+    end
+  end
+
+  describe '.default_branch_image' do
+    before do
+      allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return('main')
+      allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
+      allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
+    end
+
+    context 'when environment variable is set' do
+      let(:default_branch_image) { 'alpine:latest' }
+
+      before do
+        allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil).and_return(default_branch_image)
+      end
+
+      it 'returns the variable value' do
+        expect(described_class.default_branch_image).to eq(default_branch_image)
+      end
+    end
+
+    context 'when environment variable is unset' do
+      before do
+        allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil).and_return(nil)
+      end
+
+      it 'returns name in default format' do
+        expect(described_class.default_branch_image).to eq('registry.gitlab.com/defen/trivy-test/main:latest')
+      end
+    end
+
+    context 'when a required variable is missing' do
+      before do
+        allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return('main')
+        allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
+        allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_yield
+        allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
+      end
+
+      where(:missing_variable) { %w[CI_DEFAULT_BRANCH CI_REGISTRY_IMAGE CI_COMMIT_SHA] }
+
+      with_them do
+        it 'exits the program' do
+          allow(ENV).to receive(:fetch).with(missing_variable).and_raise(KeyError.new(key: missing_variable))
+
+          expect(Gcs.logger).to receive(:error)
+          execution = -> { described_class.default_branch_image }
+          expect(execution).to terminate.with_code(1)
+        end
       end
     end
   end

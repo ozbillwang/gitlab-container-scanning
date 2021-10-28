@@ -8,11 +8,16 @@ module Gcs
         default_docker_image
       end
 
-      def default_docker_image
-        application_repository = ENV.fetch('CI_APPLICATION_REPOSITORY') { default_application_repository }
-        application_tag = ENV.fetch('CI_APPLICATION_TAG') { default_docker_tag }
+      def default_branch_image
+        image = ENV.fetch('CS_DEFAULT_BRANCH_IMAGE', nil)
 
-        "#{application_repository.strip}:#{application_tag.strip}"
+        return image if image
+
+        "#{registry_image}/#{default_branch}:#{application_tag}"
+      end
+
+      def default_docker_image
+        "#{application_repository}:#{application_tag}"
       end
 
       def project_dir
@@ -87,17 +92,38 @@ module Gcs
         Gcs.logger.level = log_level.upcase
       end
 
+      def application_repository
+        ENV.fetch('CI_APPLICATION_REPOSITORY') { default_application_repository }.strip
+      end
+
+      def application_tag
+        ENV.fetch('CI_APPLICATION_TAG') { default_docker_tag }.strip
+      end
+
       def default_application_repository
-        "#{ENV.fetch('CI_REGISTRY_IMAGE')}/#{ENV.fetch('CI_COMMIT_REF_SLUG')}"
-      rescue KeyError => e
-        Gcs.logger.error("Can't find variable #{e.inspect}")
-        exit 1
+        "#{registry_image}/#{commit_ref_slug}"
+      end
+
+      def commit_ref_slug
+        fetch_from_env!('CI_COMMIT_REF_SLUG')
+      end
+
+      def default_branch
+        fetch_from_env!('CI_DEFAULT_BRANCH')
       end
 
       def default_docker_tag
-        ENV.fetch('CI_COMMIT_SHA')
+        fetch_from_env!('CI_COMMIT_SHA')
+      end
+
+      def registry_image
+        fetch_from_env!('CI_REGISTRY_IMAGE')
+      end
+
+      def fetch_from_env!(env_var)
+        ENV.fetch(env_var).strip
       rescue KeyError => e
-        Gcs.logger.error("Can't find variable #{e.inspect}")
+        Gcs.logger.error("Environment variable `#{e.key}` was not found and is required for execution")
         exit 1
       end
     end

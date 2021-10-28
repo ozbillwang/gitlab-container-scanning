@@ -3,6 +3,13 @@
 RSpec.describe Gcs::Remediations::Collection do
   let(:remediation_collection) { described_class.new }
 
+  before do
+    allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return('main')
+    allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return('registry.example.com/group/project')
+    allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
+    allow(ENV).to receive(:fetch).and_call_original
+  end
+
   describe '#disabled?' do
     context 'when docker_file exists' do
       let(:docker_file) { fixture_file('docker/remediation-Dockerfile') }
