@@ -49,6 +49,9 @@ RSpec.describe Gcs::Remediations::Collection do
     end
 
     context 'when OS is supported' do
+      let(:docker_file) { fixture_file('docker/remediation-Dockerfile') }
+      let(:remediation_collection) { described_class.new(docker_file) }
+
       before do
         create_remediation
       end
