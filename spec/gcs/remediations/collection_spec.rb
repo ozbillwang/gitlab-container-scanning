@@ -52,6 +52,10 @@ RSpec.describe Gcs::Remediations::Collection do
       let(:docker_file) { fixture_file('docker/remediation-Dockerfile') }
       let(:remediation_collection) { described_class.new(docker_file) }
 
+      after do
+        `git checkout #{docker_file.to_path}`
+      end
+
       before do
         create_remediation
       end
