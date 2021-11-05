@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # TODO: DRY-up against other ruby files (e.g. Rakefile)
 TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
+GRYPE_VERSION_FILE = './version/GRYPE_VERSION'
 
 RSpec.shared_examples 'as container scanner' do |item|
   include_context 'with scanner'
@@ -65,9 +66,11 @@ RSpec.shared_examples 'as container scanner' do |item|
 
   shared_examples 'as grype scanner' do
     specify do
+      current_grype_version = File.read(GRYPE_VERSION_FILE).strip
+
       expect(report['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
 
-      expect(report['scan']['scanner']['version']).to eql('0.23.0')
+      expect(report['scan']['scanner']['version']).to eql(current_grype_version)
       expect(report['scan']['scanner']['id']).to eql('grype')
       expect(report['scan']['scanner']['name']).to eql('Grype')
       expect(report['scan']['scanner']['url']).to eql('https://github.com/anchore/grype')
