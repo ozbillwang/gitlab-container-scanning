@@ -26,6 +26,10 @@ module Gcs
 
           Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET'] # FIXME: undocumented env var
           Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
+
+          return if !Environment.dependency_scan_enabled? || !Environment.scanner.scan_os_packages_supported?
+
+          scan_os_packages(image_name)
         end
       else
         Gcs.logger.info('Scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
@@ -44,6 +48,27 @@ module Gcs
 
       Gcs.logger.error("The vulnerability database is outdated")
       exit 1
+    end
+
+    private
+
+    def scan_os_packages(image_name = ::Gcs::Environment.docker_image)
+      stdout, stderr, status = nil
+      measured_time = Gcs::Util.measure_runtime do
+        stdout, stderr, status = Environment.scanner.scan_os_packages(image_name, OUTPUT_FILE)
+      end
+
+      Gcs.logger.info(stdout)
+
+      if status.success?
+        gitlab_format = Converter.new(File.read(OUTPUT_FILE), measured_time).convert
+
+        Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, gitlab_format, Environment.project_dir, nil)
+      else
+        Gcs.logger.info('OS dependency scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
+        Gcs.logger.error(stderr)
+        Gcs.logger.error(stdout)
+      end
     end
   end
 end
