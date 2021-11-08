@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe 'alpine' do
+  before(:all) do
+    setup_schemas!
+  end
+
   context 'when scanning an Alpine based image', integration: :ca_cert do
     subject(:report) { runner.report_for(type: 'container-scanning') }
 

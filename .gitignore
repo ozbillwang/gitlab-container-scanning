@@ -4,6 +4,7 @@
 /coverage/
 /pkg/
 /spec/reports/
+/spec/schemas/
 .bundle
 tmp/*
 .tool-versions

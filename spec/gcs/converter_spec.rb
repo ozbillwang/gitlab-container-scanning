@@ -6,6 +6,10 @@ RSpec.describe Gcs::Converter do
   let(:trivy_output_unsupported_os) { fixture_file_content('trivy-unsupported-os.json') }
   let(:scan_runtime) { { start_time: "2021-09-15T08:36:08", end_time: "2021-09-15T08:36:25" } }
 
+  before(:all) do
+    setup_schemas!
+  end
+
   describe '#convert' do
     it 'converts into valid format for alpine' do
       gitlab_format = described_class.new(trivy_output_alpine, scan_runtime).convert
