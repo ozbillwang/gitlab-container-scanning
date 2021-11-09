@@ -2,7 +2,7 @@
 
 module Gcs
   class Converter
-    SCHEMA_VERSION = "14.0.3"
+    SCHEMA_VERSION = "14.0.6"
 
     def initialize(source, opt = {})
       @source = source
