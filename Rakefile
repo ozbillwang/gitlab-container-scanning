@@ -101,8 +101,9 @@ task :changelog do
   tag = ENV['CI_COMMIT_TAG']
   if GitlabClient.ci.configured? && tag
     result = GitlabClient.ci.generate_changelog(tag)
+    puts "Status: #{result[:code]}"
     puts result[:message]
-    puts "Changelog will be updated" if result[:success]
+    puts "Changelog will be updated" if result[:status] == :success
   else
     puts "Env variables are missing project_id: #{ENV['CI_PROJECT_ID']} " \
          "tag: #{tag} token_nil: #{ENV['CS_TOKEN'].nil?}"
