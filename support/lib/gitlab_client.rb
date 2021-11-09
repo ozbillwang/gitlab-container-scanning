@@ -68,14 +68,14 @@ class GitlabClient
 
   def post(uri, form_data: {})
     req = ::Net::HTTP::Post.new(uri)
-    req.set_form_data(**form_data) if form_data
+    req.set_form_data(**form_data) unless form_data.empty?
     send_req(req)
   end
 
   def generic_result(res)
     code = res.code.to_i
 
-    return { status: :success, message: res.body } if code >= 200 && code < 300
+    return { status: :success, code: code, message: res.body } if code >= 200 && code < 300
 
     { status: :failure, code: code, message: res.body }
   end
@@ -89,7 +89,7 @@ class GitlabClient
 
   def add_headers!(req)
     req['PRIVATE-TOKEN'] = @gitlab_token
-    req['Content-Type'] = 'application/json'
+    req['Content-Type'] = 'application/json' unless req['Content-Type']
   end
 
   def projects_url

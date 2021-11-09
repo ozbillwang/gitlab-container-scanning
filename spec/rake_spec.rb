@@ -26,6 +26,11 @@ RSpec.describe 'Rake tasks' do
 
   it 'sends api request for generating changelog' do
     req = stub_request(:post, "https://gitlab.com/api/v4/projects/123/repository/changelog")
+    .with(
+      headers: {
+        'Content-Type' => 'application/x-www-form-urlencoded',
+        'Private-Token' => 'token'
+      })
     .to_return(status: 200, body: "", headers: {})
 
     changelog.invoke
