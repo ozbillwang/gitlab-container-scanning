@@ -1,3 +1,18 @@
+## 4.4.0 (2021-11-09)
+
+### added (1 change)
+
+- [Add default_branch_image to security report](gitlab-org/security-products/analyzers/container-scanning@401e0ab43f8ab02f9d308c1bf01b459c8346ea04) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2602))
+
+### changed (2 changes)
+
+- [Update grype to version 0.24.0](gitlab-org/security-products/analyzers/container-scanning@86ffce8b8faa34830cfaa0d4c6fed2d492e6c013) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2605))
+- [Update trivy to version 0.20.2](gitlab-org/security-products/analyzers/container-scanning@cf39fd61a70851dcd0e819e3d58096d3c9b61a5e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2604))
+
+### other (1 change)
+
+- [Fix unit tests that edit local Dockerfile](gitlab-org/security-products/analyzers/container-scanning@a8bb5296641ec8915bc711f39e338629d6bfe8c5) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2601))
+
 ## 4.3.18 (2021-10-25)
 
 ### changed (2 changes)
