@@ -1,3 +1,0 @@
-[submodule "spec/schemas"]
-	path = spec/schemas
-	url = https://gitlab.com/gitlab-org/security-products/security-report-schemas.git

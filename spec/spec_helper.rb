@@ -32,6 +32,7 @@ RSpec.configure do |config|
   config.include IntegrationTestHelper
   config.include FixtureFileHelper
   config.include ExitCodeMatchers
+  config.include SchemaHelper
 
   config.before(:all, type: :network) do
     ProxyServer.instance.start
