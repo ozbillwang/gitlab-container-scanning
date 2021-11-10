@@ -10,6 +10,12 @@ RSpec.describe Gcs::Converter do
     setup_schemas!
   end
 
+  before do
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil)
+      .and_return("registry.example.com/group/project:latest")
+  end
+
   describe '#convert' do
     it 'converts into valid format for alpine' do
       gitlab_format = described_class.new(trivy_output_alpine, scan_runtime).convert
@@ -42,6 +48,21 @@ RSpec.describe Gcs::Converter do
         expect(remediation_collection).to receive(:unsupported_os_warning)
 
         described_class.new(trivy_output_unsupported_os, {}).convert
+      end
+    end
+
+    context 'when default_branch_image is invalid' do
+      # TODO: Validate this in the analyzer and prevent invalid reports from being produced.
+      # https://gitlab.com/gitlab-org/gitlab/-/issues/345264
+      before do
+        allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil)
+          .and_return("https://registry.example.com/group/project?foo=bar")
+      end
+
+      it 'fails schema validation' do
+        gitlab_format = described_class.new(trivy_output_alpine, scan_runtime).convert
+
+        expect(gitlab_format).not_to match_schema(:container_scanning)
       end
     end
   end
