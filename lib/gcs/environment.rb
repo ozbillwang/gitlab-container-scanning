@@ -82,8 +82,8 @@ module Gcs
         File.exist?('/etc/redhat-release')
       end
 
-      def dependency_scan_enabled?
-        !ENV.fetch('CS_DEPENDENCY_SCAN_DISABLED', 'false').to_s.casecmp?('true')
+      def dependency_scan_disabled?
+        ENV.fetch('CS_DISABLE_DEPENDENCY_SCAN', 'false').to_s.casecmp?('false')
       end
 
       private

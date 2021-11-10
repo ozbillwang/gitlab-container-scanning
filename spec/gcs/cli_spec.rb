@@ -21,6 +21,7 @@ RSpec.describe Gcs::Cli do
     context "with #{scanner}" do
       before do
         allow(Gcs::Environment).to receive(:scanner).and_return(scanner)
+        allow(scanner).to receive(:scan_os_packages).and_return([nil, nil, double(success?: true)])
         allow(scanner).to receive(:scan_image).with('ubuntu:latest', 'tmp.json').and_return([nil,
                                                                                              nil,
                                                                                              double(success?: status)])

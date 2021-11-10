@@ -27,7 +27,7 @@ module Gcs
           Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET'] # FIXME: undocumented env var
           Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
 
-          return if !Environment.dependency_scan_enabled? || !Environment.scanner.scan_os_packages_supported?
+          return unless perform_os_package_scan?
 
           scan_os_packages(image_name)
         end
@@ -52,6 +52,10 @@ module Gcs
 
     private
 
+    def perform_os_package_scan?
+      !Environment.dependency_scan_disabled? && Environment.scanner.scan_os_packages_supported?
+    end
+
     def scan_os_packages(image_name = ::Gcs::Environment.docker_image)
       stdout, stderr, status = nil
       measured_time = Gcs::Util.measure_runtime do
@@ -65,7 +69,7 @@ module Gcs
 
         Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, gitlab_format, Environment.project_dir, nil)
       else
-        Gcs.logger.info('OS dependency scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
+        Gcs.logger.error('OS dependency scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
         Gcs.logger.error(stderr)
         Gcs.logger.error(stdout)
       end
