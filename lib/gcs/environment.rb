@@ -13,6 +13,8 @@ module Gcs
 
         return image if image
 
+        return if !ENV.include?('CI_DEFAULT_BRANCH') || !ENV.include?('CI_REGISTRY_IMAGE')
+
         "#{registry_image}/#{default_branch}:#{application_tag}"
       end
 

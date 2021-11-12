@@ -277,6 +277,8 @@ RSpec.describe Gcs::Environment do
     before do
       allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return('main')
       allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
+      allow(ENV).to receive(:include?).with('CI_DEFAULT_BRANCH').and_return(true)
+      allow(ENV).to receive(:include?).with('CI_REGISTRY_IMAGE').and_return(true)
       allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
     end
 
@@ -299,6 +301,26 @@ RSpec.describe Gcs::Environment do
 
       it 'returns name in default format' do
         expect(described_class.default_branch_image).to eq('registry.gitlab.com/defen/trivy-test/main:latest')
+      end
+    end
+
+    context 'without some of the variables from gitlab integration' do
+      before do
+        allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return(nil)
+        allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(nil)
+        allow(ENV).to receive(:include?).with('CI_DEFAULT_BRANCH').and_return(false)
+        allow(ENV).to receive(:include?).with('CI_REGISTRY_IMAGE').and_return(false)
+      end
+
+      where(:missing_variable) { %w[CI_DEFAULT_BRANCH CI_REGISTRY_IMAGE] }
+
+      with_them do
+        it 'returns nil' do
+          allow(ENV).to receive(:fetch).with(missing_variable).and_return(nil)
+          allow(ENV).to receive(:include?).with(missing_variable).and_return(false)
+
+          expect(described_class.default_branch_image).to be_nil
+        end
       end
     end
 
