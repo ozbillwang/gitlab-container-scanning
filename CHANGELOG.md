@@ -1,3 +1,13 @@
+## 4.4.1 (2021-11-12)
+
+### fixed (1 change)
+
+- [Decouple default_branch_image from GitLab](gitlab-org/security-products/analyzers/container-scanning@fcb281098625ebc84e6cf68bd51a588b5265f012) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2611))
+
+### changed (1 change)
+
+- [Upgrade security report schemas to v14.0.6](gitlab-org/security-products/analyzers/container-scanning@ba8ecbcdb49310e2fdade3ff3244ec8488592f3d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2610))
+
 ## 4.4.0 (2021-11-09)
 
 ### added (1 change)
