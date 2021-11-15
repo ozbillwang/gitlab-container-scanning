@@ -83,7 +83,7 @@ module Gcs
       end
 
       def dependency_scan_disabled?
-        ENV.fetch('CS_DISABLE_DEPENDENCY_SCAN', 'false').to_s.casecmp?('false')
+        ENV.fetch('CS_DISABLE_DEPENDENCY_SCAN', 'false').to_s.casecmp?('true')
       end
 
       private

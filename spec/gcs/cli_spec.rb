@@ -33,6 +33,11 @@ RSpec.describe Gcs::Cli do
         specify do
           expect(execution).to terminate.with_code(1)
         end
+
+        it 'does not perform an os packages scan' do
+          expect(scanner).not_to receive(:scan_os_packages)
+          expect(execution).not_to terminate
+        end
       end
 
       context 'when scan succeeds' do
@@ -92,6 +97,65 @@ RSpec.describe Gcs::Cli do
             expect(Gcs.logger).to receive(:debug).with(match(/Allowlist failed with /))
             expect(execution).not_to terminate
           end
+        end
+      end
+    end
+  end
+
+  context 'with Gcs::Grype' do
+    before do
+      allow(Gcs::Environment).to receive(:scanner).and_return(Gcs::Grype)
+      allow(Gcs::Grype).to receive(:scan_os_packages).and_return([nil, nil, double(success?: true)])
+      allow(Gcs::Grype).to receive(:scan_image)
+      .with('ubuntu:latest', 'tmp.json')
+      .and_return([nil, nil, double(success?: true)])
+    end
+
+    context 'when scan succeeds' do
+      it 'does not perform an os packages scan' do
+        expect(Gcs::Grype).not_to receive(:scan_os_packages)
+        expect(execution).not_to terminate
+      end
+    end
+  end
+
+  context 'with Gcs::Trivy' do
+    before do
+      allow(Gcs::Environment).to receive(:scanner).and_return(Gcs::Trivy)
+      allow(Gcs::Trivy).to receive(:scan_os_packages).and_return([nil, nil, double(success?: true)])
+      allow(Gcs::Trivy).to receive(:scan_image)
+        .with('ubuntu:latest', 'tmp.json')
+        .and_return([nil, nil, double(success?: true)])
+    end
+
+    context 'when scan succeeds' do
+      before do
+        allow(Gcs::Converter).to receive_message_chain(:new, :convert).and_return({})
+        allow(File).to receive(:exist?).with('tmp.json').and_return(true)
+        allow(File).to receive(:read).with('tmp.json')
+
+        allow(ENV).to receive(:[]).and_return(nil)
+      end
+
+      context 'when dependency scan is disabled' do
+        before do
+          allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(true)
+        end
+
+        it 'does not perform an os packages scan' do
+          expect(Gcs::Trivy).not_to receive(:scan_os_packages)
+          expect(execution).not_to terminate
+        end
+      end
+
+      context 'when dependency scan is enabled' do
+        before do
+          allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
+        end
+
+        it 'does perform an os packages scan' do
+          expect(Gcs::Trivy).to receive(:scan_os_packages).with('ubuntu:latest', 'tmp.json')
+          expect(execution).not_to terminate
         end
       end
     end
