@@ -49,6 +49,12 @@ RSpec.describe Gcs::Grype do
     end
   end
 
+  describe '.scan_os_packages_supported?' do
+    subject { described_class.scan_os_packages_supported? }
+
+    it { is_expected.to be false }
+  end
+
   describe 'scanning with grype' do
     subject(:scan_image) { described_class.scan_image(image_name, output_file_name) }
 

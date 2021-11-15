@@ -59,6 +59,11 @@ RSpec.describe Gcs::Cli do
           specify do
             expect(Gcs::Util).to receive(:write_table).with({}, nil)
             expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {}, Pathname.pwd, nil)
+
+            if scanner == Gcs::Trivy
+              expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
+            end
+
             expect(Gcs.logger).to receive(:debug).with(match(/Allowlist failed with /))
             expect(execution).not_to terminate
           end
@@ -78,8 +83,16 @@ RSpec.describe Gcs::Cli do
             expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {},
                                                            Pathname.pwd,
                                                            instance_of(Gcs::AllowList))
-            expect(Gcs.logger).to receive(:info)
+
             expect(Gcs.logger).to receive(:info).with(match(/Using allowlist /))
+
+            if scanner == Gcs::Trivy
+              expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
+              expect(Gcs.logger).to receive(:info).twice
+            else
+              expect(Gcs.logger).to receive(:info).once
+            end
+
             expect(execution).not_to terminate
           end
         end
@@ -94,6 +107,11 @@ RSpec.describe Gcs::Cli do
           specify do
             expect(Gcs::Util).to receive(:write_table).with({}, nil)
             expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {}, Pathname.pwd, nil)
+
+            if scanner == Gcs::Trivy
+              expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
+            end
+
             expect(Gcs.logger).to receive(:debug).with(match(/Allowlist failed with /))
             expect(execution).not_to terminate
           end
