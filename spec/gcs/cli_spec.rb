@@ -45,8 +45,10 @@ RSpec.describe Gcs::Cli do
 
         before do
           allow(Gcs::Converter).to receive_message_chain(:new, :convert).and_return({})
+          allow(Gcs::DependencyListConverter).to receive_message_chain(:new, :convert).and_return({})
           allow(File).to receive(:exist?).with('tmp.json').and_return(true)
           allow(File).to receive(:read).with('tmp.json')
+          allow(File).to receive(:read).with(%r{lib/template/dependencies-trivy\.json})
         end
 
         context 'with invalid allow list file' do
@@ -149,8 +151,10 @@ RSpec.describe Gcs::Cli do
     context 'when scan succeeds' do
       before do
         allow(Gcs::Converter).to receive_message_chain(:new, :convert).and_return({})
+        allow(Gcs::DependencyListConverter).to receive_message_chain(:new, :convert).and_return({})
         allow(File).to receive(:exist?).with('tmp.json').and_return(true)
         allow(File).to receive(:read).with('tmp.json')
+        allow(File).to receive(:read).with(%r{lib/template/dependencies-trivy\.json})
 
         allow(ENV).to receive(:[]).and_return(nil)
       end
