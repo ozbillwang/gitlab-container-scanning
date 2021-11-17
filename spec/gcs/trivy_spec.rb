@@ -49,8 +49,7 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
-      cmd = ["trivy i --skip-update --list-all-pkgs --no-progress --format template -t",
-             "@#{described_class.dependencies_template_file}",
+      cmd = ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
              "-o",
              output_file_name,
              image_name]

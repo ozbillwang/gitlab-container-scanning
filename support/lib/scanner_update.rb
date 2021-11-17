@@ -4,7 +4,8 @@ class ScannerUpdate
   SCANNERS = {
     trivy: {
       uri: 'https://api.github.com/repos/aquasecurity/trivy/releases/latest',
-      template: Gcs::Trivy.template_file
+      template: Gcs::Trivy.template_file,
+      dependencies_template: Gcs::Trivy.dependencies_template_file
     },
     grype: {
       uri: 'https://api.github.com/repos/anchore/grype/releases/latest',
@@ -55,6 +56,15 @@ class ScannerUpdate
 
     File.open(SCANNERS[@scanner.to_sym][:template], 'w') do |out|
       out << new_content
+    end
+
+    dependencies_template_file = SCANNERS[@scanner.to_sym][:dependencies_template]
+    if dependencies_template_file.present?
+      dependencies_template = JSON.parse(File.read(dependencies_template_file))
+      dependencies_template['scan']['scanner']['version'] = new_version
+      File.open(dependencies_template_file, 'w') { |file| file.write(JSON.pretty_generate(dependencies_template)) }
+
+      git('add', dependencies_template_file)
     end
 
     git('add', version_file)

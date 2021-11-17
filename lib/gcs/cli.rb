@@ -65,9 +65,10 @@ module Gcs
       Gcs.logger.info(stdout)
 
       if status.success?
-        gitlab_format = Converter.new(File.read(OUTPUT_FILE), measured_time).convert
+        template = File.read(Environment.scanner.dependencies_template_file)
+        report = DependencyListConverter.new(template, File.read(OUTPUT_FILE), measured_time).convert
 
-        Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, gitlab_format, Environment.project_dir, nil)
+        Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, report, Environment.project_dir, nil)
       else
         Gcs.logger.error('OS dependency scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
         Gcs.logger.error(stderr)

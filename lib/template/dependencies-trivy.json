@@ -1,0 +1,28 @@
+{
+  "version": "$schemaVersion",
+  "scan": {
+    "type": "dependency_scanning",
+    "start_time": "",
+    "end_time": "",
+    "status": "success",
+    "scanner": {
+      "id": "trivy",
+      "name": "Trivy",
+      "url": "https://github.com/aquasecurity/trivy/",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "0.21.0"
+    },
+    "analyzer": {
+      "id": "gcs",
+      "name": "GitLab Container Scanning",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "$gcsVersion"
+    }
+  },
+  "vulnerabilities": [],
+  "dependency_files": []
+}

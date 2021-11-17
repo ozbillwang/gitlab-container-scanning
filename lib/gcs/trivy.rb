@@ -30,8 +30,7 @@ module Gcs
       end
 
       def os_scan_command(image_name, output_file_name)
-        ["trivy i --skip-update --list-all-pkgs --no-progress --format template -t",
-         "@#{dependencies_template_file}",
+        ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
          "-o",
          output_file_name,
          image_name]

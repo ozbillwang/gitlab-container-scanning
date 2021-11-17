@@ -7,7 +7,7 @@ module Gcs
       end
 
       def dependencies_template_file
-        File.join(Gcs.lib, 'template', "dependencies-#{scanner_name.downcase}.tpl").to_s
+        File.join(Gcs.lib, 'template', "dependencies-#{scanner_name.downcase}.json")
       end
 
       def scan_image(image_name, output_file_name)
