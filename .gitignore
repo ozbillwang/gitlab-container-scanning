@@ -18,4 +18,5 @@ vendor
 .byebug_history
 tmp.json
 gl-container-scanning-report.json
+gl-dependency-scanning-report.json
 rspec.xml

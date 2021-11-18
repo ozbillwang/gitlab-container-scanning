@@ -21,8 +21,11 @@ module Gcs
       os_family = parsed_report.dig('Metadata', 'OS', 'Family')
       os_version = parsed_report.dig('Metadata', 'OS', 'Name')
 
+      repo_tag = parsed_report.dig('Metadata', 'RepoTags', 0)
+      repo_digest = parsed_report.dig('Metadata', 'RepoDigests', 0)
+
       converted_report['dependency_files'] << {
-        'path' => parsed_report['ArtifactName'],
+        'path' => repo_tag || repo_digest,
         'package_manager' => "#{os_family}:#{os_version} (#{package_manager_name(os_family)})",
         'dependencies' => convert_dependencies(parsed_report['Results'])
       }

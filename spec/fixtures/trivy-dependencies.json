@@ -1,0 +1,202 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "nginx",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "debian",
+      "Name": "11.1"
+    },
+    "ImageID": "sha256:ea335eea17ab984571cd4a3bcf90a0413773b559c75ef4cda07d0ce952b00291",
+    "DiffIDs": [
+      "sha256:e1bbcf243d0e7387fbfe5116a485426f90d3ddeb0b1738dca4e3502b6743b325",
+      "sha256:37380c5830feb5d6829188be41a4ea0654eb5c4632f03ef093ecc182acf40e8a",
+      "sha256:ff4c727794302b5a0ee4dadfaac8d1233950ce9a07d76eb3b498efa70b7517e4",
+      "sha256:49eeddd2150fbd14433ec1f01dbf6b23ea6cf581a50635554826ad93ce040b68",
+      "sha256:1e8ad06c81b6baf629988756d90fd27c14285da4d9bf57179570febddc492087",
+      "sha256:8525cde30b227bb5b03deb41bda41deb85d740b834be61a69ead59d840f07c13"
+    ],
+    "RepoTags": [
+      "nginx:latest"
+    ],
+    "RepoDigests": [
+      "nginx@sha256:097c3a0913d7e3a5b01b6c685a60c03632fc7a2b50bc8e35bcaa3691d788226e"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "container": "8a038ff17987cf87d4b7d7e2c80cb83bd2474d66e2dd0719e2b4f7de2ad6d853",
+      "created": "2021-11-17T10:38:14.652464384Z",
+      "docker_version": "20.10.7",
+      "history": [
+        {
+          "created": "2021-11-17T02:20:41.91188934Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:a2405ebb9892d98be2eb585f6121864d12b3fd983ebf15e5f0b7486e106a79c6 in / "
+        },
+        {
+          "created": "2021-11-17T02:20:42.315994925Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"bash\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:37:39.564148274Z",
+          "created_by": "/bin/sh -c #(nop)  LABEL maintainer=NGINX Docker Maintainers <docker-maint@nginx.com>",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:37:39.941485145Z",
+          "created_by": "/bin/sh -c #(nop)  ENV NGINX_VERSION=1.21.4",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:37:40.256097748Z",
+          "created_by": "/bin/sh -c #(nop)  ENV NJS_VERSION=0.7.0",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:37:40.480423114Z",
+          "created_by": "/bin/sh -c #(nop)  ENV PKG_RELEASE=1~bullseye",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:38:11.674629445Z",
+          "created_by": "/bin/sh -c set -x     && addgroup --system --gid 101 nginx     && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos \"nginx user\" --shell /bin/false --uid 101 nginx     && apt-get update     && apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates     &&     NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62;     found='';     for server in         hkp://keyserver.ubuntu.com:80         pgp.mit.edu     ; do         echo \"Fetching GPG key $NGINX_GPGKEY from $server\";         apt-key adv --keyserver \"$server\" --keyserver-options timeout=10 --recv-keys \"$NGINX_GPGKEY\" && found=yes && break;     done;     test -z \"$found\" && echo >&2 \"error: failed to fetch GPG key $NGINX_GPGKEY\" && exit 1;     apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/*     && dpkgArch=\"$(dpkg --print-architecture)\"     && nginxPackages=\"         nginx=${NGINX_VERSION}-${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${PKG_RELEASE}     \"     && case \"$dpkgArch\" in         amd64|arm64)             echo \"deb https://nginx.org/packages/mainline/debian/ bullseye nginx\" >> /etc/apt/sources.list.d/nginx.list             && apt-get update             ;;         *)             echo \"deb-src https://nginx.org/packages/mainline/debian/ bullseye nginx\" >> /etc/apt/sources.list.d/nginx.list                         && tempDir=\"$(mktemp -d)\"             && chmod 777 \"$tempDir\"                         && savedAptMark=\"$(apt-mark showmanual)\"                         && apt-get update             && apt-get build-dep -y $nginxPackages             && (                 cd \"$tempDir\"                 && DEB_BUILD_OPTIONS=\"nocheck parallel=$(nproc)\"                     apt-get source --compile $nginxPackages             )                         && apt-mark showmanual | xargs apt-mark auto > /dev/null             && { [ -z \"$savedAptMark\" ] || apt-mark manual $savedAptMark; }                         && ls -lAFh \"$tempDir\"             && ( cd \"$tempDir\" && dpkg-scanpackages . > Packages )             && grep '^Package: ' \"$tempDir/Packages\"             && echo \"deb [ trusted=yes ] file://$tempDir ./\" > /etc/apt/sources.list.d/temp.list             && apt-get -o Acquire::GzipIndexes=false update             ;;     esac         && apt-get install --no-install-recommends --no-install-suggests -y                         $nginxPackages                         gettext-base                         curl     && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list         && if [ -n \"$tempDir\" ]; then         apt-get purge -y --auto-remove         && rm -rf \"$tempDir\" /etc/apt/sources.list.d/temp.list;     fi     && ln -sf /dev/stdout /var/log/nginx/access.log     && ln -sf /dev/stderr /var/log/nginx/error.log     && mkdir /docker-entrypoint.d"
+        },
+        {
+          "created": "2021-11-17T10:38:12.409891183Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:65504f71f5855ca017fb64d502ce873a31b2e0decd75297a8fb0a287f97acf92 in / "
+        },
+        {
+          "created": "2021-11-17T10:38:12.732754797Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:0b866ff3fc1ef5b03c4e6c8c513ae014f691fb05d530257dfffd07035c1b75da in /docker-entrypoint.d "
+        },
+        {
+          "created": "2021-11-17T10:38:13.174315469Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:0fd5fca330dcd6a7de297435e32af634f29f7132ed0550d342cad9fd20158258 in /docker-entrypoint.d "
+        },
+        {
+          "created": "2021-11-17T10:38:13.510082553Z",
+          "created_by": "/bin/sh -c #(nop) COPY file:09a214a3e07c919af2fb2d7c749ccbc446b8c10eb217366e5a65640ee9edcc25 in /docker-entrypoint.d "
+        },
+        {
+          "created": "2021-11-17T10:38:13.827956179Z",
+          "created_by": "/bin/sh -c #(nop)  ENTRYPOINT [\"/docker-entrypoint.sh\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:38:14.069756108Z",
+          "created_by": "/bin/sh -c #(nop)  EXPOSE 80",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:38:14.348754639Z",
+          "created_by": "/bin/sh -c #(nop)  STOPSIGNAL SIGQUIT",
+          "empty_layer": true
+        },
+        {
+          "created": "2021-11-17T10:38:14.652464384Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"nginx\" \"-g\" \"daemon off;\"]",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:e1bbcf243d0e7387fbfe5116a485426f90d3ddeb0b1738dca4e3502b6743b325",
+          "sha256:37380c5830feb5d6829188be41a4ea0654eb5c4632f03ef093ecc182acf40e8a",
+          "sha256:ff4c727794302b5a0ee4dadfaac8d1233950ce9a07d76eb3b498efa70b7517e4",
+          "sha256:49eeddd2150fbd14433ec1f01dbf6b23ea6cf581a50635554826ad93ce040b68",
+          "sha256:1e8ad06c81b6baf629988756d90fd27c14285da4d9bf57179570febddc492087",
+          "sha256:8525cde30b227bb5b03deb41bda41deb85d740b834be61a69ead59d840f07c13"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "nginx",
+          "-g",
+          "daemon off;"
+        ],
+        "Entrypoint": [
+          "/docker-entrypoint.sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "NGINX_VERSION=1.21.4",
+          "NJS_VERSION=0.7.0",
+          "PKG_RELEASE=1~bullseye"
+        ],
+        "Image": "sha256:2fb4060b053a39040c51ff7eadd30325de2c76650fc50aa42839070e16e8bdcb",
+        "Labels": {
+          "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"
+        },
+        "ExposedPorts": {
+          "80/tcp": {}
+        },
+        "StopSignal": "SIGQUIT"
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "nginx (debian 11.1)",
+      "Class": "os-pkgs",
+      "Type": "debian",
+      "Packages": [
+        {
+          "Name": "adduser",
+          "Version": "3.118",
+          "SrcName": "adduser",
+          "SrcVersion": "3.118",
+          "Layer": {
+            "Digest": "sha256:eff15d958d664f0874d16aee393cc44387031ee0a68ef8542d0056c747f378e8",
+            "DiffID": "sha256:e1bbcf243d0e7387fbfe5116a485426f90d3ddeb0b1738dca4e3502b6743b325"
+          }
+        },
+        {
+          "Name": "apt",
+          "Version": "2.2.4",
+          "SrcName": "apt",
+          "SrcVersion": "2.2.4",
+          "Layer": {
+            "Digest": "sha256:eff15d958d664f0874d16aee393cc44387031ee0a68ef8542d0056c747f378e8",
+            "DiffID": "sha256:e1bbcf243d0e7387fbfe5116a485426f90d3ddeb0b1738dca4e3502b6743b325"
+          }
+        },
+        {
+          "Name": "base-files",
+          "Version": "11.1+deb11u1",
+          "SrcName": "base-files",
+          "SrcVersion": "11.1+deb11u1",
+          "Layer": {
+            "Digest": "sha256:eff15d958d664f0874d16aee393cc44387031ee0a68ef8542d0056c747f378e8",
+            "DiffID": "sha256:e1bbcf243d0e7387fbfe5116a485426f90d3ddeb0b1738dca4e3502b6743b325"
+          }
+        }
+      ],
+      "Vulnerabilities": []
+    },
+    {
+      "Target": "Java",
+      "Class": "lang-pkgs",
+      "Type": "jar",
+      "Packages": [
+        {
+          "Name": ":",
+          "Layer": {
+            "Digest": "sha256:30fb8f76b8a27e6039cd9242bb0708f55247e28522c20d806e0e71ea05cd9199",
+            "DiffID": "sha256:c93d0eb9e839223e5dc4b5bf080eb2cc4991baf0cc16065e56645682210e9de6"
+          }
+        },
+        {
+          "Name": "ant:ant",
+          "Version": "1.6.2",
+          "Layer": {
+            "Digest": "sha256:30fb8f76b8a27e6039cd9242bb0708f55247e28522c20d806e0e71ea05cd9199",
+            "DiffID": "sha256:c93d0eb9e839223e5dc4b5bf080eb2cc4991baf0cc16065e56645682210e9de6"
+          }
+        }
+      ],
+      "Vulnerabilities": []
+    }
+  ]
+}
