@@ -9,13 +9,7 @@ module Gcs
       end
 
       def default_branch_image
-        image = ENV.fetch('CS_DEFAULT_BRANCH_IMAGE', nil)
-
-        return image if image
-
-        return if !ENV.include?('CI_DEFAULT_BRANCH') || !ENV.include?('CI_REGISTRY_IMAGE')
-
-        "#{registry_image}/#{default_branch}:#{application_tag}"
+        ENV.fetch('CS_DEFAULT_BRANCH_IMAGE', nil)
       end
 
       def default_docker_image
