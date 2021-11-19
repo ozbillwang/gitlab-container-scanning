@@ -22,7 +22,7 @@ RSpec.describe Gcs::DependencyListConverter do
     end
 
     it 'prepares report with image path' do
-      expect(gitlab_format.dig('dependency_files', 0, 'path')).to eq('nginx:latest')
+      expect(gitlab_format.dig('dependency_files', 0, 'path')).to eq('container-image:nginx:latest')
     end
 
     {

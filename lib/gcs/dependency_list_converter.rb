@@ -2,6 +2,8 @@
 
 module Gcs
   class DependencyListConverter
+    CONTAINER_IMAGE_PREFIX = 'container-image:'
+
     def initialize(template, source, opt = {})
       @template = template
       @source = source
@@ -25,7 +27,7 @@ module Gcs
       repo_digest = parsed_report.dig('Metadata', 'RepoDigests', 0)
 
       converted_report['dependency_files'] << {
-        'path' => repo_tag || repo_digest,
+        'path' => "#{CONTAINER_IMAGE_PREFIX}#{repo_tag || repo_digest}",
         'package_manager' => "#{os_family}:#{os_version} (#{package_manager_name(os_family)})",
         'dependencies' => convert_dependencies(parsed_report['Results'])
       }
