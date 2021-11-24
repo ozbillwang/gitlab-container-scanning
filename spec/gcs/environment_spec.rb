@@ -296,7 +296,7 @@ RSpec.describe Gcs::Environment do
 
     context 'with CS_DISABLE_DEPENDENCY_SCAN is not set' do
       it 'returns false' do
-        expect(described_class.dependency_scan_disabled?).to eq(false)
+        expect(described_class.dependency_scan_disabled?).to eq(true)
       end
     end
   end

@@ -15,7 +15,8 @@ RSpec.describe 'alpine' do
           'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
           'DOCKER_IMAGE' => 'docker.test/library/alpine:latest',
           'DOCKER_USER' => '',
-          'DOCKER_PASSWORD' => ''
+          'DOCKER_PASSWORD' => '',
+          'CS_DISABLE_DEPENDENCY_SCAN' => 'false'
         }
       )
     end

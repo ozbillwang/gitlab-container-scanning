@@ -48,6 +48,7 @@ RSpec.describe Gcs::Trivy do
     it 'runs trivy binary with given severity levels' do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
+      allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
 
       cmd = ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
              "-o",

@@ -83,6 +83,7 @@ RSpec.describe Gcs::Cli do
         context 'with invalid allow list file' do
           before do
             allow(File).to receive(:read).and_return('"') # smallest broken yaml
+            allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
           end
 
           include_examples 'QUIET mode'
@@ -105,6 +106,7 @@ RSpec.describe Gcs::Cli do
 
           before do
             allow(Gcs::AllowList).to receive(:file_path).and_return(allow_list_file)
+            allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
           end
 
           include_examples 'QUIET mode'
@@ -131,6 +133,7 @@ RSpec.describe Gcs::Cli do
         context 'without allow list file' do
           before do
             allow(Gcs::AllowList).to receive(:file_path).and_return('nonexisting-file-allowlist.yml')
+            allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
           end
 
           include_examples 'QUIET mode'
