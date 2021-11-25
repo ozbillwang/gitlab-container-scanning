@@ -36,6 +36,38 @@ RSpec.describe Gcs::Trivy do
     end
   end
 
+  describe '.scan_os_packages_supported?' do
+    subject { described_class.scan_os_packages_supported? }
+
+    it { is_expected.to be true }
+  end
+
+  describe '.scan_os_packages' do
+    subject(:os_scan_image) { described_class.scan_os_packages(image_name, output_file_name) }
+
+    it 'runs trivy binary with given severity levels' do
+      allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
+      allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
+      allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
+
+      cmd = ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
+             "-o",
+             output_file_name,
+             image_name]
+
+      expect(Gcs.shell).to receive(:execute)
+        .with(cmd, {
+                'TRIVY_DEBUG' => '',
+                'TRIVY_INSECURE' => 'false',
+                'TRIVY_NON_SSL' => 'false',
+                'TRIVY_PASSWORD' => nil,
+                'TRIVY_USERNAME' => nil
+              })
+
+      os_scan_image
+    end
+  end
+
   describe 'scanning with trivy' do
     subject(:scan_image) { described_class.scan_image(image_name, output_file_name) }
 

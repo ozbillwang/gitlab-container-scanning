@@ -15,11 +15,22 @@ module Gcs
         version_info[:db_updated_at]
       end
 
+      def scan_os_packages_supported?
+        true
+      end
+
       private
 
       def scan_command(image_name, output_file_name)
         ["trivy i #{severity_level_arg} --skip-update --vuln-type os --no-progress --format template -t",
          "@#{template_file}",
+         "-o",
+         output_file_name,
+         image_name]
+      end
+
+      def os_scan_command(image_name, output_file_name)
+        ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
          "-o",
          output_file_name,
          image_name]

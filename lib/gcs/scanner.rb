@@ -6,10 +6,26 @@ module Gcs
         File.join(Gcs.lib, 'template', "#{scanner_name.downcase}.tpl").to_s
       end
 
+      def dependencies_template_file
+        File.join(Gcs.lib, 'template', "dependencies-#{scanner_name.downcase}.json")
+      end
+
       def scan_image(image_name, output_file_name)
         disabled_remediation_info unless Gcs::Environment.docker_file.exist?
         Gcs.logger.info(log_message(image_name))
         stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
+
+        [stdout, improve_stderr_msg(stderr, image_name), status]
+      end
+
+      def scan_os_packages_supported?
+        # Scanner class must implement scan_os_packages_supported? and os_scan_command methods when this is supported
+        false
+      end
+
+      def scan_os_packages(image_name, output_file_name)
+        Gcs.logger.info(log_message(image_name))
+        stdout, stderr, status = Gcs.shell.execute(os_scan_command(image_name, output_file_name), environment)
 
         [stdout, improve_stderr_msg(stderr, image_name), status]
       end
@@ -23,7 +39,7 @@ module Gcs
       def disabled_remediation_info
         Gcs.logger.info(
           <<~EOMSG
-          Remediation is disabled; #{Gcs::Environment.docker_file} cannot be found. Have you set `GIT_STRATEGY` and 
+          Remediation is disabled; #{Gcs::Environment.docker_file} cannot be found. Have you set `GIT_STRATEGY` and
           `DOCKERFILE_PATH`?
           See https://docs.gitlab.com/ee/user/application_security/container_scanning/#solutions-for-vulnerabilities-auto-remediation
         EOMSG
@@ -76,6 +92,10 @@ module Gcs
 
       def scan_command(image_name, output_file_name)
         raise 'Scanner class must implement the `scan_command` method'
+      end
+
+      def os_scan_command(image_name, output_file_name)
+        raise 'Scanner class must implement the `os_scan_command` method'
       end
     end
   end

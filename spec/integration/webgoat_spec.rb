@@ -8,7 +8,8 @@ RSpec.describe 'Webgoat' do
         'DOCKERFILE_PATH' => runner.project_path.join('webgoat-Dockerfile').to_s,
         'DOCKER_IMAGE' => "#{image}@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e",
         'DOCKER_USER' => '',
-        'DOCKER_PASSWORD' => ''
+        'DOCKER_PASSWORD' => '',
+        'CS_DISABLE_DEPENDENCY_SCAN' => 'false'
       }
     end
 

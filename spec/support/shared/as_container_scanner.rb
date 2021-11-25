@@ -65,6 +65,22 @@ RSpec.shared_examples 'as container scanner' do |item|
       expect(report['scan']['scanner']['name']).to eql('Trivy')
       expect(report['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
       expect(report['scan']['scanner']['vendor']['name']).to eql('GitLab')
+
+      expect(dependency_scanning_report['scan']).not_to be_nil
+      expect(dependency_scanning_report['scan']['end_time']).not_to be_nil
+      expect(dependency_scanning_report['scan']['start_time']).not_to be_nil
+      expect(dependency_scanning_report['scan']['status']).to eql('success')
+      expect(dependency_scanning_report['scan']['type']).to eql('dependency_scanning')
+
+      expect(dependency_scanning_report['scan']['scanner']['version']).to eql(current_trivy_version)
+      expect(dependency_scanning_report['scan']['scanner']['id']).to eql('trivy')
+      expect(dependency_scanning_report['scan']['scanner']['name']).to eql('Trivy')
+      expect(dependency_scanning_report['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
+      expect(dependency_scanning_report['scan']['scanner']['vendor']['name']).to eql('GitLab')
+
+      expect(dependency_scanning_report['dependency_files'][0]['path']).to eq("container-image:#{env['DOCKER_IMAGE']}")
+      expect(dependency_scanning_report['dependency_files'][0]['package_manager']).not_to be_nil
+      expect(dependency_scanning_report['dependency_files'][0]['dependencies']).not_to be_empty
     end
   end
 

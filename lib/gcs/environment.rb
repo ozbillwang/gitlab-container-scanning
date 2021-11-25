@@ -82,6 +82,10 @@ module Gcs
         File.exist?('/etc/redhat-release')
       end
 
+      def dependency_scan_disabled?
+        ENV.fetch('CS_DISABLE_DEPENDENCY_SCAN', 'true').to_s.casecmp?('true')
+      end
+
       private
 
       def should_use_ci_credentials?
