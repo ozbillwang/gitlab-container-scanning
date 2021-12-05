@@ -1,3 +1,9 @@
+## 4.5.2 (2021-12-05)
+
+### changed (1 change)
+
+- [Remove default value for default_branch_image](gitlab-org/security-products/analyzers/container-scanning@de352f0c48c4b0b26c6c00f7a9f8007ce4e8dbb6) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2615))
+
 ## 4.5.1 (2021-11-26)
 
 No changes.
