@@ -327,8 +327,8 @@ RSpec.describe Gcs::Environment do
         allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil).and_return(nil)
       end
 
-      it 'returns name in default format' do
-        expect(described_class.default_branch_image).to eq('registry.gitlab.com/defen/trivy-test/main:latest')
+      it 'returns nil' do
+        expect(described_class.default_branch_image).to be_nil
       end
     end
 
@@ -348,27 +348,6 @@ RSpec.describe Gcs::Environment do
           allow(ENV).to receive(:include?).with(missing_variable).and_return(false)
 
           expect(described_class.default_branch_image).to be_nil
-        end
-      end
-    end
-
-    context 'when a required variable is missing' do
-      before do
-        allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return('main')
-        allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return(ci_registry_image)
-        allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_yield
-        allow(ENV).to receive(:fetch).with('CI_COMMIT_SHA').and_return(commit_sha)
-      end
-
-      where(:missing_variable) { %w[CI_DEFAULT_BRANCH CI_REGISTRY_IMAGE CI_COMMIT_SHA] }
-
-      with_them do
-        it 'exits the program' do
-          allow(ENV).to receive(:fetch).with(missing_variable).and_raise(KeyError.new(key: missing_variable))
-
-          expect(Gcs.logger).to receive(:error)
-          execution = -> { described_class.default_branch_image }
-          expect(execution).to terminate.with_code(1)
         end
       end
     end
