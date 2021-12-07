@@ -1,0 +1,28 @@
+{
+  "version": "$schemaVersion",
+  "scan": {
+    "type": "dependency_scanning",
+    "start_time": "",
+    "end_time": "",
+    "status": "success",
+    "scanner": {
+      "id": "grype",
+      "name": "Grype",
+      "url": "https://github.com/anchore/grype",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "0.24.1"
+    },
+    "analyzer": {
+      "id": "gcs",
+      "name": "GitLab Container Scanning",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "$gcsVersion"
+    }
+  },
+  "vulnerabilities": [],
+  "dependency_files": []
+}

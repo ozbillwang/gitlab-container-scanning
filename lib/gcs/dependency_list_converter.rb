@@ -4,7 +4,7 @@ module Gcs
   class DependencyListConverter
     CONTAINER_IMAGE_PREFIX = 'container-image:'
 
-    def initialize(template, source, opt = {})
+    def initialize(template, source = nil, opt = {})
       @template = template
       @source = source
       @opt = opt
@@ -12,13 +12,15 @@ module Gcs
 
     def convert
       converted_report = JSON.parse(@template)
-      parsed_report = JSON.parse(@source)
+      parsed_report = JSON.parse(@source) unless @source.nil?
 
       converted_report['scan']['start_time'] = @opt.fetch(:start_time, '')
       converted_report['scan']['end_time'] = @opt.fetch(:end_time, '')
 
       converted_report['version'] = Gcs::Converter::SCHEMA_VERSION
       converted_report['scan']['analyzer']['version'] = Gcs::VERSION
+
+      return converted_report if parsed_report.nil?
 
       os_family = parsed_report.dig('Metadata', 'OS', 'Family')
       os_version = parsed_report.dig('Metadata', 'OS', 'Name')

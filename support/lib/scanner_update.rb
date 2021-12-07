@@ -9,7 +9,8 @@ class ScannerUpdate
     },
     grype: {
       uri: 'https://api.github.com/repos/anchore/grype/releases/latest',
-      template: Gcs::Grype.template_file
+      template: Gcs::Grype.template_file,
+      dependencies_template: Gcs::Grype.dependencies_template_file
     }
   }.freeze
 
