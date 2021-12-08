@@ -12,7 +12,6 @@ module Gcs
 
     def convert
       converted_report = JSON.parse(@template)
-      parsed_report = JSON.parse(@source) unless @source.nil?
 
       converted_report['scan']['start_time'] = @opt.fetch(:start_time, '')
       converted_report['scan']['end_time'] = @opt.fetch(:end_time, '')
@@ -20,7 +19,9 @@ module Gcs
       converted_report['version'] = Gcs::Converter::SCHEMA_VERSION
       converted_report['scan']['analyzer']['version'] = Gcs::VERSION
 
-      return converted_report if parsed_report.nil?
+      return converted_report if @source.nil?
+
+      parsed_report = JSON.parse(@source)
 
       os_family = parsed_report.dig('Metadata', 'OS', 'Family')
       os_version = parsed_report.dig('Metadata', 'OS', 'Name')
