@@ -1,3 +1,9 @@
+## 4.5.5 (2021-12-09)
+
+### added (1 change)
+
+- [Return empty Dependency Scanning report when disabled](gitlab-org/security-products/analyzers/container-scanning@9384a1d87bb566a4d591a80a5f638703eaf562bd) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2619))
+
 ## 4.5.4 (2021-12-09)
 
 ### added (1 change)
