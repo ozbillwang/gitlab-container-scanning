@@ -1,3 +1,14 @@
+## 4.5.4 (2021-12-09)
+
+### added (1 change)
+
+- [Return empty Dependency Scanning report when disabled](gitlab-org/security-products/analyzers/container-scanning@9384a1d87bb566a4d591a80a5f638703eaf562bd) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2619))
+
+### changed (2 changes)
+
+- [Update grype to version 0.26.1](gitlab-org/security-products/analyzers/container-scanning@be4cc2c71dc48d9ab61c7309a2a383bc0c7b5514) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2621))
+- [Update trivy to version 0.21.2](gitlab-org/security-products/analyzers/container-scanning@d4a16029648ad5e103a78a22a78f32d12790d37b) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2620))
+
 ## 4.5.2 (2021-12-05)
 
 ### changed (1 change)
