@@ -48,7 +48,7 @@ RSpec.describe Gcs::Cli do
           allow(Gcs::DependencyListConverter).to receive_message_chain(:new, :convert).and_return({})
           allow(File).to receive(:exist?).with('tmp.json').and_return(true)
           allow(File).to receive(:read).with('tmp.json')
-          allow(File).to receive(:read).with(%r{lib/template/dependencies-trivy\.json})
+          allow(File).to receive(:read).with(%r{lib/template/dependencies-(trivy|grype)\.json})
         end
 
         if scanner.scan_os_packages_supported?
@@ -92,9 +92,7 @@ RSpec.describe Gcs::Cli do
             expect(Gcs::Util).to receive(:write_table).with({}, nil)
             expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {}, Pathname.pwd, nil)
 
-            if scanner.scan_os_packages_supported?
-              expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
-            end
+            expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
 
             expect(Gcs.logger).to receive(:debug).with(match(/Allowlist failed with /))
             expect(execution).not_to terminate
@@ -118,9 +116,9 @@ RSpec.describe Gcs::Cli do
                                                            instance_of(Gcs::AllowList))
 
             expect(Gcs.logger).to receive(:info).with(match(/Using allowlist /))
+            expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
 
             if scanner.scan_os_packages_supported?
-              expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
               expect(Gcs.logger).to receive(:info).twice
             else
               expect(Gcs.logger).to receive(:info).once
@@ -141,11 +139,7 @@ RSpec.describe Gcs::Cli do
           specify do
             expect(Gcs::Util).to receive(:write_table).with({}, nil)
             expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_REPORT_NAME, {}, Pathname.pwd, nil)
-
-            if scanner.scan_os_packages_supported?
-              expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
-            end
-
+            expect(Gcs::Util).to receive(:write_file).with(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, {}, Pathname.pwd, nil)
             expect(Gcs.logger).to receive(:debug).with(match(/Allowlist failed with /))
             expect(execution).not_to terminate
           end

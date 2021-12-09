@@ -27,9 +27,11 @@ module Gcs
           Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET'] # FIXME: undocumented env var
           Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
 
-          return unless perform_os_package_scan?
-
-          scan_os_packages(image_name)
+          if perform_os_package_scan?
+            scan_os_packages(image_name)
+          else
+            prepare_empty_dependency_scanning_report(measured_time)
+          end
         end
       else
         Gcs.logger.info('Scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
@@ -74,6 +76,13 @@ module Gcs
         Gcs.logger.error(stderr)
         Gcs.logger.error(stdout)
       end
+    end
+
+    def prepare_empty_dependency_scanning_report(measured_time)
+      template = File.read(Environment.scanner.dependencies_template_file)
+      report = DependencyListConverter.new(template, nil, measured_time).convert
+
+      Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, report, Environment.project_dir, nil)
     end
   end
 end
