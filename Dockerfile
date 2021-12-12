@@ -29,6 +29,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   curl \
   ca-certificates \
   git-core \
+  jq \
   sudo \
   && rm -rf /var/lib/apt/lists/*
 
