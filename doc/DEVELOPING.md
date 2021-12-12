@@ -11,7 +11,9 @@ $ docker build --build-arg SCANNER -t gcs .
 Note that `trivy` is built by default by both not setting `$SCANNER` or setting it to `trivy`. To build a different scanner define `$SCANNER` as the following:
 
 ```
-export SCANNER=myscanner
+export SCANNER=trivy
+
+export SCANNER=grype
 ```
 
 For creating and accessing a new container based on the `gcs` image:
@@ -30,6 +32,22 @@ When inside the container the following provides a list of commands:
 
 ```
 $ gtcs help
+```
+
+### Environment variables inside docker container
+
+Specify the CI/CD environment variables from the [documentation](https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables) either for the session with `export`, or specify them before the CLI command.
+
+Example: Increase the debug output with the `SECURE_LOG_LEVEL` variable.
+
+```
+$ export SECURE_LOG_LEVEL=debug
+
+$ gtcs scan ruby:3.0.0
+
+# OR
+
+$ SECURE_LOG_LEVEL=debug gtcs scan ruby:3.0.0
 ```
 
 ### Running tests within docker container
