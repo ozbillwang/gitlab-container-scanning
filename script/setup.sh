@@ -26,6 +26,7 @@ download_grype() {
 
 download_grype_db() {
   echo "Downloading Grype database"
+  grype db check -v
   grype db update -v
 }
 
