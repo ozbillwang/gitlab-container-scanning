@@ -22,7 +22,7 @@ module Gcs
       private
 
       def scan_command(image_name, output_file_name)
-        ["trivy i #{severity_level_arg} --skip-update --vuln-type os --no-progress --format template -t",
+        ["trivy i #{severity_level_arg} --skip-update #{vulnerability_type_arg} --no-progress --format template -t",
          "@#{template_file}",
          "-o",
          output_file_name,
@@ -55,6 +55,12 @@ module Gcs
         allowed_severities = SEVERITY_LEVELS.select { |k, v| v >= severity_level }.keys.join(',')
 
         "-s #{allowed_severities}"
+      end
+
+      def vulnerability_type_arg
+        return '' unless Gcs::Environment.language_specific_scan_disabled?
+
+        "--vuln-type os"
       end
 
       def severity_level
