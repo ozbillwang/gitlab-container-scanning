@@ -29,16 +29,26 @@ module Gcs
       repo_tag = parsed_report.dig('Metadata', 'RepoTags', 0)
       repo_digest = parsed_report.dig('Metadata', 'RepoDigests', 0)
 
-      converted_report['dependency_files'] << {
-        'path' => "#{CONTAINER_IMAGE_PREFIX}#{repo_tag || repo_digest}",
-        'package_manager' => "#{os_family}:#{os_version} (#{package_manager_name(os_family)})",
-        'dependencies' => convert_dependencies(parsed_report['Results'])
-      }
+      container_image_path = "#{CONTAINER_IMAGE_PREFIX}#{repo_tag || repo_digest}"
+
+      converted_report['dependency_files'] = parsed_report['Results'].map do |result|
+        {
+          'path' => container_image_path,
+          'package_manager' => package_manager(os_family, os_version, result),
+          'dependencies' => convert_dependencies(result['Packages'])
+        }
+      end
 
       converted_report
     end
 
     private
+
+    def package_manager(os_family, os_version, result)
+      return "#{os_family}:#{os_version} (#{package_manager_name(os_family)})" if result['Class'] == 'os-pkgs'
+
+      "#{result['Target']} (#{result['Type']})"
+    end
 
     def package_manager_name(os_family)
       case os_family&.downcase
@@ -51,19 +61,15 @@ module Gcs
       end
     end
 
-    def convert_dependencies(results)
-      results
-        .select { |result| result['Class'] == 'os-pkgs' }
-        .flat_map do |result|
-          result['Packages'].map do |package|
-            {
-              'package' => {
-                'name' => package['SrcName']
-              },
-              'version' => package['SrcVersion']
-            }
-          end
-        end
+    def convert_dependencies(packages)
+      packages.map do |package|
+        {
+          'package' => {
+            'name' => package['SrcName'] || package['Name']
+          },
+          'version' => package['SrcVersion'] || package['Version']
+        }
+      end
     end
   end
 end

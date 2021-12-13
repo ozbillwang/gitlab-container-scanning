@@ -62,5 +62,17 @@ RSpec.describe Gcs::DependencyListConverter do
         ]
       )
     end
+
+    it 'prepares report with package manager and language information' do
+      expect(gitlab_format.dig('dependency_files', 1, 'package_manager')).to eq('Java (jar)')
+    end
+
+    it 'prepares report with language dependencies' do
+      expect(gitlab_format.dig('dependency_files', 1, 'dependencies')).to eq(
+        [
+          { 'package' => { 'name' => 'ant:ant' }, 'version' => '1.6.2' }
+        ]
+      )
+    end
   end
 end
