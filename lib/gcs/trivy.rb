@@ -60,7 +60,7 @@ module Gcs
       def vulnerability_type_arg
         return '' unless Gcs::Environment.language_specific_scan_disabled?
 
-        "--vuln-type os"
+        '--vuln-type os'
       end
 
       def severity_level
