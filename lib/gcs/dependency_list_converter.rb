@@ -45,8 +45,10 @@ module Gcs
     private
 
     def package_manager(os_family, os_version, result)
+      # "alpine:3.15.0 (apk)"
       return "#{os_family}:#{os_version} (#{package_manager_name(os_family)})" if os_package?(result)
 
+      # "Java (jar)"
       "#{result['Target']} (#{result['Type']})"
     end
 
