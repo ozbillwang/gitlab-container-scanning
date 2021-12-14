@@ -274,9 +274,9 @@ RSpec.describe Gcs::Environment do
   end
 
   describe '.dependency_scan_disabled?' do
-    context 'with CS_DISABLE_DEPENDENCY_SCAN set to false' do
+    context 'with CS_DISABLE_DEPENDENCY_LIST set to false' do
       before do
-        allow(ENV).to receive(:fetch).with('CS_DISABLE_DEPENDENCY_SCAN', anything).and_return('false')
+        allow(ENV).to receive(:fetch).with('CS_DISABLE_DEPENDENCY_LIST', anything).and_return('false')
       end
 
       it 'returns false' do
@@ -284,9 +284,9 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    context 'with CS_DISABLE_DEPENDENCY_SCAN set to true' do
+    context 'with CS_DISABLE_DEPENDENCY_LIST set to true' do
       before do
-        allow(ENV).to receive(:fetch).with('CS_DISABLE_DEPENDENCY_SCAN', anything).and_return('true')
+        allow(ENV).to receive(:fetch).with('CS_DISABLE_DEPENDENCY_LIST', anything).and_return('true')
       end
 
       it 'returns true' do
@@ -294,7 +294,7 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    context 'with CS_DISABLE_DEPENDENCY_SCAN is not set' do
+    context 'with CS_DISABLE_DEPENDENCY_LIST is not set' do
       it 'returns false' do
         expect(described_class.dependency_scan_disabled?).to eq(false)
       end

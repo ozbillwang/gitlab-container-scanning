@@ -16,7 +16,7 @@ RSpec.describe 'alpine' do
           'DOCKER_IMAGE' => 'docker.test/library/alpine:latest',
           'DOCKER_USER' => '',
           'DOCKER_PASSWORD' => '',
-          'CS_DISABLE_DEPENDENCY_SCAN' => 'false'
+          'CS_DISABLE_DEPENDENCY_LIST' => 'false'
         }
       )
     end

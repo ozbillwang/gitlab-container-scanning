@@ -7,7 +7,7 @@ RSpec.describe 'centos' do
       'DOCKER_IMAGE' => 'centos:centos8',
       'DOCKER_USER' => '',
       'DOCKER_PASSWORD' => '',
-      'CS_DISABLE_DEPENDENCY_SCAN' => 'false'
+      'CS_DISABLE_DEPENDENCY_LIST' => 'false'
     }
   end
 
