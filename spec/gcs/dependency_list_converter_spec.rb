@@ -63,16 +63,33 @@ RSpec.describe Gcs::DependencyListConverter do
       )
     end
 
-    it 'prepares report with package manager and language information' do
-      expect(gitlab_format.dig('dependency_files', 1, 'package_manager')).to eq('Java (jar)')
+    context 'when language specific scan is enabled' do
+      before do
+        allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(false)
+      end
+
+      it 'prepares report with package manager and language information' do
+        expect(gitlab_format.dig('dependency_files', 1, 'package_manager')).to eq('Java (jar)')
+      end
+
+      it 'prepares report with language dependencies' do
+        expect(gitlab_format.dig('dependency_files', 1, 'dependencies')).to eq(
+          [
+            { 'package' => { 'name' => 'ant:ant' }, 'version' => '1.6.2' }
+          ]
+        )
+      end
     end
 
-    it 'prepares report with language dependencies' do
-      expect(gitlab_format.dig('dependency_files', 1, 'dependencies')).to eq(
-        [
-          { 'package' => { 'name' => 'ant:ant' }, 'version' => '1.6.2' }
-        ]
-      )
+    context 'when language specific scan is disabled' do
+      before do
+        allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(true)
+      end
+
+      it 'does not prepare report with package manager nor language information' do
+        expect(gitlab_format['dependency_files'].size).to eq(1)
+        expect(gitlab_format['dependency_files']).not_to include(hash_including('package_manager' => 'Java (jar)'))
+      end
     end
   end
 end

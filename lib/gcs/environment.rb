@@ -80,6 +80,10 @@ module Gcs
         ENV.fetch('CS_DISABLE_DEPENDENCY_LIST', 'false').to_s.casecmp?('true')
       end
 
+      def language_specific_scan_disabled?
+        ENV.fetch('CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN', 'true').to_s.casecmp?('true')
+      end
+
       private
 
       def should_use_ci_credentials?

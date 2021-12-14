@@ -31,7 +31,7 @@ module Gcs
 
       container_image_path = "#{CONTAINER_IMAGE_PREFIX}#{repo_tag || repo_digest}"
 
-      converted_report['dependency_files'] = parsed_report['Results'].map do |result|
+      converted_report['dependency_files'] = filter_results(parsed_report['Results']).map do |result|
         {
           'path' => container_image_path,
           'package_manager' => package_manager(os_family, os_version, result),
@@ -45,7 +45,7 @@ module Gcs
     private
 
     def package_manager(os_family, os_version, result)
-      return "#{os_family}:#{os_version} (#{package_manager_name(os_family)})" if result['Class'] == 'os-pkgs'
+      return "#{os_family}:#{os_version} (#{package_manager_name(os_family)})" if os_package?(result)
 
       "#{result['Target']} (#{result['Type']})"
     end
@@ -59,6 +59,16 @@ module Gcs
       when /suse/ then 'zypper'
       else 'unknown'
       end
+    end
+
+    def os_package?(result)
+      result['Class'] == 'os-pkgs'
+    end
+
+    def filter_results(results)
+      return results unless Gcs::Environment.language_specific_scan_disabled?
+
+      results.select { |result| os_package?(result) }
     end
 
     def convert_dependencies(packages)

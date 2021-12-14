@@ -301,6 +301,34 @@ RSpec.describe Gcs::Environment do
     end
   end
 
+  describe '.language_specific_scan_disabled?' do
+    context 'with CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN set to false' do
+      before do
+        allow(ENV).to receive(:fetch).with('CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN', anything).and_return('false')
+      end
+
+      it 'returns false' do
+        expect(described_class.language_specific_scan_disabled?).to eq(false)
+      end
+    end
+
+    context 'with CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN set to true' do
+      before do
+        allow(ENV).to receive(:fetch).with('CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN', anything).and_return('true')
+      end
+
+      it 'returns true' do
+        expect(described_class.language_specific_scan_disabled?).to eq(true)
+      end
+    end
+
+    context 'with CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN is not set' do
+      it 'returns false' do
+        expect(described_class.language_specific_scan_disabled?).to eq(true)
+      end
+    end
+  end
+
   describe '.default_branch_image' do
     before do
       allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return('main')
