@@ -181,13 +181,6 @@
       "Type": "jar",
       "Packages": [
         {
-          "Name": ":",
-          "Layer": {
-            "Digest": "sha256:30fb8f76b8a27e6039cd9242bb0708f55247e28522c20d806e0e71ea05cd9199",
-            "DiffID": "sha256:c93d0eb9e839223e5dc4b5bf080eb2cc4991baf0cc16065e56645682210e9de6"
-          }
-        },
-        {
           "Name": "ant:ant",
           "Version": "1.6.2",
           "Layer": {
