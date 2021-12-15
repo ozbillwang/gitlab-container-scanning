@@ -1,3 +1,18 @@
+## 4.5.8 (2021-12-15)
+
+### changed (4 changes)
+
+- [Update grype to version 0.27.2](gitlab-org/security-products/analyzers/container-scanning@e29f457c2c5e57ab42cde60de2af5f283ebc3b1d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2632))
+- [Rename CS_DISABLE_DEPENDENCY_SCAN to CS_DISABLE_DEPENDENCY_LIST](gitlab-org/security-products/analyzers/container-scanning@05b74a47a9b44bb97a7a110f15ee9443ac856bbf) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2630))
+- [Enable generating dependency-scanning report by default](gitlab-org/security-products/analyzers/container-scanning@77df348fa6919aa2135d9e00bc3a48a63917c9c8) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2627))
+- [Update grype to version 0.27.0](gitlab-org/security-products/analyzers/container-scanning@b3eeac94ae1c9ba5c30197cb0550963e31196310) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2622))
+
+### added (3 changes)
+
+- [Add fetching vulnerabilities for language packages in container](gitlab-org/security-products/analyzers/container-scanning@dced5a812ab52281ac3f701a52947cb765a29d74) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2629))
+- [Enable fetching language-specific vulnerabilities for grype](gitlab-org/security-products/analyzers/container-scanning@589488c37d0ef797f974ed47a6ab3c9d6b89257d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2631))
+- [Add support for language-specific dependency list](gitlab-org/security-products/analyzers/container-scanning@44a7a7ff58466445b3365fae822b780718584b7b) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2628))
+
 ## 4.5.5 (2021-12-09)
 
 ### added (1 change)
