@@ -113,5 +113,34 @@ RSpec.describe Gcs::Trivy do
 
       scan_image
     end
+
+    context 'when language specific scan is enabled' do
+      before do
+        allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
+        allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
+        allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(false)
+      end
+
+      it 'runs trivy binary without specifying type of vulnerability' do
+        cmd = [
+          "trivy i  --skip-update  --no-progress --format template -t",
+          "@#{described_class.template_file}",
+          "-o",
+          output_file_name,
+          image_name
+        ]
+
+        expect(Gcs.shell).to receive(:execute).with(cmd, {
+                                                      "TRIVY_DEBUG" => "",
+                                                      "TRIVY_INSECURE" => "false",
+                                                      "TRIVY_NON_SSL" => "false",
+                                                      "TRIVY_PASSWORD" => nil,
+                                                      "TRIVY_USERNAME" => nil
+                                                    })
+        expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
+
+        scan_image
+      end
+    end
   end
 end
