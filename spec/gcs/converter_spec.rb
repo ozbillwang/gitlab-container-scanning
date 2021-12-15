@@ -80,7 +80,7 @@ RSpec.describe Gcs::Converter do
       end
 
       context 'when vulnerability has language information' do
-        it 'returns only os vulnerabilities' do
+        it 'returns only OS vulnerabilities' do
           gitlab_format = described_class.new(grype_output_with_language, scan_runtime).convert
 
           expect(gitlab_format['vulnerabilities'].size).to eq(0)
