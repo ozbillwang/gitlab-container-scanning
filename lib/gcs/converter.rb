@@ -20,11 +20,13 @@ module Gcs
 
       vulns = []
 
-      parsed_report['vulnerabilities'].each do |vulnerability|
-        converted_vuln = Vulnerability.new(vulnerability)
-        vulns << converted_vuln
-        @remediations.create_remediation(converted_vuln, vulnerability)
-      end
+      parsed_report['vulnerabilities']
+        .select { |vulnerability| requested_vulnerability_language?(vulnerability.delete('language')) }
+        .each do |vulnerability|
+          converted_vuln = Vulnerability.new(vulnerability)
+          vulns << converted_vuln
+          @remediations.create_remediation(converted_vuln, vulnerability)
+        end
 
       @remediations.unsupported_os_warning unless @remediations.unsupported_operating_systems.empty?
 
@@ -32,6 +34,14 @@ module Gcs
       parsed_report['remediations'] = @remediations.to_hash
 
       parsed_report
+    end
+
+    private
+
+    def requested_vulnerability_language?(language)
+      return true if language.blank?
+
+      !Gcs::Environment.language_specific_scan_disabled?
     end
   end
 end
