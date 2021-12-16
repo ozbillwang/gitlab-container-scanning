@@ -3,6 +3,7 @@ RSpec.describe Gcs::Converter do
   let(:trivy_output_alpine) { fixture_file_content('trivy-alpine.json') }
   let(:trivy_output_centos) { fixture_file_content('trivy-centos.json') }
   let(:trivy_output_debian) { fixture_file_content('trivy-debian.json') }
+  let(:trivy_output_with_language) { fixture_file_content('trivy-with-language.json') }
   let(:grype_output_with_language) { fixture_file_content('grype-with-language.json') }
   let(:trivy_output_unsupported_os) { fixture_file_content('trivy-unsupported-os.json') }
   let(:scan_runtime) { { start_time: "2021-09-15T08:36:08", end_time: "2021-09-15T08:36:25" } }
@@ -49,6 +50,14 @@ RSpec.describe Gcs::Converter do
         expect(remediation_collection).to receive(:unsupported_os_warning)
 
         described_class.new(trivy_output_unsupported_os, {}).convert
+      end
+    end
+
+    context 'when image is not provided in vulnerability' do
+      it 'sets provided image_name' do
+        gitlab_format = described_class.new(trivy_output_with_language, scan_runtime.merge(image_name: 'g:0.1')).convert
+
+        expect(gitlab_format.dig('vulnerabilities', 0, 'location', 'image')).to eq('g:0.1')
       end
     end
 

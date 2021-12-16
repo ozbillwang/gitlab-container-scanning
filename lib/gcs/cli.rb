@@ -15,7 +15,7 @@ module Gcs
 
       if status.success?
         if File.exist?(OUTPUT_FILE)
-          gitlab_format = Converter.new(File.read(OUTPUT_FILE), measured_time).convert
+          gitlab_format = Converter.new(File.read(OUTPUT_FILE), measured_time.merge(image_name: image_name)).convert
 
           begin
             allow_list = AllowList.new
