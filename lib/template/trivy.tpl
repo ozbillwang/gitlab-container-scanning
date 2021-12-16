@@ -10,6 +10,7 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
   {{- $t_first := true }}
   {{- range . }}
   {{- $target := .Target }}
+  {{- $class := .Class }}
     {{- range .Vulnerabilities -}}
     {{- if $t_first -}}
       {{- $t_first = false -}}
@@ -66,7 +67,11 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
         },
         {{- /* TODO: No mapping available - https://github.com/aquasecurity/trivy/issues/332 */}}
         "operating_system": "Unknown",
-        "image": "{{ $target }}"
+        {{- if eq $class "os-pkgs" -}}
+          "image": "{{ $target }}"
+        {{- else -}}
+          "image": null
+        {{- end -}}
       },
       "identifiers": [
         {

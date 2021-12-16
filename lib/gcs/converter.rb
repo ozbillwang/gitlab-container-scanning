@@ -23,7 +23,7 @@ module Gcs
       parsed_report['vulnerabilities']
         .select { |vulnerability| requested_vulnerability_language?(vulnerability.delete('language')) }
         .each do |vulnerability|
-          converted_vuln = Vulnerability.new(vulnerability)
+          converted_vuln = Vulnerability.new(vulnerability, @opt.fetch(:image_name, ''))
           vulns << converted_vuln
           @remediations.create_remediation(converted_vuln, vulnerability)
         end
