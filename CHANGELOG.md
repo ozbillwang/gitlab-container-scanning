@@ -1,3 +1,9 @@
+## 4.5.9 (2021-12-17)
+
+### fixed (1 change)
+
+- [Fix value for vulnerability[].location.image for trivy language scan](gitlab-org/security-products/analyzers/container-scanning@5930e9eb5b59699864ce9bb2ca1545d3966bee63) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2633))
+
 ## 4.5.8 (2021-12-15)
 
 ### changed (4 changes)
