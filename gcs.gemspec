@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'zeitwerk', '~> 2.4'
 
   spec.add_development_dependency 'gitlab-styles', '~> 6.2.0'
-  spec.add_development_dependency 'json-schema', '~> 2.8'
+  spec.add_development_dependency 'json_schemer', '~> 0.2.18'
   spec.add_development_dependency 'single_cov', '~> 1.6'
   spec.add_development_dependency 'webmock', '~> 3.12'
 
