@@ -77,9 +77,9 @@ module Gcs
       packages.map do |package|
         {
           'package' => {
-            'name' => package['SrcName'] || package['Name']
+            'name' => package['Name'] || package['SrcName']
           },
-          'version' => package['SrcVersion'] || package['Version']
+          'version' => package['Version'] || package['SrcVersion']
         }
       end
     end

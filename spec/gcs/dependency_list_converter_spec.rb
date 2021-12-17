@@ -58,7 +58,7 @@ RSpec.describe Gcs::DependencyListConverter do
         [
           { 'package' => { 'name' => 'adduser' }, 'version' => '3.118' },
           { 'package' => { 'name' => 'apt' }, 'version' => '2.2.4' },
-          { 'package' => { 'name' => 'base-files' }, 'version' => '11.1+deb11u1' }
+          { 'package' => { 'name' => 'openjdk8-jre-base' }, 'version' => '8.181.13-r0' }
         ]
       )
     end

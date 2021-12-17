@@ -163,13 +163,14 @@
           }
         },
         {
-          "Name": "base-files",
-          "Version": "11.1+deb11u1",
-          "SrcName": "base-files",
-          "SrcVersion": "11.1+deb11u1",
+          "Name": "openjdk8-jre-base",
+          "Version": "8.181.13-r0",
+          "SrcName": "openjdk8",
+          "SrcVersion": "8.181.13-r0",
+          "License": "custom",
           "Layer": {
-            "Digest": "sha256:eff15d958d664f0874d16aee393cc44387031ee0a68ef8542d0056c747f378e8",
-            "DiffID": "sha256:e1bbcf243d0e7387fbfe5116a485426f90d3ddeb0b1738dca4e3502b6743b325"
+            "Digest": "sha256:f8a5c2c61767e93d1e332a4319f396f39b0dc6b2ee9e4cd2b9d0d5270c82556c",
+            "DiffID": "sha256:ac1faac0988e4e8015539149e230066e1cfdb741e9b6df9f07129bb21bad8ff0"
           }
         }
       ],
