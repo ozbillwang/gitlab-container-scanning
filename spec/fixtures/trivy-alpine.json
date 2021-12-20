@@ -27,46 +27,10 @@
         {
           "type": "cve",
           "name": "CVE-2018-14618",
-          "value": "CVE-2018-14618",
-          "url": ""
+          "value": "CVE-2018-14618"
         }
       ],
-      "links": [{
-          "url": "http://www.securitytracker.com/id/1041605"
-        },{
-          "url": "https://access.redhat.com/errata/RHSA-2018:3558"
-        },{
-          "url": "https://access.redhat.com/errata/RHSA-2019:1880"
-        },{
-          "url": "https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2018-14618"
-        },{
-          "url": "https://cert-portal.siemens.com/productcert/pdf/ssa-436177.pdf"
-        },{
-          "url": "https://curl.haxx.se/docs/CVE-2018-14618.html"
-        },{
-          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-14618"
-        },{
-          "url": "https://github.com/curl/curl/issues/2756"
-        },{
-          "url": "https://linux.oracle.com/cve/CVE-2018-14618.html"
-        },{
-          "url": "https://linux.oracle.com/errata/ELSA-2019-1880.html"
-        },{
-          "url": "https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2018-0014"
-        },{
-          "url": "https://security.gentoo.org/glsa/201903-03"
-        },{
-          "url": "https://usn.ubuntu.com/3765-1/"
-        },{
-          "url": "https://usn.ubuntu.com/3765-2/"
-        },{
-          "url": "https://usn.ubuntu.com/usn/usn-3765-1"
-        },{
-          "url": "https://usn.ubuntu.com/usn/usn-3765-2"
-        },{
-          "url": "https://www.debian.org/security/2018/dsa-4286"
-        }
-      ]
+      "links": []
     },
     {
       "id": "CVE-2018-16839",
