@@ -15,7 +15,7 @@ RSpec::Matchers.define :match_schema do |report_type|
   end
 
   failure_message do |response|
-    "didn't match the schema for #{report_type}" \
-    " The validation errors were:\n#{@errors.join("\n")}"
+    "didn't match the schema for #{report_type}. " \
+    "The validation errors were:\n#{@errors.join("\n")}"
   end
 end
