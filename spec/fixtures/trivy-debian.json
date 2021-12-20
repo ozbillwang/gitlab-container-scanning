@@ -31,18 +31,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2011-3374"
         }
       ],
-      "links": [{
-          "url": "https://access.redhat.com/security/cve/cve-2011-3374"
-        },{
-          "url": "https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=642480"
-        },{
-          "url": "https://people.canonical.com/~ubuntu-security/cve/2011/CVE-2011-3374.html"
-        },{
-          "url": "https://security-tracker.debian.org/tracker/CVE-2011-3374"
-        },{
-          "url": "https://snyk.io/vuln/SNYK-LINUX-APT-116518"
-        }
-      ]
+      "links": []
     },
     {
       "id": "CVE-2019-18276",

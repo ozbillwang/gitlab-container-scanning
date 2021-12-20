@@ -186,6 +186,30 @@ build-scanner-image:
     - .build-tmp-image
     - .scanners-matrix
 
+container_scanning:
+  extends:
+    - .scanners-matrix
+  variables:
+    DOCKERFILE_PATH: $DOCKERFILE_SOURCE
+    GIT_STRATEGY: fetch
+  before_script:
+    - |
+      if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+      fi
+    - export DOCKER_IMAGE="$DOCKER_IMAGE$IMAGE_TAG_POSTFIX"
+    - 'echo "Scanning: $DOCKER_IMAGE"'
+    # SCANNER causes a conflict since it is used internally
+    # by GCS to determine which scanner binary to use.
+    # When SCANNER=grype, it will try to use the grype
+    # binary even if we want to scan using trivy.
+    - export SCANNER=trivy
+  rules:
+    - if: $CONTAINER_SCANNING_DISABLED
+      when: never
+    - if: ($CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_IID) &&
+          $GITLAB_FEATURES =~ /\bcontainer_scanning\b/
+
 .integration_test:
   extends:
     - .not-on-schedule
