@@ -1,3 +1,9 @@
+## 4.5.10 (2021-12-21)
+
+### fixed (1 change)
+
+- [Fix schema validation mis-alignment with rails](gitlab-org/security-products/analyzers/container-scanning@36f46d1c16af505e0dc808b27da81722c32cc9eb) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2635))
+
 ## 4.5.9 (2021-12-17)
 
 ### fixed (1 change)
