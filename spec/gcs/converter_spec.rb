@@ -106,17 +106,14 @@ RSpec.describe Gcs::Converter do
     end
 
     context 'when default_branch_image is invalid' do
-      # TODO: Validate this in the analyzer and prevent invalid reports from being produced.
-      # https://gitlab.com/gitlab-org/gitlab/-/issues/345264
       before do
         allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil)
           .and_return("https://registry.example.com/group/project?foo=bar")
       end
 
-      it 'fails schema validation' do
+      it 'passes schema validation' do
         gitlab_format = described_class.new(trivy_output_alpine, scan_runtime).convert
-
-        expect(gitlab_format).not_to match_schema(:container_scanning)
+        expect(gitlab_format).to match_schema(:container_scanning)
       end
     end
   end
