@@ -8,28 +8,33 @@ ENV PATH="/gcs/:${PATH}"
 SHELL ["/bin/bash", "-c"]
 RUN gem build gcs.gemspec -o gcs.gem
 
-FROM registry.access.redhat.com/ubi8/ruby-27
+FROM registry.access.redhat.com/ubi8/s2i-core
 USER root
 ARG SCANNER
 ENV SCANNER=${SCANNER}
 ENV PATH="/home/gitlab:${PATH}"
 
-RUN yum -y -q update --disableplugin=subscription-manager && \
-    yum -y -q upgrade --disableplugin=subscription-manager && \
-    yum -y -q install --disableplugin=subscription-manager haproxy
-
 RUN useradd --create-home gitlab -g root && \
     chown gitlab /etc/pki/ && \
     chmod -R g+rw /etc/pki/
 
-COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
+RUN yum -y -q update --disableplugin=subscription-manager && \
+    yum -y -q upgrade --disableplugin=subscription-manager && \
+    yum -y -q install --disableplugin=subscription-manager git && \
+    yum -y module enable ruby:2.7 && \
+    yum -y clean all --enablerepo='*'
 
+COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 RUN ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs
+
+RUN yum -y -q install --disableplugin=subscription-manager --setopt=tsflags=nodocs ruby wget && \
+    su - gitlab -c 'gem install --no-document /home/gitlab/gcs.gem' && \
+    su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
+    yum -y remove wget && \
+    yum -y clean all --enablerepo='*'
 
 USER gitlab
 ENV HOME "/home/gitlab"
 
-RUN gem install /home/gitlab/gcs.gem
 WORKDIR /home/gitlab
-RUN ["/bin/bash","./setup.sh"]
 CMD ["gtcs", "scan"]
