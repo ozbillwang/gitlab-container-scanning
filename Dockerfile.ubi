@@ -16,7 +16,7 @@ ENV PATH="/home/gitlab:${PATH}"
 
 RUN yum -y -q update --disableplugin=subscription-manager && \
     yum -y -q upgrade --disableplugin=subscription-manager && \
-    yum -y -q install --disableplugin=subscription-manager haproxy
+    yum -y clean all --enablerepo='*'
 
 RUN useradd --create-home gitlab -g root && \
     chown gitlab /etc/pki/ && \
