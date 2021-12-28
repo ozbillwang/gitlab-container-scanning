@@ -20,7 +20,7 @@ RUN useradd --create-home gitlab -g root && \
 
 RUN yum -y -q update --disableplugin=subscription-manager && \
     yum -y -q upgrade --disableplugin=subscription-manager && \
-    yum -y -q install --disableplugin=subscription-manager haproxy && \
+    yum -y -q install --disableplugin=subscription-manager git && \
     yum -y module enable ruby:2.7 && \
     yum -y clean all --enablerepo='*'
 
@@ -29,7 +29,7 @@ RUN ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs
 
 RUN yum -y -q install --disableplugin=subscription-manager --setopt=tsflags=nodocs ruby wget && \
     su - gitlab -c 'gem install --no-document /home/gitlab/gcs.gem' && \
-    su - gitlab -c 'cd /home/gitlab && bash setup.sh' && \
+    su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
     yum -y remove wget && \
     yum -y clean all --enablerepo='*'
 
