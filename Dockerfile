@@ -30,19 +30,21 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   ca-certificates \
   git-core \
   sudo \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN useradd --create-home gitlab -g root && \
-    chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
-    chmod -R g+rw /usr/local/share/ca-certificates/ /usr/lib/ssl/certs/ && \
-    echo "gitlab ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/gitlab
+  && rm -rf /var/lib/apt/lists/* \
+  && useradd --create-home gitlab -g root
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
+
+RUN chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
+    chmod -R g+rw /usr/local/share/ca-certificates/ /usr/lib/ssl/certs/ && \
+    echo "gitlab ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/gitlab && \
+    gem install --no-document /home/gitlab/gcs.gem && \
+    su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
+    apt-get remove -y curl wget xauth && \
+    apt-get autoremove -y
 
 USER gitlab
 ENV HOME "/home/gitlab"
 
-RUN gem install /home/gitlab/gcs.gem
 WORKDIR /home/gitlab
-RUN ["/bin/bash","./setup.sh"]
 CMD ["gtcs", "scan"]
