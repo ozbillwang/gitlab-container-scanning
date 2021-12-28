@@ -11,8 +11,8 @@ setup_trivy_files() {
   echo "Dowloading Trivy DB"
   wget --no-verbose https://github.com/aquasecurity/trivy-db/releases/latest/download/trivy-offline.db.tgz -O - | tar -zxvf - -C "$TMP_FOLDER"
   echo "Setting up Trivy files"
-  mkdir -p ~/.cache/trivy/db
-  mv "$TMP_FOLDER"/trivy.db "$TMP_FOLDER"/metadata.json ~/.cache/trivy/db/
+  mkdir -p /home/gitlab/.cache/trivy/db
+  mv "$TMP_FOLDER"/trivy.db "$TMP_FOLDER"/metadata.json /home/gitlab/.cache/trivy/db/
   chmod -R g+rw /home/gitlab/.cache/
   echo "Cleaning up tmp folder"
   rm -rf "$TMP_FOLDER"
