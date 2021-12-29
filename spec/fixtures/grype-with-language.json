@@ -2412,15 +2412,10 @@
         {
           "type": "ghsa",
           "name": "GHSA-5mg8-w23w-74h3",
-          "value": "GHSA-5mg8-w23w-74h3",
-          "url": "https://github.com/advisories/GHSA-5mg8-w23w-74h3"
+          "value": "GHSA-5mg8-w23w-74h3"
         }
       ],
-      "links": [
-        {
-          "url": "https://github.com/advisories/GHSA-5mg8-w23w-74h3"
-        }
-      ]
+      "links": []
     },{
       "language": "java",
       "category": "container_scanning",

@@ -34,6 +34,100 @@
       "links": []
     },
     {
+      "category": "container_scanning",
+      "message": "CVE-2018-12020 in gpgv-2.1.18-8~deb9u1",
+      "description": "mainproc.c in GnuPG before 2.2.8 mishandles the original filename during decryption and verification actions, which allows remote attackers to spoof the output that GnuPG sends on file descriptor 2 to other programs that use the \"--status-fd 2\" option. For example, the OpenPGP data might represent an original filename that contains line feed characters in conjunction with GOODSIG or VALIDSIG status codes.",
+      "cve": "CVE-2018-12020",
+      "severity": "High",
+      "confidence": "Unknown",
+      "solution": "Upgrade gpgv to 2.1.18-8~deb9u2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "gpgv"
+          },
+          "version": "2.1.18-8~deb9u1"
+        },
+        "operating_system": "Unknown",
+        "image": "registry.gitlab.com/gitlab-org/security-products/dast/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e (debian 9.4)"},
+      "identifiers": [
+        {
+          "type": "cve",
+          "name": "CVE-2018-12020",
+          "value": "CVE-2018-12020",
+          "url": ""
+        }
+      ],
+      "links": [{
+          "url": "http://openwall.com/lists/oss-security/2018/06/08/2"
+        },{
+          "url": "http://packetstormsecurity.com/files/152703/Johnny-You-Are-Fired.html"
+        },{
+          "url": "http://seclists.org/fulldisclosure/2019/Apr/38"
+        },{
+          "url": "http://www.openwall.com/lists/oss-security/2019/04/30/4"
+        },{
+          "url": "http://www.securityfocus.com/bid/104450"
+        },{
+          "url": "http://www.securitytracker.com/id/1041051"
+        },{
+          "url": "https://access.redhat.com/errata/RHSA-2018:2180"
+        },{
+          "url": "https://access.redhat.com/errata/RHSA-2018:2181"
+        },{
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-12020"
+        },{
+          "url": "https://dev.gnupg.org/T4012"
+        },{
+          "url": "https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commit;h=210e402acd3e284b32db1901e43bf1470e659e49 (STABLE-BRANCH-2-2)"
+        },{
+          "url": "https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=commit;h=2326851c60793653069494379b16d84e4c10a0ac (STABLE-BRANCH-1-4)"
+        },{
+          "url": "https://github.com/RUB-NDS/Johnny-You-Are-Fired"
+        },{
+          "url": "https://github.com/RUB-NDS/Johnny-You-Are-Fired/blob/master/paper/johnny-fired.pdf"
+        },{
+          "url": "https://help.ecostruxureit.com/display/public/UADCE725/Security+fixes+in+StruxureWare+Data+Center+Expert+v7.6.0"
+        },{
+          "url": "https://linux.oracle.com/cve/CVE-2018-12020.html"
+        },{
+          "url": "https://linux.oracle.com/errata/ELSA-2018-2181.html"
+        },{
+          "url": "https://lists.gnupg.org/pipermail/gnupg-announce/2018q2/000425.html"
+        },{
+          "url": "https://neopg.io/blog/gpg-signature-spoof/"
+        },{
+          "url": "https://sourceforge.net/p/enigmail/forum/announce/thread/b948279f/"
+        },{
+          "url": "https://ubuntu.com/security/notices/USN-3675-1"
+        },{
+          "url": "https://ubuntu.com/security/notices/USN-3675-2"
+        },{
+          "url": "https://ubuntu.com/security/notices/USN-3675-3"
+        },{
+          "url": "https://ubuntu.com/security/notices/USN-3964-1"
+        },{
+          "url": "https://usn.ubuntu.com/3675-1/"
+        },{
+          "url": "https://usn.ubuntu.com/3675-2/"
+        },{
+          "url": "https://usn.ubuntu.com/3675-3/"
+        },{
+          "url": "https://usn.ubuntu.com/3964-1/"
+        },{
+          "url": "https://www.debian.org/security/2018/dsa-4222"
+        },{
+          "url": "https://www.debian.org/security/2018/dsa-4223"
+        },{
+          "url": "https://www.debian.org/security/2018/dsa-4224"
+        }
+      ]
+    },
+    {
       "id": "CVE-2019-18276",
       "category": "container_scanning",
       "message": "bash: when effective UID is not equal to its real UID the saved UID is not dropped",
