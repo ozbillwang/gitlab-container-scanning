@@ -16,6 +16,9 @@ RSpec.describe Gcs::Converter do
     allow(ENV).to receive(:fetch).and_call_original
     allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil)
       .and_return("registry.example.com/group/project:latest")
+
+    # Disable remediation to avoid tampering with local Dockerfile
+    allow(Gcs::Environment).to receive(:docker_file).and_return(Pathname.new(''))
   end
 
   describe '#convert' do
