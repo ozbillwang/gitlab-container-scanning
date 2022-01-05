@@ -2,43 +2,24 @@
 
 module Gcs
   class Cli < Thor
-    OUTPUT_FILE = "tmp.json"
-
     desc 'scan IMAGE', 'Scan an image'
     def scan(image_name = ::Gcs::Environment.docker_image)
-      stdout, stderr, status = nil
-      measured_time = Gcs::Util.measure_runtime do
-        stdout, stderr, status = Environment.scanner.scan_image(image_name, OUTPUT_FILE)
+      plugins = [
+        Gcs::Plugin::ContainerScan,
+        Gcs::Plugin::DependencyScan
+      ]
+
+      results = plugins.map do |plugin|
+        Gcs::Scan.new(plugin).scan_image(image_name)
       end
 
-      Gcs.logger.info(stdout) # FIXME: this prints a blank line on occasion
+      return if results.all? do |result|
+        next true if result.nil? # Skipped
 
-      if status.success?
-        if File.exist?(OUTPUT_FILE)
-          gitlab_format = Converter.new(File.read(OUTPUT_FILE), measured_time.merge(image_name: image_name)).convert
-
-          begin
-            allow_list = AllowList.new
-            Gcs.logger.info("Using allowlist #{AllowList.file_path}")
-          rescue StandardError => e
-            Gcs.logger.debug("Allowlist failed with #{e.message} for #{AllowList.file_path} ")
-          end
-
-          Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET'] # FIXME: undocumented env var
-          Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
-
-          if perform_os_package_scan?
-            scan_os_packages(image_name)
-          else
-            prepare_empty_dependency_scanning_report(measured_time)
-          end
-        end
-      else
-        Gcs.logger.info('Scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
-        Gcs.logger.error(stderr)
-        Gcs.logger.error(stdout)
-        exit 1
+        result.success?
       end
+
+      exit 1
     end
 
     desc 'db-check', 'Check if the vulnerability database is up to date'
@@ -50,39 +31,6 @@ module Gcs
 
       Gcs.logger.error("The vulnerability database is outdated")
       exit 1
-    end
-
-    private
-
-    def perform_os_package_scan?
-      !Environment.dependency_scan_disabled? && Environment.scanner.scan_os_packages_supported?
-    end
-
-    def scan_os_packages(image_name = ::Gcs::Environment.docker_image)
-      stdout, stderr, status = nil
-      measured_time = Gcs::Util.measure_runtime do
-        stdout, stderr, status = Environment.scanner.scan_os_packages(image_name, OUTPUT_FILE)
-      end
-
-      Gcs.logger.info(stdout)
-
-      if status.success?
-        template = File.read(Environment.scanner.dependencies_template_file)
-        report = DependencyListConverter.new(template, File.read(OUTPUT_FILE), measured_time).convert
-
-        Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, report, Environment.project_dir, nil)
-      else
-        Gcs.logger.error('OS dependency scan failed. Use `SECURE_LOG_LEVEL=debug` to see more details.')
-        Gcs.logger.error(stderr)
-        Gcs.logger.error(stdout)
-      end
-    end
-
-    def prepare_empty_dependency_scanning_report(measured_time)
-      template = File.read(Environment.scanner.dependencies_template_file)
-      report = DependencyListConverter.new(template, nil, measured_time).convert
-
-      Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, report, Environment.project_dir, nil)
     end
   end
 end
