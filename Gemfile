@@ -11,3 +11,4 @@ gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rspec_junit_formatter"
 gem "rspec-parameterized", require: false
+gem "climate_control", "~> 1.0"

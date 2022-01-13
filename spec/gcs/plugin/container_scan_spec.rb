@@ -3,9 +3,7 @@
 RSpec.describe Gcs::Plugin::ContainerScan do
   RSpec.shared_examples 'QUIET mode' do
     context 'with QUIET mode' do
-      before do
-        allow(ENV).to receive(:[]).with('CS_QUIET').and_return(true)
-      end
+      modify_environment 'CS_QUIET' => 'true'
 
       it 'does not print the results table' do
         expect(Gcs::Util).not_to receive(:write_table)

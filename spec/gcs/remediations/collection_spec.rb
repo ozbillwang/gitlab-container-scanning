@@ -3,12 +3,9 @@
 RSpec.describe Gcs::Remediations::Collection do
   let(:remediation_collection) { described_class.new }
 
-  before do
-    allow(ENV).to receive(:fetch).with('CI_DEFAULT_BRANCH').and_return('main')
-    allow(ENV).to receive(:fetch).with('CI_REGISTRY_IMAGE').and_return('registry.example.com/group/project')
-    allow(ENV).to receive(:fetch).with('CI_APPLICATION_TAG').and_return('latest')
-    allow(ENV).to receive(:fetch).and_call_original
-  end
+  modify_environment 'CI_DEFAULT_BRANCH' => 'main',
+                     'CI_REGISTRY_IMAGE' => 'registry.example.com/group/project',
+                     'CI_APPLICATION_TAG' => 'latest'
 
   describe '#disabled?' do
     context 'when docker_file exists' do

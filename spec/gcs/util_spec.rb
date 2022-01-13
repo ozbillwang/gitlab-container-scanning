@@ -2,7 +2,7 @@
 
 RSpec.describe Gcs::Util do
   let(:report) { fixture_file_json_content('report.json') }
-  let(:allow_list) { double(Gcs::AllowList, allowed?: true) }
+  let(:allow_list) { Gcs::AllowList.new(fixture_file('image-allowlist.yml')) }
 
   describe 'writes file to given location' do
     let(:tmp_dir) { Dir.mktmpdir }
@@ -12,13 +12,12 @@ RSpec.describe Gcs::Util do
       described_class.write_file(Gcs::DEFAULT_REPORT_NAME, report, Gcs::Environment.project_dir, allow_list)
     end
 
-    before do
-      allow(ENV).to receive(:fetch).with('CI_PROJECT_DIR').and_return(tmp_dir)
-      write_file
-    end
-
-    after do
-      FileUtils.remove_entry tmp_dir
+    around do |example|
+      with_modified_environment 'CI_PROJECT_DIR' => tmp_dir do
+        write_file
+        example.run
+        FileUtils.remove_entry tmp_dir
+      end
     end
 
     context 'without allow list' do

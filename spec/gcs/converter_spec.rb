@@ -12,11 +12,9 @@ RSpec.describe Gcs::Converter do
     setup_schemas!
   end
 
-  before do
-    allow(ENV).to receive(:fetch).and_call_original
-    allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil)
-      .and_return("registry.example.com/group/project:latest")
+  modify_environment 'CS_DEFAULT_BRANCH_IMAGE' => 'registry.example.com/group/project:latest'
 
+  before do
     # Disable remediation to avoid tampering with local Dockerfile
     allow(Gcs::Environment).to receive(:docker_file).and_return(Pathname.new(''))
   end
@@ -109,10 +107,7 @@ RSpec.describe Gcs::Converter do
     end
 
     context 'when default_branch_image is invalid' do
-      before do
-        allow(ENV).to receive(:fetch).with('CS_DEFAULT_BRANCH_IMAGE', nil)
-          .and_return("https://registry.example.com/group/project?foo=bar")
-      end
+      modify_environment 'CS_DEFAULT_BRANCH_IMAGE' => 'https://registry.example.com/group/project?foo=bar'
 
       it 'passes schema validation' do
         gitlab_format = described_class.new(trivy_output_alpine, scan_runtime).convert
