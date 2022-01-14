@@ -15,8 +15,6 @@ RSpec.describe Gcs::Trivy do
   end
 
   before do
-    allow(ENV).to receive(:[]).and_call_original
-    allow(ENV).to receive(:fetch).and_call_original
     allow(Gcs::Environment).to receive(:default_docker_image).and_return("alpine:latest")
 
     status = double(success?: true)

@@ -24,9 +24,7 @@ RSpec.describe Gcs::Plugin::DependencyScan do
     end
 
     context 'when disabled via environment variable' do
-      before do
-        allow(ENV).to receive(:fetch).with('CS_DISABLE_DEPENDENCY_LIST', 'false').and_return('true')
-      end
+      modify_environment 'CS_DISABLE_DEPENDENCY_LIST' => 'true'
 
       it 'returns false' do
         expect(enabled).to eq(false)
