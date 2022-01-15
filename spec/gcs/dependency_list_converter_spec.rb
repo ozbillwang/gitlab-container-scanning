@@ -91,5 +91,13 @@ RSpec.describe Gcs::DependencyListConverter do
         expect(gitlab_format['dependency_files']).not_to include(hash_including('package_manager' => 'Java (jar)'))
       end
     end
+
+    context 'when report does not contain information about installed packages' do
+      let(:raw_trivy_output_dependencies) { fixture_file_content('trivy-scratch-image.json') }
+
+      it 'returns empty dependency report' do
+        expect(gitlab_format['dependency_files']).to be_empty
+      end
+    end
   end
 end

@@ -23,6 +23,8 @@ module Gcs
 
       parsed_report = JSON.parse(@source)
 
+      return converted_report if parsed_report['Results'].blank?
+
       os_family = parsed_report.dig('Metadata', 'OS', 'Family')
       os_version = parsed_report.dig('Metadata', 'OS', 'Name')
 
