@@ -1,3 +1,11 @@
+## 4.5.12 (2022-01-17)
+
+### fixed (3 changes)
+
+- [Return empty dependency report when no dependencies were found](gitlab-org/security-products/analyzers/container-scanning@c563753293d30f7b79e29c73e00a284bf566d103) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2644))
+- [Remove unnecessary dependencies](gitlab-org/security-products/analyzers/container-scanning@0bf4c7bed2845076a4a52529019d042638c43c69) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2639))
+- [Remove unnecessary dependencies](gitlab-org/security-products/analyzers/container-scanning@eeca1250e59ac84d642459fdec7504101a3ff3d3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2640))
+
 ## 4.5.10 (2021-12-21)
 
 ### fixed (1 change)
