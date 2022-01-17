@@ -1,3 +1,5 @@
+Dummy change to test MR permissions
+
 # Container Scanning
 
 This analyzer is a Ruby gem that uses container scanner tools such as [Trivy](https://github.com/aquasecurity/trivy) to create reports that are parseable by GitLab. This project also depends on [Security report schemas](https://gitlab.com/gitlab-org/security-products/security-report-schemas).
