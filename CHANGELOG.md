@@ -1,3 +1,9 @@
+## 4.5.14 (2022-01-26)
+
+### changed (1 change)
+
+- [Update grype to version 0.32.0](gitlab-org/security-products/analyzers/container-scanning@950c6914ebd2ad11a1b30913e3d2bbf398350048) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2649))
+
 ## 4.5.13 (2022-01-18)
 
 ### changed (2 changes)
