@@ -61,7 +61,10 @@ RSpec.describe Gcs::Grype do
       allow(Gcs::Environment).to receive(:docker_registry_security_config)
                                    .and_return({ docker_insecure: false, registry_insecure: false })
 
-      cmd = ["grype -v registry:#{image_name} -o template -t #{described_class.template_file} > #{output_file_name}"]
+      cmd = [
+        "grype -v registry:#{image_name} -o template -t #{described_class.template_file} ",
+        "> #{output_file_name}"
+      ]
 
       expect(Gcs.shell).to receive(:execute).with(cmd, {
                                                     "GRYPE_CHECK_FOR_APP_UPDATE" => "false",
@@ -84,7 +87,10 @@ RSpec.describe Gcs::Grype do
                                    .and_return({ docker_insecure: true, registry_insecure: true })
       allow(Gcs::Environment).to receive(:log_level).and_return("debug")
 
-      cmd = ["grype -vv registry:#{image_name} -o template -t #{described_class.template_file} > #{output_file_name}"]
+      cmd = [
+        "grype -vv registry:#{image_name} -o template -t #{described_class.template_file} ",
+        "> #{output_file_name}"
+      ]
 
       expect(Gcs.shell).to receive(:execute).with(cmd, {
                                                     "GRYPE_CHECK_FOR_APP_UPDATE" => "false",
@@ -98,6 +104,37 @@ RSpec.describe Gcs::Grype do
       expect(Gcs.shell).to receive(:execute).with("grype db status").once
 
       scan_image
+    end
+
+    context 'when ignoring unfixed vulnerabilities is enabled' do
+      before do
+        allow(Gcs::Environment).to receive(:docker_registry_credentials)
+                                     .and_return({ 'username' => 'username', 'password' => 'password' })
+        allow(Gcs::Environment).to receive(:docker_registry_security_config)
+                                     .and_return({ docker_insecure: true, registry_insecure: true })
+        allow(Gcs::Environment).to receive(:log_level).and_return("debug")
+        allow(Gcs::Environment).to receive(:ignore_unfixed_vulnerabilities?).and_return(true)
+      end
+
+      it 'runs grype binary with --only-fixed flag' do
+        cmd = [
+          "grype -vv registry:#{image_name} -o template -t #{described_class.template_file} --only-fixed",
+          "> #{output_file_name}"
+        ]
+
+        expect(Gcs.shell).to receive(:execute).with(cmd, {
+                                                      "GRYPE_CHECK_FOR_APP_UPDATE" => "false",
+                                                      "GRYPE_DB_AUTO_UPDATE" => "false",
+                                                      "GRYPE_REGISTRY_AUTH_PASSWORD" => "password",
+                                                      "GRYPE_REGISTRY_AUTH_USERNAME" => "username",
+                                                      "GRYPE_REGISTRY_INSECURE_SKIP_TLS_VERIFY" => "true",
+                                                      "GRYPE_REGISTRY_INSECURE_USE_HTTP" => "true"
+                                                    })
+        expect(Gcs.shell).to receive(:execute).with(%w[grype version]).once
+        expect(Gcs.shell).to receive(:execute).with("grype db status").once
+
+        scan_image
+      end
     end
   end
 end

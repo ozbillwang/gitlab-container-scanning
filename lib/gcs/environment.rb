@@ -84,6 +84,10 @@ module Gcs
         ENV.fetch('CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN', 'true').to_s.casecmp?('true')
       end
 
+      def ignore_unfixed_vulnerabilities?
+        ENV.fetch('CS_IGNORE_UNFIXED', 'false').to_s.casecmp?('true')
+      end
+
       private
 
       def should_use_ci_credentials?
