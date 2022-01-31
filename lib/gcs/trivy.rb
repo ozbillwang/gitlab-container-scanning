@@ -22,8 +22,8 @@ module Gcs
       private
 
       def scan_command(image_name, output_file_name)
-        ["trivy i #{severity_level_arg} --skip-update #{vulnerability_type_arg} --no-progress --format template -t",
-         "@#{template_file}",
+        ["trivy i #{severity_level_arg} --skip-update #{vulnerability_type_arg} #{ignore_unfixed_arg} --no-progress",
+         "--format template -t @#{template_file}",
          "-o",
          output_file_name,
          image_name]
@@ -61,6 +61,12 @@ module Gcs
         return '' unless Gcs::Environment.language_specific_scan_disabled?
 
         '--vuln-type os'
+      end
+
+      def ignore_unfixed_arg
+        return '' unless Gcs::Environment.ignore_unfixed_vulnerabilities?
+
+        '--ignore-unfixed'
       end
 
       def severity_level

@@ -262,6 +262,30 @@ RSpec.describe Gcs::Environment do
     end
   end
 
+  describe '.ignore_unfixed_vulnerabilities?' do
+    context 'with CS_IGNORE_UNFIXED set to false' do
+      it 'returns false' do
+        with_modified_environment 'CS_IGNORE_UNFIXED' => 'false' do
+          expect(described_class.ignore_unfixed_vulnerabilities?).to eq(false)
+        end
+      end
+    end
+
+    context 'with CS_IGNORE_UNFIXED set to true' do
+      it 'returns true' do
+        with_modified_environment 'CS_IGNORE_UNFIXED' => 'true' do
+          expect(described_class.ignore_unfixed_vulnerabilities?).to eq(true)
+        end
+      end
+    end
+
+    context 'with CS_IGNORE_UNFIXED is not set' do
+      it 'returns false' do
+        expect(described_class.ignore_unfixed_vulnerabilities?).to eq(false)
+      end
+    end
+  end
+
   describe '.language_specific_scan_disabled?' do
     context 'with CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN set to false' do
       it 'returns false' do
