@@ -1,3 +1,9 @@
+## 4.6.0 (2022-01-31)
+
+### added (1 change)
+
+- [Support ignoring unfixed vulnerabilities](gitlab-org/security-products/analyzers/container-scanning@563174faca2822b16876c681b7a36eabf03e19f1) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2650))
+
 ## 4.5.14 (2022-01-26)
 
 ### changed (1 change)
