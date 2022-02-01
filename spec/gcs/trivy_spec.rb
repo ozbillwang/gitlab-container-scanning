@@ -48,7 +48,7 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
       allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
 
-      cmd = ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
+      cmd = ["trivy i --offline-scan --skip-update --list-all-pkgs --no-progress --format json",
              "-o",
              output_file_name,
              image_name]
@@ -73,8 +73,8 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
-      cmd = ["trivy i -s LOW,MEDIUM,HIGH,CRITICAL --skip-update --vuln-type os  --no-progress",
-             "--format template -t @#{described_class.template_file}",
+      cmd = ["trivy i -s LOW,MEDIUM,HIGH,CRITICAL --offline-scan --skip-update --vuln-type os ",
+             "--no-progress --format template -t @#{described_class.template_file}",
              "-o",
              output_file_name,
              image_name]
@@ -95,8 +95,8 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
-      cmd = ["trivy i  --skip-update --vuln-type os  --no-progress",
-             "--format template -t @#{described_class.template_file}",
+      cmd = ["trivy i  --offline-scan --skip-update --vuln-type os ",
+             "--no-progress --format template -t @#{described_class.template_file}",
              "-o",
              output_file_name,
              image_name]
@@ -121,8 +121,8 @@ RSpec.describe Gcs::Trivy do
 
       it 'runs trivy binary without specifying type of vulnerability' do
         cmd = [
-          "trivy i  --skip-update   --no-progress",
-          "--format template -t @#{described_class.template_file}",
+          "trivy i  --offline-scan --skip-update  ",
+          "--no-progress --format template -t @#{described_class.template_file}",
           "-o",
           output_file_name,
           image_name
@@ -150,8 +150,8 @@ RSpec.describe Gcs::Trivy do
 
       it 'runs trivy binary without specifying type of vulnerability' do
         cmd = [
-          "trivy i  --skip-update --vuln-type os --ignore-unfixed --no-progress",
-          "--format template -t @#{described_class.template_file}",
+          "trivy i  --offline-scan --skip-update --vuln-type os --ignore-unfixed",
+          "--no-progress --format template -t @#{described_class.template_file}",
           "-o",
           output_file_name,
           image_name

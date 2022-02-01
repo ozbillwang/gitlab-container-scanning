@@ -22,15 +22,15 @@ module Gcs
       private
 
       def scan_command(image_name, output_file_name)
-        ["trivy i #{severity_level_arg} --skip-update #{vulnerability_type_arg} #{ignore_unfixed_arg} --no-progress",
-         "--format template -t @#{template_file}",
+        ["trivy i #{severity_level_arg} --offline-scan --skip-update #{vulnerability_type_arg} #{ignore_unfixed_arg}",
+         "--no-progress --format template -t @#{template_file}",
          "-o",
          output_file_name,
          image_name]
       end
 
       def os_scan_command(image_name, output_file_name)
-        ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
+        ["trivy i --offline-scan --skip-update --list-all-pkgs --no-progress --format json",
          "-o",
          output_file_name,
          image_name]
