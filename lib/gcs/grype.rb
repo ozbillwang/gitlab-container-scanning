@@ -17,9 +17,12 @@ module Gcs
 
       def scan_command(image_name, output_file_name)
         [
-          "grype #{verbosity_flag} registry:#{image_name} -o template -t #{template_file} #{only_fixed_flag}",
+          "grype registry:#{image_name}",
+          verbosity_flag,
+          only_fixed_flag,
+          "--output template --template #{template_file}",
           "> #{output_file_name}"
-        ]
+        ].compact
       end
 
       def scanner_version
@@ -53,7 +56,7 @@ module Gcs
       end
 
       def only_fixed_flag
-        return '' unless Gcs::Environment.ignore_unfixed_vulnerabilities?
+        return unless Gcs::Environment.ignore_unfixed_vulnerabilities?
 
         '--only-fixed'
       end

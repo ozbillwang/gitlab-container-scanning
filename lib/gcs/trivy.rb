@@ -22,18 +22,29 @@ module Gcs
       private
 
       def scan_command(image_name, output_file_name)
-        ["trivy i #{severity_level_arg} --skip-update #{vulnerability_type_arg} #{ignore_unfixed_arg} --no-progress",
-         "--format template -t @#{template_file}",
-         "-o",
-         output_file_name,
-         image_name]
+        [
+          "trivy image",
+          severity_level_arg,
+          vulnerability_type_arg,
+          ignore_unfixed_arg,
+          "--no-progress",
+          "--offline-scan --skip-update",
+          "--format template --template @#{template_file}",
+          "--output #{output_file_name}",
+          image_name
+        ].compact
       end
 
       def os_scan_command(image_name, output_file_name)
-        ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
-         "-o",
-         output_file_name,
-         image_name]
+        [
+          "trivy image",
+          "--list-all-pkgs",
+          "--no-progress",
+          "--offline-scan --skip-update",
+          "--format json",
+          "--output #{output_file_name}",
+          image_name
+        ]
       end
 
       def version_info
@@ -50,21 +61,21 @@ module Gcs
       end
 
       def severity_level_arg
-        return '' if severity_level.zero?
+        return if severity_level.zero?
 
         allowed_severities = SEVERITY_LEVELS.select { |k, v| v >= severity_level }.keys.join(',')
 
-        "-s #{allowed_severities}"
+        "--severity #{allowed_severities}"
       end
 
       def vulnerability_type_arg
-        return '' unless Gcs::Environment.language_specific_scan_disabled?
+        return unless Gcs::Environment.language_specific_scan_disabled?
 
         '--vuln-type os'
       end
 
       def ignore_unfixed_arg
-        return '' unless Gcs::Environment.ignore_unfixed_vulnerabilities?
+        return unless Gcs::Environment.ignore_unfixed_vulnerabilities?
 
         '--ignore-unfixed'
       end

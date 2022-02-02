@@ -48,10 +48,15 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
       allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
 
-      cmd = ["trivy i --skip-update --list-all-pkgs --no-progress --format json",
-             "-o",
-             output_file_name,
-             image_name]
+      cmd = [
+        "trivy image",
+        "--list-all-pkgs",
+        "--no-progress",
+        "--offline-scan --skip-update",
+        "--format json",
+        "--output #{output_file_name}",
+        image_name
+      ]
 
       expect(Gcs.shell).to receive(:execute)
         .with(cmd, {
@@ -73,11 +78,16 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
-      cmd = ["trivy i -s LOW,MEDIUM,HIGH,CRITICAL --skip-update --vuln-type os  --no-progress",
-             "--format template -t @#{described_class.template_file}",
-             "-o",
-             output_file_name,
-             image_name]
+      cmd = [
+        "trivy image",
+        "--severity LOW,MEDIUM,HIGH,CRITICAL",
+        "--vuln-type os",
+        "--no-progress",
+        "--offline-scan --skip-update",
+        "--format template --template @#{described_class.template_file}",
+        "--output #{output_file_name}",
+        image_name
+      ]
 
       expect(Gcs.shell).to receive(:execute).with(cmd, {
                                                     "TRIVY_DEBUG" => "",
@@ -95,11 +105,15 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
-      cmd = ["trivy i  --skip-update --vuln-type os  --no-progress",
-             "--format template -t @#{described_class.template_file}",
-             "-o",
-             output_file_name,
-             image_name]
+      cmd = [
+        "trivy image",
+        "--vuln-type os",
+        "--no-progress",
+        "--offline-scan --skip-update",
+        "--format template --template @#{described_class.template_file}",
+        "--output #{output_file_name}",
+        image_name
+      ]
 
       expect(Gcs.shell).to receive(:execute).with(cmd, {
                                                     "TRIVY_DEBUG" => "",
@@ -121,10 +135,11 @@ RSpec.describe Gcs::Trivy do
 
       it 'runs trivy binary without specifying type of vulnerability' do
         cmd = [
-          "trivy i  --skip-update   --no-progress",
-          "--format template -t @#{described_class.template_file}",
-          "-o",
-          output_file_name,
+          "trivy image",
+          "--no-progress",
+          "--offline-scan --skip-update",
+          "--format template --template @#{described_class.template_file}",
+          "--output #{output_file_name}",
           image_name
         ]
 
@@ -150,10 +165,13 @@ RSpec.describe Gcs::Trivy do
 
       it 'runs trivy binary without specifying type of vulnerability' do
         cmd = [
-          "trivy i  --skip-update --vuln-type os --ignore-unfixed --no-progress",
-          "--format template -t @#{described_class.template_file}",
-          "-o",
-          output_file_name,
+          "trivy image",
+          "--vuln-type os",
+          "--ignore-unfixed",
+          "--no-progress",
+          "--offline-scan --skip-update",
+          "--format template --template @#{described_class.template_file}",
+          "--output #{output_file_name}",
           image_name
         ]
 
