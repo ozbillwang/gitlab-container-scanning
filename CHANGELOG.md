@@ -1,3 +1,9 @@
+## 4.6.1 (2022-02-02)
+
+### changed (1 change)
+
+- [Use --offline-scan for trivy scans to avoid calling external API](gitlab-org/security-products/analyzers/container-scanning@70aad4db6c94099c1e36709db1f92bfbedfdd606) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2651))
+
 ## 4.6.0 (2022-01-31)
 
 ### added (1 change)
