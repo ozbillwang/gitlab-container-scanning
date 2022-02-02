@@ -62,7 +62,9 @@ RSpec.describe Gcs::Grype do
                                    .and_return({ docker_insecure: false, registry_insecure: false })
 
       cmd = [
-        "grype -v registry:#{image_name} -o template -t #{described_class.template_file} ",
+        "grype registry:#{image_name}",
+        "-v",
+        "--output template --template #{described_class.template_file}",
         "> #{output_file_name}"
       ]
 
@@ -88,7 +90,9 @@ RSpec.describe Gcs::Grype do
       allow(Gcs::Environment).to receive(:log_level).and_return("debug")
 
       cmd = [
-        "grype -vv registry:#{image_name} -o template -t #{described_class.template_file} ",
+        "grype registry:#{image_name}",
+        "-vv",
+        "--output template --template #{described_class.template_file}",
         "> #{output_file_name}"
       ]
 
@@ -118,7 +122,10 @@ RSpec.describe Gcs::Grype do
 
       it 'runs grype binary with --only-fixed flag' do
         cmd = [
-          "grype -vv registry:#{image_name} -o template -t #{described_class.template_file} --only-fixed",
+          "grype registry:#{image_name}",
+          "-vv",
+          "--only-fixed",
+          "--output template --template #{described_class.template_file}",
           "> #{output_file_name}"
         ]
 
