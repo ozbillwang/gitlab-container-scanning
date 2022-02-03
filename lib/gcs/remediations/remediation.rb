@@ -23,12 +23,15 @@ module Gcs
         'ubuntu' => 'apt',
         'alpine' => 'apk',
         'photon' => 'tdnf',
+        'amzn' => 'yum',
         'amazon' => 'yum',
         'centos' => 'yum',
+        'ol' => 'yum',
         'oracle' => 'yum',
-        'redhat' => 'yum',
         'rhel' => 'yum',
+        'redhat' => 'yum',
         'opensuse' => 'zypper',
+        'opensuseleap' => 'zypper',
         'opensuse.leap' => 'zypper'
       }.freeze
 

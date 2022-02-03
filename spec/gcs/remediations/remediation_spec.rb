@@ -73,7 +73,7 @@ RSpec.describe Gcs::Remediations::Remediation do
     end
 
     context 'when using the yum package manager' do
-      where(:operating_system) { %w[amazon centos oracle redhat rhel] }
+      where(:operating_system) { %w[amazon centos oracle redhat rhel amzn ol] }
 
       let(:diff) do
         'ZGlmZiAtLWdpdCBhL3NwZWMvZml4dHVyZXMvZG9ja2VyL3JlbWVkaWF0aW9uLURvY2tlcmZpbGUgYi9zcGVjL2ZpeHR1cmVz' \
@@ -105,7 +105,7 @@ RSpec.describe Gcs::Remediations::Remediation do
     end
 
     context 'when using the zypper package manager' do
-      where(:operating_system) { %w[opensuse opensuse.leap] }
+      where(:operating_system) { %w[opensuse opensuseleap opensuse.leap] }
 
       let(:diff) do
         'ZGlmZiAtLWdpdCBhL3NwZWMvZml4dHVyZXMvZG9ja2VyL3JlbWVkaWF0aW9uLURvY2tlcmZpbGUgYi9zcGVjL2ZpeHR1cmVz' \
