@@ -28,6 +28,7 @@ module Gcs
         'oracle' => 'yum',
         'redhat' => 'yum',
         'rocky' => 'yum',
+        'rhel' => 'yum',
         'opensuse' => 'zypper',
         'opensuse.leap' => 'zypper'
       }.freeze
