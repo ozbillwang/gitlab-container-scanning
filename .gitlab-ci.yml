@@ -192,6 +192,7 @@ container_scanning:
   variables:
     DOCKERFILE_PATH: $DOCKERFILE_SOURCE
     GIT_STRATEGY: fetch
+    CS_IGNORE_UNFIXED: "true"
   before_script:
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
