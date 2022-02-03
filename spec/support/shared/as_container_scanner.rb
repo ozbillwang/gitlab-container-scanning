@@ -17,6 +17,8 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
+    expect(report['remediations']).not_to be_empty
+
     report['remediations'].each do |remedy|
       expect(remedy['summary']).not_to be_nil
       expect(remedy['diff']).not_to be_nil
@@ -29,6 +31,8 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
+    expect(report['vulnerabilities']).not_to be_empty
+
     report['vulnerabilities'].each do |vulnerability|
       expect(vulnerability['id']).not_to be_nil
       expect(vulnerability['message']).not_to be_nil
