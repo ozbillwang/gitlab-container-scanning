@@ -31,7 +31,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   git-core \
   sudo \
   && rm -rf /var/lib/apt/lists/* \
-  && useradd --create-home gitlab -g root
+  && useradd --create-home gitlab -g root \
+  && curl -LO https://github.com/oras-project/oras/releases/download/v0.12.0/oras_0.12.0_linux_amd64.tar.gz \
+  && mkdir -p oras-install/ \
+  && tar -zxf oras_0.12.0_*.tar.gz -C oras-install/ \
+  && mv oras-install/oras /usr/local/bin/ \
+  && rm -rf oras_0.12.0_*.tar.gz oras-install/ 
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 
@@ -41,7 +46,8 @@ RUN chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
     gem install --no-document /home/gitlab/gcs.gem && \
     su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
     apt-get remove -y curl wget xauth && \
-    apt-get autoremove -y
+    apt-get autoremove -y && \
+    rm -f /usr/local/bin/oras
 
 USER gitlab
 ENV HOME "/home/gitlab"

@@ -6,10 +6,11 @@ setup_trivy_files() {
   echo "Creating temp directory"
   TMP_FOLDER=$(mktemp -d)
   trivy_version=$(cat TRIVY_VERSION)
+  trivy_db_version=$(cat TRIVY_DB_VERSION)
   echo "Dowloading and installing Trivy ${trivy_version}"
   wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf -
   echo "Dowloading Trivy DB"
-  wget --no-verbose https://github.com/aquasecurity/trivy-db/releases/latest/download/trivy-offline.db.tgz -O - | tar -zxvf - -C "$TMP_FOLDER"
+  oras pull ghcr.io/aquasecurity/trivy-db:"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C "$TMP_FOLDER"
   echo "Setting up Trivy files"
   mkdir -p /home/gitlab/.cache/trivy/db
   mv "$TMP_FOLDER"/trivy.db "$TMP_FOLDER"/metadata.json /home/gitlab/.cache/trivy/db/
