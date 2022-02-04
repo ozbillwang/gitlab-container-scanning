@@ -5,7 +5,7 @@ RSpec.describe 'alpine' do
     let(:env) do
       {
         'DOCKERFILE_PATH' => runner.project_path.join('alpine-Dockerfile').to_s,
-        'DOCKER_IMAGE' => 'alpine:latest',
+        'DOCKER_IMAGE' => 'alpine:3.12.0',
         'DOCKER_USER' => '',
         'DOCKER_PASSWORD' => '',
         'CS_DISABLE_DEPENDENCY_LIST' => 'false'
