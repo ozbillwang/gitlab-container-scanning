@@ -31,9 +31,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   git-core \
   sudo \
   && rm -rf /var/lib/apt/lists/* \
-    useradd --create-home gitlab -g root
+  &&  useradd --create-home gitlab -g root
 
-    COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
+COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 

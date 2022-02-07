@@ -24,7 +24,7 @@ RUN yum -y -q update --disableplugin=subscription-manager && \
     yum -y module enable ruby:2.7 && \
     yum -y clean all --enablerepo='*'
 
-    COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
+COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 RUN ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs
