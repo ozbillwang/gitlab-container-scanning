@@ -1,4 +1,3 @@
-{{- $operatingSystem := printf "%s:%s" .Distro.Name .Distro.Version }}
 {{- $image := .Source.Target.UserInput }}
 {
   "vulnerabilities": [
@@ -47,7 +46,7 @@
           },
           "version": "{{ .Artifact.Version }}"
         },
-        "operating_system": "{{ $operatingSystem }}",
+        "operating_system": "{{ .Vulnerability.Namespace }}",
         "image": "{{ $image }}"
       },
       "identifiers": [
@@ -87,7 +86,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "0.31.1"
+      "version": "0.32.0"
     },
     "analyzer": {
       "id": "gcs",

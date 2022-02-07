@@ -19,16 +19,25 @@ module Gcs
       }.freeze
 
       PACKAGE_MANAGER_MAPPINGS = {
+        # Both
         'debian' => 'apt',
         'ubuntu' => 'apt',
         'alpine' => 'apk',
         'photon' => 'tdnf',
+
+        # Trivy
         'amazon' => 'yum',
         'centos' => 'yum',
+        'opensuse' => 'zypper',
         'oracle' => 'yum',
         'redhat' => 'yum',
-        'opensuse' => 'zypper',
-        'opensuse.leap' => 'zypper'
+        'opensuse.leap' => 'zypper',
+
+        # Grype
+        'amzn' => 'yum',
+        'ol' => 'yum',
+        'rhel' => 'yum',
+        'opensuseleap' => 'zypper'
       }.freeze
 
       Fixes = Struct.new(:cve, :id) do
