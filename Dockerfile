@@ -31,12 +31,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   git-core \
   sudo \
   && rm -rf /var/lib/apt/lists/* \
-  && useradd --create-home gitlab -g root \
-  && curl -LO https://github.com/oras-project/oras/releases/download/v0.12.0/oras_0.12.0_linux_amd64.tar.gz \
-  && mkdir -p oras-install/ \
-  && tar -zxf oras_0.12.0_*.tar.gz -C oras-install/ \
-  && mv oras-install/oras /usr/local/bin/ \
-  && rm -rf oras_0.12.0_*.tar.gz oras-install/ 
+    useradd --create-home gitlab -g root
+
+    COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 
