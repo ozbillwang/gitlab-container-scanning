@@ -22,12 +22,9 @@ RUN yum -y -q update --disableplugin=subscription-manager && \
     yum -y -q upgrade --disableplugin=subscription-manager && \
     yum -y -q install --disableplugin=subscription-manager git && \
     yum -y module enable ruby:2.7 && \
-    yum -y clean all --enablerepo='*' \
-    && curl -LO https://github.com/oras-project/oras/releases/download/v0.12.0/oras_0.12.0_linux_amd64.tar.gz \
-    && mkdir -p oras-install/ \
-    && tar -zxf oras_0.12.0_*.tar.gz -C oras-install/ \
-    && mv oras-install/oras /usr/local/bin/ \
-    && rm -rf oras_0.12.0_*.tar.gz oras-install/ 
+    yum -y clean all --enablerepo='*'
+
+    COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 RUN ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs
