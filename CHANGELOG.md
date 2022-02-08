@@ -1,3 +1,14 @@
+## 4.6.4 (2022-02-08)
+
+### fixed (1 change)
+
+- [Update grype to 0.32.0 and use Vulnerability.Namespace to detect OS](gitlab-org/security-products/analyzers/container-scanning@d0310b1d6f6363d421e3f90ab450674af152e33f) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2655))
+
+### changed (2 changes)
+
+- [Update trivy to 0.23.0](gitlab-org/security-products/analyzers/container-scanning@d96bb732a8a7a0d5b34d3e7c50180424245c17f7) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2655))
+- [Updated trivy to 0.23.0](gitlab-org/security-products/analyzers/container-scanning@892fea4b300479d5e6a8a20b5bced1aa2cdf3de1) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2655))
+
 ## 4.6.3 (2022-02-07)
 
 ### fixed (1 change)
