@@ -31,7 +31,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   git-core \
   sudo \
   && rm -rf /var/lib/apt/lists/* \
-  && useradd --create-home gitlab -g root
+  &&  useradd --create-home gitlab -g root
+
+COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 
@@ -41,7 +43,8 @@ RUN chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
     gem install --no-document /home/gitlab/gcs.gem && \
     su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
     apt-get remove -y curl wget xauth && \
-    apt-get autoremove -y
+    apt-get autoremove -y && \
+    rm -f /usr/local/bin/oras
 
 USER gitlab
 ENV HOME "/home/gitlab"
