@@ -238,6 +238,11 @@ alpine:
     SPEC_NAME: spec_integration_alpine
   extends: .integration_test
 
+debian:
+  variables:
+    SPEC_NAME: spec_integration_debian
+  extends: .integration_test
+
 centos:
   variables:
     SPEC_NAME: spec_integration_centos

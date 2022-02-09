@@ -1,1 +1,1 @@
-FROM debian:buster
+FROM debian:buster-2021051
