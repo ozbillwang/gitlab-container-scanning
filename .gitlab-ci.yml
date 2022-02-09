@@ -248,6 +248,11 @@ webgoat:
     SPEC_NAME: spec_integration_webgoat
   extends: .integration_test
 
+amazonlinux:
+  variables:
+    SPEC_NAME: spec_integration_amazonlinux
+  extends: .integration_test
+
 ca cert:
   variables:
     SPEC_NAME: spec_integration_ca_cert
