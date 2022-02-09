@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.describe 'docker' do
+RSpec.describe 'debian' do
   context 'when scanning an debian based image', integration: :debian do
     let(:env) do
       {
         'DOCKERFILE_PATH' => runner.project_path.join('debian-buster-Dockerfile').to_s,
-        'DOCKER_IMAGE' => 'debian:buster-2021051',
+        'DOCKER_IMAGE' => 'debian:buster-20210511',
         'DOCKER_USER' => '',
         'DOCKER_PASSWORD' => '',
         'CS_DISABLE_DEPENDENCY_LIST' => 'false'
