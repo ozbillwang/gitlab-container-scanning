@@ -3,7 +3,7 @@
 TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
 GRYPE_VERSION_FILE = './version/GRYPE_VERSION'
 
-RSpec.shared_examples 'as container scanner' do |not_supported_scanners: []|
+RSpec.shared_examples 'as container scanner' do |unsupported_scanners: []|
   before(:all) do
     setup_schemas!
   end
@@ -17,7 +17,7 @@ RSpec.shared_examples 'as container scanner' do |not_supported_scanners: []|
   end
 
   specify do
-    expect(report['remediations']).to be_present unless not_supported_scanners.include?(Environment.scanner)
+    expect(report['remediations']).to be_present unless unsupported_scanners.include?(Gcs::Environment.scanner)
 
     report['remediations'].each do |remedy|
       expect(remedy['summary']).not_to be_nil
@@ -31,7 +31,7 @@ RSpec.shared_examples 'as container scanner' do |not_supported_scanners: []|
   end
 
   specify do
-    expect(report['vulnerabilities']).to be_present unless not_supported_scanners.include?(Environment.scanner)
+    expect(report['vulnerabilities']).to be_present unless unsupported_scanners.include?(Gcs::Environment.scanner)
 
     report['vulnerabilities'].each do |vulnerability|
       expect(vulnerability['id']).not_to be_nil

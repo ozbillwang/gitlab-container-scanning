@@ -14,6 +14,6 @@ RSpec.describe 'PhotonOS' do
 
     let(:project_fixture) { fixture_file('docker/photon_project') }
 
-    include_examples 'as container scanner', not_supported_scanners: [Gcs::Grype]
+    include_examples 'as container scanner', unsupported_scanners: [Gcs::Grype]
   end
 end
