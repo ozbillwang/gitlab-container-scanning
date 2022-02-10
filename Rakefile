@@ -24,6 +24,10 @@ RSpec::Core::RakeTask.new(:spec_integration) do |t|
   t.rspec_opts = "--tag integration #{COMMON_RSPEC_OPTIONS}"
 end
 
+RSpec::Core::RakeTask.new(:spec_integration_generic) do |t|
+  t.rspec_opts = "--tag integration:generic #{COMMON_RSPEC_OPTIONS}"
+end
+
 %w[alpine centos webgoat ca_cert].each do |flag|
   RSpec::Core::RakeTask.new("spec_integration_#{flag}") do |t|
     t.rspec_opts = "--tag integration:#{flag} #{COMMON_RSPEC_OPTIONS}"

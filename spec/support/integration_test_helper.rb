@@ -33,15 +33,20 @@ class ProjectHelper
     IO.write(full_path, block_given? ? yield : content)
   end
 
-  def mount(dir:, add_allow_list: false)
-    FileUtils.cp_r(fixture_file('vulnerability-allowlist.yml'), project_path) if add_allow_list
-
-    FileUtils.cp_r("#{dir}/.", project_path)
+  def mount(dir: nil, add_allow_list: false)
     chdir do
       execute({}, 'git', 'init')
-      execute({}, 'git', 'add', '.')
       execute({}, 'git', 'config', 'user.name', 'test')
       execute({}, 'git', 'config', 'user.email', 'test@test.com')
+    end
+
+    return if dir.nil? && !add_allow_list
+
+    FileUtils.cp_r(fixture_file('vulnerability-allowlist.yml'), project_path) if add_allow_list
+    FileUtils.cp_r("#{dir}/.", project_path) if dir.present?
+
+    chdir do
+      execute({}, 'git', 'add', '.')
       execute({}, 'git', 'commit', '-m', 'test')
     end
   end

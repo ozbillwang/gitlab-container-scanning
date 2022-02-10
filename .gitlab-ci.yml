@@ -181,6 +181,22 @@ check-db-age:
       - SCANNER: [trivy, grype]
         DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
 
+.integration-test-matrix:
+  parallel:
+    matrix:
+      - SCANNER: [trivy, grype]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
+        INTEGRATION_TEST_IMAGE:
+          - registry.access.redhat.com/rhel7:7.9-333
+          - rockylinux:8.5
+          - gcr.io/distroless/base-debian9:latest
+          - ubuntu:bionic-20210222
+          - redhat/ubi8:8.2-299
+          - centos:8
+          - debian:buster-20210511
+          - registry.gitlab.com/gitlab-org/security-products/dast/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e
+          - alpine:3.12.0
+
 build-scanner-image:
   extends:
     - .build-tmp-image
@@ -213,7 +229,7 @@ container_scanning:
 .integration_test:
   extends:
     - .not-on-schedule
-    - .scanners-matrix
+    - .integration-test-matrix
   image: $DOCKER_IMAGE
   cache:
     key: ${CI_COMMIT_REF_SLUG}
@@ -231,27 +247,7 @@ container_scanning:
     - sudo ./script/setup_integration
     - bundle config set path 'vendor/ruby'
     - bundle install --quiet
-    - bundle exec rake $SPEC_NAME
-
-alpine:
-  variables:
-    SPEC_NAME: spec_integration_alpine
-  extends: .integration_test
-
-centos:
-  variables:
-    SPEC_NAME: spec_integration_centos
-  extends: .integration_test
-
-webgoat:
-  variables:
-    SPEC_NAME: spec_integration_webgoat
-  extends: .integration_test
-
-ca cert:
-  variables:
-    SPEC_NAME: spec_integration_ca_cert
-  extends: .integration_test
+    - bundle exec rake spec_integration_generic
 
 .docker_tag:
   extends:
