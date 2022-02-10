@@ -3,7 +3,7 @@
 TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
 GRYPE_VERSION_FILE = './version/GRYPE_VERSION'
 
-RSpec.shared_examples 'as container scanner' do |*unsupported_scanners|
+RSpec.shared_examples 'as container scanner' do |unsupported_scanners: []|
   before(:all) do
     setup_schemas!
   end
