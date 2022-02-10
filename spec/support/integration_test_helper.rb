@@ -33,7 +33,7 @@ class ProjectHelper
     IO.write(full_path, block_given? ? yield : content)
   end
 
-  def mount(dir: nil, add_allow_list: false)
+  def mount(dir: nil, add_allow_list: false, env: {})
     chdir do
       execute({}, 'git', 'init')
       execute({}, 'git', 'config', 'user.name', 'test')
@@ -43,7 +43,12 @@ class ProjectHelper
     return if dir.nil? && !add_allow_list
 
     FileUtils.cp_r(fixture_file('vulnerability-allowlist.yml'), project_path) if add_allow_list
-    FileUtils.cp_r("#{dir}/.", project_path) if dir.present?
+
+    if dir.present?
+      FileUtils.cp_r("#{dir}/.", project_path)
+    else
+      add_file('Dockerfile', "FROM #{env['DOCKER_IMAGE']}")
+    end
 
     chdir do
       execute({}, 'git', 'add', '.')
