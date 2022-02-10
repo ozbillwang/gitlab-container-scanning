@@ -196,8 +196,6 @@ check-db-age:
           - debian:buster-20210511
           - registry.gitlab.com/gitlab-org/security-products/dast/webgoat-8.0@sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e
           - alpine:3.12.0
-          - opensuse/leap:15.3
-          - photon:1.0-20210409
           - almalinux:8.4
           - amazonlinux:2.0.20201218.1
           - oraclelinux:8.2
