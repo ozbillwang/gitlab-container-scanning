@@ -14,6 +14,6 @@ RSpec.describe 'OpenSUSE' do
 
     let(:project_fixture) { fixture_file('docker/opensuse_project') }
 
-    include_examples 'as container scanner'
+    include_examples 'as container scanner', not_supported_scanners: [Gcs::Grype]
   end
 end
