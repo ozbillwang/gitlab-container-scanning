@@ -5,16 +5,18 @@ set -e
 cd "$(dirname "$0")/.."
 pwd
 
-if command -v apt-get; then
-  apt-get clean
-  apt-get update -q
-  apt-get install -y --no-install-recommends \
-    curl \
-    gnupg2
-fi
+if [ "$SETUP_CERTIFICATE_TESTS" = "true" ]; then
+  if command -v apt-get; then
+    apt-get clean
+    apt-get update -q
+    apt-get install -y --no-install-recommends \
+      curl \
+      gnupg2
+  fi
 
-if [ ! -f /usr/sbin/haproxy ] && command -v apt-get; then
-  curl https://haproxy.debian.net/bernat.debian.org.gpg | apt-key add -
-  echo deb http://haproxy.debian.net buster-backports-2.2 main | tee /etc/apt/sources.list.d/haproxy.list
-  apt-get update -y && apt-get install -y --no-install-recommends build-essential haproxy=2.2.\*
+  if [ ! -f /usr/sbin/haproxy ] && command -v apt-get; then
+    curl https://haproxy.debian.net/bernat.debian.org.gpg | apt-key add -
+    echo deb http://haproxy.debian.net buster-backports-2.2 main | tee /etc/apt/sources.list.d/haproxy.list
+    apt-get update -y && apt-get install -y --no-install-recommends build-essential haproxy=2.2.\*
+  fi
 fi

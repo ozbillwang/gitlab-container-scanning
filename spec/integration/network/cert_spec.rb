@@ -8,17 +8,19 @@ RSpec.describe 'alpine' do
   context 'when scanning an Alpine based image', integration: :ca_cert do
     subject(:report) { runner.report_for(type: 'container-scanning') }
 
+    let(:env) do
+      {
+        'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
+        'DOCKER_IMAGE' => 'docker.test/library/alpine:latest',
+        'DOCKER_USER' => '',
+        'DOCKER_PASSWORD' => '',
+        'CS_DISABLE_DEPENDENCY_LIST' => 'false'
+      }
+    end
+
     before(:all) do
-      runner.mount(dir: fixture_file('docker/alpine_project'))
-      runner.scan(
-        env: {
-          'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
-          'DOCKER_IMAGE' => 'docker.test/library/alpine:latest',
-          'DOCKER_USER' => '',
-          'DOCKER_PASSWORD' => '',
-          'CS_DISABLE_DEPENDENCY_LIST' => 'false'
-        }
-      )
+      runner.mount(env: env)
+      runner.scan(env: env)
     end
 
     specify { expect(report).to match_schema(:container_scanning) }
