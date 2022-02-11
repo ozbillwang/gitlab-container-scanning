@@ -287,7 +287,6 @@ webgoat:
 
 ca cert:
   variables:
-    SETUP_CERTIFICATE_TESTS: "true"
     SPEC_NAME: spec_integration_ca_cert
   extends: .integration_test
 
