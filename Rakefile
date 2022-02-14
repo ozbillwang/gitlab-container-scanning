@@ -96,6 +96,52 @@ task :update_grype do
   ScannerUpdate.new('grype').update_scanner
 end
 
+desc 'Updates scanner binary and creates MR with updated binary through Gitlab API'
+task :update_scanner_and_create_mr, [:scanner] do |_, args|
+  if GitlabClient.ci.configured? && GitlabClient.ci.list_available_group_member_usernames.present?
+    scanner = ENV['SCANNER']
+    abort "Env variable is missing: scanner" if scanner.blank?
+
+    ScannerUpdate.new(scanner).update_scanner(bump_version: true)
+    puts git('push', 'origin', current_branch)
+
+    new_version = File.read("./version/#{scanner.upcase}_VERSION")
+    mr_title = "Update #{scanner} to version #{new_version}"
+
+    puts "Searching if there is already an MR with an update..."
+    abort 'MR is already prepared and is waiting for review.' if GitlabClient.ci.mr_exists?(mr_title)
+    puts "New MR will be created."
+
+    usernames = GitlabClient.ci.list_available_group_member_usernames
+    reviewer = usernames.sample
+
+    mr_description = <<~HEREDOC
+      # Why is this change being made?
+
+      We're updating #{scanner} to the newest available version (#{new_version.strip}).
+
+      #{reviewer}, would you mind assigning correct milestone and taking care of this MR? :eyes:
+
+      /label ~"devops::protect" ~"group::container security" ~"section::sec" ~"type::maintenance"
+      /label ~"Category:Container Scanning" ~backend
+      /assign_reviewer #{reviewer}
+    HEREDOC
+
+    result = GitlabClient.ci.create_mr(title: mr_title, description: mr_description, source_branch: current_branch)
+    puts "Status: #{result[:code]}"
+
+    if result[:status] == :success
+      puts "The MR with the update was created: #{result[:web_url]}"
+    else
+      puts result[:message]
+      abort "The MR with an update was not created."
+    end
+  else
+    puts "Env variables are missing project_id: #{ENV['CI_PROJECT_ID']} token_nil: #{ENV['CS_TOKEN'].nil?} " \
+         "reviewers_group_id: #{ENV['CS_REVIEWERS_GROUP_ID']}"
+  end
+end
+
 desc 'Creates CHANGELOG.md through Gitlab Api'
 task :changelog do
   tag = ENV['CI_COMMIT_TAG']
