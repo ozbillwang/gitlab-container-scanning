@@ -102,8 +102,12 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
     scanner = ENV['SCANNER']
     abort "Env variable is missing: scanner" if scanner.blank?
 
+    puts git('config', '--global', 'user.email', ENV['GITLAB_USER_EMAIL'])
+    puts git('config', '--global', 'user.name', ENV['GITLAB_USER_NAME'])
+
     ScannerUpdate.new(scanner).update_scanner(bump_version: true)
-    puts git('push', 'origin', current_branch)
+    repository_url = "https://#{ENV['GITLAB_USER_LOGIN']}:#{ENV['CS_TOKEN']}@gitlab.com/#{ENV['CI_PROJECT_PATH']}.git"
+    git('push', repository_url, current_branch)
 
     new_version = File.read("./version/#{scanner.upcase}_VERSION")
     mr_title = "Update #{scanner} to version #{new_version}"
