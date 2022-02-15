@@ -64,6 +64,13 @@
           "value": "{{ .Vulnerability.ID }}",
           "url": "https://github.com/advisories/{{ .Vulnerability.ID }}"
         }
+        {{- else if eq (slice .Vulnerability.ID 0 4) "ELSA" }}
+        {
+          "type": "elsa",
+          "name": "{{ .Vulnerability.ID }}",
+          "value": "{{ .Vulnerability.ID }}",
+          "url": "https://linux.oracle.com/errata/{{ .Vulnerability.ID }}.html"
+        }
         {{- end }}
       ],
       "links": [
