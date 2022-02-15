@@ -67,9 +67,19 @@ $ bundle exec rake unit_test
 
 Integration tests:
 
+To run integration tests you need to specify `INTEGRATION_TEST_IMAGE` environment variable with selected Docker image.
+
 ```
+$ INTEGRATION_TEST_IMAGE=alpine:3.12.0
 $ sudo ./script/setup_integration
 $ bundle exec rake integration_test
+```
+
+Integration tests for Certificate Bundle:
+
+```
+$ sudo ./script/setup_integration
+$ bundle exec rake integration_test_ca_cert
 ```
 
 

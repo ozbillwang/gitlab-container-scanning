@@ -233,20 +233,57 @@ container_scanning:
     - bundle install --quiet
     - bundle exec rake $SPEC_NAME
 
+.generic_integration_test:
+  extends: .integration_test
+  variables:
+    SPEC_NAME: spec_integration_generic
+
 alpine:
   variables:
-    SPEC_NAME: spec_integration_alpine
-  extends: .integration_test
+    INTEGRATION_TEST_IMAGE: alpine:3.12.0
+  extends: .generic_integration_test
 
 centos:
   variables:
-    SPEC_NAME: spec_integration_centos
-  extends: .integration_test
+    INTEGRATION_TEST_IMAGE: centos:8
+  extends: .generic_integration_test
+
+debian:
+  variables:
+    INTEGRATION_TEST_IMAGE: debian:buster-20210511
+  extends: .generic_integration_test
+
+distroless:
+  variables:
+    INTEGRATION_TEST_IMAGE: gcr.io/distroless/base-debian9:latest
+  extends: .generic_integration_test
+
+ubuntu:
+  variables:
+    INTEGRATION_TEST_IMAGE: ubuntu:bionic-20210222
+  extends: .generic_integration_test
+
+ubi:
+  variables:
+    INTEGRATION_TEST_IMAGE: redhat/ubi8:8.2-299
+  extends: .generic_integration_test
+
+rhel:
+  variables:
+    INTEGRATION_TEST_IMAGE: registry.access.redhat.com/rhel7:7.9-333
+  extends: .generic_integration_test
+
+rockylinux:
+  variables:
+    INTEGRATION_TEST_IMAGE: rockylinux:8.5
+  extends: .generic_integration_test
 
 webgoat:
   variables:
-    SPEC_NAME: spec_integration_webgoat
-  extends: .integration_test
+    INTEGRATION_TEST_IMAGE:
+      "registry.gitlab.com/gitlab-org/security-products/dast/webgoat-8.0\
+      @sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e"
+  extends: .generic_integration_test
 
 ca cert:
   variables:
