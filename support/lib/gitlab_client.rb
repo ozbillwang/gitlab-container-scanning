@@ -33,7 +33,12 @@ class GitlabClient
   end
 
   def list_available_group_member_usernames(group_id = ENV['CS_REVIEWERS_GROUP_ID'])
-    res = get(group_members_url(group_id))
+    if group_id.blank?
+      puts "Failed to get group members (group_id is not set)"
+      return []
+    end
+
+    res = get(group_members_uri(group_id))
 
     unless res.code == '200'
       puts "Failed to get group members (status #{res.code}): #{res.body}"
@@ -47,7 +52,7 @@ class GitlabClient
   end
 
   def user_available?(username)
-    res = get(user_status_url(username))
+    res = get(user_status_uri(username))
 
     unless res.code == '200'
       puts "Failed to get user status (status #{res.code}): #{res.body}"
@@ -153,11 +158,11 @@ class GitlabClient
     "https://gitlab.com/api/v4/groups/#{group_id}"
   end
 
-  def group_members_url(group_id)
+  def group_members_uri(group_id)
     URI("#{groups_url(group_id)}/members")
   end
 
-  def user_status_url(username)
+  def user_status_uri(username)
     URI("https://gitlab.com/api/v4/users/#{username}/status")
   end
 
