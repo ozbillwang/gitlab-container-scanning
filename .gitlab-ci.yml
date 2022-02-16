@@ -284,6 +284,11 @@ rockylinux:
     INTEGRATION_TEST_IMAGE: rockylinux:8.5
   extends: .generic_integration_test
 
+amazonlinux:
+  variables:
+    INTEGRATION_TEST_IMAGE: amazonlinux:2.0.20201218.1
+  extends: .generic_integration_test
+
 opensuseleap:
   variables:
     INTEGRATION_TEST_IMAGE: opensuse/leap:15.3

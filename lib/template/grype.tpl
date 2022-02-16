@@ -64,6 +64,13 @@
           "value": "{{ .Vulnerability.ID }}",
           "url": "https://github.com/advisories/{{ .Vulnerability.ID }}"
         }
+        {{- else if eq (slice .Vulnerability.ID 0 4) "ALAS" }}
+        {
+          "type": "alas",
+          "name": "{{ .Vulnerability.ID }}",
+          "value": "{{ .Vulnerability.ID }}",
+          "url": "https://alas.aws.amazon.com/AL2/{{ .Vulnerability.ID }}.html"
+        }
         {{- else if eq (slice .Vulnerability.ID 0 4) "ELSA" }}
         {
           "type": "elsa",
