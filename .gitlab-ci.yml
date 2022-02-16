@@ -284,12 +284,29 @@ rockylinux:
     INTEGRATION_TEST_IMAGE: rockylinux:8.5
   extends: .generic_integration_test
 
+amazonlinux:
+  variables:
+    INTEGRATION_TEST_IMAGE: amazonlinux:2.0.20201218.1
+  extends: .generic_integration_test
+
 photon:
   variables:
     INTEGRATION_TEST_IMAGE: photon:1.0-20210409
   extends:
     - .generic_integration_test
     - .trivy-scanner
+
+opensuseleap:
+  variables:
+    INTEGRATION_TEST_IMAGE: opensuse/leap:15.3
+  extends:
+    - .generic_integration_test
+    - .trivy-scanner
+
+oraclelinux:
+  variables:
+    INTEGRATION_TEST_IMAGE: oraclelinux:8.2
+  extends: .generic_integration_test
 
 almalinux:
   variables:

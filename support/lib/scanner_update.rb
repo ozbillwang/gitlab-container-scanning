@@ -39,7 +39,7 @@ class ScannerUpdate
     abort("#{@scanner} new version format not recognized: #{new}") unless new.match?(/\d+\.\d+\.\d+/)
   end
 
-  def update_scanner
+  def update_scanner(bump_version: false)
     new_version, current_version = versions
     check_versions(new_version, current_version)
 
@@ -68,9 +68,29 @@ class ScannerUpdate
       git('add', dependencies_template_file)
     end
 
+    if bump_version
+      bump_patch_version
+
+      git('add', version_path)
+    end
+
     git('add', version_file)
     git('add', SCANNERS[@scanner.to_sym][:template])
 
     git('commit', '-m', "Update #{@scanner} to version #{new_version}\n\nChangelog: changed")
+  end
+
+  def bump_patch_version
+    major, minor, patch = Gem::Version.new(Gcs::VERSION).segments
+    patch += 1
+
+    new_content = File.read(version_path)
+                      .sub(/.*[\s\S]*\KVERSION = "#{Gcs::VERSION}"/o, "VERSION = \"#{major}.#{minor}.#{patch}\"")
+
+    File.open(version_path, 'w') { |file| file.write(new_content) }
+  end
+
+  def version_path
+    @version_path ||= File.join(Gcs.lib, 'gcs', 'version.rb').to_s
   end
 end
