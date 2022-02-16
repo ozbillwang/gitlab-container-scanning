@@ -36,3 +36,16 @@ trigger-db-update:
   script: bundle exec rake trigger_db_update
   rules:
     - if: '$TRIGGER_DB_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'
+
+trigger-scanner-update:
+  extends: .ruby-alpine
+  parallel:
+    matrix:
+      - SCANNER: [trivy, grype]
+  stage: maintenance
+  allow_failure:
+    exit_codes: 1
+  script:
+    - bundle exec rake update_scanner_and_create_mr
+  rules:
+    - if: '$TRIGGER_SCANNER_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'
