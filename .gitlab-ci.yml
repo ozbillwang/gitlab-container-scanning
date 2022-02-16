@@ -278,6 +278,11 @@ rockylinux:
     INTEGRATION_TEST_IMAGE: rockylinux:8.5
   extends: .generic_integration_test
 
+oraclelinux:
+  variables:
+    INTEGRATION_TEST_IMAGE: oraclelinux:8.2
+  extends: .generic_integration_test
+
 almalinux:
   variables:
     INTEGRATION_TEST_IMAGE: almalinux:8.4
