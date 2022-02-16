@@ -32,6 +32,7 @@ module Gcs
         'oracle' => 'yum',
         'redhat' => 'yum',
         'rocky' => 'yum',
+        'alma' => 'yum',
         'opensuse.leap' => 'zypper',
 
         # Grype
