@@ -181,6 +181,12 @@ check-db-age:
       - SCANNER: [trivy, grype]
         DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
 
+.trivy-scanner:
+  parallel:
+    matrix:
+      - SCANNER: [trivy]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
+
 build-scanner-image:
   extends:
     - .build-tmp-image
@@ -277,6 +283,13 @@ rockylinux:
   variables:
     INTEGRATION_TEST_IMAGE: rockylinux:8.5
   extends: .generic_integration_test
+
+opensuseleap:
+  variables:
+    INTEGRATION_TEST_IMAGE: opensuse/leap:15.3
+  extends:
+    - .generic_integration_test
+    - .trivy-scanner
 
 webgoat:
   variables:
