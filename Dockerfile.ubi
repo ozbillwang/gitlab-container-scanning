@@ -39,5 +39,9 @@ RUN yum -y -q install --disableplugin=subscription-manager --setopt=tsflags=nodo
 USER gitlab
 ENV HOME "/home/gitlab"
 
+# https://docs.openshift.com/container-platform/4.6/openshift_images/create-images.html#support-arbitrary-user-ids
+RUN chgrp -R 0 /home/gitlab && \
+    chmod -R g=u /home/gitlab 
+
 WORKDIR /home/gitlab
 CMD ["gtcs", "scan"]
