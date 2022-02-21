@@ -31,15 +31,14 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
+    # the schema validation is not enough; see https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/merge_requests/2678#note_851123724
     expect(report['vulnerabilities']).to be_present
 
     report['vulnerabilities'].each do |vulnerability|
       expect(vulnerability['id']).not_to be_nil
       expect(vulnerability['message']).not_to be_nil
       expect(vulnerability['description']).not_to be_nil
-      expect(vulnerability['cve']).not_to be_nil
       expect(vulnerability['severity']).not_to be_nil
-      expect(vulnerability['confidence']).not_to be_nil
       expect(vulnerability['location']['dependency']['package']['name']).not_to be_nil
       expect(vulnerability['location']['dependency']['version']).not_to be_nil
       expect(vulnerability['location']['operating_system']).not_to be_nil
