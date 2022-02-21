@@ -43,7 +43,7 @@ RUN chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
     echo "gitlab ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/gitlab && \
     gem install --no-document /home/gitlab/gcs.gem && \
     su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
-    apt-get remove -y wget xauth && \
+    apt-get remove -y curl wget xauth && \
     apt-get autoremove -y && \
     rm -f /usr/local/bin/oras
 
