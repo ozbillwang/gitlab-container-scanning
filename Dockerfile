@@ -43,9 +43,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   gem install --no-document /home/gitlab/gcs.gem && \
   su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
   rm -f /usr/local/bin/oras && \
-  apt-get remove -y curl wget xauth && \
+  apt-get remove -y curl wget xauth openssh-client && \
   apt-get autoremove -y && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* /var/cache/debconf/templates.* /var/lib/dpkg/status-old
 
 USER gitlab
 ENV HOME "/home/gitlab"
