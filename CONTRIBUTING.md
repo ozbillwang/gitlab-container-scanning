@@ -61,3 +61,20 @@ your request is reviewed.
 We want to create a welcoming environment for everyone who is interested in contributing.
 Visit our [Code of Conduct page](https://about.gitlab.com/community/contribute/code-of-conduct/) 
 to read our community pledge and standards.
+
+## Transient dependencies
+
+In order to keep the image small, dependencies that do not remain in the final image must be added, used, and removed in
+the same Dockerfile `RUN` command  so that the disk usage isn't committed into a layer.
+
+Some dependencies for this project are stored in the GitLab package registry at 
+https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/packages.
+
+The GitLab [package registry documentation](https://docs.gitlab.com/ee/user/packages/package_registry/) explains how to
+use the registry to store and retrieve files. Here's an example of how to upload a generic package:
+
+```bash
+curl --header "PRIVATE-TOKEN: <YOUR-RW-TOKEN>" \
+     --upload-file ./oras \
+     "https://gitlab.com/api/v4/projects/24673064/packages/generic/oras/0.12.0/oras"
+```
