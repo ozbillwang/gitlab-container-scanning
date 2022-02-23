@@ -11,6 +11,7 @@ setup_trivy_files() {
   wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf -
   echo "Dowloading Trivy DB"
   oras pull ghcr.io/aquasecurity/trivy-db:"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C "$TMP_FOLDER"
+  rm -f db.tar.gz
   echo "Setting up Trivy files"
   mkdir -p /home/gitlab/.cache/trivy/db
   mv "$TMP_FOLDER"/trivy.db "$TMP_FOLDER"/metadata.json /home/gitlab/.cache/trivy/db/

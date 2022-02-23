@@ -20,9 +20,14 @@ RUN gem build gcs.gemspec -o gcs.gem
 
 
 FROM base
+ARG ORAS_URL=https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/package_files/29703212/download
 ARG SCANNER
 ENV SCANNER=${SCANNER}
 ENV PATH="/home/gitlab:${PATH}"
+
+RUN useradd --create-home gitlab -g root
+
+COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   wget \
@@ -30,22 +35,17 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   unzip \
   ca-certificates \
   git-core \
-  sudo \
-  && rm -rf /var/lib/apt/lists/* \
-  &&  useradd --create-home gitlab -g root
-
-COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
-
-COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
-
-RUN chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
-    chmod -R g+rw /usr/local/share/ca-certificates/ /usr/lib/ssl/certs/ && \
-    echo "gitlab ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/gitlab && \
-    gem install --no-document /home/gitlab/gcs.gem && \
-    su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
-    apt-get remove -y curl wget xauth && \
-    apt-get autoremove -y && \
-    rm -f /usr/local/bin/oras
+  sudo && \
+  wget ${ORAS_URL} -O /usr/local/bin/oras && chmod +x /usr/local/bin/oras && \
+  chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
+  chmod -R g+rw /usr/local/share/ca-certificates/ /usr/lib/ssl/certs/ && \
+  echo "gitlab ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/gitlab && \
+  gem install --no-document /home/gitlab/gcs.gem && \
+  su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
+  rm -f /usr/local/bin/oras && \
+  apt-get remove -y curl wget xauth openssh-client && \
+  apt-get autoremove -y && \
+  rm -rf /var/lib/apt/lists/* /var/cache/debconf/templates.* /var/lib/dpkg/status-old
 
 USER gitlab
 ENV HOME "/home/gitlab"
