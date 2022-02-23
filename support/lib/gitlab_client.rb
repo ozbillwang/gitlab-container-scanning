@@ -171,20 +171,20 @@ class GitlabClient
   end
 
   def merge_requests_uri
-    @changelog_url ||= URI("#{projects_url}/merge_requests")
+    @merge_requests_uri ||= URI("#{projects_url}/merge_requests")
   end
 
   def merge_requests_search_uri(search)
     encoded = ::URI.encode_www_form_component(search)
-    @changelog_url ||= URI("#{merge_requests_uri}?search=#{encoded}")
+    URI("#{merge_requests_uri}?search=#{encoded}")
   end
 
   def changelog_uri
-    @changelog_url ||= URI("#{projects_url}/repository/changelog")
+    @changelog_uri ||= URI("#{projects_url}/repository/changelog")
   end
 
   def releases_uri
-    @releases_url ||= URI("#{projects_url}/releases")
+    @releases_uri ||= URI("#{projects_url}/releases")
   end
 
   def trigger_pipeline_uri(ref)
