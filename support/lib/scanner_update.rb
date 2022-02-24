@@ -103,7 +103,7 @@ class ScannerUpdate
 
   def update_gemfile_lock(new_version)
     new_content = File.read(GEMFILE_LOCK_PATH)
-                      .sub(/.*[\s\S]*\Kgcs \(#{Gcs::VERSION}\)/o, "gcs (#{new_version})")
+                      .sub(/.*[\s\S]*\Kgcs \(\d+\.\d+\.\d+\)/o, "gcs (#{new_version})")
 
     File.open(GEMFILE_LOCK_PATH, 'w') { |file| file.write(new_content) }
   end
