@@ -1,3 +1,16 @@
+## 4.6.5 (2022-02-28)
+
+### changed (4 changes)
+
+- [Update trivy to version 0.24.1](gitlab-org/security-products/analyzers/container-scanning@e2f190636e62c9b8c2497694de8b47a587db3c68) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2684))
+- [Update grype to version 0.33.0](gitlab-org/security-products/analyzers/container-scanning@6e1bdd2df35f70b3956958d38768a97a218889fa) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2677))
+- [Update trivy to version 0.24.0](gitlab-org/security-products/analyzers/container-scanning@255c156c7444a9f99d8e59636353d796a780a1b8) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2681))
+- [Reduce non-UBI analyer image size](gitlab-org/security-products/analyzers/container-scanning@eca7535b082b355c483a086f0e56bb2292dedfea) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2679))
+
+### fixed (1 change)
+
+- [Keep curl installed in main container image](gitlab-org/security-products/analyzers/container-scanning@4feb1d1cd224b68ca52124cf9cf946e5db2121a7) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2673))
+
 ## 4.6.4 (2022-02-08)
 
 ### fixed (1 change)
