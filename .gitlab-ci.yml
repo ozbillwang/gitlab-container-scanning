@@ -166,6 +166,16 @@ check-db-age:
   services:
     - docker:19.03.5-dind
   script:
+    - apk add --update curl bash
+    - TMP_DIR="$(mktemp -d)"
+    # yamllint disable-line rule:line-length
+    - curl -sLo "${TMP_DIR}/dist_linux.tar.gz" "https://downloads.dockerslim.com/releases/1.37.4/dist_linux.tar.gz"
+    - tar -xf "${TMP_DIR}/dist_linux.tar.gz" --directory "${TMP_DIR}"
+    - mv "${TMP_DIR}/dist_linux/docker-slim" /usr/local/bin/
+    - mv "${TMP_DIR}/dist_linux/docker-slim-sensor" /usr/local/bin/
+    - chmod +x /usr/local/bin/docker-slim
+    - chmod +x /usr/local/bin/docker-slim-sensor
+    - rm -rf "${TMP_DIR}"
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
         export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
@@ -173,6 +183,8 @@ check-db-age:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build --network host --build-arg SCANNER -f $DOCKERFILE_SOURCE
       -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
+    - docker-slim build --target "$DOCKER_IMAGE$IMAGE_TAG_POSTFIX" \
+      --tag "$DOCKER_IMAGE$IMAGE_TAG_POSTFIX" --http-probe=false --continue-after=true
     - docker push $DOCKER_IMAGE$IMAGE_TAG_POSTFIX
 
 .scanners-matrix:
