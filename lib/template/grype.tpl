@@ -50,28 +50,28 @@
         "image": "{{ $image }}"
       },
       "identifiers": [
-        {{- if eq (slice .Vulnerability.ID 0 3) "CVE" }}
+        {{- if eq (substr 0 3 .Vulnerability.ID) "CVE" }}
         {
           "type": "cve",
           "name": "{{ .Vulnerability.ID }}",
           "value": "{{ .Vulnerability.ID }}",
           "url": "https://nvd.nist.gov/vuln/detail/{{ .Vulnerability.ID }}"
         }
-        {{- else if eq (slice .Vulnerability.ID 0 4) "GHSA" }}
+        {{- else if eq (substr 0 4 .Vulnerability.ID) "GHSA" }}
         {
           "type": "ghsa",
           "name": "{{ .Vulnerability.ID }}",
           "value": "{{ .Vulnerability.ID }}",
           "url": "https://github.com/advisories/{{ .Vulnerability.ID }}"
         }
-        {{- else if eq (slice .Vulnerability.ID 0 4) "ALAS" }}
+        {{- else if eq (substr 0 4 .Vulnerability.ID) "ALAS" }}
         {
           "type": "alas",
           "name": "{{ .Vulnerability.ID }}",
           "value": "{{ .Vulnerability.ID }}",
           "url": "https://alas.aws.amazon.com/AL2/{{ .Vulnerability.ID }}.html"
         }
-        {{- else if eq (slice .Vulnerability.ID 0 4) "ELSA" }}
+        {{- else if eq (substr 0 4 .Vulnerability.ID) "ELSA" }}
         {
           "type": "elsa",
           "name": "{{ .Vulnerability.ID }}",
@@ -100,7 +100,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "0.32.0"
+      "version": "0.33.0"
     },
     "analyzer": {
       "id": "gcs",
