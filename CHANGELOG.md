@@ -17,7 +17,7 @@
 
 ### fixed (1 change)
 
-- [Keep curl installed in main container image](gitlab-org/security-products/analyzers/container-scanning@4feb1d1cd224b68ca52124cf9cf946e5db2121a7) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2673))
+- [Keep unzip installed in main container image](gitlab-org/security-products/analyzers/container-scanning@4feb1d1cd224b68ca52124cf9cf946e5db2121a7) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2673))
 
 ## 4.6.4 (2022-02-08)
 
