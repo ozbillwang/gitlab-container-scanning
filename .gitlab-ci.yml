@@ -367,6 +367,8 @@ release checks:
   extends:
     - .ruby-alpine
   script:
+    # Runner does a thin clone, so we need to fetch refs for the default branch.
+    - git fetch origin "${CI_DEFAULT_BRANCH}:${CI_DEFAULT_BRANCH}"
     - |
       if ! git merge-base --is-ancestor "$CI_DEFAULT_BRANCH" "$CI_COMMIT_SHA"; then
         echo "This commit is not an ancestor of ${CI_DEFAULT_BRANCH}! Blocking release."
