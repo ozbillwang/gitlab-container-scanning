@@ -184,7 +184,8 @@ check-db-age:
     - docker build --network host --build-arg SCANNER -f $DOCKERFILE_SOURCE
       -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
     - docker-slim build --target "$DOCKER_IMAGE$IMAGE_TAG_POSTFIX" \
-      --tag "$DOCKER_IMAGE$IMAGE_TAG_POSTFIX" --http-probe=false --continue-after=true
+      --tag "$DOCKER_IMAGE$IMAGE_TAG_POSTFIX" \
+      --http-probe=false --continue-after=exec --exec='exit 0'
     - docker push $DOCKER_IMAGE$IMAGE_TAG_POSTFIX
 
 .scanners-matrix:
