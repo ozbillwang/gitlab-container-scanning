@@ -106,8 +106,6 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
     puts git('config', '--global', 'user.name', ENV['GITLAB_USER_NAME'])
 
     ScannerUpdate.new(scanner).update_scanner(bump_version: true)
-    repository_url = "https://#{ENV['GITLAB_USER_LOGIN']}:#{ENV['CS_TOKEN']}@gitlab.com/#{ENV['CI_PROJECT_PATH']}.git"
-    git('push', repository_url, current_branch)
 
     new_version = File.read("./version/#{scanner.upcase}_VERSION")
     mr_title = "Update #{scanner} to version #{new_version}"
@@ -115,6 +113,9 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
     puts "Searching if there is already an MR with an update..."
     abort 'MR is already prepared and is waiting for review.' if GitlabClient.ci.mr_exists?(mr_title)
     puts "New MR will be created."
+
+    repository_url = "https://#{ENV['GITLAB_USER_LOGIN']}:#{ENV['CS_TOKEN']}@gitlab.com/#{ENV['CI_PROJECT_PATH']}.git"
+    git('push', repository_url, current_branch)
 
     usernames = GitlabClient.ci.list_available_group_member_usernames
     reviewer = usernames.sample

@@ -70,9 +70,9 @@ class ScannerUpdate
     end
 
     if bump_version
-      new_version = bump_patch_version
-      update_version_rb(new_version)
-      update_gemfile_lock(new_version)
+      new_gem_version = bump_patch_version
+      update_version_rb(new_gem_version)
+      update_gemfile_lock(new_gem_version)
 
       git('add', version_rb_path)
       git('add', GEMFILE_LOCK_PATH)
