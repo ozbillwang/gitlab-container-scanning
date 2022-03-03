@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class ScannerUpdate
   VERSION_FILE_PATH = 'version/'
+  GEMFILE_LOCK_PATH = 'Gemfile.lock'
   SCANNERS = {
     trivy: {
       uri: 'https://api.github.com/repos/aquasecurity/trivy/releases/latest',
@@ -69,9 +70,12 @@ class ScannerUpdate
     end
 
     if bump_version
-      bump_patch_version
+      new_version = bump_patch_version
+      update_version_rb(new_version)
+      update_gemfile_lock(new_version)
 
-      git('add', version_path)
+      git('add', version_rb_path)
+      git('add', GEMFILE_LOCK_PATH)
     end
 
     git('add', version_file)
@@ -83,14 +87,24 @@ class ScannerUpdate
   def bump_patch_version
     major, minor, patch = Gem::Version.new(Gcs::VERSION).segments
     patch += 1
-
-    new_content = File.read(version_path)
-                      .sub(/.*[\s\S]*\KVERSION = "#{Gcs::VERSION}"/o, "VERSION = \"#{major}.#{minor}.#{patch}\"")
-
-    File.open(version_path, 'w') { |file| file.write(new_content) }
+    "#{major}.#{minor}.#{patch}"
   end
 
-  def version_path
-    @version_path ||= File.join(Gcs.lib, 'gcs', 'version.rb').to_s
+  def update_version_rb(new_version)
+    new_content = File.read(version_rb_path)
+                      .sub(/.*[\s\S]*\KVERSION = "#{Gcs::VERSION}"/o, "VERSION = \"#{new_version}\"")
+
+    File.open(version_rb_path, 'w') { |file| file.write(new_content) }
+  end
+
+  def version_rb_path
+    @version_rb_path ||= File.join(Gcs.lib, 'gcs', 'version.rb').to_s
+  end
+
+  def update_gemfile_lock(new_version)
+    new_content = File.read(GEMFILE_LOCK_PATH)
+                      .sub(/.*[\s\S]*\Kgcs \(\d+\.\d+\.\d+\)/o, "gcs (#{new_version})")
+
+    File.open(GEMFILE_LOCK_PATH, 'w') { |file| file.write(new_content) }
   end
 end
