@@ -14,7 +14,7 @@
 
 ## 4.6.5 (2022-02-28)
 
-### changed (1 changes)
+### changed (1 change)
 
 - [Reduce non-UBI analyer image size](gitlab-org/security-products/analyzers/container-scanning@eca7535b082b355c483a086f0e56bb2292dedfea) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2679))
 
