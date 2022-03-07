@@ -9,6 +9,7 @@ require 'gcs/version'
 require_relative 'support/lib/git_helper'
 require_relative 'support/lib/gitlab_client'
 require_relative 'support/lib/scanner_update'
+require_relative 'support/lib/status'
 require_relative 'support/lib/tag_release'
 
 RSPEC_XML_PATH = ENV['CI_PROJECT_DIR'].to_s == '' ? "rspec.xml" : "#{ENV['CI_PROJECT_DIR']}/rspec.xml"
@@ -111,7 +112,7 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
     mr_title = "Update #{scanner} to version #{new_version}"
 
     puts "Searching if there is already an MR with an update..."
-    abort 'MR is already prepared and is waiting for review.' if GitlabClient.ci.mr_exists?(mr_title)
+    Status.done 'MR is already prepared and is waiting for review.' if GitlabClient.ci.mr_exists?(mr_title)
     puts "New MR will be created."
 
     repository_url = "https://#{ENV['GITLAB_USER_LOGIN']}:#{ENV['CS_TOKEN']}@gitlab.com/#{ENV['CI_PROJECT_PATH']}.git"

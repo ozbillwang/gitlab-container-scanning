@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+require_relative 'status'
+
 class ScannerUpdate
   VERSION_FILE_PATH = 'version/'
   GEMFILE_LOCK_PATH = 'Gemfile.lock'
@@ -36,7 +39,7 @@ class ScannerUpdate
   end
 
   def check_versions(new, old)
-    abort("#{@scanner} version has not changed: #{new}") unless new != old
+    Status.done("#{@scanner} version has not changed: #{new}") unless new != old
     abort("#{@scanner} new version format not recognized: #{new}") unless new.match?(/\d+\.\d+\.\d+/)
   end
 
