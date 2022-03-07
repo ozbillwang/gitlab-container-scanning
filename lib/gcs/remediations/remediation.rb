@@ -53,6 +53,7 @@ module Gcs
         @remediate_metadata = Struct.new(*remediate_metadata.keys.map(&:to_sym), keyword_init: true)
                                     .new(remediate_metadata)
         @docker_file = docker_file
+        @new_docker_file = Tempfile.new
         @fixes = Set.new
       end
 
@@ -70,7 +71,7 @@ module Gcs
         {
           fixes: fixes.to_a.map(&:to_hash),
           summary: remediate_metadata['summary'],
-          diff: create_git_diff
+          diff: create_patch
         }
       end
 
@@ -80,21 +81,39 @@ module Gcs
 
       private
 
-      # updates docker file and creates git diff in Base64 to be used as patch
-      def create_git_diff
+      # updates docker file and creates patch in Base64 to be used as patch
+      def create_patch
         write_remediation
-        stdout, stderr, status = Gcs.shell.execute(['git diff', @docker_file.to_path])
+        stdout, stderr, status = Gcs.shell.execute(
+          ['diff -Naur', @docker_file.to_path, @new_docker_file.to_path])
 
         Gcs.logger.debug(stdout)
-        return Base64.strict_encode64(stdout.strip) if status.success?
 
-        Gcs.logger.error("Problem generating remediation: #{stderr}")
+        # Exit status is 0 if inputs are the same, 1 if different, 2 if trouble.
+        if status.exitstatus >= 2
+          Gcs.logger.error("Problem generating remediation: #{stderr}")
 
-        ''
+          return ''
+        end
+
+        diff_to_patch(stdout)
+      end
+
+      def diff_to_patch(diff)
+        # remove the '--- a ...' '---b ...' lines that `diff -Naur creates`
+        patch_lines = diff.strip.split("\n").drop(2)
+
+        # adds the lines expected by `git apply`
+        relative_path = @docker_file.relative_path_from(Dir.pwd)
+        patch_lines.unshift("+++ b/#{relative_path}")
+        patch_lines.unshift("--- a/#{relative_path}")
+        patch_lines.unshift("diff --git a/#{relative_path} b/#{relative_path}")
+
+        Base64.strict_encode64(patch_lines.join("\n"))
       end
 
       def write_remediation
-        IO.write(@docker_file.to_path, File.open(@docker_file) do |f|
+        IO.write(@new_docker_file.to_path, File.open(@docker_file) do |f|
           f.read.gsub(LAST_FROM_KEYWORD_LINE) do |match|
             "#{match}\nRUN #{remediation_formula}"
           end
