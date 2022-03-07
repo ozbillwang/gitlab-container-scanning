@@ -21,7 +21,8 @@ module Gcs
 
       if status.success? && File.exist?(OUTPUT_FILE)
         scanner_output = File.read(OUTPUT_FILE)
-        plugin.convert(scanner_output, measured_time)
+        options = measured_time.merge(image_name: image_name)
+        plugin.convert(scanner_output, options)
       else
         plugin.handle_failure
         Gcs.logger.error(stderr)
