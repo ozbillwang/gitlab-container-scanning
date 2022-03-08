@@ -6,9 +6,9 @@ module Gcs
         Environment.scanner.scan_os_packages(image_name, output_file)
       end
 
-      def convert(scanner_output, measured_time)
+      def convert(scanner_output, scan_metadata)
         template = File.read(Environment.scanner.dependencies_template_file)
-        report = DependencyListConverter.new(template, scanner_output, measured_time).convert
+        report = DependencyListConverter.new(template, scanner_output, scan_metadata).convert
 
         Gcs::Util.write_file(Gcs::DEFAULT_DEPENDENCY_REPORT_NAME, report, Environment.project_dir, nil)
       end

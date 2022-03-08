@@ -6,8 +6,8 @@ module Gcs
         Environment.scanner.scan_image(image_name, output_file)
       end
 
-      def convert(scanner_output, measured_time)
-        gitlab_format = Converter.new(scanner_output, measured_time).convert
+      def convert(scanner_output, scan_metadata)
+        gitlab_format = Converter.new(scanner_output, scan_metadata).convert
 
         begin
           allow_list = AllowList.new

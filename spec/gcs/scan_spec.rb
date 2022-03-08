@@ -48,7 +48,7 @@ RSpec.describe Gcs::Scan do
         let(:success) { true }
 
         it 'runs convert stage' do
-          expect(plugin).to receive(:convert).with(nil, measured_time)
+          expect(plugin).to receive(:convert).with(nil, measured_time.merge(image_name: image_name))
 
           expect(scan_image.success?).to eq(true)
         end

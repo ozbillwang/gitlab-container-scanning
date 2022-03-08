@@ -298,7 +298,7 @@ photon:
 
 opensuseleap:
   variables:
-    INTEGRATION_TEST_IMAGE: opensuse/leap:15.3
+    INTEGRATION_TEST_IMAGE: opensuse/leap:15.0
   extends:
     - .generic_integration_test
     - .trivy-scanner
