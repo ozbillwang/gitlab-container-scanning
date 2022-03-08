@@ -1,3 +1,9 @@
+## 4.6.9 (2022-03-08)
+
+### fixed (1 change)
+
+- [Provide location.image from scanned image name for lang vulnerabilites](gitlab-org/security-products/analyzers/container-scanning@3d6c00e60ada1894eb9d3e7ffbd321d86fa276c4) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2693))
+
 ## 4.6.7 (2022-03-03)
 
 ### changed (2 changes)
