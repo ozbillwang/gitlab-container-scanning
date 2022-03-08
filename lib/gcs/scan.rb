@@ -13,7 +13,7 @@ module Gcs
       return plugin.skip unless plugin.enabled?
 
       stdout, stderr, status = nil
-      measured_time = Gcs::Util.measure_runtime do
+      scan_metadata = Gcs::Util.measure_runtime do
         stdout, stderr, status = plugin.scan(image_name, OUTPUT_FILE)
       end
 
@@ -21,7 +21,7 @@ module Gcs
 
       if status.success? && File.exist?(OUTPUT_FILE)
         scanner_output = File.read(OUTPUT_FILE)
-        options = measured_time.merge(image_name: image_name)
+        options = scan_metadata.merge(image_name: image_name)
         plugin.convert(scanner_output, options)
       else
         plugin.handle_failure
