@@ -8,18 +8,24 @@ class ScannerUpdate
   SCANNERS = {
     trivy: {
       uri: 'https://api.github.com/repos/aquasecurity/trivy/releases/latest',
+      changelog_uri: 'https://github.com/aquasecurity/trivy/releases/tag/v%{version}',
       template: Gcs::Trivy.template_file,
       dependencies_template: Gcs::Trivy.dependencies_template_file
     },
     grype: {
       uri: 'https://api.github.com/repos/anchore/grype/releases/latest',
+      changelog_uri: 'https://github.com/anchore/grype/releases/tag/v%{version}',
       template: Gcs::Grype.template_file,
       dependencies_template: Gcs::Grype.dependencies_template_file
     }
   }.freeze
 
   def initialize(scanner)
-    @scanner = scanner
+    @scanner = scanner.to_sym
+  end
+
+  def changelog_link(version)
+    format(SCANNERS[@scanner][:changelog_uri], { version: version })
   end
 
   def version_file
@@ -31,7 +37,7 @@ class ScannerUpdate
   end
 
   def versions
-    uri = URI(SCANNERS[@scanner.to_sym][:uri])
+    uri = URI(SCANNERS[@scanner][:uri])
     res = Net::HTTP.get_response(uri)
     abort("Can't get latest #{@scanner} release from Github") unless res.code == '200'
     res = JSON.parse(res.body) # e.g.  "tag_name": "v0.19.1"
@@ -56,14 +62,14 @@ class ScannerUpdate
     File.truncate(version_file, 0)
     File.write(version_file, new_version)
 
-    new_content = File.read(SCANNERS[@scanner.to_sym][:template])
+    new_content = File.read(SCANNERS[@scanner][:template])
                       .sub(/.*[\s\S]*\K"version": "#{current_version}"/, "\"version\": \"#{new_version}\"")
 
-    File.open(SCANNERS[@scanner.to_sym][:template], 'w') do |out|
+    File.open(SCANNERS[@scanner][:template], 'w') do |out|
       out << new_content
     end
 
-    dependencies_template_file = SCANNERS[@scanner.to_sym][:dependencies_template]
+    dependencies_template_file = SCANNERS[@scanner][:dependencies_template]
     if dependencies_template_file.present?
       dependencies_template = JSON.parse(File.read(dependencies_template_file))
       dependencies_template['scan']['scanner']['version'] = new_version
@@ -82,7 +88,7 @@ class ScannerUpdate
     end
 
     git('add', version_file)
-    git('add', SCANNERS[@scanner.to_sym][:template])
+    git('add', SCANNERS[@scanner][:template])
 
     git('commit', '-m', "Update #{@scanner} to version #{new_version}\n\nChangelog: changed")
   end

@@ -106,7 +106,8 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
     puts git('config', '--global', 'user.email', ENV['GITLAB_USER_EMAIL'])
     puts git('config', '--global', 'user.name', ENV['GITLAB_USER_NAME'])
 
-    ScannerUpdate.new(scanner).update_scanner(bump_version: true)
+    updater = ScannerUpdate.new(scanner)
+    updater.update_scanner(bump_version: true)
 
     new_version = File.read("./version/#{scanner.upcase}_VERSION")
     mr_title = "Update #{scanner} to version #{new_version}"
@@ -124,9 +125,11 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
     mr_description = <<~HEREDOC
       # Why is this change being made?
 
-      We're updating #{scanner} to the newest available version (#{new_version.strip}).
-
       #{assignee}, would you mind assigning correct milestone and taking care of this MR? :eyes:
+
+      We're updating #{scanner} to the newest available version (#{new_version.strip}).
+      Please review [the changelog](#{updater.changelog_link(new_version)}) and ensure
+      that integration tests are passing.
 
       /label ~"devops::protect" ~"group::container security" ~"section::sec" ~"type::maintenance" ~"maintenance::dependency"
       /label ~"Category:Container Scanning" ~backend
