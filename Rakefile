@@ -119,18 +119,18 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
     git('push', repository_url, current_branch)
 
     usernames = GitlabClient.ci.list_available_group_member_usernames
-    reviewer = usernames.sample
+    assignee = usernames.sample
 
     mr_description = <<~HEREDOC
       # Why is this change being made?
 
       We're updating #{scanner} to the newest available version (#{new_version.strip}).
 
-      #{reviewer}, would you mind assigning correct milestone and taking care of this MR? :eyes:
+      #{assignee}, would you mind assigning correct milestone and taking care of this MR? :eyes:
 
-      /label ~"devops::protect" ~"group::container security" ~"section::sec" ~"type::maintenance"
+      /label ~"devops::protect" ~"group::container security" ~"section::sec" ~"type::maintenance" ~"maintenance::dependency"
       /label ~"Category:Container Scanning" ~backend
-      /assign_reviewer #{reviewer}
+      /assign #{assignee}
     HEREDOC
 
     result = GitlabClient.ci.create_mr(title: mr_title, description: mr_description, source_branch: current_branch)
