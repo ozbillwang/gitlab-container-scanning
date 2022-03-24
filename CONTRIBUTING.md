@@ -1,13 +1,14 @@
 ## Developer Certificate of Origin + License
 
-By contributing to GitLab B.V., You accept and agree to the following terms and
-conditions for Your present and future Contributions submitted to GitLab B.V.
-Except for the license granted herein to GitLab B.V. and recipients of software
-distributed by GitLab B.V., You reserve all right, title, and interest in and to
-Your Contributions. All Contributions are subject to the following DCO + License
-terms.
+## Contributor License Agreement and Developer Certificate of Origin
 
-[DCO + License](https://gitlab.com/gitlab-org/dco/blob/master/README.md)
+Contributions to this repository are subject to the [Developer Certificate of Origin](https://docs.gitlab.com/ee/legal/developer_certificate_of_origin.html#developer-certificate-of-origin-version-11), or the [Individual](https://docs.gitlab.com/ee/legal/individual_contributor_license_agreement.html) or [Corporate](https://docs.gitlab.com/ee/legal/corporate_contributor_license_agreement.html) Contributor License Agreement, depending on where the contribution is made and on whose behalf:
+
+- By submitting code contributions as an individual to the [`/ee` subdirectory](/ee) of this repository, you agree to the [Individual Contributor License Agreement](https://docs.gitlab.com/ee/legal/individual_contributor_license_agreement.html).
+
+- By submitting code contributions on behalf of a corporation to the [`/ee` subdirectory](/ee) of this repository, you agree to the [Corporate Contributor License Agreement](https://docs.gitlab.com/ee/legal/corporate_contributor_license_agreement.html).
+
+- By submitting code contributions as an individual or on behalf of a corporation to any directory in this repository outside of the [`/ee` subdirectory](/ee), you agree to the [Developer Certificate of Origin](https://docs.gitlab.com/ee/legal/developer_certificate_of_origin.html#developer-certificate-of-origin-version-11).
 
 _This notice should stay as the first item in the CONTRIBUTING.md file._
 
