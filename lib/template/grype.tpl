@@ -100,7 +100,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "0.34.4"
+      "version": "0.34.6"
     },
     "analyzer": {
       "id": "gcs",
