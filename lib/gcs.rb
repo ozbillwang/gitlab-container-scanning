@@ -19,6 +19,7 @@ require 'term/ansicolor'
 require 'openssl'
 
 loader = Zeitwerk::Loader.for_gem
+loader.push_dir('./ee/lib')
 loader.setup
 
 module Gcs

@@ -88,6 +88,10 @@ module Gcs
         ENV.fetch('CS_IGNORE_UNFIXED', 'false').to_s.casecmp?('true')
       end
 
+      def ee?
+        ENV.fetch('GITLAB_FEATURES', '').to_s.include?('container_scanning')
+      end
+
       private
 
       def should_use_ci_credentials?
