@@ -345,4 +345,11 @@ RSpec.describe Gcs::Environment do
       end
     end
   end
+
+  describe '.fips?', if: Gcs::Environment.ubi? do
+    specify { expect(Gcs::Environment.fips?).to be(true) }
+  end
 end
+
+
+

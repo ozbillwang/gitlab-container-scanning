@@ -18,6 +18,8 @@ require 'yaml'
 require 'term/ansicolor'
 require 'openssl'
 
+OpenSSL.fips_mode = true
+
 loader = Zeitwerk::Loader.for_gem
 loader.push_dir(File.join(__dir__, '../ee/lib'))
 loader.setup

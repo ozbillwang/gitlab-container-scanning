@@ -76,6 +76,10 @@ module Gcs
         File.exist?('/etc/redhat-release')
       end
 
+      def fips?
+        system("yum -q list installed dracut-fips")
+      end
+
       def dependency_scan_disabled?
         ENV.fetch('CS_DISABLE_DEPENDENCY_LIST', 'false').to_s.casecmp?('true')
       end
