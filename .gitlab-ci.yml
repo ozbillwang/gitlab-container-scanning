@@ -151,7 +151,7 @@ check-db-age:
   script:
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - TARGET_IMAGE="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
     - echo "Checking $TARGET_IMAGE"
@@ -168,7 +168,7 @@ check-db-age:
   script:
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build --network host --build-arg SCANNER -f $DOCKERFILE_SOURCE
@@ -179,13 +179,13 @@ check-db-age:
   parallel:
     matrix:
       - SCANNER: [trivy, grype]
-        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile.fips:ubi]
 
 .trivy-scanner:
   parallel:
     matrix:
       - SCANNER: [trivy]
-        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile.fips:ubi]
 
 build-scanner-image:
   extends:
@@ -201,7 +201,7 @@ container_scanning:
   before_script:
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - export DOCKER_IMAGE="$DOCKER_IMAGE$IMAGE_TAG_POSTFIX"
     - 'echo "Scanning: $DOCKER_IMAGE"'
@@ -338,7 +338,7 @@ ca cert:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - export SOURCE_IMAGE=$DOCKER_IMAGE$IMAGE_TAG_POSTFIX
     - docker pull $SOURCE_IMAGE
