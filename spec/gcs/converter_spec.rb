@@ -38,6 +38,22 @@ RSpec.describe Gcs::Converter do
       expect(gitlab_format).to match_schema(:container_scanning)
     end
 
+    context 'when there are unsupported operating systems' do
+      let(:remediation_collection) { double(Gcs::Remediations::Collection).as_null_object }
+      let(:unsupported_operating_systems) { double(Set, empty?: false) }
+
+      it 'shows the unsupported OS warning' do
+        allow(Gcs::Remediations::Collection).to receive(:new).and_return(remediation_collection)
+        allow(remediation_collection).to receive(:unsupported_operating_systems)
+                                           .and_return(unsupported_operating_systems)
+        allow(remediation_collection).to receive(:unsupported_os_warning)
+
+        expect(remediation_collection).to receive(:unsupported_os_warning)
+
+        described_class.new(trivy_output_unsupported_os, {}).convert
+      end
+    end
+
     context 'when image is not provided in vulnerability' do
       it 'sets provided image_name' do
         gitlab_format = described_class.new(trivy_output_with_language, scan_runtime.merge(image_name: 'g:0.1')).convert
