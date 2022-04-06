@@ -25,12 +25,10 @@ module Gcs
         .each do |vulnerability|
           converted_vuln = Vulnerability.new(vulnerability, @opt.fetch(:image_name, nil))
           vulns << converted_vuln
-          @remediations.create_remediation(converted_vuln, vulnerability) if Gcs::Environment.ee?
+          @remediations.create_remediation(converted_vuln, vulnerability)
         end
 
-      if Gcs::Environment.ee? && @remediations.unsupported_operating_systems.present?
-        @remediations.unsupported_os_warning
-      end
+      @remediations.unsupported_os_warning unless @remediations.unsupported_operating_systems.empty?
 
       parsed_report['vulnerabilities'] = vulns.map(&:to_hash)
       parsed_report['remediations'] = @remediations.to_hash

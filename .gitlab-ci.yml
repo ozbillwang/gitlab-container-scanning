@@ -81,16 +81,6 @@ unit test:
     reports:
       junit: rspec.xml
 
-test ee:
-  extends: .ruby-alpine
-  stage: initial-test
-  script:
-    - bundle exec rake spec_ee
-  artifacts:
-    when: always
-    reports:
-      junit: rspec.xml
-
 gitlab styles:
   extends: .ruby-alpine
   stage: initial-test

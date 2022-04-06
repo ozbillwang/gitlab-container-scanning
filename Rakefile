@@ -25,10 +25,6 @@ RSpec::Core::RakeTask.new(:spec_integration) do |t|
   t.rspec_opts = "--tag integration #{COMMON_RSPEC_OPTIONS}"
 end
 
-RSpec::Core::RakeTask.new(:spec_ee) do |t|
-  t.rspec_opts = "--default-path ee/spec --pattern 'ee/spec/**{,/*/**}/*_spec.rb' #{COMMON_RSPEC_OPTIONS}"
-end
-
 %w[generic ca_cert].each do |flag|
   RSpec::Core::RakeTask.new("spec_integration_#{flag}") do |t|
     t.rspec_opts = "--tag integration:#{flag} #{COMMON_RSPEC_OPTIONS}"
