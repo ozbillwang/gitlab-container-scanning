@@ -1,3 +1,16 @@
+## 4.6.11 (2022-04-06)
+
+### changed (8 changes)
+
+- [Update trivy to version 0.25.3](gitlab-org/security-products/analyzers/container-scanning@d69880402d4d55e1a3d1021ee04dd854d40167c0) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2711))
+- [Update trivy to version 0.25.0](gitlab-org/security-products/analyzers/container-scanning@333a0a5e5de3df916bc4f029ec2dfd216e7ec3ec) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2709))
+- [Restructure free and ultimate features](gitlab-org/security-products/analyzers/container-scanning@2aa11b4a2bd74b131b1dd1d37f0dcb5aefc5d02e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2708))
+- [Update grype to version 0.34.7](gitlab-org/security-products/analyzers/container-scanning@8ae30fa8277d01b8884f18efd5f7819cc89ef6a2) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2705))
+- [Update grype to version 0.34.6](gitlab-org/security-products/analyzers/container-scanning@cf3474d82d408fbd3f596ebef7207ce83236038d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2704))
+- [Update grype to version 0.34.4](gitlab-org/security-products/analyzers/container-scanning@704c1c0be6f9d5f3fd6459bf395a1565ff493df0) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2703))
+- [Update LICENSE](gitlab-org/security-products/analyzers/container-scanning@8c8b394ff11aab1bcad30314a281faa01e74206a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2697))
+- [Update trivy to version 0.24.4](gitlab-org/security-products/analyzers/container-scanning@583b7c5a3858ed03ef41af62d2d7a585e7a126e7) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2702))
+
 ## 4.6.10 (2022-03-17)
 
 ### changed (2 changes)
