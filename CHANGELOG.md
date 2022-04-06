@@ -1,3 +1,9 @@
+## 4.6.12 (2022-04-06)
+
+### changed (1 change)
+
+- [Revert EE / FOSS code split](gitlab-org/security-products/analyzers/container-scanning@9dcf011e93ce8687f9ab6987744300dabd8296ab) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2714))
+
 ## 4.6.11 (2022-04-06)
 
 ### changed (8 changes)
