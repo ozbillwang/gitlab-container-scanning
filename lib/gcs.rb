@@ -16,7 +16,6 @@ require 'terminal-table'
 require 'zeitwerk'
 require 'yaml'
 require 'term/ansicolor'
-require 'openssl'
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup
