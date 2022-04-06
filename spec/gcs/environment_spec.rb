@@ -346,8 +346,8 @@ RSpec.describe Gcs::Environment do
     end
   end
 
-  describe '.fips?', if: Gcs::Environment.ubi? do
-    specify { expect(Gcs::Environment.fips?).to be(true) }
+  describe '.fips?', if: described_class.ubi? do
+    specify { expect(described_class.fips?).to be(true) }
   end
 end
 
