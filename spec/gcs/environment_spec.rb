@@ -350,6 +350,3 @@ RSpec.describe Gcs::Environment do
     specify { expect(described_class.fips?).to be(true) }
   end
 end
-
-
-
