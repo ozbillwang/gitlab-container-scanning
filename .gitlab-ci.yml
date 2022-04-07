@@ -183,7 +183,7 @@ check-db-age:
     matrix:
       - SCANNER: [trivy, grype]
         # DOCKERFILE_SOURCE defined with `:` is used to indicate the IMAGE_TAG_POSTFIX for the built image.
-        # For backward compatibility we need to use same Dockerfile.fips twice, to build image with `-ubi` and `-fips` tag.
+        # For backward compatibility we need to use same Dockerfile.fips twice, to build image with `-ubi`/`-fips` tags.
         # Dockerfile.fips:ubi and the logic to split it will be removed in 15.0 release.
         DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile.fips:ubi]
 
