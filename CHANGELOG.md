@@ -1,3 +1,10 @@
+## 4.6.13 (2022-04-11)
+
+### changed (2 changes)
+
+- [Use OpenSSL to generate SHA1](gitlab-org/security-products/analyzers/container-scanning@ca4f3603a11b5168b99b2c3c8dc8d5cbd76b8a06) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2712))
+- [Rename Dockerfile for FIPS and use both ubi and fips names](gitlab-org/security-products/analyzers/container-scanning@d6b8f3ac7c276fc4b50e9d87d8a6b05d7ef5f84e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2713))
+
 ## 4.6.12 (2022-04-06)
 
 ### changed (1 change)
