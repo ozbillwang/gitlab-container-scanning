@@ -149,9 +149,10 @@ check-db-age:
   variables:
     IMAGE_TAG: latest
   script:
+    ## For IMAGE_TAG_POSTFIX use string after `:` in DOCKERFILE_SOURCE (Dockerfile.ubi:fips => fips).
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - TARGET_IMAGE="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
     - echo "Checking $TARGET_IMAGE"
@@ -166,12 +167,14 @@ check-db-age:
   services:
     - docker:19.03.5-dind
   script:
+    ## For IMAGE_TAG_POSTFIX use string after `:` in DOCKERFILE_SOURCE (Dockerfile.ubi:fips => fips).
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --network host --build-arg SCANNER -f $DOCKERFILE_SOURCE
+    # ## Use string before `:` from DOCKERFILE_SOURCE (Dockerfile.ubi:fips => Dockerfile.ubi) to build the image.
+    - docker build --network host --build-arg SCANNER -f "${DOCKERFILE_SOURCE%%:*}"
       -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
     - docker push $DOCKER_IMAGE$IMAGE_TAG_POSTFIX
 
@@ -179,13 +182,16 @@ check-db-age:
   parallel:
     matrix:
       - SCANNER: [trivy, grype]
-        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
+        # DOCKERFILE_SOURCE defined with `:` is used to indicate the IMAGE_TAG_POSTFIX for the built image.
+        # For backward compatibility we need to use same Dockerfile.fips twice, to build image with `-ubi`/`-fips` tags.
+        # Dockerfile.fips:ubi and the logic to split it will be removed in 15.0 release.
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile.fips:ubi]
 
 .trivy-scanner:
   parallel:
     matrix:
       - SCANNER: [trivy]
-        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.ubi]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile.fips:ubi]
 
 build-scanner-image:
   extends:
@@ -199,9 +205,10 @@ container_scanning:
     DOCKERFILE_PATH: $DOCKERFILE_SOURCE
     GIT_STRATEGY: fetch
   before_script:
+    ## For IMAGE_TAG_POSTFIX use string after `:` in DOCKERFILE_SOURCE (Dockerfile.ubi:fips => fips).
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - export DOCKER_IMAGE="$DOCKER_IMAGE$IMAGE_TAG_POSTFIX"
     - 'echo "Scanning: $DOCKER_IMAGE"'
@@ -336,9 +343,10 @@ ca cert:
   script:
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    ## For IMAGE_TAG_POSTFIX use string after `:` in DOCKERFILE_SOURCE (Dockerfile.ubi:fips => fips).
     - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
-        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE/Dockerfile./}"
+        export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
     - export SOURCE_IMAGE=$DOCKER_IMAGE$IMAGE_TAG_POSTFIX
     - docker pull $SOURCE_IMAGE
