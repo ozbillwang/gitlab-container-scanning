@@ -57,7 +57,7 @@ module Gcs
       end
 
       def compare_id
-        Digest::SHA1.hexdigest(remediation_formula)
+        OpenSSL::Digest::SHA1.hexdigest(remediation_formula)
       end
 
       def add_fix(cve, id)

@@ -7,7 +7,7 @@ require 'open3'
 require 'json'
 require 'uri'
 require 'date'
-require 'digest'
+require 'openssl'
 require 'pathname'
 require 'set'
 require 'base64'
@@ -16,7 +16,6 @@ require 'terminal-table'
 require 'zeitwerk'
 require 'yaml'
 require 'term/ansicolor'
-require 'openssl'
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup
