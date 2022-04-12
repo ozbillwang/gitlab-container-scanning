@@ -2,6 +2,8 @@
 
 module Gcs
   class Trivy < Scanner
+    PATH = "trivy/trivy"
+
     SEVERITY_LEVELS = {
       "UNKNOWN" => 0,
       "LOW" => 1,
@@ -23,7 +25,7 @@ module Gcs
 
       def scan_command(image_name, output_file_name)
         [
-          "trivy image",
+          "#{PATH} image",
           severity_level_arg,
           vulnerability_type_arg,
           ignore_unfixed_arg,
@@ -37,7 +39,7 @@ module Gcs
 
       def os_scan_command(image_name, output_file_name)
         [
-          "trivy image",
+          "#{PATH} image",
           "--list-all-pkgs",
           "--no-progress",
           "--offline-scan --skip-update",
@@ -48,7 +50,7 @@ module Gcs
       end
 
       def version_info
-        stdout, _, status = Gcs.shell.execute(%w[trivy --version])
+        stdout, _, status = Gcs.shell.execute([PATH, '--version'])
 
         return "" unless status.success?
 

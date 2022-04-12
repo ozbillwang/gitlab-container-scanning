@@ -19,7 +19,8 @@ RSpec.describe Gcs::Trivy do
 
     status = double(success?: true)
 
-    allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).and_return([version_data, nil, status])
+    allow(Gcs.shell).to receive(:execute).with([described_class::PATH, "--version"])
+                                         .and_return([version_data, nil, status])
   end
 
   describe '.db_updated_at' do
@@ -49,7 +50,7 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
 
       cmd = [
-        "trivy image",
+        "#{described_class::PATH} image",
         "--list-all-pkgs",
         "--no-progress",
         "--offline-scan --skip-update",
@@ -79,7 +80,7 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = [
-        "trivy image",
+        "#{described_class::PATH} image",
         "--severity LOW,MEDIUM,HIGH,CRITICAL",
         "--vuln-type os",
         "--no-progress",
@@ -96,7 +97,7 @@ RSpec.describe Gcs::Trivy do
                                                     "TRIVY_PASSWORD" => nil,
                                                     "TRIVY_USERNAME" => nil
                                                   })
-      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
+      expect(Gcs.shell).to receive(:execute).with([described_class::PATH, "--version"]).twice
 
       scan_image
     end
@@ -106,7 +107,7 @@ RSpec.describe Gcs::Trivy do
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
       cmd = [
-        "trivy image",
+        "#{described_class::PATH} image",
         "--vuln-type os",
         "--no-progress",
         "--offline-scan --skip-update",
@@ -135,7 +136,7 @@ RSpec.describe Gcs::Trivy do
 
       it 'runs trivy binary without specifying type of vulnerability' do
         cmd = [
-          "trivy image",
+          "#{described_class::PATH} image",
           "--no-progress",
           "--offline-scan --skip-update",
           "--format template --template @#{described_class.template_file}",
@@ -150,7 +151,7 @@ RSpec.describe Gcs::Trivy do
                                                       "TRIVY_PASSWORD" => nil,
                                                       "TRIVY_USERNAME" => nil
                                                     })
-        expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
+        expect(Gcs.shell).to receive(:execute).with([described_class::PATH, "--version"]).twice
 
         scan_image
       end
@@ -165,7 +166,7 @@ RSpec.describe Gcs::Trivy do
 
       it 'runs trivy binary without specifying type of vulnerability' do
         cmd = [
-          "trivy image",
+          "#{described_class::PATH} image",
           "--vuln-type os",
           "--ignore-unfixed",
           "--no-progress",
@@ -182,7 +183,7 @@ RSpec.describe Gcs::Trivy do
                                                       "TRIVY_PASSWORD" => nil,
                                                       "TRIVY_USERNAME" => nil
                                                     })
-        expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
+        expect(Gcs.shell).to receive(:execute).with([described_class::PATH, "--version"]).twice
 
         scan_image
       end
