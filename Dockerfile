@@ -23,7 +23,7 @@ FROM base
 ARG ORAS_URL=https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/package_files/29703212/download
 ARG SCANNER
 ENV SCANNER=${SCANNER}
-ENV PATH="/home/gitlab/trivy:${PATH}"
+ENV PATH="/home/gitlab:${PATH}"
 
 RUN useradd --create-home gitlab -g root
 

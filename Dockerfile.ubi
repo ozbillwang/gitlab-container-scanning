@@ -12,7 +12,7 @@ FROM registry.access.redhat.com/ubi8/s2i-core
 USER root
 ARG SCANNER
 ENV SCANNER=${SCANNER}
-ENV PATH="/home/gitlab/trivy:${PATH}"
+ENV PATH="/home/gitlab:${PATH}"
 
 RUN useradd --create-home gitlab -g root && \
     chown gitlab /etc/pki/ && \
