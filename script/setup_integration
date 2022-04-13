@@ -10,8 +10,11 @@ if command -v apt-get; then
   apt-get update -q
   apt-get install -y --no-install-recommends \
     curl \
-    gnupg2
+    gnupg2 \
+    tree
 fi
+
+tree /home/gitlab
 
 if [ ! -f /usr/sbin/haproxy ] && command -v apt-get; then
   curl https://haproxy.debian.net/bernat.debian.org.gpg | apt-key add -
