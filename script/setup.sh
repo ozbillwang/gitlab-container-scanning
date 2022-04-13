@@ -8,7 +8,8 @@ setup_trivy_files() {
   trivy_version=$(cat TRIVY_VERSION)
   trivy_db_version=$(cat TRIVY_DB_VERSION)
   echo "Dowloading and installing Trivy ${trivy_version}"
-  wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf -
+  mkdir /home/gitlab/trivy
+  wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf - -C /home/gitlab/trivy/
   echo "Dowloading Trivy DB"
   oras pull registry.gitlab.com/bauerdominic/trivy-db-glad:"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C "$TMP_FOLDER"
   rm -f db.tar.gz
