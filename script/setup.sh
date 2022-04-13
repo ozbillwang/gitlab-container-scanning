@@ -8,7 +8,7 @@ setup_trivy_files() {
   trivy_version=$(cat TRIVY_VERSION)
   trivy_db_version=$(cat TRIVY_DB_VERSION)
   echo "Dowloading and installing Trivy ${trivy_version}"
-  mkdir /opt/trivy
+  sudo mkdir /opt/trivy
   wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf - -C /opt
   ln -s /opt/trivy/trivy /home/gitlab/trivy
   echo "Dowloading Trivy DB"
@@ -25,7 +25,7 @@ setup_trivy_files() {
 download_grype() {
   grype_version=$(cat GRYPE_VERSION)
   echo "Dowloading and installing Grype ${grype_version}"
-  mkdir /opt/grype
+  sudo mkdir /opt/grype
   curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /opt/grype "v${grype_version}"
   ln -s /opt/grype/grype /home/gitlab/grype
 }
