@@ -4,6 +4,10 @@ integration_test_image = ENV.fetch('INTEGRATION_TEST_IMAGE', '')
 integration_test = integration_test_image.split(':').first
 
 RSpec.describe integration_test do
+  before do
+    puts "PWD: #{`pwd`}"
+  end
+
   context "when scanning a #{integration_test} image", integration: :generic do
     let(:env) { { 'DOCKER_IMAGE' => integration_test_image } }
 
