@@ -12,10 +12,11 @@ setup_trivy_files() {
   wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf - -C /home/gitlab/opt/trivy
   ln -s /home/gitlab/opt/trivy/trivy /home/gitlab/trivy
   echo "Dowloading Trivy DB"
-  oras pull registry.gitlab.com/bauerdominic/trivy-db-glad:"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C "$TMP_FOLDER"
+  oras pull registry.gitlab.com/gitlab-org/protect/demos/sandbox/trivy-db-gitlab-build:"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C "$TMP_FOLDER"
   rm -f db.tar.gz
   echo "Setting up Trivy files"
   mkdir -p /home/gitlab/.cache/trivy/db
+  test -d legal && mv legal /home/gitlab/.cache/trivy/db # upstream trivy-db ships without licenses
   mv "$TMP_FOLDER"/trivy.db "$TMP_FOLDER"/metadata.json /home/gitlab/.cache/trivy/db/
   chmod -R g+rw /home/gitlab/.cache/
   echo "Cleaning up tmp folder"
