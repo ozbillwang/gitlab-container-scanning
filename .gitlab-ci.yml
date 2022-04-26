@@ -1,6 +1,5 @@
 ---
 variables:
-  MAJOR: 4
   DOCKERFILE_SOURCE: Dockerfile
   DOCKER_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
@@ -31,9 +30,7 @@ stages:
   - build-image
   - test
   # release Docker images and distro packages
-  - release-version
-  # update Docker images and distro packages of the major release
-  - release-major
+  - release
   # for scheduled pipeline, we release same image everyday to keep
   # vulnerability db updated
   - maintenance
@@ -337,7 +334,7 @@ ca cert:
     - .not-on-schedule
     - .scanners-matrix
   image: docker:stable
-  stage: release-version
+  stage: release
   services:
     - docker:19.03.5-dind
   script:
@@ -393,39 +390,36 @@ tag edge:
       when: never
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
 
-tag version:
-  extends: .docker_tag
-  before_script:
-    - apk add ruby
-    - export IMAGE_TAG=${CI_COMMIT_TAG/v/}
-    - ruby ./script/check_version
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - if: $CI_COMMIT_TAG
-
 .release:
   extends: .docker_tag
-  stage: release-major
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - if: $CI_COMMIT_TAG
 
-major:
-  extends: .release
-  variables:
-    IMAGE_TAG: $MAJOR
-
-minor:
+tag version:
   extends: .release
   before_script:
-    # remove semver metadata (e.g. 1.2.3+meta -> 1.2.3)
-    - export RELEASE=${CI_COMMIT_TAG/+*/}
-    # Cut off last dot and whatever follows it
-    - export IMAGE_TAG=${RELEASE%.*}
+    - apk add ruby
+    - ./script/check_version
+    - eval $(./script/export_versions)
+    - export IMAGE_TAG=${CS_VERSION}
 
-latest:
+tag major:
+  extends: .release
+  before_script:
+    - apk add ruby
+    - eval $(./script/export_versions)
+    - export IMAGE_TAG=${CS_VERSION_MAJOR}
+
+tag minor:
+  extends: .release
+  before_script:
+    - apk add ruby
+    - eval $(./script/export_versions)
+    - export IMAGE_TAG=${CS_VERSION_MINOR}
+
+tag latest:
   extends: .release
   variables:
     IMAGE_TAG: latest
