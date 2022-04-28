@@ -354,7 +354,7 @@ ca cert:
         docker push $TARGET_IMAGE
       fi
     - |
-      # code below only runs on protected branches/tags
+      # code below only runs if variables are defined (i.e. on protected branches/tags)
       if [ -n "$CS_DEPLOY_USERNAME" ] && [ -n "$CS_DEPLOY_PASSWORD" ] && [ -n "$IMAGE_TAG" ]; then
         docker login -u "$CS_DEPLOY_USERNAME" -p "$CS_DEPLOY_PASSWORD" "$DEPLOY_REGISTRY_IMAGE"
         if [ "$DEFAULT_SCANNER" = "$SCANNER" ]; then
@@ -365,6 +365,8 @@ ca cert:
         TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
         docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_SCANNER"
         docker push "$TARGET_IMAGE_SCANNER"
+      else
+        echo "Skipped tagging; missing one or more of: CS_DEPLOY_USERNAME, CS_DEPLOY_PASSWORD, IMAGE_TAG"
       fi
 
 tag branch:
