@@ -165,17 +165,21 @@ task :changelog do
   end
 end
 
-desc 'Triggers api for rebuilding last tag for updating vulnerability db'
+desc 'Triggers api for rebuilding last tags for updating vulnerability db'
 task :trigger_db_update do
-  if ENV['TRIGGER_DB_UPDATE'] && ENV['CI_PIPELINE_SOURCE'] == "schedule" && GitlabClient.ci.configured?
-    latest_release_tag = GitlabClient.ci.latest_release
+  if ENV['TRIGGER_DB_UPDATE_FOR_MAJOR_VERSIONS'] && ENV['CI_PIPELINE_SOURCE'] == "schedule" \
+      && GitlabClient.ci.configured?
+    latest_releases = GitlabClient.ci.latest_releases_for(ENV['TRIGGER_DB_UPDATE_FOR_MAJOR_VERSIONS'])
 
-    abort 'Could not fetch latest release tag' unless latest_release_tag
+    abort 'Could not fetch latest releases' unless latest_releases
 
-    result = GitlabClient.ci.trigger_pipeline(latest_release_tag)
+    latest_releases.each do |latest_release_tag|
+      result = GitlabClient.ci.trigger_pipeline(latest_release_tag)
 
-    abort result[:message] if result[:status] != :success
-
-    result[:message]
+      abort result[:message] if result[:status] != :success
+      puts("Triggered pipeline for #{latest_release_tag}: #{::JSON.parse(result[:message])['web_url']}")
+    end
+  else
+    abort('Unable to run task; check your settings')
   end
 end
