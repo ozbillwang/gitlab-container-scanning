@@ -44,11 +44,8 @@ stages:
 
 .ruby-alpine:
   extends: .not-on-schedule
-  image: ruby:2.7-alpine
+  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/ruby_git_build-base
   before_script:
-    - apk add git build-base
-    - bundle config --local jobs "$(nproc)"
-    - bundle config set no-cache 'true'
     - bundle install --quiet
 
 # Yamllint of CI-related yaml and changelogs.
@@ -159,7 +156,8 @@ check-db-age:
 
 .build-tmp-image:
   extends: .not-on-schedule
-  image: docker:stable
+  # docker_ruby is not much larger than docker:stable and lives locally on our network
+  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/docker_ruby
   stage: build-image
   services:
     - docker:19.03.5-dind
@@ -333,7 +331,7 @@ ca cert:
   extends:
     - .not-on-schedule
     - .scanners-matrix
-  image: docker:stable
+  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/docker_ruby
   stage: release
   services:
     - docker:19.03.5-dind
@@ -402,7 +400,6 @@ tag edge:
 tag version:
   extends: .release
   before_script:
-    - apk add ruby
     - ./script/check_version
     - eval $(./script/export_versions)
     - export IMAGE_TAG=${CS_VERSION}
@@ -410,14 +407,12 @@ tag version:
 tag major:
   extends: .release
   before_script:
-    - apk add ruby
     - eval $(./script/export_versions)
     - export IMAGE_TAG=${CS_VERSION_MAJOR}
 
 tag minor:
   extends: .release
   before_script:
-    - apk add ruby
     - eval $(./script/export_versions)
     - export IMAGE_TAG=${CS_VERSION_MINOR}
 
