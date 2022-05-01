@@ -119,13 +119,12 @@ class GitlabClient
 
   def latest_releases_for(major_versions)
     response = []
-    major_versions.split(',').compact.collect(&:strip).each do |major|
+    major_versions.split(',').compact.map(&:strip).each do |major|
       latest_releases.each do |release_version|
         release_version_major, _, _ = Gem::Version.new(release_version).segments
-        next unless release_version_major.to_s == major
 
-        # only include one version per major version
-        next if response.map { |x| Gem::Version.new(x).segments.first.to_s }.include?(major)
+        next if release_version_major.to_s != major
+        next if major_version_included?(response, major)
 
         response << release_version
       end
@@ -135,28 +134,33 @@ class GitlabClient
   end
 
   def latest_releases
-    query = """query {
-      project(fullPath:\"#{@project_path}\") {
-        releases(first:100, sort: RELEASED_AT_DESC) {
-          nodes {
-            tagName
+    @latest_releases ||= begin
+      query = %(query {
+        project(fullPath:"#{@project_path}") {
+          releases(first:100, sort: RELEASED_AT_DESC) {
+            nodes {
+              tagName
+            }
           }
         }
-      }
-    }
-    """
+      })
 
-    res = graphql(query)
-    unless res.code == '200'
-      puts "Failed to get releases (status #{res.code}): #{res.body}"
-      return
+      res = graphql(query)
+      if res.code == '200'
+        nodes = ::JSON.parse(res.body).dig('data', 'project', 'releases', 'nodes')
+        nodes.map { |x| x['tagName'] }
+      else
+        puts "Failed to get releases (status #{res.code}): #{res.body}"
+        []
+      end
     end
-
-    nodes = ::JSON.parse(res.body).dig('data', 'project', 'releases', 'nodes')
-    nodes.map { |x| x['tagName'] }
   end
 
   private
+
+  def major_version_included?(response, major)
+    response.map { |x| Gem::Version.new(x).segments.first.to_s }.include?(major)
+  end
 
   def authenticated?
     res = get(URI(CURRENT_USER_URL))

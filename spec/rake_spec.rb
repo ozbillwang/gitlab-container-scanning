@@ -53,14 +53,15 @@ RSpec.describe 'Rake tasks' do
 
     graphql_req = stub_request(:post, "https://gitlab.com/api/graphql")
       .with(
-        body: { "query" => "query {\n      project(fullPath:\"some_group/some_project\") {\n        " \
-                "releases(first:100, sort: RELEASED_AT_DESC) {\n          nodes {\n            tagName\n" \
-                "          }\n        }\n      }\n    }\n    " },
+        body: { "query" => "query {\n        project(fullPath:\"some_group/some_project\") {\n          " \
+                "releases(first:100, sort: RELEASED_AT_DESC) {\n            nodes {\n              " \
+                "tagName\n            }\n          }\n        }\n      }" },
         headers: {
           'Accept' => '*/*',
           'Content-Type' => 'application/x-www-form-urlencoded',
           'Private-Token' => 'token'
-        }).to_return(status: 200, body: graphql_response, headers: {})
+        })
+      .to_return(status: 200, body: graphql_response, headers: {})
 
     post_req = stub_request(:post, 'https://gitlab.com/api/v4/projects/123/pipeline?ref=4.1.5')
     .with(
