@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../lib/gcs/version"
+
+major, minor, patch = Gem::Version.new(Gcs::VERSION).segments
+
+puts("export CS_VERSION_MAJOR=#{major}")
+puts("export CS_VERSION_MINOR=#{major}.#{minor}")
+puts("export CS_VERSION=#{major}.#{minor}.#{patch}")

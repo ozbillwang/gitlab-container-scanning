@@ -1,6 +1,5 @@
 ---
 variables:
-  MAJOR: 4
   DOCKERFILE_SOURCE: Dockerfile
   DOCKER_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
@@ -31,9 +30,7 @@ stages:
   - build-image
   - test
   # release Docker images and distro packages
-  - release-version
-  # update Docker images and distro packages of the major release
-  - release-major
+  - release
   # for scheduled pipeline, we release same image everyday to keep
   # vulnerability db updated
   - maintenance
@@ -47,11 +44,8 @@ stages:
 
 .ruby-alpine:
   extends: .not-on-schedule
-  image: ruby:2.7-alpine
+  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/ruby_git_build-base
   before_script:
-    - apk add git build-base
-    - bundle config --local jobs "$(nproc)"
-    - bundle config set no-cache 'true'
     - bundle install --quiet
 
 # Yamllint of CI-related yaml and changelogs.
@@ -162,7 +156,8 @@ check-db-age:
 
 .build-tmp-image:
   extends: .not-on-schedule
-  image: docker:stable
+  # docker_ruby is not much larger than docker:stable and lives locally on our network
+  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/docker_ruby
   stage: build-image
   services:
     - docker:19.03.5-dind
@@ -336,8 +331,8 @@ ca cert:
   extends:
     - .not-on-schedule
     - .scanners-matrix
-  image: docker:stable
-  stage: release-version
+  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/docker_ruby
+  stage: release
   services:
     - docker:19.03.5-dind
   script:
@@ -357,7 +352,7 @@ ca cert:
         docker push $TARGET_IMAGE
       fi
     - |
-      # code below only runs on protected branches/tags
+      # code below only runs if variables are defined (i.e. on protected branches/tags)
       if [ -n "$CS_DEPLOY_USERNAME" ] && [ -n "$CS_DEPLOY_PASSWORD" ] && [ -n "$IMAGE_TAG" ]; then
         docker login -u "$CS_DEPLOY_USERNAME" -p "$CS_DEPLOY_PASSWORD" "$DEPLOY_REGISTRY_IMAGE"
         if [ "$DEFAULT_SCANNER" = "$SCANNER" ]; then
@@ -368,6 +363,8 @@ ca cert:
         TARGET_IMAGE_SCANNER="${DEPLOY_REGISTRY_IMAGE}/${SCANNER}:${IMAGE_TAG}${IMAGE_TAG_POSTFIX}"
         docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE_SCANNER"
         docker push "$TARGET_IMAGE_SCANNER"
+      else
+        echo "Skipped tagging; missing one or more of: CS_DEPLOY_USERNAME, CS_DEPLOY_PASSWORD, IMAGE_TAG"
       fi
 
 tag branch:
@@ -393,39 +390,33 @@ tag edge:
       when: never
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
 
-tag version:
-  extends: .docker_tag
-  before_script:
-    - apk add ruby
-    - export IMAGE_TAG=${CI_COMMIT_TAG/v/}
-    - ruby ./script/check_version
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - if: $CI_COMMIT_TAG
-
 .release:
   extends: .docker_tag
-  stage: release-major
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - if: $CI_COMMIT_TAG
 
-major:
-  extends: .release
-  variables:
-    IMAGE_TAG: $MAJOR
-
-minor:
+tag version:
   extends: .release
   before_script:
-    # remove semver metadata (e.g. 1.2.3+meta -> 1.2.3)
-    - export RELEASE=${CI_COMMIT_TAG/+*/}
-    # Cut off last dot and whatever follows it
-    - export IMAGE_TAG=${RELEASE%.*}
+    - ./script/check_version
+    - eval $(./script/export_versions)
+    - export IMAGE_TAG=${CS_VERSION}
 
-latest:
+tag major:
+  extends: .release
+  before_script:
+    - eval $(./script/export_versions)
+    - export IMAGE_TAG=${CS_VERSION_MAJOR}
+
+tag minor:
+  extends: .release
+  before_script:
+    - eval $(./script/export_versions)
+    - export IMAGE_TAG=${CS_VERSION_MINOR}
+
+tag latest:
   extends: .release
   variables:
     IMAGE_TAG: latest
