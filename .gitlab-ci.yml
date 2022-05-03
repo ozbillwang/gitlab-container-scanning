@@ -1,5 +1,6 @@
 ---
 variables:
+  BUILD_IMAGES: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images
   DOCKERFILE_SOURCE: Dockerfile
   DOCKER_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
@@ -44,7 +45,7 @@ stages:
 
 .ruby-alpine:
   extends: .not-on-schedule
-  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/ruby_git_build-base
+  image: $BUILD_IMAGES/ruby-2.7-alpine_git_build-base
   before_script:
     - bundle install --quiet
 
@@ -157,7 +158,7 @@ check-db-age:
 .build-tmp-image:
   extends: .not-on-schedule
   # docker_ruby is not much larger than docker:stable and lives locally on our network
-  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/docker_ruby
+  image: $BUILD_IMAGES/docker-stable_ruby
   stage: build-image
   services:
     - docker:19.03.5-dind
@@ -331,7 +332,7 @@ ca cert:
   extends:
     - .not-on-schedule
     - .scanners-matrix
-  image: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images/docker_ruby
+  image: $BUILD_IMAGES/docker-stable_ruby
   stage: release
   services:
     - docker:19.03.5-dind
