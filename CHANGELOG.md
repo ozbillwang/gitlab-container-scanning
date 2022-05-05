@@ -1,6 +1,8 @@
 ## 5.0.1 (2022-05-05)
 
-No changes.
+### changed (1 change)
+
+- [Downgrade Trivy to 0.26.0](gitlab-org/security-products/analyzers/container-scanning@eaa52e7384702b70d36407cf0fe0de8acf9e74bb) ([merge request](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/merge_requests/2741))
 
 ## 5.0.0 (2022-05-05)
 
