@@ -4,16 +4,19 @@ require 'json'
 
 class GitlabClient
   CURRENT_USER_URL = "https://gitlab.com/api/v4/user"
+  GRAPHQL_URL = 'https://gitlab.com/api/graphql'
 
-  def initialize(project_id:, gitlab_token:)
+  def initialize(project_id:, gitlab_token:, project_path:)
     @project_id = project_id
     @gitlab_token = gitlab_token
+    @project_path = project_path
   end
 
   def self.ci
     @ci ||= new(
       project_id: ENV['CI_PROJECT_ID'],
-      gitlab_token: ENV['CS_TOKEN']
+      gitlab_token: ENV['CS_TOKEN'],
+      project_path: ENV['CI_PROJECT_PATH']
     )
   end
 
@@ -114,7 +117,52 @@ class GitlabClient
     generic_result(res)
   end
 
+  def latest_releases_for(major_versions)
+    response = []
+    major_versions.split(',').compact.map(&:strip).each do |major|
+      latest_releases.each do |release_version|
+        release_version_major = Gem::Version.new(release_version).segments.first
+
+        next if release_version_major.to_s != major
+        next if major_version_included?(response, major)
+
+        response << release_version
+      end
+    end
+
+    response
+  end
+
+  def latest_releases
+    @latest_releases ||= fetch_latest_releases
+  end
+
   private
+
+  def fetch_latest_releases
+    query = %(query {
+      project(fullPath:"#{@project_path}") {
+        releases(first:100, sort: RELEASED_AT_DESC) {
+          nodes {
+            tagName
+          }
+        }
+      }
+    })
+
+    res = graphql(query)
+    if res.code == '200'
+      nodes = ::JSON.parse(res.body).dig('data', 'project', 'releases', 'nodes')
+      nodes.map { |x| x['tagName'] }
+    else
+      puts "Failed to get releases (status #{res.code}): #{res.body}"
+      []
+    end
+  end
+
+  def major_version_included?(response, major)
+    response.map { |x| Gem::Version.new(x).segments.first.to_s }.include?(major)
+  end
 
   def authenticated?
     res = get(URI(CURRENT_USER_URL))
@@ -190,5 +238,9 @@ class GitlabClient
   def trigger_pipeline_uri(ref)
     encoded = ::URI.encode_www_form_component(ref)
     URI("#{projects_url}/pipeline?ref=#{encoded}")
+  end
+
+  def graphql(query)
+    post(URI(GRAPHQL_URL), form_data: { 'query' => query })
   end
 end

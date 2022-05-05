@@ -74,10 +74,12 @@ under the following tags:
 - `MAJOR.MINOR.PATCH`: latest version (e.g.: `4.1.7`)
 - `latest`: default tag when pulling an image without specifying a tag
 
-A scheduled pipeline executed on the default (`master`) branch with a CI variable `TRIGGER_DB_UPDATE` set to any value
-will trigger a pipeline that will execute a single job in the `maintenance` stage called `trigger-db-update`. This job
-will find the [last released version(https://docs.gitlab.com/ee/api/releases/#list-releases)] and trigger a pipeline
-using the tag of the latest release as a ref.
+A scheduled pipeline executed on the default (`master`) branch with a CI variable `TRIGGER_DB_UPDATE_FOR_MAJOR_VERSIONS`
+set to a comma-separated list of major release versions (e.g.: '4,5') will trigger a pipeline that will execute a single
+job in the `maintenance` stage called `trigger-db-update`.
+
+This job will find the last 100 [releases](https://docs.gitlab.com/ee/api/graphql/reference/#projectreleases), and
+trigger one pipeline for each major version using the `tagName` of the latest release as the `ref=` argument.
 
 This job depends on the `GITLAB_TOKEN`. The variable must *not* be protected because the job runs on tag builds, not
 branch, and when it first runs the tag is not protected. We could move to a `vM.m.p` pattern and protect `v*` tags but
