@@ -9,7 +9,7 @@ RSpec.describe 'Rake tasks' do
   modify_environment 'CS_TOKEN' => 'token',
                      'CI_PROJECT_ID' => '123',
                      'CI_COMMIT_TAG' => '5.0.0',
-                     'TRIGGER_DB_UPDATE_FOR_MAJOR_VERSIONS' => '4',
+                     'TRIGGER_DB_UPDATE_FOR_MAJOR_VERSIONS' => '4,5',
                      'CI_PIPELINE_SOURCE' => 'schedule',
                      'CI_JOB_TOKEN' => 'job_token',
                      'CI_PROJECT_PATH' => 'some_group/some_project'
@@ -41,21 +41,29 @@ RSpec.describe 'Rake tasks' do
     assert_requested(req)
   end
 
-  it 'sends api request for triggering build' do
+  it 'sends api request for triggering builds' do
     graphql_response = %(
       { "data": { "project": { "releases": { "nodes": [
           { "tagName": "3.4.5" },
           { "tagName": "4.1.5" },
           { "tagName": "4.1.6" },
-          { "tagName": "5.6.7" }
+          { "tagName": "5.6.7" },
+          { "tagName": "6.7.8" }
         ] } } } }
       )
+    headers = {
+      'Accept' => '*/*',
+      'Content-Type' => 'application/json',
+      'Private-Token' => 'token'
+    }
 
     graphql_req = stub_request(:post, "https://gitlab.com/api/graphql")
       .with(
-        body: { "query" => "query {\n        project(fullPath:\"some_group/some_project\") {\n          " \
-                "releases(first:100, sort: RELEASED_AT_DESC) {\n            nodes {\n              " \
-                "tagName\n            }\n          }\n        }\n      }" },
+        body: {
+          "query" => "query {\n      project(fullPath:\"some_group/some_project\") {\n        releases(first:100, " \
+          "sort: RELEASED_AT_DESC) {\n          nodes {\n            tagName\n          }\n        }\n      }\n " \
+          "   }"
+        },
         headers: {
           'Accept' => '*/*',
           'Content-Type' => 'application/x-www-form-urlencoded',
@@ -63,19 +71,18 @@ RSpec.describe 'Rake tasks' do
         })
       .to_return(status: 200, body: graphql_response, headers: {})
 
-    post_req = stub_request(:post, 'https://gitlab.com/api/v4/projects/123/pipeline?ref=4.1.5')
-    .with(
-      body: {},
-      headers: {
-        'Accept' => '*/*',
-        'Content-Type' => 'application/json',
-        'Private-Token' => 'token'
-      })
+    pipeline_1 = stub_request(:post, 'https://gitlab.com/api/v4/projects/123/pipeline?ref=4.1.5')
+    .with(body: {}, headers: headers)
     .to_return(status: 200, body: '{"web_url": "some_url"}', headers: {})
+
+    pipeline_2 = stub_request(:post, 'https://gitlab.com/api/v4/projects/123/pipeline?ref=5.6.7')
+                   .with(body: {}, headers: headers)
+                   .to_return(status: 200, body: '{"web_url": "some_url"}', headers: {})
 
     trigger_db_update.invoke
 
     assert_requested(graphql_req)
-    assert_requested(post_req)
+    assert_requested(pipeline_1)
+    assert_requested(pipeline_2)
   end
 end
