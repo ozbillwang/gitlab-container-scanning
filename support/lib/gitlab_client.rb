@@ -30,7 +30,8 @@ class GitlabClient
   end
 
   def generate_changelog(version)
-    res = post(changelog_uri, form_data: { version: version })
+    message = "[skip ci] Add changelog for version #{version}"
+    res = post(changelog_uri, form_data: { version: version, message: message })
 
     generic_result(res)
   end
