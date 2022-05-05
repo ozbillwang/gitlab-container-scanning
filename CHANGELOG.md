@@ -1,3 +1,9 @@
+## 5.0.0 (2022-05-05)
+
+### removed (1 change)
+
+- [Do not publish a `-ubi` copy of the `-fips`image](gitlab-org/security-products/analyzers/container-scanning@837d765488f43ca78287572158b06647b1cd02b2) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2729))
+
 ## 4.6.18 (2022-05-05)
 
 ### changed (1 change)
