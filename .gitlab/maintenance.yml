@@ -35,7 +35,7 @@ trigger-db-update:
   stage: maintenance
   script: bundle exec rake trigger_db_update
   rules:
-    - if: '$TRIGGER_DB_UPDATE_FOR_MAJOR_VERSIONS != "" && $CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$TRIGGER_DB_UPDATE_FOR_MAJOR_VERSIONS && $CI_PIPELINE_SOURCE == "schedule"'
 
 trigger-scanner-update:
   extends: .ruby-alpine
@@ -48,4 +48,4 @@ trigger-scanner-update:
   script:
     - bundle exec rake update_scanner_and_create_mr
   rules:
-    - if: '$TRIGGER_SCANNER_UPDATE != "" && $CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$TRIGGER_SCANNER_UPDATE && $CI_PIPELINE_SOURCE == "schedule"'
