@@ -120,7 +120,7 @@ danger-review:
     - if: $CI_MERGE_REQUEST_IID
     - when: never
   variables:
-    DANGER_BOT_VERSION: v0.11.0
+    DANGER_BOT_VERSION: set-dependency-scanning-config-1
     DANGER_CHANGELOG_MODE: trailer
   script:
     - cp -r /danger/ danger/
