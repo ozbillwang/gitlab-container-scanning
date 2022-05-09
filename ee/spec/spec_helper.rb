@@ -15,7 +15,7 @@ RSpec.configure do |config|
   config.extend EnvironmentHelper::ClassMethods
   config.include SchemaHelper
 
-  config.around(:example) do |example|
+  config.around do |example|
     with_modified_environment 'GITLAB_FEATURES' => 'container_scanning,sast' do
       example.run
     end
