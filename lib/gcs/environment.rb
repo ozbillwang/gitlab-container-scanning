@@ -89,7 +89,7 @@ module Gcs
       end
 
       def ee?
-        ENV.fetch('GITLAB_FEATURES', '').to_s.include?('container_scanning')
+        ENV.fetch('GITLAB_FEATURES', '').to_s.split(',').include?('container_scanning')
       end
 
       private
