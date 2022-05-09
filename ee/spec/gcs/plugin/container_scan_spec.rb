@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Gcs::Plugin::ContainerScan do
-  modify_environment 'GITLAB_FEATURES' => 'container_scanning,sast'
-
   RSpec.shared_examples 'QUIET mode' do
     context 'with QUIET mode' do
       modify_environment 'CS_QUIET' => 'true'

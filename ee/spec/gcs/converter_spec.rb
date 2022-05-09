@@ -2,8 +2,6 @@
 RSpec.describe Gcs::Converter do
   let(:trivy_output_unsupported_os) { fixture_file_content('trivy-unsupported-os.json') }
 
-  modify_environment 'GITLAB_FEATURES' => 'container_scanning,sast'
-
   describe '#convert' do
     context 'when there are unsupported operating systems' do
       let(:remediation_collection) { double(Gcs::Remediations::Collection).as_null_object }
