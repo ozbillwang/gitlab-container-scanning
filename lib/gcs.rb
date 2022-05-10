@@ -18,6 +18,7 @@ require 'yaml'
 require 'term/ansicolor'
 
 loader = Zeitwerk::Loader.for_gem
+loader.push_dir(File.join(__dir__, '../ee/lib'))
 loader.setup
 
 module Gcs

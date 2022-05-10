@@ -310,6 +310,24 @@ RSpec.describe Gcs::Environment do
     end
   end
 
+  describe '.ee?' do
+    context 'with GITLAB_FEATURES containing container_scanning' do
+      it 'returns true' do
+        with_modified_environment 'GITLAB_FEATURES' => 'container_scanning,sast,dast' do
+          expect(described_class.ee?).to eq(true)
+        end
+      end
+    end
+
+    context 'with GITLAB_FEATURES not containing container_scanning' do
+      it 'returns false' do
+        with_modified_environment 'GITLAB_FEATURES' => 'sast,dast' do
+          expect(described_class.ee?).to eq(false)
+        end
+      end
+    end
+  end
+
   describe '.default_branch_image' do
     modify_environment 'CI_REGISTRY_IMAGE' => 'registry.gitlab.com/defen/trivy-test',
                        'CI_DEFAULT_BRANCH' => 'main',

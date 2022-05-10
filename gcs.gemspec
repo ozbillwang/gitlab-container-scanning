@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.metadata['source_code_uri'] = 'https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning'
   spec.metadata['changelog_uri'] = 'https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/CHANGELOG.md'
 
-  spec.files = Dir.glob("{bin,lib,exe}/**/*")
+  spec.files = Dir.glob("{bin,lib,ee,exe}/**/*")
 
   spec.add_runtime_dependency 'console', '~> 1.8'
   spec.add_runtime_dependency 'term-ansicolor', '~> 1.7'
@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
 
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ['lib']
+  spec.require_paths = ['lib', 'ee/lib']
 end
