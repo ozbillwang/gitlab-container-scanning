@@ -1,6 +1,8 @@
 ## 5.0.3 (2022-05-11)
 
-No changes.
+### changed (1 change)
+
+- [Restructure free and ultimate features](gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/commit/5dccbf4b540753b52756caac2b28a517f89faf02) ([merge request](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/merge_requests/2717))
 
 ## 5.0.1 (2022-05-05)
 
