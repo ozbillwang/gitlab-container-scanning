@@ -178,9 +178,13 @@ check-db-age:
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
         export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
+    - |
+      if [[ "$IMAGE_TAG_POSTFIX" == "-ee" ]] || [[ "$IMAGE_TAG_POSTFIX" == "-fips-ee" ]]; then
+        export EE=true
+      fi
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     # ## Use string before `:` from DOCKERFILE_SOURCE (Dockerfile.ubi:fips => Dockerfile.ubi) to build the image.
-    - docker build --network host --build-arg SCANNER -f "${DOCKERFILE_SOURCE%%:*}"
+    - docker build --network host --build-arg SCANNER --build-arg EE="$EE" -f "${DOCKERFILE_SOURCE%%:*}"
       -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
     - docker push $DOCKER_IMAGE$IMAGE_TAG_POSTFIX
 
@@ -189,13 +193,13 @@ check-db-age:
     matrix:
       - SCANNER: [trivy, grype]
         # DOCKERFILE_SOURCE defined with `:` is used to indicate the IMAGE_TAG_POSTFIX for the built image.
-        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile:ee, Dockerfile.fips:fips-ee]
 
 .trivy-scanner:
   parallel:
     matrix:
       - SCANNER: [trivy]
-        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile:ee, Dockerfile.fips:fips-ee]
 
 build-scanner-image:
   extends:

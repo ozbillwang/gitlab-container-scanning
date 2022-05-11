@@ -23,6 +23,8 @@ FROM base
 ARG ORAS_URL=https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/package_files/29703212/download
 ARG SCANNER
 ENV SCANNER=${SCANNER}
+ARG EE
+ENV EE=${EE}
 ENV PATH="/home/gitlab:${PATH}"
 
 RUN useradd --create-home gitlab -g root
@@ -41,7 +43,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   chmod -R g+rw /usr/local/share/ca-certificates/ /usr/lib/ssl/certs/ && \
   echo "gitlab ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/gitlab && \
   gem install --no-document /home/gitlab/gcs.gem && \
-  su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
+  su - gitlab -c "export SCANNER=$SCANNER EE=$EE PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
   rm -f /usr/local/bin/oras && \
   apt-get remove -y curl wget xauth openssh-client && \
   apt-get autoremove -y && \
