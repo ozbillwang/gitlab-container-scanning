@@ -28,6 +28,8 @@ ENV PATH="/home/gitlab:${PATH}"
 RUN useradd --create-home gitlab -g root
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
+COPY --from=builder --chown=gitlab:root /gcs/legal /home/gitlab/legal/
+COPY --from=builder --chown=gitlab:root /gcs/ee/LICENSE /home/gitlab/ee/LICENSE
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   wget \

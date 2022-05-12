@@ -6,6 +6,7 @@ RSpec.describe Gcs::Cli do
   let(:dependency_scan_status) { double(success?: true) }
 
   before do
+    allow(Gcs::Trivy).to receive(:setup)
     allow_any_instance_of(Gcs::Plugin::ContainerScan).to receive(:scan)
       .and_return([nil, nil, container_scan_status])
     allow_any_instance_of(Gcs::Plugin::DependencyScan).to receive(:scan)

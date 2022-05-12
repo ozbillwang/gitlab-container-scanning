@@ -2,28 +2,40 @@
 
 set -e
 
+CE_TRIVY_DB_REGISTRY="ghcr.io/aquasecurity/trivy-db"
+EE_TRIVY_DB_REGISTRY="registry.gitlab.com/gitlab-org/security-products/dependencies/trivy-db-glad"
+
 setup_trivy_files() {
   echo "Creating temp directory"
-  TMP_FOLDER=$(mktemp -d)
   trivy_version=$(cat TRIVY_VERSION)
   trivy_db_version=$(cat TRIVY_DB_VERSION)
   echo "Dowloading and installing Trivy ${trivy_version}"
-  wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf -
-  echo "Dowloading Trivy DB"
-  oras pull ghcr.io/aquasecurity/trivy-db:"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C "$TMP_FOLDER"
-  rm -f db.tar.gz
+  mkdir /home/gitlab/opt/trivy
+  wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf - -C /home/gitlab/opt/trivy
+  ln -s /home/gitlab/opt/trivy/trivy /home/gitlab/trivy
+
   echo "Setting up Trivy files"
   mkdir -p /home/gitlab/.cache/trivy/db
-  mv "$TMP_FOLDER"/trivy.db "$TMP_FOLDER"/metadata.json /home/gitlab/.cache/trivy/db/
+  mkdir /home/gitlab/.cache/trivy/db/ce /home/gitlab/.cache/trivy/db/ee
+  rm -rf /home/gitlab/legal/grype
+  mv /home/gitlab/legal /home/gitlab/.cache/trivy/db
+
+  echo "Dowloading CE Trivy DB"
+  oras pull "$CE_TRIVY_DB_REGISTRY":"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C /home/gitlab/.cache/trivy/db/ce
+  rm -f db.tar.gz
+
+  echo "Dowloading EE Trivy DB"
+  oras pull "$EE_TRIVY_DB_REGISTRY":"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C /home/gitlab/.cache/trivy/db/ee
+  rm -f db.tar.gz
+
   chmod -R g+rw /home/gitlab/.cache/
-  echo "Cleaning up tmp folder"
-  rm -rf "$TMP_FOLDER"
 }
 
 download_grype() {
   grype_version=$(cat GRYPE_VERSION)
   echo "Dowloading and installing Grype ${grype_version}"
-  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /home/gitlab "v${grype_version}"
+  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /home/gitlab/opt/grype "v${grype_version}"
+  ln -s /home/gitlab/opt/grype/grype /home/gitlab/grype
 }
 
 download_grype_db() {
@@ -36,6 +48,7 @@ setup_grype_files() {
   echo "Setting up Grype files"
   download_grype
   download_grype_db
+  rm -rf /home/gitlab/legal/glad /home/gitlab/legal/trivy-db
 }
 
 select_scanner() {
@@ -50,4 +63,5 @@ select_scanner() {
   fi
 }
 
+mkdir /home/gitlab/opt
 select_scanner

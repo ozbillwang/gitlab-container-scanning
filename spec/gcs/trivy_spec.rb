@@ -22,6 +22,78 @@ RSpec.describe Gcs::Trivy do
     allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).and_return([version_data, nil, status])
   end
 
+  describe '.setup' do
+    let(:tmp_dir) { Dir.mktmpdir }
+
+    let(:database_dest) { database_path("trivy.db") }
+    let(:metadata_dest) { database_path("metadata.json") }
+
+    let(:database_src) { File.readlink(database_path("trivy.db")) }
+    let(:metadata_src) { File.readlink(database_path("metadata.json")) }
+
+    def database_path(*segments)
+      File.join(described_class::DATABASE_PATH, *segments)
+    end
+
+    before do
+      stub_const('Gcs::Trivy::DATABASE_PATH', tmp_dir)
+
+      %w[ce ee].each do |segment|
+        FileUtils.mkdir_p(database_path(segment))
+        FileUtils.touch(database_path(segment, "trivy.db"))
+        FileUtils.touch(database_path(segment, "metadata.json"))
+      end
+
+      described_class.setup
+    end
+
+    around do |example|
+      with_modified_environment 'GITLAB_FEATURES' => features do
+        example.run
+      end
+    end
+
+    after do
+      FileUtils.rm_rf(tmp_dir)
+    end
+
+    context 'when EE' do
+      let(:features) { 'container_scanning' }
+
+      it 'symlinks the EE database' do
+        expect(database_src).to eq(database_path("ee", "trivy.db"))
+      end
+
+      it 'symlinks EE metadata' do
+        expect(metadata_src).to eq(database_path("ee", "metadata.json"))
+      end
+
+      context 'when already setup' do
+        it 'does not symlink' do
+          expect { described_class.setup }.not_to raise_error
+        end
+      end
+    end
+
+    context 'when CE' do
+      let(:features) { '' }
+
+      it 'symlinks the CE database' do
+        expect(database_src).to eq(database_path("ce", "trivy.db"))
+      end
+
+      it 'symlinks CE metadata' do
+        expect(metadata_src).to eq(database_path("ce", "metadata.json"))
+      end
+
+      context 'when already setup' do
+        it 'does not symlink' do
+          expect { described_class.setup }.not_to raise_error
+        end
+      end
+    end
+  end
+
   describe '.db_updated_at' do
     it 'returns the value extracted from the scanner output' do
       expect(described_class.send(:db_updated_at)).to eq('2021-05-19T12:06:02+00:00')
