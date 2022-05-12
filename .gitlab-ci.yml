@@ -406,10 +406,14 @@ tag edge:
       when: never
     - if: $CI_COMMIT_TAG
 
+check version:
+  extends: .release
+  stage: initial-test
+  script: ./script/check_version
+
 tag version:
   extends: .release
   before_script:
-    - ./script/check_version
     - eval $(./script/export_versions)
     - export IMAGE_TAG=${CS_VERSION}
 
