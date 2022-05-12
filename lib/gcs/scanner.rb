@@ -2,6 +2,10 @@
 module Gcs
   class Scanner
     class << self
+      def setup
+        # Trivy overrides this to symlink its CE/EE database
+      end
+
       def template_file
         File.join(Gcs.lib, 'template', "#{scanner_name.downcase}.tpl").to_s
       end

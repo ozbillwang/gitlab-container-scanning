@@ -27,6 +27,8 @@ RUN yum -y -q update --disableplugin=subscription-manager && \
 COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
 
 COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
+COPY --from=builder --chown=gitlab:root /gcs/legal /home/gitlab/legal/
+COPY --from=builder --chown=gitlab:root /gcs/ee/LICENSE /home/gitlab/ee/LICENSE
 RUN ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs
 
 RUN yum -y -q install --disableplugin=subscription-manager --setopt=tsflags=nodocs ruby wget && \

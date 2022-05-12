@@ -10,7 +10,20 @@ module Gcs
       "CRITICAL" => 4
     }.freeze
 
+    DATABASE_PATH = "/home/gitlab/.cache/trivy/db"
+    DATABASE_FILES = %w[trivy.db metadata.json].freeze
+
     class << self
+      def setup
+        return if setup?
+
+        DATABASE_FILES.each do |file|
+          src = File.join(database_path, file)
+          dest = File.join(DATABASE_PATH, file)
+          File.symlink(src, dest)
+        end
+      end
+
       def db_updated_at
         version_info[:db_updated_at]
       end
@@ -109,6 +122,18 @@ module Gcs
 
       def scanner_version
         version_info[:binary_version]
+      end
+
+      def setup?
+        DATABASE_FILES.all? { |file| File.exist?(File.join(DATABASE_PATH, file)) }
+      end
+
+      def database_path
+        if Gcs::Environment.ee?
+          File.join(DATABASE_PATH, "ee")
+        else
+          File.join(DATABASE_PATH, "ce")
+        end
       end
     end
   end

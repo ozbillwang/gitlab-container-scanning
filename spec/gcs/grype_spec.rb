@@ -35,6 +35,12 @@ RSpec.describe Gcs::Grype do
     allow(Gcs.shell).to receive(:execute).with("grype db status").and_return([db_status, nil, status])
   end
 
+  describe '.setup' do
+    it 'is a no-op' do
+      expect { described_class.setup }.not_to raise_error
+    end
+  end
+
   describe '.db_updated_at' do
     it 'returns the value extracted from the scanner output' do
       expect(described_class.send(:db_updated_at)).to eq('2021-06-16T08:33:35+00:00')
