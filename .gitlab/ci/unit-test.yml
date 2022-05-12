@@ -1,0 +1,42 @@
+# Yamllint of CI-related yaml and changelogs.
+lint-yaml:
+  extends: .not-on-schedule
+  image: pipelinecomponents/yamllint:latest
+  stage: initial-test
+  variables:
+    LINT_PATHS: .gitlab-ci.yml .rubocop.yml spec/fixtures
+  script:
+    - yamllint -c .yamllint -f colored $LINT_PATHS
+
+shellcheck:
+  extends: .not-on-schedule
+  stage: initial-test
+  image: koalaman/shellcheck-alpine:stable
+  script:
+    - shellcheck -e SC1071 script/*
+
+unit test:
+  extends: .ruby-alpine
+  stage: initial-test
+  script:
+    - bundle exec rake unit_test
+  artifacts:
+    when: always
+    reports:
+      junit: rspec.xml
+
+test ee:
+  extends: .ruby-alpine
+  stage: initial-test
+  script:
+    - bundle exec rake spec_ee
+  artifacts:
+    when: always
+    reports:
+      junit: rspec.xml
+
+gitlab styles:
+  extends: .ruby-alpine
+  stage: initial-test
+  script:
+    - bundle exec rubocop
