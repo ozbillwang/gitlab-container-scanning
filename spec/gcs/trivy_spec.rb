@@ -124,7 +124,7 @@ RSpec.describe Gcs::Trivy do
         "trivy image",
         "--list-all-pkgs",
         "--no-progress",
-        "--offline-scan --skip-update",
+        "--offline-scan --skip-update --security-checks vuln",
         "--format json",
         "--output #{output_file_name}",
         image_name
@@ -155,7 +155,7 @@ RSpec.describe Gcs::Trivy do
         "--severity LOW,MEDIUM,HIGH,CRITICAL",
         "--vuln-type os",
         "--no-progress",
-        "--offline-scan --skip-update",
+        "--offline-scan --skip-update --security-checks vuln",
         "--format template --template @#{described_class.template_file}",
         "--output #{output_file_name}",
         image_name
@@ -181,7 +181,7 @@ RSpec.describe Gcs::Trivy do
         "trivy image",
         "--vuln-type os",
         "--no-progress",
-        "--offline-scan --skip-update",
+        "--offline-scan --skip-update --security-checks vuln",
         "--format template --template @#{described_class.template_file}",
         "--output #{output_file_name}",
         image_name
@@ -209,7 +209,7 @@ RSpec.describe Gcs::Trivy do
         cmd = [
           "trivy image",
           "--no-progress",
-          "--offline-scan --skip-update",
+          "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{described_class.template_file}",
           "--output #{output_file_name}",
           image_name
@@ -241,7 +241,7 @@ RSpec.describe Gcs::Trivy do
           "--vuln-type os",
           "--ignore-unfixed",
           "--no-progress",
-          "--offline-scan --skip-update",
+          "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{described_class.template_file}",
           "--output #{output_file_name}",
           image_name
