@@ -329,6 +329,23 @@ ca cert:
     SPEC_NAME: spec_integration_ca_cert
   extends: .integration_test
 
+ee integration:
+  extends:
+    - centos
+    - debian
+    - distroless
+    - ubuntu
+    - ubi
+    - rhel
+    - rockylinux
+    - amazonlinux
+    - photon
+    - opensuseleap
+    - almalinux
+    - webgoat
+    - ca cert
+    - .trivy-scanner
+
 .docker_tag:
   extends:
     - .not-on-schedule
