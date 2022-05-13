@@ -17,7 +17,7 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
-    skip 'remediations are EE only' if env['GITLAB_FEATURES'].empty?
+    skip 'remediations are EE only' unless Gcs::Environment.ee?
 
     expect(report['remediations']).to be_present
 
