@@ -330,22 +330,13 @@ ca cert:
   extends: .integration_test
 
 ee integration:
+  parallel:
+    matrix:
+      - SCANNER: [ trivy ]
+        DOCKERFILE_SOURCE: [ Dockerfile, Dockerfile.fips:fips ]
+        INTEGRATION_TEST_IMAGE: [centos debian distroless ubuntu ubi rhel rockylinux amazonlinux photon opensuseleap almalinux webgoat ca cert]
   extends:
     - .integration_test
-    - .trivy-scanner
-    - centos
-    - debian
-    - distroless
-    - ubuntu
-    - ubi
-    - rhel
-    - rockylinux
-    - amazonlinux
-    - photon
-    - opensuseleap
-    - almalinux
-    - webgoat
-    - ca cert
 
 .docker_tag:
   extends:
