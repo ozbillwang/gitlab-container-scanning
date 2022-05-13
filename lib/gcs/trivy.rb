@@ -15,11 +15,11 @@ module Gcs
 
     class << self
       def setup
-        return if setup?
-
         DATABASE_FILES.each do |file|
           src = File.join(database_path, file)
           dest = File.join(DATABASE_PATH, file)
+
+          File.delete(dest) if File.exist?(dest)
           File.symlink(src, dest)
         end
       end
@@ -122,10 +122,6 @@ module Gcs
 
       def scanner_version
         version_info[:binary_version]
-      end
-
-      def setup?
-        DATABASE_FILES.all? { |file| File.exist?(File.join(DATABASE_PATH, file)) }
       end
 
       def database_path
