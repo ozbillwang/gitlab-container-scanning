@@ -334,7 +334,21 @@ ee integration:
     matrix:
       - SCANNER: [ trivy ]
         DOCKERFILE_SOURCE: [ Dockerfile, Dockerfile.fips:fips ]
-        INTEGRATION_TEST_IMAGE: [centos debian distroless ubuntu ubi rhel rockylinux amazonlinux photon opensuseleap almalinux webgoat ca cert]
+        INTEGRATION_TEST_IMAGE:
+          - centos
+          - debian
+          - distroless
+          - ubuntu
+          - ubi
+          - rhel
+          - rockylinux
+          - amazonlinux
+          - photon
+          - opensuseleap
+          - almalinux
+          - webgoat
+          - ca cert
+
   extends:
     - .integration_test
 
