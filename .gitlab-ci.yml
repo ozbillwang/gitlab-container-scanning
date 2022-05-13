@@ -331,6 +331,8 @@ ca cert:
 
 ee integration:
   extends:
+    - .integration_test
+    - .trivy-scanner
     - centos
     - debian
     - distroless
@@ -344,7 +346,6 @@ ee integration:
     - almalinux
     - webgoat
     - ca cert
-    - .trivy-scanner
 
 .docker_tag:
   extends:
