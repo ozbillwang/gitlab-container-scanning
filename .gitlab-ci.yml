@@ -188,6 +188,16 @@ check-db-age:
   parallel:
     matrix:
       - SCANNER: [trivy]
+        FEATURE_MODE: [ce, ee]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips]
+
+.integration-test-matrix:
+  parallel:
+    matrix:
+      - SCANNER: trivy
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips]
+        FEATURE_MODE: [ce, ee]
+      - SCANNER: grype
         DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips]
 
 build-scanner-image:
@@ -223,7 +233,7 @@ container_scanning:
 .integration_test:
   extends:
     - .not-on-schedule
-    - .scanners-matrix
+    - .integration-test-matrix
   image: $DOCKER_IMAGE
   cache:
     key: ${CI_COMMIT_REF_SLUG}
@@ -246,7 +256,7 @@ container_scanning:
 .generic_integration_test:
   extends: .integration_test
   variables:
-    SPEC_NAME: spec_integration_generic
+    SPEC_NAME: spec_integration_generic_$FEATURE_MODE
 
 alpine:
   variables:
@@ -326,31 +336,8 @@ webgoat:
 
 ca cert:
   variables:
-    SPEC_NAME: spec_integration_ca_cert
+    SPEC_NAME: spec_integration_ca_cert_$FEATURE_MODE
   extends: .integration_test
-
-ee integration:
-  parallel:
-    matrix:
-      - SCANNER: [ trivy ]
-        DOCKERFILE_SOURCE: [ Dockerfile, Dockerfile.fips:fips ]
-        INTEGRATION_TEST_IMAGE:
-          - centos
-          - debian
-          - distroless
-          - ubuntu
-          - ubi
-          - rhel
-          - rockylinux
-          - amazonlinux
-          - photon
-          - opensuseleap
-          - almalinux
-          - webgoat
-          - ca cert
-
-  extends:
-    - .integration_test
 
 .docker_tag:
   extends:
