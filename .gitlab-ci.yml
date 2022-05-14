@@ -11,7 +11,8 @@ variables:
 
 include:
   - template: Security/Container-Scanning.gitlab-ci.yml
-  - template: Security/Dependency-Scanning.gitlab-ci.yml
+#  Temporarily disabled due to issue DS with template; https://gitlab.slack.com/archives/C3JJET4Q6/p1652437226370269
+#  - template: Security/Dependency-Scanning.gitlab-ci.yml
   - template: Security/License-Scanning.gitlab-ci.yml
   - template: Security/SAST.gitlab-ci.yml
   - local: .gitlab/maintenance.yml
@@ -92,15 +93,16 @@ gitlab styles:
   script:
     - bundle exec rubocop
 
-dependency_scanning:
-  stage: initial-test
+#  Temporarily disabled due to issue DS with template; https://gitlab.slack.com/archives/C3JJET4Q6/p1652437226370269
+#dependency_scanning:
+#  stage: initial-test
 
-gemnasium-dependency_scanning:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - changes:
-      - Gemfile.lock
+#gemnasium-dependency_scanning:
+#  rules:
+#    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+#      when: never
+#    - changes:
+#      - Gemfile.lock
 
 license_scanning:
   stage: initial-test
