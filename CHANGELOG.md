@@ -1,3 +1,9 @@
+## 5.1.0 (2022-05-15)
+
+### changed (1 change)
+
+- [Include EE Trivy Database with GitLab Advisory Database](gitlab-org/security-products/analyzers/container-scanning@f10eafe66ce6cdf6afffd78689469d04217d4167) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2720))
+
 ## 5.0.3 (2022-05-11)
 
 ### changed (1 change)
