@@ -41,7 +41,7 @@ module Gcs
           vulnerability_type_arg,
           ignore_unfixed_arg,
           "--no-progress",
-          "--offline-scan --skip-update",
+          "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{template_file}",
           "--output #{output_file_name}",
           image_name
@@ -53,7 +53,7 @@ module Gcs
           "trivy image",
           "--list-all-pkgs",
           "--no-progress",
-          "--offline-scan --skip-update",
+          "--offline-scan --skip-update --security-checks vuln",
           "--format json",
           "--output #{output_file_name}",
           image_name
