@@ -43,6 +43,12 @@ stages:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: on_success
 
+.only-on-tag:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_TAG
+
 .ruby-alpine:
   extends: .not-on-schedule
   image: $BUILD_IMAGES/ruby-2.7-alpine_git_build-base
@@ -392,17 +398,20 @@ tag edge:
       when: never
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
 
+check version:
+  extends: .only-on-tag
+  image: $BUILD_IMAGES/docker-stable_ruby
+  stage: initial-test
+  script: ./script/check_version
+
 .release:
-  extends: .docker_tag
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - if: $CI_COMMIT_TAG
+  extends:
+  - .docker_tag
+  - .only-on-tag
 
 tag version:
   extends: .release
   before_script:
-    - ./script/check_version
     - eval $(./script/export_versions)
     - export IMAGE_TAG=${CS_VERSION}
 
