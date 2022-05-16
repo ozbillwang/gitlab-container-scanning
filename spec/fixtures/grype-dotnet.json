@@ -1,0 +1,532 @@
+
+{
+  "vulnerabilities": [{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-6xh7-4v2w-36q6 in Microsoft.AspNetCore.Mvc.DataAnnotations-1.0.0",
+      "description": "ASP.NET Core fails to properly validate web requests",
+      "cve": "GHSA-6xh7-4v2w-36q6",
+      "severity": "High",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.DataAnnotations",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.DataAnnotations"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-6xh7-4v2w-36q6",
+          "value": "GHSA-6xh7-4v2w-36q6",
+          "url": "https://github.com/advisories/GHSA-6xh7-4v2w-36q6"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-6xh7-4v2w-36q6"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-6xh7-4v2w-36q6 in Microsoft.AspNetCore.Mvc.ViewFeatures-1.0.0",
+      "description": "ASP.NET Core fails to properly validate web requests",
+      "cve": "GHSA-6xh7-4v2w-36q6",
+      "severity": "High",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.ViewFeatures",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.ViewFeatures"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-6xh7-4v2w-36q6",
+          "value": "GHSA-6xh7-4v2w-36q6",
+          "url": "https://github.com/advisories/GHSA-6xh7-4v2w-36q6"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-6xh7-4v2w-36q6"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-7jgj-8wvc-jh57 in System.Net.Http-4.3.2",
+      "description": ".NET Core Information Disclosure",
+      "cve": "GHSA-7jgj-8wvc-jh57",
+      "severity": "High",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "System.Net.Http",
+        "package_version": "4.3.2",
+        "fixed_version": "4.3.4",
+        "summary": "Upgrade System.Net.Http to 4.3.4"
+      },
+      "solution": "Upgrade System.Net.Http to 4.3.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "System.Net.Http"
+          },
+          "version": "4.3.2"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-7jgj-8wvc-jh57",
+          "value": "GHSA-7jgj-8wvc-jh57",
+          "url": "https://github.com/advisories/GHSA-7jgj-8wvc-jh57"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-7jgj-8wvc-jh57"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-7mfr-774f-w5r9 in Microsoft.NETCore.App-1.1.2",
+      "description": "Improper Certificate Validation",
+      "cve": "GHSA-7mfr-774f-w5r9",
+      "severity": "High",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.NETCore.App",
+        "package_version": "1.1.2",
+        "fixed_version": "2.0.3",
+        "summary": "Upgrade Microsoft.NETCore.App to 2.0.3"
+      },
+      "solution": "Upgrade Microsoft.NETCore.App to 2.0.3",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.NETCore.App"
+          },
+          "version": "1.1.2"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-7mfr-774f-w5r9",
+          "value": "GHSA-7mfr-774f-w5r9",
+          "url": "https://github.com/advisories/GHSA-7mfr-774f-w5r9"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-7mfr-774f-w5r9"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-ch6p-4jcm-h8vh in Microsoft.AspNetCore.Mvc.DataAnnotations-1.0.0",
+      "description": "Moderate severity vulnerability that affects Microsoft.AspNetCore.Mvc and Microsoft.AspNetCore.Mvc.Core",
+      "cve": "GHSA-ch6p-4jcm-h8vh",
+      "severity": "Medium",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.DataAnnotations",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.DataAnnotations"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-ch6p-4jcm-h8vh",
+          "value": "GHSA-ch6p-4jcm-h8vh",
+          "url": "https://github.com/advisories/GHSA-ch6p-4jcm-h8vh"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-ch6p-4jcm-h8vh"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-ch6p-4jcm-h8vh in Microsoft.AspNetCore.Mvc.ViewFeatures-1.0.0",
+      "description": "Moderate severity vulnerability that affects Microsoft.AspNetCore.Mvc and Microsoft.AspNetCore.Mvc.Core",
+      "cve": "GHSA-ch6p-4jcm-h8vh",
+      "severity": "Medium",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.ViewFeatures",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.ViewFeatures"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-ch6p-4jcm-h8vh",
+          "value": "GHSA-ch6p-4jcm-h8vh",
+          "url": "https://github.com/advisories/GHSA-ch6p-4jcm-h8vh"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-ch6p-4jcm-h8vh"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-cmhx-cq75-c4mj in System.Text.RegularExpressions-4.3.0",
+      "description": "Regular Expression Denial of Service (ReDoS)",
+      "cve": "GHSA-cmhx-cq75-c4mj",
+      "severity": "Medium",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "System.Text.RegularExpressions",
+        "package_version": "4.3.0",
+        "fixed_version": "4.3.1",
+        "summary": "Upgrade System.Text.RegularExpressions to 4.3.1"
+      },
+      "solution": "Upgrade System.Text.RegularExpressions to 4.3.1",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "System.Text.RegularExpressions"
+          },
+          "version": "4.3.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-cmhx-cq75-c4mj",
+          "value": "GHSA-cmhx-cq75-c4mj",
+          "url": "https://github.com/advisories/GHSA-cmhx-cq75-c4mj"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-cmhx-cq75-c4mj"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-ghhp-997w-qr28 in System.Text.Encodings.Web-4.4.0",
+      "description": ".NET Core Remote Code Execution Vulnerability",
+      "cve": "GHSA-ghhp-997w-qr28",
+      "severity": "Critical",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "System.Text.Encodings.Web",
+        "package_version": "4.4.0",
+        "fixed_version": "4.5.1",
+        "summary": "Upgrade System.Text.Encodings.Web to 4.5.1"
+      },
+      "solution": "Upgrade System.Text.Encodings.Web to 4.5.1",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "System.Text.Encodings.Web"
+          },
+          "version": "4.4.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-ghhp-997w-qr28",
+          "value": "GHSA-ghhp-997w-qr28",
+          "url": "https://github.com/advisories/GHSA-ghhp-997w-qr28"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-ghhp-997w-qr28"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-j8f4-2w4p-mhjc in Microsoft.AspNetCore.Mvc.DataAnnotations-1.0.0",
+      "description": "Moderate severity vulnerability that affects Microsoft.AspNetCore.Mvc",
+      "cve": "GHSA-j8f4-2w4p-mhjc",
+      "severity": "Medium",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.DataAnnotations",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.DataAnnotations"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-j8f4-2w4p-mhjc",
+          "value": "GHSA-j8f4-2w4p-mhjc",
+          "url": "https://github.com/advisories/GHSA-j8f4-2w4p-mhjc"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-j8f4-2w4p-mhjc"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-j8f4-2w4p-mhjc in Microsoft.AspNetCore.Mvc.ViewFeatures-1.0.0",
+      "description": "Moderate severity vulnerability that affects Microsoft.AspNetCore.Mvc",
+      "cve": "GHSA-j8f4-2w4p-mhjc",
+      "severity": "Medium",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.ViewFeatures",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.ViewFeatures"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-j8f4-2w4p-mhjc",
+          "value": "GHSA-j8f4-2w4p-mhjc",
+          "url": "https://github.com/advisories/GHSA-j8f4-2w4p-mhjc"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-j8f4-2w4p-mhjc"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-qhqf-ghgh-x2m4 in Microsoft.AspNetCore.Mvc.DataAnnotations-1.0.0",
+      "description": "High severity vulnerability that affects Microsoft.AspNetCore.Mvc",
+      "cve": "GHSA-qhqf-ghgh-x2m4",
+      "severity": "High",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.DataAnnotations",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.DataAnnotations to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.DataAnnotations"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-qhqf-ghgh-x2m4",
+          "value": "GHSA-qhqf-ghgh-x2m4",
+          "url": "https://github.com/advisories/GHSA-qhqf-ghgh-x2m4"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-qhqf-ghgh-x2m4"
+        }
+      ]
+    },{
+      "language": "dotnet",
+      "category": "container_scanning",
+      "message": "GHSA-qhqf-ghgh-x2m4 in Microsoft.AspNetCore.Mvc.ViewFeatures-1.0.0",
+      "description": "High severity vulnerability that affects Microsoft.AspNetCore.Mvc",
+      "cve": "GHSA-qhqf-ghgh-x2m4",
+      "severity": "High",
+      "confidence": "Unknown",
+      "remediateMetadata": {
+        "package_name": "Microsoft.AspNetCore.Mvc.ViewFeatures",
+        "package_version": "1.0.0",
+        "fixed_version": "1.0.4",
+        "summary": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4"
+      },
+      "solution": "Upgrade Microsoft.AspNetCore.Mvc.ViewFeatures to 1.0.4",
+      "scanner": {
+        "id": "grype",
+        "name": "grype"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "Microsoft.AspNetCore.Mvc.ViewFeatures"
+          },
+          "version": "1.0.0"
+        },
+        "operating_system": "github:nuget",
+        "image": "registry.gitlab.com/security-products/api-security:latest"
+      },
+      "identifiers": [
+        {
+          "type": "ghsa",
+          "name": "GHSA-qhqf-ghgh-x2m4",
+          "value": "GHSA-qhqf-ghgh-x2m4",
+          "url": "https://github.com/advisories/GHSA-qhqf-ghgh-x2m4"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-qhqf-ghgh-x2m4"
+        }
+      ]
+    }
+  ],
+  "remediations": [],
+  "scan": {
+    "scanner": {
+      "id": "grype",
+      "name": "Grype",
+      "url": "https://github.com/anchore/grype",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "0.37.0"
+    },
+    "analyzer": {
+      "id": "gcs",
+      "name": "GitLab Container Scanning",
+      "vendor": {
+        "name": "GitLab"
+      }
+    },
+    "type": "container_scanning",
+    "start_time": "",
+    "end_time": "",
+    "status": "success"
+  }
+}
