@@ -79,7 +79,6 @@ RSpec.describe Gcs::Converter do
       context 'when using grype with language information' do
         let(:scanner_report) { :grype_with_language }
 
-        # This test is broken and returns 0 vulnerabilities
         it_behaves_like 'valid conversion'
       end
 
@@ -94,7 +93,6 @@ RSpec.describe Gcs::Converter do
           expect(gitlab_format.dig('vulnerabilities', 0, 'location', 'image')).to eq('g:0.1')
         end
 
-        # This test is broken and returns 0 vulnerabilities
         it_behaves_like 'valid conversion'
       end
 
@@ -108,14 +106,14 @@ RSpec.describe Gcs::Converter do
         allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(true)
       end
 
-      context 'when vulnerability has language information' do
-        let(:scanner_report) { :grype_with_language }
+      let(:scanner_report) { :grype_with_language }
 
-        it_behaves_like 'valid conversion'
+      it 'passes schema validation' do
+        expect(gitlab_format).to match_schema(:container_scanning)
       end
 
-      context 'when vulnerability does not have language information' do
-        it_behaves_like 'valid conversion'
+      it 'returns only OS vulnerabilities' do
+        expect(gitlab_format['vulnerabilities'].size).to eq(0)
       end
     end
 

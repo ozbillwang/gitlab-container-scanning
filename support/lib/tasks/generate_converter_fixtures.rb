@@ -28,6 +28,7 @@ class GenerateConverterFixtures
       opts = opts.merge(image_name: 'g:0.1') if path == 'spec/fixtures/converter/scanner_output/trivy-with-language.json'
 
       ENV['CS_DEFAULT_BRANCH_IMAGE'] = 'registry.example.com/group/project:latest'
+      ENV['CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN'] = 'false' if language_scan_file?(path)
 
       ::Gcs::Converter.new(scanner_output, opts).convert
     end
@@ -41,6 +42,10 @@ class GenerateConverterFixtures
       raw = ::JSON.pretty_generate(gitlab_format, { indent: '  ' })
       ::File.write(path, raw)
       puts "Wrote new expectation to #{path}"
+    end
+
+    def language_scan_file?(path)
+      path.end_with?("-with-language.json")
     end
   end
 end
