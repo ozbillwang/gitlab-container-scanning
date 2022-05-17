@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 RSpec.describe Gcs::DependencyListConverter do
   let(:trivy_template) { File.read(Gcs::Trivy.dependencies_template_file) }
-  let(:raw_trivy_output_dependencies) { fixture_file_content('trivy-dependencies.json') }
-  let(:trivy_output_dependencies) { raw_trivy_output_dependencies }
+  let(:fixture_file_path) { 'trivy-dependencies.json' }
+  let(:raw_scanner_output) { fixture_file_content(fixture_file_path) }
+  let(:output_dependencies) { raw_scanner_output }
   let(:scan_runtime) { { start_time: '2021-09-15T08:36:08', end_time: '2021-09-15T08:36:25' } }
+
+  subject(:gitlab_format) { described_class.new(trivy_template, output_dependencies, scan_runtime).convert }
 
   before(:all) do
     setup_schemas!
   end
 
   describe '#convert' do
-    subject(:gitlab_format) { described_class.new(trivy_template, trivy_output_dependencies, scan_runtime).convert }
-
     it 'converts into valid format' do
       expect(gitlab_format).to match_schema(:dependency_scanning)
     end
@@ -35,9 +36,9 @@ RSpec.describe Gcs::DependencyListConverter do
     }.each do |pkg_manage, distros|
       distros.each do |distro|
         context "for #{distro} OS" do
-          let(:trivy_output_dependencies) do
+          let(:output_dependencies) do
             JSON
-              .parse(raw_trivy_output_dependencies)
+              .parse(raw_scanner_output)
               .tap { |parsed_report| parsed_report['Metadata']['OS']['Family'] = distro }
               .to_json
           end
@@ -93,7 +94,7 @@ RSpec.describe Gcs::DependencyListConverter do
     end
 
     context 'when report does not contain information about installed packages' do
-      let(:raw_trivy_output_dependencies) { fixture_file_content('trivy-scratch-image.json') }
+      let(:raw_scanner_output) { fixture_file_content('trivy-scratch-image.json') }
 
       it 'returns empty dependency report' do
         expect(gitlab_format['dependency_files']).to be_empty
