@@ -1,7 +1,7 @@
 # Yamllint of CI-related yaml and changelogs.
 lint-yaml:
   extends: .not-on-schedule
-  image: pipelinecomponents/yamllint:latest
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/pipelinecomponents/yamllint:latest
   stage: initial-test
   variables:
     LINT_PATHS: .gitlab-ci.yml .rubocop.yml spec/fixtures
@@ -11,7 +11,7 @@ lint-yaml:
 shellcheck:
   extends: .not-on-schedule
   stage: initial-test
-  image: koalaman/shellcheck-alpine:stable
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/koalaman/shellcheck-alpine:stable
   script:
     - shellcheck -e SC1071 script/*
 
