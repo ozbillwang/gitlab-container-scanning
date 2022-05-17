@@ -25,7 +25,9 @@ class GenerateConverterFixtures
       scanner_output = ::File.open(path).read
 
       opts = CONVERTER_OPTS
-      opts = opts.merge(image_name: 'g:0.1') if path == 'spec/fixtures/converter/scanner_output/trivy-with-language.json'
+      if path == 'spec/fixtures/converter/scanner_output/trivy-with-language.json'
+        opts = opts.merge(image_name: 'g:0.1')
+      end
 
       ENV['CS_DEFAULT_BRANCH_IMAGE'] = 'registry.example.com/group/project:latest'
       ENV['CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN'] = 'false' if language_scan_file?(path)

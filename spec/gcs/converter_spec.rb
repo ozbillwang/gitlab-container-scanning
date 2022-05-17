@@ -7,7 +7,6 @@ RSpec.describe Gcs::Converter do
       trivy_debian: 'trivy-debian.json',
       trivy_dependencies: 'trivy-dependencies.json',
       trivy_scratch_image: 'trivy-scratch-image.json',
-      trivy_unsupported_os: 'trivy-unsupported-os.json',
       trivy_with_language: 'trivy-with-language.json',
       grype_with_language: 'grype-with-language.json'
     }
@@ -48,8 +47,7 @@ RSpec.describe Gcs::Converter do
       [
         :trivy_alpine,
         :trivy_centos,
-        :trivy_debian,
-        :trivy_unsupported_os
+        :trivy_debian
       ]
     end
 
