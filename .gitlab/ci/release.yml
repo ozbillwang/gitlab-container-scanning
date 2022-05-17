@@ -5,7 +5,7 @@
   image: $BUILD_IMAGES/docker-stable_ruby
   stage: release
   services:
-    - docker:19.03.5-dind
+    - docker:20.10-dind
   script:
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
