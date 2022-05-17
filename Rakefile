@@ -6,11 +6,8 @@ require 'yaml'
 require 'date'
 require 'gcs'
 require 'gcs/version'
-require_relative 'support/lib/git_helper'
-require_relative 'support/lib/gitlab_client'
-require_relative 'support/lib/scanner_update'
-require_relative 'support/lib/status'
-require_relative 'support/lib/tag_release'
+
+Dir.glob('support/lib/tasks/**/*.rb').sort.each { |f| require_relative(f) }
 
 RSPEC_XML_PATH = ENV['CI_PROJECT_DIR'].to_s == '' ? "rspec.xml" : "#{ENV['CI_PROJECT_DIR']}/rspec.xml"
 COMMON_RSPEC_OPTIONS = "--format progress --format RspecJunitFormatter --out #{RSPEC_XML_PATH}"
@@ -38,6 +35,10 @@ end
 task default: :spec
 task unit_test: :spec_unit
 task integration_test: :spec_integration
+
+task :generate_converter_fixtures do
+  GenerateConverterFixtures.execute
+end
 
 task :integration do
   if ENV['CI_SERVER']
