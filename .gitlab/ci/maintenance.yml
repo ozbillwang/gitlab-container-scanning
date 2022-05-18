@@ -59,9 +59,6 @@ check-db-age:
     - docker:20.10-dind
   variables:
     IMAGE_TAG: latest
-  before_script:
-    - echo "$CI_DEPENDENCY_PROXY_PASSWORD" | docker login $CI_DEPENDENCY_PROXY_SERVER
-      --username $CI_DEPENDENCY_PROXY_USER --password-stdin
   script:
     ## For IMAGE_TAG_POSTFIX use string after `:` in DOCKERFILE_SOURCE (Dockerfile.ubi:fips => fips).
     - |
