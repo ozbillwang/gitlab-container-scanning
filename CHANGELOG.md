@@ -1,3 +1,15 @@
+## 5.1.2 (2022-05-20)
+
+### changed (3 changes)
+
+- [Update trivy to version 0.28.0](gitlab-org/security-products/analyzers/container-scanning@61f4755020ef3e278664cc10e7b3ac9994897d1a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2764))
+- [Update security report schema to version 14.1.2](gitlab-org/security-products/analyzers/container-scanning@09ed30dc2932973283ac01270ff4e35ebb64d3f0) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2749))
+- [Update trivy to version 0.27.1](gitlab-org/security-products/analyzers/container-scanning@7fc825a0c752d4aa9e1bb7f40be3edb18439f8cd) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2752))
+
+### fixed (1 change)
+
+- [When using Trivy, only run the vulnerabilities check](gitlab-org/security-products/analyzers/container-scanning@0f9b0fc517033223a8fcd30a7123fa1b9f8f364d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2752))
+
 ## 5.1.0 (2022-05-15)
 
 ### changed (1 change)
