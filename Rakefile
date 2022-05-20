@@ -36,6 +36,7 @@ task default: :spec
 task unit_test: :spec_unit
 task integration_test: :spec_integration
 
+desc 'Generate new test fixtures for spec/gcs/converter_spec.rb'
 task :generate_converter_fixtures do
   GenerateConverterFixtures.execute
 end
