@@ -11,19 +11,8 @@ module Gcs
     }.freeze
 
     DATABASE_PATH = "/home/gitlab/.cache/trivy/db"
-    DATABASE_FILES = %w[trivy.db metadata.json].freeze
 
     class << self
-      def setup
-        DATABASE_FILES.each do |file|
-          src = File.join(database_path, file)
-          dest = File.join(DATABASE_PATH, file)
-
-          File.delete(dest) if File.exist?(dest)
-          File.symlink(src, dest)
-        end
-      end
-
       def db_updated_at
         version_info[:db_updated_at]
       end
@@ -44,6 +33,7 @@ module Gcs
           "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{template_file}",
           "--output #{output_file_name}",
+          "--cache-dir #{database_path}",
           image_name
         ].compact
       end
@@ -56,6 +46,7 @@ module Gcs
           "--offline-scan --skip-update --security-checks vuln",
           "--format json",
           "--output #{output_file_name}",
+          "--cache-dir #{database_path}",
           image_name
         ]
       end
