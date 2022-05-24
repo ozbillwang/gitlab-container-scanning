@@ -61,6 +61,8 @@ module Gcs
       end
 
       def version_info
+        setup
+
         stdout, _, status = Gcs.shell.execute(%w[trivy --version])
 
         return "" unless status.success?

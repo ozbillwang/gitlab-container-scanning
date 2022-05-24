@@ -95,12 +95,20 @@ RSpec.describe Gcs::Trivy do
   end
 
   describe '.db_updated_at' do
+    before do
+      allow(described_class).to receive(:setup)
+    end
+
     it 'returns the value extracted from the scanner output' do
       expect(described_class.send(:db_updated_at)).to eq('2021-05-19T12:06:02+00:00')
     end
   end
 
   describe '.scanner_version' do
+    before do
+      allow(described_class).to receive(:setup)
+    end
+
     it 'returns the value extracted from the scanner output' do
       expect(described_class.send(:scanner_version)).to eq('Version: 0.15.0')
     end
@@ -116,6 +124,7 @@ RSpec.describe Gcs::Trivy do
     subject(:os_scan_image) { described_class.scan_os_packages(image_name, output_file_name) }
 
     it 'runs trivy binary with given severity levels' do
+      allow(described_class).to receive(:setup)
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
       allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
@@ -147,6 +156,7 @@ RSpec.describe Gcs::Trivy do
     subject(:scan_image) { described_class.scan_image(image_name, output_file_name) }
 
     it 'runs trivy binary with given severity levels' do
+      allow(described_class).to receive(:setup)
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
@@ -174,6 +184,7 @@ RSpec.describe Gcs::Trivy do
     end
 
     it 'runs trivy binary without severity level' do
+      allow(described_class).to receive(:setup)
       allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
       allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
@@ -200,6 +211,7 @@ RSpec.describe Gcs::Trivy do
 
     context 'when language specific scan is enabled' do
       before do
+        allow(described_class).to receive(:setup)
         allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
         allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
         allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(false)
@@ -230,6 +242,7 @@ RSpec.describe Gcs::Trivy do
 
     context 'when ignoring unfixed vulnerabilities is enabled' do
       before do
+        allow(described_class).to receive(:setup)
         allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
         allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
         allow(Gcs::Environment).to receive(:ignore_unfixed_vulnerabilities?).and_return(true)
