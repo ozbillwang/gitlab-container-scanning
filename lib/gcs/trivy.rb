@@ -10,7 +10,7 @@ module Gcs
       "CRITICAL" => 4
     }.freeze
 
-    DATABASE_PATH = "/home/gitlab/.cache/trivy/db"
+    CACHE_DIR_BASE = "/home/gitlab/.cache/trivy/db"
 
     class << self
       def db_updated_at
@@ -33,7 +33,6 @@ module Gcs
           "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{template_file}",
           "--output #{output_file_name}",
-          "--cache-dir #{database_path}",
           image_name
         ].compact
       end
@@ -46,7 +45,6 @@ module Gcs
           "--offline-scan --skip-update --security-checks vuln",
           "--format json",
           "--output #{output_file_name}",
-          "--cache-dir #{database_path}",
           image_name
         ]
       end
@@ -99,6 +97,7 @@ module Gcs
         docker_registry_security_config = Gcs::Environment.docker_registry_security_config
 
         {
+          "TRIVY_CACHE_DIR" => cache_dir,
           "TRIVY_USERNAME" => docker_registry_credentials && docker_registry_credentials['username'],
           "TRIVY_PASSWORD" => docker_registry_credentials && docker_registry_credentials['password'],
           "TRIVY_DEBUG" => debug_enabled.to_s,
@@ -115,11 +114,11 @@ module Gcs
         version_info[:binary_version]
       end
 
-      def database_path
+      def cache_dir
         if Gcs::Environment.ee?
-          File.join(DATABASE_PATH, "ee")
+          File.join(CACHE_DIR_BASE, "ee")
         else
-          File.join(DATABASE_PATH, "ce")
+          File.join(CACHE_DIR_BASE, "ce")
         end
       end
     end

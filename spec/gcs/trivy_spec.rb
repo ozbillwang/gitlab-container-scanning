@@ -20,6 +20,7 @@ RSpec.describe Gcs::Trivy do
 
   let(:expected_environment) do
     {
+      'TRIVY_CACHE_DIR' => expected_cache_dir,
       'TRIVY_DEBUG' => '',
       'TRIVY_INSECURE' => 'false',
       'TRIVY_NON_SSL' => 'false',
@@ -82,7 +83,6 @@ RSpec.describe Gcs::Trivy do
         "--offline-scan --skip-update --security-checks vuln",
         "--format json",
         "--output #{output_file_name}",
-        "--cache-dir #{expected_cache_dir}",
         image_name
       ]
     end
@@ -117,7 +117,6 @@ RSpec.describe Gcs::Trivy do
         "--offline-scan --skip-update --security-checks vuln",
         "--format template --template @#{described_class.template_file}",
         "--output #{output_file_name}",
-        "--cache-dir #{expected_cache_dir}",
         image_name
       ]
     end
@@ -134,7 +133,6 @@ RSpec.describe Gcs::Trivy do
           "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{described_class.template_file}",
           "--output #{output_file_name}",
-          "--cache-dir #{expected_cache_dir}",
           image_name
         ]
       end
@@ -150,7 +148,6 @@ RSpec.describe Gcs::Trivy do
           "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{described_class.template_file}",
           "--output #{output_file_name}",
-          "--cache-dir #{expected_cache_dir}",
           image_name
         ]
       end
@@ -172,7 +169,6 @@ RSpec.describe Gcs::Trivy do
           "--offline-scan --skip-update --security-checks vuln",
           "--format template --template @#{described_class.template_file}",
           "--output #{output_file_name}",
-          "--cache-dir #{expected_cache_dir}",
           image_name
         ]
       end
