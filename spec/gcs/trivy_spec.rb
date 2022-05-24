@@ -3,7 +3,7 @@ RSpec.describe Gcs::Trivy do
   let(:image_name) { 'alpine:latest' }
   let(:output_file_name) { 'gl-report.json' }
   let(:features) { '' }
-  let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/db/ce" }
+  let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ce" }
   let(:severity_threshold) { "UNKNOWN" }
 
   let(:version_data) do
@@ -118,7 +118,7 @@ RSpec.describe Gcs::Trivy do
 
     context 'when EE' do
       let(:features) { 'container_scanning' }
-      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/db/ee" }
+      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
 
       it_behaves_like 'scan image command'
     end
@@ -200,7 +200,7 @@ RSpec.describe Gcs::Trivy do
 
     context 'when EE' do
       let(:features) { 'container_scanning' }
-      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/db/ee" }
+      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
 
       it_behaves_like 'scan image command'
     end

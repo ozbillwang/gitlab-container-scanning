@@ -10,7 +10,7 @@ module Gcs
       "CRITICAL" => 4
     }.freeze
 
-    CACHE_DIR_BASE = "/home/gitlab/.cache/trivy/db"
+    CACHE_DIR_BASE = "/home/gitlab/.cache/trivy"
 
     class << self
       def db_updated_at

@@ -4,8 +4,6 @@ module Gcs
   class Cli < Thor
     desc 'scan IMAGE', 'Scan an image'
     def scan(image_name = ::Gcs::Environment.docker_image)
-      Gcs::Environment.scanner.setup
-
       plugins = [
         Gcs::Plugin::ContainerScan,
         Gcs::Plugin::DependencyScan
@@ -26,8 +24,6 @@ module Gcs
 
     desc 'db-check', 'Check if the vulnerability database is up to date'
     def db_check
-      Gcs::Environment.scanner.setup
-
       last_updated = Environment.scanner.db_updated_at
       Gcs.logger.info("Vulnerability database was lasted updated at #{last_updated}")
 
