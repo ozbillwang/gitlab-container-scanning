@@ -8,13 +8,12 @@ RSpec.describe Gcs::Trivy do
 
   let(:version_data) do
     <<~HEREDOC
-      Version: 0.15.0
+      Version: 0.28.0
       Vulnerability DB:
-        Type: Light
-        Version: 1
-        UpdatedAt: 2021-05-19 12:06:02.55303056 +0000 UTC
-        NextUpdate: 2021-05-20 00:06:02.55303016 +0000 UTC
-        DownloadedAt: 2021-05-19 13:51:07.44954 +0000 UTC
+        Version: 2
+        UpdatedAt: 2022-05-24 12:07:24.230321126 +0000 UTC
+        NextUpdate: 2022-05-24 18:07:24.230320726 +0000 UTC
+        DownloadedAt: 2022-05-24 17:47:39.475919046 +0000 UTC
     HEREDOC
   end
 
@@ -42,13 +41,14 @@ RSpec.describe Gcs::Trivy do
 
     status = double(success?: true)
 
-    allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).and_return([version_data, nil, status])
+    allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment)
+      .and_return([version_data, nil, status])
   end
 
   RSpec.shared_examples 'scan image command' do
     it 'calls #execute with expected command and environment' do
       expect(Gcs.shell).to receive(:execute).with(expected_command, expected_environment)
-      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
+      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment).twice
 
       scan_image
     end
@@ -56,13 +56,31 @@ RSpec.describe Gcs::Trivy do
 
   describe '.db_updated_at' do
     it 'returns the value extracted from the scanner output' do
-      expect(described_class.send(:db_updated_at)).to eq('2021-05-19T12:06:02+00:00')
+      expect(described_class.send(:db_updated_at)).to eq('2022-05-24T18:07:24+00:00')
+    end
+  end
+
+  describe '.version_info' do
+    subject(:version_info) { described_class.send(:version_info) }
+
+    it 'calls trivy --version with expected environment' do
+      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment)
+      version_info
+    end
+
+    it 'returns correct data' do
+      expect(version_info).to eq(
+        {
+          binary_version: "Version: 0.28.0",
+          db_updated_at: "2022-05-24T18:07:24+00:00"
+        }
+      )
     end
   end
 
   describe '.scanner_version' do
     it 'returns the value extracted from the scanner output' do
-      expect(described_class.send(:scanner_version)).to eq('Version: 0.15.0')
+      expect(described_class.send(:scanner_version)).to eq('Version: 0.28.0')
     end
   end
 
