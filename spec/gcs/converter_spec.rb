@@ -8,7 +8,8 @@ RSpec.describe Gcs::Converter do
       trivy_dependencies: 'trivy-dependencies.json',
       trivy_scratch_image: 'trivy-scratch-image.json',
       trivy_with_language: 'trivy-with-language.json',
-      grype_with_language: 'grype-with-language.json'
+      grype_with_language: 'grype-with-language.json',
+      grype_dotnet: 'grype-dotnet.json'
     }
   end
 
@@ -75,9 +76,16 @@ RSpec.describe Gcs::Converter do
       end
 
       context 'when using grype with language information' do
-        let(:scanner_report) { :grype_with_language }
+        where(:scanner_report) do
+          [
+            :grype_with_language,
+            :grype_dotnet
+          ]
+        end
 
-        it_behaves_like 'valid conversion'
+        with_them do
+          it_behaves_like 'valid conversion'
+        end
       end
 
       context 'when using trivy with language information' do
@@ -104,14 +112,21 @@ RSpec.describe Gcs::Converter do
         allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(true)
       end
 
-      let(:scanner_report) { :grype_with_language }
-
-      it 'passes schema validation' do
-        expect(gitlab_format).to match_schema(:container_scanning)
+      where(:scanner_report) do
+        [
+          :grype_with_language,
+          :grype_dotnet
+        ]
       end
 
-      it 'returns only OS vulnerabilities' do
-        expect(gitlab_format['vulnerabilities'].size).to eq(0)
+      with_them do
+        it 'passes schema validation' do
+          expect(gitlab_format).to match_schema(:container_scanning)
+        end
+
+        it 'reports only OS vulnerabilities' do
+          expect(gitlab_format['vulnerabilities'].size).to eq(0)
+        end
       end
     end
 
