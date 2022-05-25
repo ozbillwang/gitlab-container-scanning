@@ -3,7 +3,7 @@
 set -e
 
 CE_TRIVY_DB_REGISTRY="ghcr.io/aquasecurity/trivy-db"
-EE_TRIVY_DB_REGISTRY="registry.gitlab.com/gitlab-org/security-products/dependencies/trivy-db-glad"
+EE_TRIVY_DB_REGISTRY="registry.gitlab.com/gitlab-org/security-products/dependencies/non-existent"
 
 setup_trivy_files() {
   echo "Creating temp directory"
