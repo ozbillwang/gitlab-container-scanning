@@ -20,11 +20,13 @@ setup_trivy_files() {
   mv /home/gitlab/legal /home/gitlab/.cache/trivy
 
   echo "Dowloading CE Trivy DB"
-  oras pull "$CE_TRIVY_DB_REGISTRY":"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C /home/gitlab/.cache/trivy/ce/db
+  oras pull "$CE_TRIVY_DB_REGISTRY":"${trivy_db_version}" -a
+  tar -zxvf db.tar.gz -C /home/gitlab/.cache/trivy/ce/db
   rm -f db.tar.gz
 
   echo "Dowloading EE Trivy DB"
-  oras pull "$EE_TRIVY_DB_REGISTRY":"${trivy_db_version}" -a && tar -zxvf db.tar.gz -C /home/gitlab/.cache/trivy/ee/db
+  oras pull "$EE_TRIVY_DB_REGISTRY":"${trivy_db_version}" -a
+  tar -zxvf db.tar.gz -C /home/gitlab/.cache/trivy/ee/db
   rm -f db.tar.gz
 
   chmod -R g+rw /home/gitlab/.cache/
