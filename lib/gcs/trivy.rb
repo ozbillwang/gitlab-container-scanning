@@ -10,20 +10,9 @@ module Gcs
       "CRITICAL" => 4
     }.freeze
 
-    DATABASE_PATH = "/home/gitlab/.cache/trivy/db"
-    DATABASE_FILES = %w[trivy.db metadata.json].freeze
+    CACHE_DIR_BASE = "/home/gitlab/.cache/trivy"
 
     class << self
-      def setup
-        DATABASE_FILES.each do |file|
-          src = File.join(database_path, file)
-          dest = File.join(DATABASE_PATH, file)
-
-          File.delete(dest) if File.exist?(dest)
-          File.symlink(src, dest)
-        end
-      end
-
       def db_updated_at
         version_info[:db_updated_at]
       end
@@ -61,7 +50,7 @@ module Gcs
       end
 
       def version_info
-        stdout, _, status = Gcs.shell.execute(%w[trivy --version])
+        stdout, _, status = Gcs.shell.execute(%w[trivy --version], environment)
 
         return "" unless status.success?
 
@@ -108,6 +97,7 @@ module Gcs
         docker_registry_security_config = Gcs::Environment.docker_registry_security_config
 
         {
+          "TRIVY_CACHE_DIR" => cache_dir,
           "TRIVY_USERNAME" => docker_registry_credentials && docker_registry_credentials['username'],
           "TRIVY_PASSWORD" => docker_registry_credentials && docker_registry_credentials['password'],
           "TRIVY_DEBUG" => debug_enabled.to_s,
@@ -124,11 +114,11 @@ module Gcs
         version_info[:binary_version]
       end
 
-      def database_path
+      def cache_dir
         if Gcs::Environment.ee?
-          File.join(DATABASE_PATH, "ee")
+          File.join(CACHE_DIR_BASE, "ee")
         else
-          File.join(DATABASE_PATH, "ce")
+          File.join(CACHE_DIR_BASE, "ce")
         end
       end
     end
