@@ -2,107 +2,85 @@
 RSpec.describe Gcs::Trivy do
   let(:image_name) { 'alpine:latest' }
   let(:output_file_name) { 'gl-report.json' }
+  let(:features) { '' }
+  let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ce" }
+  let(:severity_threshold) { "UNKNOWN" }
+
   let(:version_data) do
     <<~HEREDOC
-      Version: 0.15.0
+      Version: 0.28.0
       Vulnerability DB:
-        Type: Light
-        Version: 1
-        UpdatedAt: 2021-05-19 12:06:02.55303056 +0000 UTC
-        NextUpdate: 2021-05-20 00:06:02.55303016 +0000 UTC
-        DownloadedAt: 2021-05-19 13:51:07.44954 +0000 UTC
+        Version: 2
+        UpdatedAt: 2022-05-24 12:07:24.230321126 +0000 UTC
+        NextUpdate: 2022-05-24 18:07:24.230320726 +0000 UTC
+        DownloadedAt: 2022-05-24 17:47:39.475919046 +0000 UTC
     HEREDOC
+  end
+
+  let(:expected_environment) do
+    {
+      'TRIVY_CACHE_DIR' => expected_cache_dir,
+      'TRIVY_DEBUG' => '',
+      'TRIVY_INSECURE' => 'false',
+      'TRIVY_NON_SSL' => 'false',
+      'TRIVY_PASSWORD' => nil,
+      'TRIVY_USERNAME' => nil
+    }
+  end
+
+  around do |example|
+    with_modified_environment 'GITLAB_FEATURES' => features do
+      example.run
+    end
   end
 
   before do
     allow(Gcs::Environment).to receive(:default_docker_image).and_return("alpine:latest")
+    allow(Gcs::Environment).to receive(:severity_level_name).and_return(severity_threshold)
+    allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
     status = double(success?: true)
 
-    allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).and_return([version_data, nil, status])
+    allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment)
+      .and_return([version_data, nil, status])
   end
 
-  describe '.setup' do
-    let(:tmp_dir) { Dir.mktmpdir }
+  RSpec.shared_examples 'scan image command' do
+    it 'calls #execute with expected command and environment' do
+      expect(Gcs.shell).to receive(:execute).with(expected_command, expected_environment)
+      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment).twice
 
-    let(:database_dest) { database_path("trivy.db") }
-    let(:metadata_dest) { database_path("metadata.json") }
-
-    let(:database_src) { File.readlink(database_path("trivy.db")) }
-    let(:metadata_src) { File.readlink(database_path("metadata.json")) }
-
-    def database_path(*segments)
-      File.join(described_class::DATABASE_PATH, *segments)
-    end
-
-    before do
-      stub_const('Gcs::Trivy::DATABASE_PATH', tmp_dir)
-
-      %w[ce ee].each do |segment|
-        FileUtils.mkdir_p(database_path(segment))
-        FileUtils.touch(database_path(segment, "trivy.db"))
-        FileUtils.touch(database_path(segment, "metadata.json"))
-      end
-
-      described_class.setup
-    end
-
-    around do |example|
-      with_modified_environment 'GITLAB_FEATURES' => features do
-        example.run
-      end
-    end
-
-    after do
-      FileUtils.rm_rf(tmp_dir)
-    end
-
-    context 'when EE' do
-      let(:features) { 'container_scanning' }
-
-      it 'symlinks the EE database' do
-        expect(database_src).to eq(database_path("ee", "trivy.db"))
-      end
-
-      it 'symlinks EE metadata' do
-        expect(metadata_src).to eq(database_path("ee", "metadata.json"))
-      end
-
-      context 'when already setup' do
-        it 'does not symlink' do
-          expect { described_class.setup }.not_to raise_error
-        end
-      end
-    end
-
-    context 'when CE' do
-      let(:features) { '' }
-
-      it 'symlinks the CE database' do
-        expect(database_src).to eq(database_path("ce", "trivy.db"))
-      end
-
-      it 'symlinks CE metadata' do
-        expect(metadata_src).to eq(database_path("ce", "metadata.json"))
-      end
-
-      context 'when already setup' do
-        it 'does not symlink' do
-          expect { described_class.setup }.not_to raise_error
-        end
-      end
+      scan_image
     end
   end
 
   describe '.db_updated_at' do
     it 'returns the value extracted from the scanner output' do
-      expect(described_class.send(:db_updated_at)).to eq('2021-05-19T12:06:02+00:00')
+      expect(described_class.send(:db_updated_at)).to eq('2022-05-24T18:07:24+00:00')
+    end
+  end
+
+  describe '.version_info' do
+    subject(:version_info) { described_class.send(:version_info) }
+
+    it 'calls trivy --version with expected environment' do
+      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment)
+      version_info
+    end
+
+    it 'returns correct data' do
+      expect(version_info).to eq(
+        {
+          binary_version: "Version: 0.28.0",
+          db_updated_at: "2022-05-24T18:07:24+00:00"
+        }
+      )
     end
   end
 
   describe '.scanner_version' do
     it 'returns the value extracted from the scanner output' do
-      expect(described_class.send(:scanner_version)).to eq('Version: 0.15.0')
+      expect(described_class.send(:scanner_version)).to eq('Version: 0.28.0')
     end
   end
 
@@ -113,14 +91,10 @@ RSpec.describe Gcs::Trivy do
   end
 
   describe '.scan_os_packages' do
-    subject(:os_scan_image) { described_class.scan_os_packages(image_name, output_file_name) }
+    subject(:scan_image) { described_class.scan_os_packages(image_name, output_file_name) }
 
-    it 'runs trivy binary with given severity levels' do
-      allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
-      allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
-      allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
-
-      cmd = [
+    let(:expected_command) do
+      [
         "trivy image",
         "--list-all-pkgs",
         "--no-progress",
@@ -129,30 +103,33 @@ RSpec.describe Gcs::Trivy do
         "--output #{output_file_name}",
         image_name
       ]
+    end
 
-      expect(Gcs.shell).to receive(:execute)
-        .with(cmd, {
-                'TRIVY_DEBUG' => '',
-                'TRIVY_INSECURE' => 'false',
-                'TRIVY_NON_SSL' => 'false',
-                'TRIVY_PASSWORD' => nil,
-                'TRIVY_USERNAME' => nil
-              })
+    context 'when given severity levels' do
+      let(:severity_threshold) { "HIGH" }
+      # Should behave the same as default because OS package list does not have severities
 
-      os_scan_image
+      before do
+        allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
+      end
+
+      it_behaves_like 'scan image command'
+    end
+
+    context 'when EE' do
+      let(:features) { 'container_scanning' }
+      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
+
+      it_behaves_like 'scan image command'
     end
   end
 
   describe 'scanning with trivy' do
     subject(:scan_image) { described_class.scan_image(image_name, output_file_name) }
 
-    it 'runs trivy binary with given severity levels' do
-      allow(Gcs::Environment).to receive(:severity_level_name).and_return("LOW")
-      allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
-
-      cmd = [
+    let(:expected_command) do
+      [
         "trivy image",
-        "--severity LOW,MEDIUM,HIGH,CRITICAL",
         "--vuln-type os",
         "--no-progress",
         "--offline-scan --skip-update --security-checks vuln",
@@ -160,53 +137,30 @@ RSpec.describe Gcs::Trivy do
         "--output #{output_file_name}",
         image_name
       ]
-
-      expect(Gcs.shell).to receive(:execute).with(cmd, {
-                                                    "TRIVY_DEBUG" => "",
-                                                    "TRIVY_INSECURE" => "false",
-                                                    "TRIVY_NON_SSL" => "false",
-                                                    "TRIVY_PASSWORD" => nil,
-                                                    "TRIVY_USERNAME" => nil
-                                                  })
-      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
-
-      scan_image
     end
 
-    it 'runs trivy binary without severity level' do
-      allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
-      allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
+    context 'when given severity levels' do
+      let(:severity_threshold) { "HIGH" }
 
-      cmd = [
-        "trivy image",
-        "--vuln-type os",
-        "--no-progress",
-        "--offline-scan --skip-update --security-checks vuln",
-        "--format template --template @#{described_class.template_file}",
-        "--output #{output_file_name}",
-        image_name
-      ]
+      let(:expected_command) do
+        [
+          "trivy image",
+          "--severity HIGH,CRITICAL",
+          "--vuln-type os",
+          "--no-progress",
+          "--offline-scan --skip-update --security-checks vuln",
+          "--format template --template @#{described_class.template_file}",
+          "--output #{output_file_name}",
+          image_name
+        ]
+      end
 
-      expect(Gcs.shell).to receive(:execute).with(cmd, {
-                                                    "TRIVY_DEBUG" => "",
-                                                    "TRIVY_INSECURE" => "false",
-                                                    "TRIVY_NON_SSL" => "false",
-                                                    "TRIVY_PASSWORD" => nil,
-                                                    "TRIVY_USERNAME" => nil
-                                                  })
-
-      scan_image
+      it_behaves_like 'scan image command'
     end
 
     context 'when language specific scan is enabled' do
-      before do
-        allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
-        allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
-        allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(false)
-      end
-
-      it 'runs trivy binary without specifying type of vulnerability' do
-        cmd = [
+      let(:expected_command) do
+        [
           "trivy image",
           "--no-progress",
           "--offline-scan --skip-update --security-checks vuln",
@@ -214,29 +168,18 @@ RSpec.describe Gcs::Trivy do
           "--output #{output_file_name}",
           image_name
         ]
-
-        expect(Gcs.shell).to receive(:execute).with(cmd, {
-                                                      "TRIVY_DEBUG" => "",
-                                                      "TRIVY_INSECURE" => "false",
-                                                      "TRIVY_NON_SSL" => "false",
-                                                      "TRIVY_PASSWORD" => nil,
-                                                      "TRIVY_USERNAME" => nil
-                                                    })
-        expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
-
-        scan_image
       end
+
+      before do
+        allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(false)
+      end
+
+      it_behaves_like 'scan image command'
     end
 
     context 'when ignoring unfixed vulnerabilities is enabled' do
-      before do
-        allow(Gcs::Environment).to receive(:severity_level_name).and_return("UNKNOWN")
-        allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
-        allow(Gcs::Environment).to receive(:ignore_unfixed_vulnerabilities?).and_return(true)
-      end
-
-      it 'runs trivy binary without specifying type of vulnerability' do
-        cmd = [
+      let(:expected_command) do
+        [
           "trivy image",
           "--vuln-type os",
           "--ignore-unfixed",
@@ -246,18 +189,20 @@ RSpec.describe Gcs::Trivy do
           "--output #{output_file_name}",
           image_name
         ]
-
-        expect(Gcs.shell).to receive(:execute).with(cmd, {
-                                                      "TRIVY_DEBUG" => "",
-                                                      "TRIVY_INSECURE" => "false",
-                                                      "TRIVY_NON_SSL" => "false",
-                                                      "TRIVY_PASSWORD" => nil,
-                                                      "TRIVY_USERNAME" => nil
-                                                    })
-        expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"]).twice
-
-        scan_image
       end
+
+      before do
+        allow(Gcs::Environment).to receive(:ignore_unfixed_vulnerabilities?).and_return(true)
+      end
+
+      it_behaves_like 'scan image command'
+    end
+
+    context 'when EE' do
+      let(:features) { 'container_scanning' }
+      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
+
+      it_behaves_like 'scan image command'
     end
   end
 end
