@@ -1,3 +1,11 @@
+## 5.1.4 (2022-05-31)
+
+### changed (3 changes)
+
+- [Update trivy to version 0.28.1](gitlab-org/security-products/analyzers/container-scanning@1a27d64e1995c5832f1bee3b9a1051cec604c24a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2768))
+- [Update grype to version 0.38.0](gitlab-org/security-products/analyzers/container-scanning@6866927376c27ec20ed4e0005373971e84e07254) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2769))
+- [Use --cache-dir flag to load the database](gitlab-org/security-products/analyzers/container-scanning@67712f0651583a7598c061d87e6f92d308c69fa0) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2765))
+
 ## 5.1.3 (2022-05-24)
 
 ### changed (1 change)
