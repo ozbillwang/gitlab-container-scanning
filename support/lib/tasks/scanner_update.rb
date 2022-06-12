@@ -5,6 +5,7 @@ require_relative 'status'
 class ScannerUpdate
   VERSION_FILE_PATH = 'version/'
   GEMFILE_LOCK_PATH = 'Gemfile.lock'
+  FIXTURES_DIR_PATH = 'spec/fixtures/converter/expect/*'
   SCANNERS = {
     trivy: {
       uri: 'https://api.github.com/repos/aquasecurity/trivy/releases/latest',
@@ -69,19 +70,14 @@ class ScannerUpdate
       out << new_content
     end
 
-    dependencies_template_file = SCANNERS[@scanner][:dependencies_template]
-    if dependencies_template_file.present?
-      dependencies_template = JSON.parse(File.read(dependencies_template_file))
-      dependencies_template['scan']['scanner']['version'] = new_version
-      File.open(dependencies_template_file, 'w') { |file| file.write(JSON.pretty_generate(dependencies_template)) }
-
-      git('add', dependencies_template_file)
-    end
+    update_version_in_template_or_fixture(SCANNERS[@scanner][:dependencies_template], new_scanner_version: new_version)
 
     if bump_version
       new_gem_version = bump_patch_version
+
       update_version_rb(new_gem_version)
       update_gemfile_lock(new_gem_version)
+      update_fixtures(new_gem_version)
 
       git('add', version_rb_path)
       git('add', GEMFILE_LOCK_PATH)
@@ -97,6 +93,15 @@ class ScannerUpdate
     major, minor, patch = Gem::Version.new(Gcs::VERSION).segments
     patch += 1
     "#{major}.#{minor}.#{patch}"
+  end
+
+  def update_version_in_template_or_fixture(template_or_fixture_file, new_scanner_version: nil, new_gem_version: nil)
+    template_or_fixture = JSON.parse(File.read(template_or_fixture_file))
+    template_or_fixture['scan']['scanner']['version'] = new_scanner_version unless new_scanner_version.nil?
+    template_or_fixture['scan']['analyzer']['version'] = new_gem_version unless new_gem_version.nil?
+    File.open(template_or_fixture_file, 'w') { |file| file.write(JSON.pretty_generate(template_or_fixture)) }
+
+    git('add', template_or_fixture_file)
   end
 
   def update_version_rb(new_version)
@@ -115,5 +120,11 @@ class ScannerUpdate
                       .sub(/.*[\s\S]*\Kgcs \(\d+\.\d+\.\d+\)/o, "gcs (#{new_version})")
 
     File.open(GEMFILE_LOCK_PATH, 'w') { |file| file.write(new_content) }
+  end
+
+  def update_fixtures(new_version)
+    Dir[FIXTURES_DIR_PATH].each do |file|
+      update_version_in_template_or_fixture(file, new_gem_version: new_version)
+    end
   end
 end
