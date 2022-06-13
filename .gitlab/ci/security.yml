@@ -14,13 +14,6 @@ gemnasium-dependency_scanning:
     - changes:
         - Gemfile.lock
 
-bundler-audit-dependency_scanning:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - changes:
-        - Gemfile.lock
-
 license_scanning:
   stage: initial-test
   rules:
