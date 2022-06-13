@@ -5,8 +5,8 @@ module Gcs
     desc 'scan IMAGE', 'Scan an image'
     def scan(image_name = ::Gcs::Environment.docker_image)
       plugins = [
-        Gcs::Plugin::ContainerScan,
-        Gcs::Plugin::DependencyScan
+        Gcs::Plugin::ContainerScan.new,
+        Gcs::Plugin::DependencyScan.new
       ]
 
       results = plugins.map do |plugin|

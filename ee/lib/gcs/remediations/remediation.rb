@@ -57,7 +57,10 @@ module Gcs
       end
 
       def compare_id
+        # rubocop:disable Fips/SHA1
+        # https://gitlab.com/gitlab-org/gitlab/-/issues/365171
         OpenSSL::Digest::SHA1.hexdigest(remediation_formula)
+        # rubocop:enable Fips/SHA1
       end
 
       def add_fix(cve, id)

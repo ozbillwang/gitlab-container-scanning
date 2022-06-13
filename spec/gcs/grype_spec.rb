@@ -29,7 +29,7 @@ RSpec.describe Gcs::Grype do
   before do
     allow(Gcs::Environment).to receive(:default_docker_image).and_return("alpine:latest")
 
-    status = double(success?: true)
+    status = instance_double(Process::Status, success?: true)
 
     allow(Gcs.shell).to receive(:execute).with(%w[grype version]).and_return([version_data, nil, status])
     allow(Gcs.shell).to receive(:execute).with("grype db status").and_return([db_status, nil, status])

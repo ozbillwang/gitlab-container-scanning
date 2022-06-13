@@ -6,7 +6,7 @@ module Gcs
     attr_reader :plugin
 
     def initialize(plugin)
-      @plugin = plugin.new
+      @plugin = plugin
     end
 
     def scan_image(image_name)

@@ -39,7 +39,7 @@ RSpec.describe Gcs::Trivy do
     allow(Gcs::Environment).to receive(:severity_level_name).and_return(severity_threshold)
     allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
 
-    status = double(success?: true)
+    status = instance_double(Process::Status, success?: true)
 
     allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment)
       .and_return([version_data, nil, status])
