@@ -1,6 +1,6 @@
 ARG SCANNER=trivy
 
-FROM gitlab.com:443/gitlab-org/dependency_proxy/containers/ruby:2.7-slim AS base
+FROM ruby:2.7-slim AS base
 
 FROM base AS builder
 ENV PATH="/gcs/:${PATH}"
