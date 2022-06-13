@@ -80,10 +80,10 @@ class ProjectHelper
         'CONSOLE_LEVEL' => 'debug',
         'RUBYOPT' => "-I#{Gcs.lib}"
       }.merge(env)
-      return {} unless execute(expanded_env, "#{Gcs.lib.join('../exe/gtcs')} scan")
+      break {} unless execute(expanded_env, "#{Gcs.lib.join('../exe/gtcs')} scan")
 
       report_path = project_path.join('gl-container-scanning-report.json')
-      return {} unless report_path.exist?
+      break {} unless report_path.exist?
     end
   end
 

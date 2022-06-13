@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe Gcs::Scan do
-  let(:plugin) { double("Gcs::Plugin") }
+  let(:plugin) { instance_double(Gcs::Plugin::ContainerScan) }
   let(:image_name) { 'ubuntu:latest' }
   let(:measured_time) { { end_time: "2022-01-05T13:29:08", start_time: "2022-01-05T13:29:08" } }
 
   before do
-    allow(plugin).to receive(:new).and_return(plugin)
     allow(Gcs::Util).to receive(:measure_runtime).and_yield.and_return(measured_time)
   end
 
@@ -32,7 +31,7 @@ RSpec.describe Gcs::Scan do
       before do
         allow(plugin).to receive(:enabled?).and_return(true)
         allow(plugin).to receive(:scan).with(image_name, 'tmp.json')
-          .and_return([nil, nil, double(success?: success)])
+          .and_return([nil, nil, instance_double(Process::Status, success?: success)])
         allow(File).to receive(:exist?).and_return(true)
         allow(File).to receive(:read).with('tmp.json')
       end

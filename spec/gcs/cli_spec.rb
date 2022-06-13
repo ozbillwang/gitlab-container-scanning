@@ -2,8 +2,8 @@
 
 RSpec.describe Gcs::Cli do
   let(:execution) { -> { described_class.start(arguments) } }
-  let(:container_scan_status) { double(success?: true) }
-  let(:dependency_scan_status) { double(success?: true) }
+  let(:container_scan_status) { instance_double(Process::Status, success?: true) }
+  let(:dependency_scan_status) { instance_double(Process::Status, success?: true) }
 
   before do
     allow_any_instance_of(Gcs::Plugin::ContainerScan).to receive(:scan)
@@ -35,7 +35,7 @@ RSpec.describe Gcs::Cli do
     end
 
     context 'when one or more scans were not successful' do
-      let(:container_scan_status) { double(success?: false) }
+      let(:container_scan_status) { instance_double(Process::Status, success?: false) }
 
       it 'exits with code 1' do
         expect(execution).to terminate.with_code(1)
