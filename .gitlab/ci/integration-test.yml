@@ -9,6 +9,7 @@
     - .not-on-schedule
     - .scanners-matrix
   image: $DOCKER_IMAGE
+  retry: 1
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
