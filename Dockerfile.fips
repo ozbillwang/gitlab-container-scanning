@@ -21,6 +21,7 @@ RUN useradd --create-home gitlab -g root && \
 RUN yum -y -q update --disableplugin=subscription-manager && \
     yum -y -q upgrade --disableplugin=subscription-manager && \
     yum -y -q install --disableplugin=subscription-manager git && \
+    yum -y -q remove --disableplugin=subscription-manager vim-minimal && \
     yum -y module enable ruby:2.7 && \
     yum -y clean all --enablerepo='*'
 
