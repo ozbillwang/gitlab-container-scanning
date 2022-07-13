@@ -1,3 +1,13 @@
+## 5.1.12 (2022-07-13)
+
+### changed (1 change)
+
+- [Update grype to version 0.42.0](gitlab-org/security-products/analyzers/container-scanning@ecf6f52249fdc1024c6a4d0fa9792edec6c957c3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2788))
+
+### security (1 change)
+
+- [Remove vim-minimal package](gitlab-org/security-products/analyzers/container-scanning@aa28115dbda499a2c60b84b396787bdf27116718) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2787))
+
 ## 5.1.11 (2022-07-13)
 
 ### changed (1 change)
