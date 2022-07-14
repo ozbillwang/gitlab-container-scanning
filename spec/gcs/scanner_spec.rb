@@ -96,6 +96,23 @@ RSpec.describe Gcs::Scanner do
         scan_image
       end
     end
+
+    context 'when FIPS mode is enabled' do
+      let(:environment) do
+        {
+          'CI_GITLAB_FIPS_MODE' => true,
+          'DOCKER_USER' => 'test',
+          'DOCKER_PASSWORD' => 'test'
+        }
+      end
+
+      it 'returns fips not supported with credentialed registries error message' do
+        expected_err = "FIPS mode is not supported when scanning authenticated registries. \
+        DOCKER_USER and DOCKER_PASSWORD must not be set while FIPS mode is enabled."
+
+        expect(scan_image[1]).to eq(expected_err)
+      end
+    end
   end
 
   describe '.log_message' do
