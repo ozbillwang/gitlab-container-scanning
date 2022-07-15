@@ -19,7 +19,7 @@ module Gcs
 
       Gcs.logger.info(stdout) # FIXME: this prints a blank line on occasion
 
-      if status.success? && File.exist?(OUTPUT_FILE)
+      if status&.success? && File.exist?(OUTPUT_FILE)
         scanner_output = File.read(OUTPUT_FILE)
         plugin.convert(scanner_output, options)
       else
