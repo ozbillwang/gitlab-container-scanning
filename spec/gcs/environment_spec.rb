@@ -238,6 +238,30 @@ RSpec.describe Gcs::Environment do
     end
   end
 
+  describe '.fips_enabled?' do
+    context 'with CI_GITLAB_FIPS_MODE set to false' do
+      it 'returns false' do
+        with_modified_environment 'CI_GITLAB_FIPS_MODE' => 'false' do
+          expect(described_class.fips_enabled?).to eq(false)
+        end
+      end
+    end
+
+    context 'with CI_GITLAB_FIPS_MODE set to true' do
+      it 'returns true' do
+        with_modified_environment 'CI_GITLAB_FIPS_MODE' => 'true' do
+          expect(described_class.fips_enabled?).to eq(true)
+        end
+      end
+    end
+
+    context 'with CI_GITLAB_FIPS_MODE is not set' do
+      it 'returns false' do
+        expect(described_class.fips_enabled?).to eq(false)
+      end
+    end
+  end
+
   describe '.dependency_scan_disabled?' do
     context 'with CS_DISABLE_DEPENDENCY_LIST set to false' do
       it 'returns false' do

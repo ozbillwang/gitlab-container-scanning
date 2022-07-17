@@ -16,7 +16,7 @@ module Gcs
       return if results.all? do |result|
         next true if result.nil? # Skipped
 
-        result.success?
+        result&.success?
       end
 
       exit 1

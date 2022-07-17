@@ -96,6 +96,43 @@ RSpec.describe Gcs::Scanner do
         scan_image
       end
     end
+
+    context 'when FIPS mode is enabled' do
+      before do
+        allow(Gcs.shell).to receive(:execute)
+        allow(Gcs::Environment).to receive(:fips_enabled?).and_return(true)
+      end
+
+      context 'when docker credentials are provided' do
+        let(:expected_err) do
+          <<~EOMSG
+            FIPS mode is not supported when scanning authenticated registries. DOCKER_USER and DOCKER_PASSWORD must not \
+            be set while FIPS mode is enabled.'"
+          EOMSG
+        end
+
+        before do
+          allow(Gcs::Environment).to receive(:docker_registry_credentials)
+            .and_return('username' => 'X', 'password' => 'Y')
+        end
+
+        it 'returns fips not supported error message' do
+          expect(scan_image[1]).to eq(expected_err)
+        end
+      end
+
+      context 'when docker credentials are not provided' do
+        before do
+          allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
+        end
+
+        it 'executes the scan_command with correct arguments and environment' do
+          expect(Gcs.shell).to receive(:execute).with(command, environment)
+
+          scan_image
+        end
+      end
+    end
   end
 
   describe '.log_message' do

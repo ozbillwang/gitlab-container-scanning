@@ -11,6 +11,8 @@ module Gcs
       end
 
       def scan_image(image_name, output_file_name)
+        return ['', fips_mode_with_docker_registry_info, nil] if fips_mode_with_docker_registry?
+
         disabled_remediation_info unless Gcs::Environment.docker_file.exist?
         Gcs.logger.info(log_message(image_name))
         stdout, stderr, status = Gcs.shell.execute(scan_command(image_name, output_file_name), environment)
@@ -34,6 +36,17 @@ module Gcs
 
       def scanner_name
         name.split('::').last
+      end
+
+      def fips_mode_with_docker_registry?
+        Gcs::Environment.fips_enabled? && !Gcs::Environment.docker_registry_credentials.nil?
+      end
+
+      def fips_mode_with_docker_registry_info
+        <<~EOMSG
+          FIPS mode is not supported when scanning authenticated registries. DOCKER_USER and DOCKER_PASSWORD must not \
+          be set while FIPS mode is enabled.'"
+        EOMSG
       end
 
       def disabled_remediation_info
