@@ -107,7 +107,7 @@ RSpec.describe Gcs::Scanner do
         let(:expected_err) do
           <<~EOMSG
             FIPS mode is not supported when scanning authenticated registries. DOCKER_USER and DOCKER_PASSWORD must not \
-            be set while FIPS mode is enabled.'"
+            be set while FIPS mode is enabled.
           EOMSG
         end
 
