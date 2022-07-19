@@ -45,7 +45,7 @@ module Gcs
       def fips_mode_with_docker_registry_info
         <<~EOMSG
           FIPS mode is not supported when scanning authenticated registries. DOCKER_USER and DOCKER_PASSWORD must not \
-          be set while FIPS mode is enabled.'"
+          be set while FIPS mode is enabled.
         EOMSG
       end
 
