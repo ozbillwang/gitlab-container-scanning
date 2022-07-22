@@ -1,3 +1,14 @@
+## 5.1.13 (2022-07-22)
+
+### changed (2 changes)
+
+- [Update grype to version 0.43.0](gitlab-org/security-products/analyzers/container-scanning@2f183232ea0940615bac2882bad3f045892c09a4) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2793))
+- [Update trivy to version 0.30.2](gitlab-org/security-products/analyzers/container-scanning@eee4136d0f31d77d70af917038517746f1fddd08) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2792))
+
+### added (1 change)
+
+- [Exit when FIPS mode is enabled and an authenticated registry is scanned](gitlab-org/security-products/analyzers/container-scanning@72d34a71415b6f6d171ebc29045f895fb3470c3e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2790))
+
 ## 5.1.12 (2022-07-13)
 
 ### changed (1 change)
