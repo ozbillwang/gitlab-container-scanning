@@ -38,6 +38,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
   ca-certificates \
   git-core \
   sudo && \
+  apt-get purge -y -q perl && \
   wget ${ORAS_URL} -O /usr/local/bin/oras && chmod +x /usr/local/bin/oras && \
   chown gitlab /usr/local/share/ca-certificates /usr/lib/ssl/certs/ && \
   chmod -R g+rw /usr/local/share/ca-certificates/ /usr/lib/ssl/certs/ && \
