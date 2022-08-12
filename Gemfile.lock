@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gcs (5.1.15)
+    gcs (5.1.16)
       console (~> 1.8)
       term-ansicolor (~> 1.7)
       terminal-table (~> 3.0)
