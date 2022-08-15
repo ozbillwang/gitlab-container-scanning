@@ -17,7 +17,7 @@ module Gcs
         stdout, stderr, status = plugin.scan(image_name, OUTPUT_FILE)
       end.merge(image_name: image_name)
 
-      Gcs.logger.info(stdout) # FIXME: this prints a blank line on occasion
+      Gcs.logger.info(stdout)
 
       if status&.success? && File.exist?(OUTPUT_FILE)
         scanner_output = File.read(OUTPUT_FILE)

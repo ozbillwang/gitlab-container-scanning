@@ -24,6 +24,7 @@ loader.setup
 module Gcs
   DEFAULT_REPORT_NAME = 'gl-container-scanning-report.json'
   DEFAULT_DEPENDENCY_REPORT_NAME = 'gl-dependency-scanning-report.json'
+  LOGGER_PROGNAME = 'container-scanning'
 
   class << self
     def root
@@ -35,7 +36,7 @@ module Gcs
     end
 
     def logger
-      @logger ||= Logger.new($stdout)
+      @logger ||= Logger.new($stdout, progname: LOGGER_PROGNAME)
     end
 
     def shell
