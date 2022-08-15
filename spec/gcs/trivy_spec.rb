@@ -5,6 +5,7 @@ RSpec.describe Gcs::Trivy do
   let(:features) { '' }
   let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ce" }
   let(:severity_threshold) { "UNKNOWN" }
+  let(:version_status) { instance_double(Process::Status, success?: true) }
 
   let(:version_data) do
     <<~HEREDOC
@@ -38,11 +39,8 @@ RSpec.describe Gcs::Trivy do
     allow(Gcs::Environment).to receive(:default_docker_image).and_return("alpine:latest")
     allow(Gcs::Environment).to receive(:severity_level_name).and_return(severity_threshold)
     allow(Gcs::Environment).to receive(:docker_registry_credentials).and_return(nil)
-
-    status = instance_double(Process::Status, success?: true)
-
     allow(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment)
-      .and_return([version_data, nil, status])
+      .and_return([version_data, nil, version_status])
   end
 
   RSpec.shared_examples 'scan image command' do
@@ -75,6 +73,22 @@ RSpec.describe Gcs::Trivy do
           db_updated_at: "2022-05-24T18:07:24+00:00"
         }
       )
+    end
+
+    context 'when version command fails' do
+      let(:version_status) { instance_double(Process::Status, success?: false) }
+
+      it 'returns UNKNOWN_VERSIONS' do
+        expect(version_info).to eq(described_class::UNKNOWN_VERSIONS)
+      end
+    end
+
+    context 'when version output is not parseable' do
+      let(:version_data) { "??????" }
+
+      it 'returns UNKNOWN_VERSIONS' do
+        expect(version_info).to eq(described_class::UNKNOWN_VERSIONS)
+      end
     end
   end
 
