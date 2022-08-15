@@ -72,6 +72,10 @@ module Gcs
         ENV.fetch('SECURE_LOG_LEVEL', 'info').downcase
       end
 
+      def debug?
+        log_level == 'debug'
+      end
+
       def ubi?
         File.exist?('/etc/redhat-release')
       end
