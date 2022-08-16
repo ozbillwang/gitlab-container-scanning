@@ -1,3 +1,15 @@
+## 5.1.16 (2022-08-16)
+
+### fixed (2 changes)
+
+- [Fix db_updated_at to use UpdatedAt timestamp](gitlab-org/security-products/analyzers/container-scanning@de50b8d6a63ae4c9440ddfd429d5351b300796a3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2801))
+- [Fix crash on version command failure](gitlab-org/security-products/analyzers/container-scanning@123e6e0ec93dda2f5a4177e59cb79b3d5a89a6a4) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2802))
+
+### changed (2 changes)
+
+- [Update grype to version 0.46.0](gitlab-org/security-products/analyzers/container-scanning@4e35c440d24964abea657f227a1d781693bef8c5) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2799))
+- [Update grype to version 0.45.0](gitlab-org/security-products/analyzers/container-scanning@f17880a36c90a6782afc17978b8147bd376c1ad9) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2797))
+
 ## 5.1.14 (2022-08-01)
 
 ### changed (2 changes)
