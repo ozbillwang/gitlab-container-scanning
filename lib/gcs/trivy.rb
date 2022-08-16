@@ -9,6 +9,7 @@ module Gcs
       "HIGH" => 3,
       "CRITICAL" => 4
     }.freeze
+    UNKNOWN_VERSIONS = { binary_version: 'unknown', db_updated_at: 'unknown' }.freeze
 
     CACHE_DIR_BASE = "/home/gitlab/.cache/trivy"
 
@@ -52,14 +53,14 @@ module Gcs
       def version_info
         stdout, _, status = Gcs.shell.execute(%w[trivy --version], environment)
 
-        return "" unless status.success?
+        return UNKNOWN_VERSIONS unless status.success?
 
         version_info = stdout.split("\n")
         binary_version = version_info.first.chomp
-        db_updated_at = DateTime.parse(version_info[4].chomp).to_s
+        db_updated_at = DateTime.parse(version_info[4]&.chomp || "").to_s
         { binary_version: binary_version, db_updated_at: db_updated_at }
       rescue Date::Error
-        { binary_version: 'unknown', db_updated_at: 'unknown' }
+        UNKNOWN_VERSIONS
       end
 
       def severity_level_arg
