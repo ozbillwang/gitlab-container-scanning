@@ -16,7 +16,7 @@ module Gcs
     }.freeze
 
     LOG_LEVEL_COLOR = {
-      UNKNOWN: :white,
+      ANY: :white,
       FATAL: :red,
       ERROR: :red,
       WARN: :yellow,
@@ -35,6 +35,9 @@ module Gcs
 
       def formatter
         proc do |severity, datetime, progname, msg|
+          # If the logger receives a nil message, then it sets the progname as the message.
+          next if msg.blank? || msg == progname
+
           "[#{color(LOG_LEVEL_COLOR[severity.to_sym], severity)}] [#{datetime}] [#{progname}]  ▶  #{msg}\n"
         end
       end
