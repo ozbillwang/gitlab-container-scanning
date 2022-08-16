@@ -57,7 +57,7 @@ module Gcs
 
         version_info = stdout.split("\n")
         binary_version = version_info.first.chomp
-        db_updated_at = DateTime.parse(version_info[4]&.chomp || "").to_s
+        db_updated_at = DateTime.parse(version_info[3]&.chomp || "").to_s
         { binary_version: binary_version, db_updated_at: db_updated_at }
       rescue Date::Error
         UNKNOWN_VERSIONS
