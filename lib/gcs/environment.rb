@@ -3,9 +3,7 @@ module Gcs
   class Environment
     class << self
       def docker_image
-        return ENV['DOCKER_IMAGE'] unless ENV['DOCKER_IMAGE'].nil?
-
-        default_docker_image
+        fetch_env('CS_IMAGE', 'DOCKER_IMAGE') { default_docker_image }
       end
 
       def default_branch_image
@@ -28,7 +26,10 @@ module Gcs
       end
 
       def docker_file
-        docker_file = ENV.fetch('DOCKERFILE_PATH', "#{project_dir}/Dockerfile")
+        docker_file = fetch_env('CS_DOCKERFILE_PATH', 'DOCKERFILE_PATH') do
+          "#{project_dir}/Dockerfile"
+        end
+
         Pathname.new(docker_file)
       end
 
@@ -45,8 +46,13 @@ module Gcs
       end
 
       def docker_registry_credentials
-        username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] if should_use_ci_credentials? }
-        password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] if should_use_ci_credentials? }
+        username = fetch_env('CS_REGISTRY_USER', 'DOCKER_USER') do
+          ENV['CI_REGISTRY_USER'] if should_use_ci_credentials?
+        end
+
+        password = fetch_env('CS_REGISTRY_PASSWORD', 'DOCKER_PASSWORD') do
+          ENV['CI_REGISTRY_PASSWORD'] if should_use_ci_credentials?
+        end
 
         return if username.nil? || username.empty? || password.nil? || password.empty?
 
@@ -101,6 +107,10 @@ module Gcs
       end
 
       private
+
+      def fetch_env(k1, k2, &block)
+        ENV.fetch(k1) { ENV.fetch(k2, &block) }
+      end
 
       def should_use_ci_credentials?
         return false if ENV['CI_REGISTRY'].nil? || ENV['CI_REGISTRY'].empty?
