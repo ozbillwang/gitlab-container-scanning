@@ -11,6 +11,6 @@ begin
   Gcs::Cli.start(ARGV)
 rescue StandardError => e
   Gcs.logger.error(e.message)
-  Gcs.logger.error(e.backtrace.join("\n"))
+  Gcs.logger.error(e.backtrace.join("\n")) if Gcs::Environment.debug?
   exit 1
 end
