@@ -48,7 +48,7 @@ module Gcs
       end
 
       def verbosity_flag
-        if Gcs::Environment.log_level == "debug"
+        if Gcs::Environment.debug?
           "-vv"
         else
           "-v"

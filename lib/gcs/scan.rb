@@ -19,6 +19,8 @@ module Gcs
 
       Gcs.logger.info(stdout)
 
+      Gcs.logger.error("Scanner has not created a file with results (#{OUTPUT_FILE})") unless File.exist?(OUTPUT_FILE)
+
       if status&.success? && File.exist?(OUTPUT_FILE)
         scanner_output = File.read(OUTPUT_FILE)
         plugin.convert(scanner_output, options)

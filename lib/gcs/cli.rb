@@ -4,6 +4,8 @@ module Gcs
   class Cli < Thor
     desc 'scan IMAGE', 'Scan an image'
     def scan(image_name = ::Gcs::Environment.docker_image)
+      Gcs.logger.debug(JSON.pretty_generate(RbConfig::CONFIG)) if Gcs::Environment.debug?
+
       plugins = [
         Gcs::Plugin::ContainerScan.new,
         Gcs::Plugin::DependencyScan.new

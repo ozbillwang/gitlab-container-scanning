@@ -108,7 +108,7 @@ module Gcs
       end
 
       def debug_enabled
-        true if Gcs::Environment.log_level == "debug"
+        true if Gcs::Environment.debug?
       end
 
       def scanner_version

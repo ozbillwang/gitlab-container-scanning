@@ -87,7 +87,7 @@ RSpec.describe Gcs::Grype do
                                    .and_return({ 'username' => 'username', 'password' => 'password' })
       allow(Gcs::Environment).to receive(:docker_registry_security_config)
                                    .and_return({ docker_insecure: true, registry_insecure: true })
-      allow(Gcs::Environment).to receive(:log_level).and_return("debug")
+      allow(Gcs::Environment).to receive(:debug?).and_return(true)
 
       cmd = [
         "grype registry:#{image_name}",
@@ -116,7 +116,7 @@ RSpec.describe Gcs::Grype do
                                      .and_return({ 'username' => 'username', 'password' => 'password' })
         allow(Gcs::Environment).to receive(:docker_registry_security_config)
                                      .and_return({ docker_insecure: true, registry_insecure: true })
-        allow(Gcs::Environment).to receive(:log_level).and_return("debug")
+        allow(Gcs::Environment).to receive(:debug?).and_return(true)
         allow(Gcs::Environment).to receive(:ignore_unfixed_vulnerabilities?).and_return(true)
       end
 
