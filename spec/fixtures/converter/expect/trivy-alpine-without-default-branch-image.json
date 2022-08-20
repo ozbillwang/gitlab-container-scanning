@@ -6445,7 +6445,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.1.16"
+      "version": "5.1.17"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
