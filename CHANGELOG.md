@@ -1,3 +1,17 @@
+## 5.1.17 (2022-08-21)
+
+### changed (1 change)
+
+- [Update grype to version 0.47.0](gitlab-org/security-products/analyzers/container-scanning@5ff3dce3206d1d3fc0346cdc24e5d20bc9ab966b) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2804))
+
+### added (1 change)
+
+- [Add more information with debug mode](gitlab-org/security-products/analyzers/container-scanning@77bad0c9d7c7822fe743888f2acc84988e18688c) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2800))
+
+### fixed (1 change)
+
+- [Fix logger emiting blank messages](gitlab-org/security-products/analyzers/container-scanning@e560e2a09196a1e75838cebba6bbd7886dc1aae3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2803))
+
 ## 5.1.16 (2022-08-16)
 
 ### fixed (2 changes)
