@@ -9,13 +9,13 @@ RSpec.describe 'ca cert' do
     subject(:report) { runner.report_for(type: 'container-scanning') }
 
     before(:all) do
-      runner.mount(env: { 'DOCKER_IMAGE' => 'alpine:3.12.0' })
+      runner.mount(env: { 'CS_IMAGE' => 'alpine:3.12.0' })
       runner.scan(
         env: {
           'ADDITIONAL_CA_CERT_BUNDLE' => x509_certificate.read,
-          'DOCKER_IMAGE' => 'docker.test/library/alpine:3.12.0',
-          'DOCKER_USER' => '',
-          'DOCKER_PASSWORD' => '',
+          'CS_IMAGE' => 'docker.test/library/alpine:3.12.0',
+          'CS_REGISTRY_USER' => '',
+          'CS_REGISTRY_PASSWORD' => '',
           'CS_DISABLE_DEPENDENCY_LIST' => 'false'
         }
       )

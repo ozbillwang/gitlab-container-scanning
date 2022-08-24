@@ -83,7 +83,7 @@ RSpec.shared_examples 'as container scanner' do |item|
       expect(dependency_scanning_report['scan']['scanner']['url']).to eql('https://github.com/aquasecurity/trivy/')
       expect(dependency_scanning_report['scan']['scanner']['vendor']['name']).to eql('GitLab')
 
-      expect(dependency_scanning_report['dependency_files'][0]['path']).to eq("container-image:#{env['DOCKER_IMAGE']}")
+      expect(dependency_scanning_report['dependency_files'][0]['path']).to eq("container-image:#{env['CS_IMAGE']}")
       expect(dependency_scanning_report['dependency_files'][0]['package_manager']).not_to be_nil
       expect(dependency_scanning_report['dependency_files'][0]['dependencies']).not_to be_empty
     end
