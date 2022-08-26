@@ -81,7 +81,7 @@ job in the `maintenance` stage called `trigger-db-update`.
 This job will find the last 100 [releases](https://docs.gitlab.com/ee/api/graphql/reference/#projectreleases), and
 trigger one pipeline for each major version using the `tagName` of the latest release as the `ref=` argument.
 
-This job depends on the `GITLAB_TOKEN`. The variable must *not* be protected because the job runs on tag builds, not
+This job depends on the `CS_TOKEN`. The variable must *not* be protected because the job runs on tag builds, not
 branch, and when it first runs the tag is not protected. We could move to a `vM.m.p` pattern and protect `v*` tags but
 this is not currently in place.
 
