@@ -47,7 +47,7 @@ class ProjectHelper
     if dir.present?
       FileUtils.cp_r("#{dir}/.", project_path)
     else
-      add_file('Dockerfile', "FROM #{env['DOCKER_IMAGE']}")
+      add_file('Dockerfile', "FROM #{env['CS_IMAGE']}")
     end
 
     chdir do

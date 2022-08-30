@@ -44,7 +44,7 @@ module Gcs
 
       def fips_mode_with_docker_registry_info
         <<~EOMSG
-          FIPS mode is not supported when scanning authenticated registries. DOCKER_USER and DOCKER_PASSWORD must not \
+          FIPS mode is not supported when scanning authenticated registries. CS_REGISTRY_USER and CS_REGISTRY_PASSWORD must not \
           be set while FIPS mode is enabled.
         EOMSG
       end
@@ -53,7 +53,7 @@ module Gcs
         Gcs.logger.info(
           <<~EOMSG
           Remediation is disabled; #{Gcs::Environment.docker_file} cannot be found. Have you set `GIT_STRATEGY` and
-          `DOCKERFILE_PATH`?
+          `CS_DOCKERFILE_PATH`?
           See https://docs.gitlab.com/ee/user/application_security/container_scanning/#solutions-for-vulnerabilities-auto-remediation
         EOMSG
         )
@@ -71,11 +71,11 @@ module Gcs
         return unless stderr
 
         if invalid_credentials?(stderr)
-          "The credentials set in DOCKER_USER and DOCKER_PASSWORD are either empty or not valid. " \
+          "The credentials set in CS_REGISTRY_USER and CS_REGISTRY_PASSWORD are either empty or not valid. " \
           "Please set valid credentials."
         elsif image_not_found?(stderr)
           "The image #{image_name} could not be found. " \
-          "To change the image being scanned, use the DOCKER_IMAGE environment variable. " \
+          "To change the image being scanned, use the CS_IMAGE environment variable. " \
           "For details, see https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables"
         else
           stderr

@@ -7,8 +7,8 @@ RSpec.describe Gcs::Environment do
   let(:docker_file_path) { "#{described_class.project_dir}/Dockerfile" }
 
   describe '.docker_image' do
-    it 'uses given DOCKER_IMAGE env variable' do
-      with_modified_environment 'DOCKER_IMAGE' => 'alpine:latest' do
+    it 'uses given CS_IMAGE env variable' do
+      with_modified_environment 'CS_IMAGE' => 'alpine:latest' do
         allow(described_class).to receive(:default_docker_image)
 
         expect(described_class.docker_image).to eq('alpine:latest')
@@ -16,13 +16,26 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    context 'when DOCKER_IMAGE env variable is not given' do
-      it 'returns default_docker_image' do
-        with_modified_environment 'DOCKER_IMAGE' => nil do
-          allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
+    context 'when CS_IMAGE env variable is not given' do
+      context 'with DOCKER_IMAGE env variable given' do
+        it 'uses DOCKER_IMAGE' do
+          with_modified_environment 'DOCKER_IMAGE' => 'nginx:latest' do
+            allow(described_class).to receive(:default_docker_image)
 
-          expect(described_class.docker_image).to eq(ci_registry_image)
-          expect(described_class).to have_received(:default_docker_image).once
+            expect(described_class.docker_image).to eq('nginx:latest')
+            expect(described_class).not_to have_received(:default_docker_image)
+          end
+        end
+      end
+
+      context 'without DOCKER_IMAGE env variable given' do
+        it 'returns default_docker_image' do
+          with_modified_environment 'CS_IMAGE' => nil, 'DOCKER_IMAGE' => nil do
+            allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
+
+            expect(described_class.docker_image).to eq(ci_registry_image)
+            expect(described_class).to have_received(:default_docker_image).once
+          end
         end
       end
     end
@@ -36,8 +49,8 @@ RSpec.describe Gcs::Environment do
       end
     end
 
-    context 'when DOCKER_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
-      modify_environment 'DOCKER_IMAGE' => nil,
+    context 'when CS_IMAGE and CI_APPLICATION_REPOSITORY are empty' do
+      modify_environment 'CS_IMAGE' => nil,
                          'CI_APPLICATION_REPOSITORY' => nil,
                          'CI_COMMIT_REF_SLUG' => 'master',
                          'CI_REGISTRY_IMAGE' => 'registry.gitlab.com/defen/trivy-test'
@@ -77,7 +90,7 @@ RSpec.describe Gcs::Environment do
       end
 
       it 'uses dockerfile path variable for remediations' do
-        with_modified_environment 'DOCKERFILE_PATH' => custom_docker_file_path do
+        with_modified_environment 'CS_DOCKERFILE_PATH' => custom_docker_file_path do
           expect(described_class.docker_file.to_s).to eq(custom_docker_file_path)
         end
       end
@@ -143,8 +156,8 @@ RSpec.describe Gcs::Environment do
 
   describe '.docker_registry_credentials' do
     context 'with default CI credentials set' do
-      modify_environment 'DOCKER_USER' => nil,
-                         'DOCKER_PASSWORD' => nil,
+      modify_environment 'CS_REGISTRY_USER' => nil,
+                         'CS_REGISTRY_PASSWORD' => nil,
                          'CI_REGISTRY_USER' => 'some registry user',
                          'CI_REGISTRY_PASSWORD' => 'a registry password'
 
@@ -192,7 +205,7 @@ RSpec.describe Gcs::Environment do
         let(:docker_password) { 'a Docker password' }
 
         it 'returns configured Docker credentials' do
-          with_modified_environment 'DOCKER_USER' => docker_user, 'DOCKER_PASSWORD' => docker_password do
+          with_modified_environment 'CS_REGISTRY_USER' => docker_user, 'CS_REGISTRY_PASSWORD' => docker_password do
             expect(described_class.docker_registry_credentials).to include('username' => docker_user,
                                                                            'password' => docker_password)
           end
@@ -201,7 +214,7 @@ RSpec.describe Gcs::Environment do
     end
 
     context 'with default CI credentials missing' do
-      modify_environment 'DOCKER_IMAGE' => 'registry.example.com/image',
+      modify_environment 'CS_IMAGE' => 'registry.example.com/image',
                          'CI_REGISTRY' => 'registry.example.com',
                          'CI_REGISTRY_USER' => nil,
                          'CI_REGISTRY_PASSWORD' => nil

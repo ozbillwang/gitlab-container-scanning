@@ -60,7 +60,7 @@ RSpec.describe Gcs::Scanner do
 
         it 'returns image not found error message' do
           expected_err = "The image #{image_name} could not be found. " \
-          "To change the image being scanned, use the DOCKER_IMAGE environment variable. " \
+          "To change the image being scanned, use the CS_IMAGE environment variable. " \
           "For details, see https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables"
 
           expect(scan_image[1]).to eq(expected_err)
@@ -78,8 +78,8 @@ RSpec.describe Gcs::Scanner do
         end
 
         it 'returns invalid credentials error message' do
-          expected_err = "The credentials set in DOCKER_USER and DOCKER_PASSWORD are either empty or not valid. "\
-                         "Please set valid credentials."
+          expected_err = "The credentials set in CS_REGISTRY_USER and CS_REGISTRY_PASSWORD are either "\
+                         "empty or not valid. Please set valid credentials."
 
           expect(scan_image[1]).to eq(expected_err)
         end
@@ -106,7 +106,7 @@ RSpec.describe Gcs::Scanner do
       context 'when docker credentials are provided' do
         let(:expected_err) do
           <<~EOMSG
-            FIPS mode is not supported when scanning authenticated registries. DOCKER_USER and DOCKER_PASSWORD must not \
+            FIPS mode is not supported when scanning authenticated registries. CS_REGISTRY_USER and CS_REGISTRY_PASSWORD must not \
             be set while FIPS mode is enabled.
           EOMSG
         end

@@ -2,14 +2,14 @@
 module Gcs
   class Environment
     class << self
-      def docker_image
-        return ENV['DOCKER_IMAGE'] unless ENV['DOCKER_IMAGE'].nil?
+      include Gcs::Config
 
-        default_docker_image
+      def docker_image
+        resolve('CS_IMAGE', 'DOCKER_IMAGE') { default_docker_image }
       end
 
       def default_branch_image
-        ENV.fetch('CS_DEFAULT_BRANCH_IMAGE', nil)
+        resolve('CS_DEFAULT_BRANCH_IMAGE')
       end
 
       def default_docker_image
@@ -17,7 +17,7 @@ module Gcs
       end
 
       def project_dir
-        pd = ENV.fetch('CI_PROJECT_DIR') { Pathname.pwd }
+        pd = resolve('CI_PROJECT_DIR') { Pathname.pwd }
         if pd.is_a?(String)
           return Pathname.new(pd) if Pathname.new(pd).exist?
 
@@ -28,7 +28,10 @@ module Gcs
       end
 
       def docker_file
-        docker_file = ENV.fetch('DOCKERFILE_PATH', "#{project_dir}/Dockerfile")
+        docker_file = resolve('CS_DOCKERFILE_PATH', 'DOCKERFILE_PATH') do
+          "#{project_dir}/Dockerfile"
+        end
+
         Pathname.new(docker_file)
       end
 
@@ -45,8 +48,13 @@ module Gcs
       end
 
       def docker_registry_credentials
-        username = ENV.fetch('DOCKER_USER') { ENV['CI_REGISTRY_USER'] if should_use_ci_credentials? }
-        password = ENV.fetch('DOCKER_PASSWORD') { ENV['CI_REGISTRY_PASSWORD'] if should_use_ci_credentials? }
+        username = resolve('CS_REGISTRY_USER', 'DOCKER_USER') do
+          ENV['CI_REGISTRY_USER'] if should_use_ci_credentials?
+        end
+
+        password = resolve('CS_REGISTRY_PASSWORD', 'DOCKER_PASSWORD') do
+          ENV['CI_REGISTRY_PASSWORD'] if should_use_ci_credentials?
+        end
 
         return if username.nil? || username.empty? || password.nil? || password.empty?
 
@@ -54,14 +62,14 @@ module Gcs
       end
 
       def docker_registry_security_config
-        docker_insecure = ENV.fetch('CS_DOCKER_INSECURE', 'false').to_s.casecmp?("true")
-        registry_insecure = ENV.fetch('CS_REGISTRY_INSECURE', 'false').to_s.casecmp?("true")
+        docker_insecure = resolve('CS_DOCKER_INSECURE', default: 'false').to_s.casecmp?("true")
+        registry_insecure = resolve('CS_REGISTRY_INSECURE', default: 'false').to_s.casecmp?("true")
 
         { docker_insecure: docker_insecure, registry_insecure: registry_insecure }
       end
 
       def scanner
-        scanner = ENV.fetch('SCANNER', 'trivy')
+        scanner = resolve('SCANNER', default: 'trivy')
         Object.const_get("Gcs::#{scanner.capitalize}")
       rescue NameError
         Gcs.logger.error("Invalid scanner '#{scanner}'")
@@ -69,7 +77,7 @@ module Gcs
       end
 
       def log_level
-        ENV.fetch('SECURE_LOG_LEVEL', 'info').downcase
+        resolve('SECURE_LOG_LEVEL', default: 'info').downcase
       end
 
       def debug?
@@ -81,23 +89,23 @@ module Gcs
       end
 
       def fips_enabled?
-        ENV.fetch('CI_GITLAB_FIPS_MODE', 'false').to_s.casecmp?('true')
+        resolve('CI_GITLAB_FIPS_MODE', default: 'false').to_s.casecmp?('true')
       end
 
       def dependency_scan_disabled?
-        ENV.fetch('CS_DISABLE_DEPENDENCY_LIST', 'false').to_s.casecmp?('true')
+        resolve('CS_DISABLE_DEPENDENCY_LIST', default: 'false').to_s.casecmp?('true')
       end
 
       def language_specific_scan_disabled?
-        ENV.fetch('CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN', 'true').to_s.casecmp?('true')
+        resolve('CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN', default: 'true').to_s.casecmp?('true')
       end
 
       def ignore_unfixed_vulnerabilities?
-        ENV.fetch('CS_IGNORE_UNFIXED', 'false').to_s.casecmp?('true')
+        resolve('CS_IGNORE_UNFIXED', default: 'false').to_s.casecmp?('true')
       end
 
       def ee?
-        ENV.fetch('GITLAB_FEATURES', '').to_s.split(',').include?('container_scanning')
+        resolve('GITLAB_FEATURES', default: '').to_s.split(',').include?('container_scanning')
       end
 
       private
@@ -113,11 +121,11 @@ module Gcs
       end
 
       def application_repository
-        ENV.fetch('CI_APPLICATION_REPOSITORY') { default_application_repository }.strip
+        resolve('CI_APPLICATION_REPOSITORY') { default_application_repository }.strip
       end
 
       def application_tag
-        ENV.fetch('CI_APPLICATION_TAG') { default_docker_tag }.strip
+        resolve('CI_APPLICATION_TAG') { default_docker_tag }.strip
       end
 
       def default_application_repository
@@ -125,26 +133,19 @@ module Gcs
       end
 
       def commit_ref_slug
-        fetch_from_env!('CI_COMMIT_REF_SLUG')
+        resolve!('CI_COMMIT_REF_SLUG')
       end
 
       def default_branch
-        fetch_from_env!('CI_DEFAULT_BRANCH')
+        resolve!('CI_DEFAULT_BRANCH')
       end
 
       def default_docker_tag
-        fetch_from_env!('CI_COMMIT_SHA')
+        resolve!('CI_COMMIT_SHA')
       end
 
       def registry_image
-        fetch_from_env!('CI_REGISTRY_IMAGE')
-      end
-
-      def fetch_from_env!(env_var)
-        ENV.fetch(env_var).strip
-      rescue KeyError => e
-        Gcs.logger.error("Environment variable `#{e.key}` was not found and is required for execution")
-        exit 1
+        resolve!('CI_REGISTRY_IMAGE')
       end
     end
   end
