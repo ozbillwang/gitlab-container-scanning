@@ -1,6 +1,6 @@
 ## 5.1.19 (2022-08-31)
 
-No changes.
+- [Introduce CS variables without Docker references](gitlab-org/security-products/analyzers/container-scanning@11b59da3925fa11436528989379a362b1932fd81) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2806))
 
 ## 5.1.18 (2022-08-25)
 
