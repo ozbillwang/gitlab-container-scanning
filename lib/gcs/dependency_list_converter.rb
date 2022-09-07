@@ -37,7 +37,7 @@ module Gcs
         {
           'path' => container_image_path,
           'package_manager' => package_manager(os_family, os_version, result),
-          'dependencies' => convert_dependencies(result['Packages'])
+          'dependencies' => convert_dependencies(result.fetch('Packages', []))
         }
       end
 

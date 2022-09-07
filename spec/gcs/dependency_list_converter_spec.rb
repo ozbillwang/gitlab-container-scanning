@@ -64,6 +64,23 @@ RSpec.describe Gcs::DependencyListConverter do
       )
     end
 
+    context 'when scanner output has no packages' do
+      let(:output_dependencies) do
+        JSON
+          .parse(raw_scanner_output)
+          .tap { |parsed_report| parsed_report['Results'].map { |result| result.delete('Packages') } }
+          .to_json
+      end
+
+      it 'does not raise error' do
+        expect { gitlab_format }.not_to raise_error
+      end
+
+      it 'has empty dependency data' do
+        expect(gitlab_format['dependency_files']).to all(a_hash_including('dependencies' => []))
+      end
+    end
+
     context 'when language specific scan is enabled' do
       before do
         allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(false)
