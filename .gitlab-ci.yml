@@ -127,5 +127,6 @@ appsec-container-scanning-trivy:
     SCANNER: "trivy"
 
 appsec_container_scanning-grype:
+  extends: .appsec-container-scanning
   variables:
     SCANNER: "grype"
