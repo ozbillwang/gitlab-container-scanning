@@ -1,6 +1,8 @@
 ## 5.1.20 (2022-09-09)
 
-No changes.
+### fixed (1 change)
+
+- [Fix NoMethodError when report contains no packages](gitlab-org/security-products/analyzers/container-scanning@a99124a5729e869f12865160dee896f9c51ee81c) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2811))
 
 ## 5.1.19 (2022-08-31)
 
