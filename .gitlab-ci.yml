@@ -93,3 +93,39 @@ check version:
   image: $BUILD_IMAGES/docker-stable_ruby
   stage: initial-test
   script: ./script/check_version
+
+.appsec-container-scanning:
+  stage: test
+  image: ruby:3
+  environment:
+    name: appsec_container_scanning
+    action: prepare
+  before_script:
+    - git clone https://gitlab.com/gitlab-com/gl-security/appsec/container-scanners.git appsec-container-scanning
+    - cd appsec-container-scanning/for-external-projects
+    - bundle install
+  script:
+		- |
+      if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
+        export POSTFIX="-${DOCKERFILE_SOURCE##*:}"
+        export DOCKER_IMAGE=$CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA$POSTFIX
+			else
+				echo "not a fips image"
+				exit 0
+      fi
+    - ./appsec-container-scan "${DOCKER_IMAGE}" > gl-container-scanning-report.json
+  artifacts:
+    reports:
+      container_scanning: appsec-container-scanning/for-external-projects/gl-container-scanning-report.json
+  rules: 
+    # Skip on forks, because external contributors can't run this pipeline
+    - if: $CONTAINER_SCAN_PIPELINE_TRIGGER_TOKEN
+
+appsec-container-scanning-trivy:
+  extends: .appsec-container-scanning
+  variables:
+    SCANNER: "trivy"
+
+appsec_container_scanning-grype:
+  variables:
+    SCANNER: "grype"
