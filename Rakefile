@@ -137,7 +137,7 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
       Please review [the changelog](#{updater.changelog_link(new_version)}) and ensure
       that integration tests are passing.
 
-      /label ~"devops::protect" ~"group::container security" ~"section::sec" ~"type::maintenance" ~"maintenance::dependency"
+      /label ~"devops::secure" ~"group::container security" ~"section::sec" ~"type::maintenance" ~"maintenance::dependency"
       /label ~"Category:Container Scanning" ~backend
       /assign #{assignee}
     HEREDOC
