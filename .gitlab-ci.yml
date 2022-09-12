@@ -105,13 +105,13 @@ check version:
     - cd appsec-container-scanning/for-external-projects
     - bundle install
   script:
-		- |
+    - |
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
         export POSTFIX="-${DOCKERFILE_SOURCE##*:}"
         export DOCKER_IMAGE=$CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA$POSTFIX
-			else
-				echo "not a fips image"
-				exit 0
+      else
+        echo "not a fips image"
+        exit 0
       fi
     - ./appsec-container-scan "${DOCKER_IMAGE}" > gl-container-scanning-report.json
   artifacts:
