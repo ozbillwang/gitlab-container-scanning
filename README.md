@@ -96,6 +96,13 @@ creating update-trivy-to-0.19.1-2021-07-19 branch
 $ git push
 ```
 
+##### Automatic scanner updates
+
+Every month a scheduled pipeline is executed to run automatic scanner updates. To make sure it is running correctly you need to make sure you have your CI/CD variables set:
+
+* `TRIGGER_SCANNER_UPDATE` - **true/false** - if set to **true** it will trigger scanner update during pipeline execution,
+* `CS_REVIEWERS_GROUP_ID` - **integer** - ID of the group that should be asked to review created MRs in GitLab,
+
 ## License
 
 See the [LICENSE](LICENSE) file for more details.
