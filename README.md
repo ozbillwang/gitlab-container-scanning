@@ -96,6 +96,13 @@ creating update-trivy-to-0.19.1-2021-07-19 branch
 $ git push
 ```
 
+##### Automatic scanner updates
+
+A scheduled pipeline is executed to run automatic scanner updates. To run correctly, it needs the following CI/CD variables:
+
+* `TRIGGER_SCANNER_UPDATE` - **true/false** - if set to **true**, it triggers scanner update during pipeline execution.
+* `CS_REVIEWERS_GROUP_ID` - **integer** - a reviewer for the created MR will be picked from the group with this ID.
+
 ## License
 
 See the [LICENSE](LICENSE) file for more details.
