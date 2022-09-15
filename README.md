@@ -98,10 +98,10 @@ $ git push
 
 ##### Automatic scanner updates
 
-Every month a scheduled pipeline is executed to run automatic scanner updates. To make sure it is running correctly you need to make sure you have your CI/CD variables set:
+A scheduled pipeline is executed to run automatic scanner updates. To run correctly, it needs the following CI/CD variables:
 
-* `TRIGGER_SCANNER_UPDATE` - **true/false** - if set to **true** it will trigger scanner update during pipeline execution,
-* `CS_REVIEWERS_GROUP_ID` - **integer** - ID of the group that should be asked to review created MRs in GitLab,
+* `TRIGGER_SCANNER_UPDATE` - **true/false** - if set to **true**, it triggers scanner update during pipeline execution.
+* `CS_REVIEWERS_GROUP_ID` - **integer** - a reviewer for the created MR will be picked from the group with this ID.
 
 ## License
 
