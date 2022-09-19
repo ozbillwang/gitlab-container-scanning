@@ -28,7 +28,7 @@ module Gcs
     end
 
     def included_in_general?(cve)
-      return false unless @allow_list_cve[:general] && @allow_list_cve[:general][cve]
+      return false unless @allow_list_cve[:general]
 
       @allow_list_cve[:general].key?(cve)
     end
