@@ -23,7 +23,8 @@ RSpec.describe Gcs::AllowList do
     context 'with general allow list only' do
       specify do
         expect(allow_list.instance_variable_get(:@allow_list_cve)).to include(general: {
-                                                                                "CVE-2019-3462" => "apt"
+                                                                                "CVE-2019-3462" => "apt",
+                                                                                "CVE-2020-27350" => nil
                                                                               }, images: nil)
       end
     end
@@ -36,7 +37,8 @@ RSpec.describe Gcs::AllowList do
           general: nil,
           images: {
             docker_img => {
-              "CVE-2019-3462" => "apt"
+              "CVE-2019-3462" => "apt",
+              "CVE-2020-27350" => nil
             }
           })
       end
@@ -50,7 +52,8 @@ RSpec.describe Gcs::AllowList do
           general: nil,
           images: {
             docker_img_sha => {
-              "CVE-2019-3462" => "apt"
+              "CVE-2019-3462" => "apt",
+              "CVE-2020-27350" => nil
             }
           })
       end
@@ -61,7 +64,7 @@ RSpec.describe Gcs::AllowList do
 
       specify do
         expect(allow_list.instance_variable_get(:@allow_list_cve)).to include(
-          general: { "CVE-2019-3462" => "apt" },
+          general: { "CVE-2019-3462" => "apt", "CVE-2020-27350" => nil },
           images:
             {
               docker_img_sha => {
@@ -79,46 +82,55 @@ RSpec.describe Gcs::AllowList do
       context "with #{context}" do
         let(:allow_list_path) { fixture_file("#{context}.yml") }
 
-        specify do
-          expect(allowed?).to be true
-        end
+        subcontexts = [
+          'for vulnerability when package name is present in allowlist',
+          'for vulnerability when package name is missing in allowlist'
+        ]
 
-        context 'with missing cve' do
-          before do
-            report['vulnerabilities'].map! do |vuln|
-              vuln.delete('cve')
-              vuln
-            end
-          end
+        subcontexts.each.with_index do |subcontext, index|
+          subject(:allowed?) { described_class.new(allow_list_path).allowed?(report['vulnerabilities'][index]) }
 
           specify do
-            expect(allowed?).to be false
-          end
-        end
-
-        context 'with missing package_name' do
-          before do
-            report['vulnerabilities'].map! do |vuln|
-              vuln['location']['dependency'].delete('package')
-              vuln
-            end
-          end
-
-          it 'ignores missing package_name' do
             expect(allowed?).to be true
           end
-        end
 
-        context 'with a different cve' do
-          before do
-            report['vulnerabilities'].map! do |vuln|
-              vuln['cve'][0] = 'A'
-              vuln
+          context 'with missing cve' do
+            before do
+              report['vulnerabilities'].map! do |vuln|
+                vuln.delete('cve')
+                vuln
+              end
+            end
+
+            specify do
+              expect(allowed?).to be false
             end
           end
 
-          specify do
-            expect(allowed?).to be false
+          context 'with missing package_name' do
+            before do
+              report['vulnerabilities'].map! do |vuln|
+                vuln['location']['dependency'].delete('package')
+                vuln
+              end
+            end
+
+            it 'ignores missing package_name' do
+              expect(allowed?).to be true
+            end
+          end
+
+          context 'with a different cve' do
+            before do
+              report['vulnerabilities'].map! do |vuln|
+                vuln['cve'][0] = 'A'
+                vuln
+              end
+            end
+
+            specify do
+              expect(allowed?).to be false
+            end
           end
         end
       end
