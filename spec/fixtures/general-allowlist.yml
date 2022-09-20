@@ -1,3 +1,4 @@
 ---
 generalallowlist:
   CVE-2019-3462: apt
+  CVE-2020-27350:
