@@ -1,3 +1,13 @@
+## 5.2.0 (2022-09-26)
+
+### changed (1 change)
+
+- [Return report in Security Report Schemas 15.0.0](gitlab-org/security-products/analyzers/container-scanning@224f40241bd33506a1d47ce72bc63c94a6986830) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2798))
+
+### fixed (1 change)
+
+- [Remove check for presence of package name in allowlist](gitlab-org/security-products/analyzers/container-scanning@ebaedaea50faa3fd4df2759b1ef4865d0cc58968) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2821))
+
 ## 5.1.22 (2022-09-20)
 
 No changes.
