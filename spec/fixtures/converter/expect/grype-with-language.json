@@ -2,17 +2,9 @@
   "vulnerabilities": [
     {
       "id": "2fe2606c9dba7dbb8fb28a8edb63169f19d369ba",
-      "category": "container_scanning",
-      "message": "CVE-2014-0114 in commons-beanutils-1.7.0",
       "description": "Apache Commons BeanUtils, as distributed in lib/commons-beanutils-1.8.0.jar in Apache Struts 1.x through 1.3.10 and in other products requiring commons-beanutils through 1.9.2, does not suppress the class property, which allows remote attackers to \"manipulate\" the ClassLoader and execute arbitrary code via the class parameter, as demonstrated by the passing of this parameter to the getClass method of the ActionForm object in Struts 1.",
-      "cve": "CVE-2014-0114",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -394,17 +386,9 @@
     },
     {
       "id": "787684a9b3dbea8d8efdc1c542725d7a921b7096",
-      "category": "container_scanning",
-      "message": "CVE-2015-4035 in xz-1.8",
       "description": "scripts/xzgrep.in in xzgrep 5.2.x before 5.2.0, before 5.0.0 does not properly process file names containing semicolons, which allows remote attackers to execute arbitrary code by having a user run xzgrep on a crafted file name.",
-      "cve": "CVE-2015-4035",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -441,17 +425,9 @@
     },
     {
       "id": "44f4f1797d00f2a0e4cb074487be9da179c85c2b",
-      "category": "container_scanning",
-      "message": "CVE-2016-5725 in jsch.agentproxy.connector-factory-0.0.7",
       "description": "Directory traversal vulnerability in JCraft JSch before 0.1.54 on Windows, when the mode is ChannelSftp.OVERWRITE, allows remote SFTP servers to write to arbitrary files via a ..\\ (dot dot backslash) in a response to a recursive GET command.",
-      "cve": "CVE-2016-5725",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -509,17 +485,9 @@
     },
     {
       "id": "d11ce22a57652f4f028ad9a6f6d72faa0c93037c",
-      "category": "container_scanning",
-      "message": "CVE-2016-5725 in jsch.agentproxy.core-0.0.7",
       "description": "Directory traversal vulnerability in JCraft JSch before 0.1.54 on Windows, when the mode is ChannelSftp.OVERWRITE, allows remote SFTP servers to write to arbitrary files via a ..\\ (dot dot backslash) in a response to a recursive GET command.",
-      "cve": "CVE-2016-5725",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -577,17 +545,9 @@
     },
     {
       "id": "5adfde993c600197c4774ca5e7aa4240f4ae3c40",
-      "category": "container_scanning",
-      "message": "CVE-2016-5725 in jsch.agentproxy.pageant-0.0.7",
       "description": "Directory traversal vulnerability in JCraft JSch before 0.1.54 on Windows, when the mode is ChannelSftp.OVERWRITE, allows remote SFTP servers to write to arbitrary files via a ..\\ (dot dot backslash) in a response to a recursive GET command.",
-      "cve": "CVE-2016-5725",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -645,17 +605,9 @@
     },
     {
       "id": "e60bf971421e9d7d2bc64cd7c7cb565f0974c059",
-      "category": "container_scanning",
-      "message": "CVE-2016-5725 in jsch.agentproxy.sshagent-0.0.7",
       "description": "Directory traversal vulnerability in JCraft JSch before 0.1.54 on Windows, when the mode is ChannelSftp.OVERWRITE, allows remote SFTP servers to write to arbitrary files via a ..\\ (dot dot backslash) in a response to a recursive GET command.",
-      "cve": "CVE-2016-5725",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -713,17 +665,9 @@
     },
     {
       "id": "f9686d6f831392292868d3517b4e9ea37c39cb54",
-      "category": "container_scanning",
-      "message": "CVE-2016-5725 in jsch.agentproxy.usocket-jna-0.0.7",
       "description": "Directory traversal vulnerability in JCraft JSch before 0.1.54 on Windows, when the mode is ChannelSftp.OVERWRITE, allows remote SFTP servers to write to arbitrary files via a ..\\ (dot dot backslash) in a response to a recursive GET command.",
-      "cve": "CVE-2016-5725",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -781,17 +725,9 @@
     },
     {
       "id": "b2eb8b6e620a55a1c22113c032b3aa59916831c8",
-      "category": "container_scanning",
-      "message": "CVE-2016-5725 in jsch.agentproxy.usocket-nc-0.0.7",
       "description": "Directory traversal vulnerability in JCraft JSch before 0.1.54 on Windows, when the mode is ChannelSftp.OVERWRITE, allows remote SFTP servers to write to arbitrary files via a ..\\ (dot dot backslash) in a response to a recursive GET command.",
-      "cve": "CVE-2016-5725",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -849,17 +785,9 @@
     },
     {
       "id": "4c798e074f31eaef23ea8d4618ffa50f6bd81a70",
-      "category": "container_scanning",
-      "message": "CVE-2017-18349 in fastjson-1.2.9",
       "description": "parseObject in Fastjson before 1.2.25, as used in FastjsonEngine in Pippo 1.11.0 and other products, allows remote attackers to execute arbitrary code via a crafted JSON request, as demonstrated by a crafted rmi:// URI in the dataSourceName field of HTTP POST data to the Pippo /json URI, which is mishandled in AjaxApplication.java.",
-      "cve": "CVE-2017-18349",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -893,17 +821,9 @@
     },
     {
       "id": "678cd020d839f84df7df99358bbfa74674f0c501",
-      "category": "container_scanning",
-      "message": "CVE-2019-10086 in commons-beanutils-1.7.0",
       "description": "In Apache Commons Beanutils 1.9.2, a special BeanIntrospector class was added which allows suppressing the ability for an attacker to access the classloader via the class property available on all Java objects. We, however were not using this by default characteristic of the PropertyUtilsBean.",
-      "cve": "CVE-2019-10086",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1084,17 +1004,9 @@
     },
     {
       "id": "782519b6f312dae578c77c44e23e618863a51b3e",
-      "category": "container_scanning",
-      "message": "CVE-2020-8908 in guava-29.0-jre",
       "description": "A temp directory creation vulnerability exists in all versions of Guava, allowing an attacker with access to the machine to potentially access data in a temporary directory created by the Guava API com.google.common.io.Files.createTempDir(). By default, on unix-like systems, the created directory is world-readable (readable by an attacker with access to the system). The method in question has been marked @Deprecated in versions 30.0 and later and should not be used. For Android developers, we recommend choosing a temporary directory API provided by Android, such as context.getCacheDir(). For other Java developers, we recommend migrating to the Java 7 API java.nio.file.Files.createTempDirectory() which explicitly configures permissions of 700, or configuring the Java runtime's java.io.tmpdir system property to point to a location whose permissions are appropriately configured.",
-      "cve": "CVE-2020-8908",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1239,17 +1151,9 @@
     },
     {
       "id": "6e18206cff9f33cd37a45711e00052dd759613fc",
-      "category": "container_scanning",
-      "message": "CVE-2020-9488 in log4j-api-2.11.1",
       "description": "Improper validation of certificate with host mismatch in Apache Log4j SMTP appender. This could allow an SMTPS connection to be intercepted by a man-in-the-middle attack which could leak any log messages sent through that appender.",
-      "cve": "CVE-2020-9488",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1415,17 +1319,9 @@
     },
     {
       "id": "d21429ae04b8bde93992487296ec5afc287a135e",
-      "category": "container_scanning",
-      "message": "CVE-2020-9488 in log4j-core-2.11.1",
       "description": "Improper validation of certificate with host mismatch in Apache Log4j SMTP appender. This could allow an SMTPS connection to be intercepted by a man-in-the-middle attack which could leak any log messages sent through that appender.",
-      "cve": "CVE-2020-9488",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1591,17 +1487,9 @@
     },
     {
       "id": "8d625c57abb9888d10ded8a94d58f23387b1b38a",
-      "category": "container_scanning",
-      "message": "CVE-2021-26291 in maven-artifact-3.6.2",
       "description": "Apache Maven will follow repositories that are defined in a dependency’s Project Object Model (pom) which may be surprising to some users, resulting in potential risk if a malicious actor takes over that repository or is able to insert themselves into a position to pretend to be that repository. Maven is changing the default behavior in 3.8.1+ to no longer follow http (non-SSL) repository references by default. More details available in the referenced urls. If you are currently using a repository manager to govern the repositories used by your builds, you are unaffected by the risks present in the legacy behavior, and are unaffected by this vulnerability and change to default behavior. See this link for more information about repository management: https://maven.apache.org/repository-management.html",
-      "cve": "CVE-2021-26291",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1752,17 +1640,9 @@
     },
     {
       "id": "5b953789d5f35fd763179bfe082d2531ae0b56dc",
-      "category": "container_scanning",
-      "message": "CVE-2021-26291 in maven-builder-support-3.6.2",
       "description": "Apache Maven will follow repositories that are defined in a dependency’s Project Object Model (pom) which may be surprising to some users, resulting in potential risk if a malicious actor takes over that repository or is able to insert themselves into a position to pretend to be that repository. Maven is changing the default behavior in 3.8.1+ to no longer follow http (non-SSL) repository references by default. More details available in the referenced urls. If you are currently using a repository manager to govern the repositories used by your builds, you are unaffected by the risks present in the legacy behavior, and are unaffected by this vulnerability and change to default behavior. See this link for more information about repository management: https://maven.apache.org/repository-management.html",
-      "cve": "CVE-2021-26291",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1913,17 +1793,9 @@
     },
     {
       "id": "2d7e09bdf273d64a59e95111f83617636d781607",
-      "category": "container_scanning",
-      "message": "CVE-2021-26291 in maven-model-3.6.2",
       "description": "Apache Maven will follow repositories that are defined in a dependency’s Project Object Model (pom) which may be surprising to some users, resulting in potential risk if a malicious actor takes over that repository or is able to insert themselves into a position to pretend to be that repository. Maven is changing the default behavior in 3.8.1+ to no longer follow http (non-SSL) repository references by default. More details available in the referenced urls. If you are currently using a repository manager to govern the repositories used by your builds, you are unaffected by the risks present in the legacy behavior, and are unaffected by this vulnerability and change to default behavior. See this link for more information about repository management: https://maven.apache.org/repository-management.html",
-      "cve": "CVE-2021-26291",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2074,17 +1946,9 @@
     },
     {
       "id": "28c4769907a552f1c62ee0dd16a408089b78d758",
-      "category": "container_scanning",
-      "message": "CVE-2021-26291 in maven-model-builder-3.6.2",
       "description": "Apache Maven will follow repositories that are defined in a dependency’s Project Object Model (pom) which may be surprising to some users, resulting in potential risk if a malicious actor takes over that repository or is able to insert themselves into a position to pretend to be that repository. Maven is changing the default behavior in 3.8.1+ to no longer follow http (non-SSL) repository references by default. More details available in the referenced urls. If you are currently using a repository manager to govern the repositories used by your builds, you are unaffected by the risks present in the legacy behavior, and are unaffected by this vulnerability and change to default behavior. See this link for more information about repository management: https://maven.apache.org/repository-management.html",
-      "cve": "CVE-2021-26291",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2235,17 +2099,9 @@
     },
     {
       "id": "e33ff884b29704132a296d6a9d5b2c45c50a3c0a",
-      "category": "container_scanning",
-      "message": "CVE-2021-29425 in commons-io-2.4",
       "description": "In Apache Commons IO before 2.7, When invoking the method FileNameUtils.normalize with an improper input string, like \"//../foo\", or \"\\\\..\\foo\", the result would be the same value, thus possibly providing access to files in the parent directory, but not further above (thus \"limited\" path traversal), if the calling code would use the result to construct a path value.",
-      "cve": "CVE-2021-29425",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2399,17 +2255,9 @@
     },
     {
       "id": "924d8c5debd17af9447d959669de7c0f38421528",
-      "category": "container_scanning",
-      "message": "GHSA-5mg8-w23w-74h3 in guava-29.0-jre",
       "description": "Information Disclosure in Guava",
-      "cve": "GHSA-5mg8-w23w-74h3",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "Upgrade guava to 30.0-jre",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2429,23 +2277,13 @@
           "url": "https://github.com/advisories/GHSA-5mg8-w23w-74h3"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "1b226d65aa4f1ed11860f404fc4445668a4d1f9f",
-      "category": "container_scanning",
-      "message": "GHSA-gwrp-pvrq-jmwv in commons-io-2.4",
       "description": "Path Traversal and Improper Input Validation in Apache Commons IO",
-      "cve": "GHSA-gwrp-pvrq-jmwv",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "Upgrade commons-io to 2.7",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2473,17 +2311,9 @@
     },
     {
       "id": "75ce851fc9fb0273093f2168c6022d4fb3bb3900",
-      "category": "container_scanning",
-      "message": "GHSA-jfh8-c2jp-5v3q in log4j-api-2.11.1",
       "description": "Remote code injection in Log4j",
-      "cve": "GHSA-jfh8-c2jp-5v3q",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-api to 2.15.0",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2511,17 +2341,9 @@
     },
     {
       "id": "8874a0ceeabb1830e3166236c33c7f3116675c60",
-      "category": "container_scanning",
-      "message": "GHSA-jfh8-c2jp-5v3q in log4j-api-2.13.3",
       "description": "Remote code injection in Log4j",
-      "cve": "GHSA-jfh8-c2jp-5v3q",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-api to 2.15.0",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2549,17 +2371,9 @@
     },
     {
       "id": "c25ed4eb86f5986a249854bdf4832c780aae7329",
-      "category": "container_scanning",
-      "message": "GHSA-jfh8-c2jp-5v3q in log4j-api-2.14.1",
       "description": "Remote code injection in Log4j",
-      "cve": "GHSA-jfh8-c2jp-5v3q",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-api to 2.15.0",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2587,17 +2401,9 @@
     },
     {
       "id": "caa5ed769e5b371aa8776956c3ffabac716098bd",
-      "category": "container_scanning",
-      "message": "GHSA-jfh8-c2jp-5v3q in log4j-core-2.11.1",
       "description": "Remote code injection in Log4j",
-      "cve": "GHSA-jfh8-c2jp-5v3q",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-core to 2.15.0",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2625,17 +2431,9 @@
     },
     {
       "id": "62810453826045cc94002019e72042cbbdb1764a",
-      "category": "container_scanning",
-      "message": "GHSA-jfh8-c2jp-5v3q in log4j-core-2.13.3",
       "description": "Remote code injection in Log4j",
-      "cve": "GHSA-jfh8-c2jp-5v3q",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-core to 2.15.0",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2663,17 +2461,9 @@
     },
     {
       "id": "71bb8cec52b2e87b053f30012aca33f07b8565a6",
-      "category": "container_scanning",
-      "message": "GHSA-jfh8-c2jp-5v3q in log4j-core-2.14.1",
       "description": "Remote code injection in Log4j",
-      "cve": "GHSA-jfh8-c2jp-5v3q",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-core to 2.15.0",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2701,17 +2491,9 @@
     },
     {
       "id": "71bb8cec52b2e87b053f30012aca33f07b8565a6",
-      "category": "container_scanning",
-      "message": "GHSA-jfh8-c2jp-5v3q in log4j-core-2.14.1",
       "description": "Remote code injection in Log4j",
-      "cve": "GHSA-jfh8-c2jp-5v3q",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-core to 2.15.0",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2739,17 +2521,9 @@
     },
     {
       "id": "02aed0ce8ff11559bedb8f6aff04d3f1e6952d80",
-      "category": "container_scanning",
-      "message": "GHSA-vwqq-5vrc-xw9h in log4j-core-2.11.1",
       "description": "Improper validation of certificate with host mismatch in Apache Log4j SMTP appender",
-      "cve": "GHSA-vwqq-5vrc-xw9h",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "Upgrade log4j-core to 2.13.2",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2777,17 +2551,9 @@
     },
     {
       "id": "ddebcb6056605fb1b09b7da7b68505d2578cffe1",
-      "category": "container_scanning",
-      "message": "GHSA-wx5j-54mm-rqqq in netty-codec-http-4.1.66.Final",
       "description": "HTTP request smuggling in io.netty:netty-codec-http",
-      "cve": "GHSA-wx5j-54mm-rqqq",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "Upgrade netty-codec-http to 4.1.71.Final",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2815,17 +2581,9 @@
     },
     {
       "id": "d9f1869b77c2e0351e2b4c0b087dac4fb5bd7c55",
-      "category": "container_scanning",
-      "message": "GHSA-xjrr-xv9m-4pw5 in fastjson-1.2.9",
       "description": "High severity vulnerability that affects com.alibaba:fastjson",
-      "cve": "GHSA-xjrr-xv9m-4pw5",
       "severity": "Critical",
-      "confidence": "Unknown",
       "solution": "Upgrade fastjson to 1.2.31",
-      "scanner": {
-        "id": "grype",
-        "name": "grype"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2852,9 +2610,7 @@
       ]
     }
   ],
-  "remediations": [
-
-  ],
+  "remediations": [],
   "scan": {
     "scanner": {
       "id": "grype",
@@ -2871,12 +2627,12 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.1.22"
+      "version": "5.2.0"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
     "end_time": "2021-09-15T08:36:25",
     "status": "success"
   },
-  "version": "14.1.2"
+  "version": "15.0.0"
 }

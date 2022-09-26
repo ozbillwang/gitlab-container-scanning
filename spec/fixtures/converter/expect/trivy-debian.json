@@ -2,17 +2,9 @@
   "vulnerabilities": [
     {
       "id": "fe094cbccd0a98a3bbc3dc8468d04cc2d3454b44",
-      "category": "container_scanning",
-      "message": "",
       "description": "It was found that apt-key in apt, all versions, do not correctly validate gpg keys with the master keyring, leading to a potential man-in-the-middle attack.",
-      "cve": "CVE-2011-3374",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -32,23 +24,13 @@
           "url": "https://avd.aquasec.com/nvd/cve-2011-3374"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "13070043b353b43ffd27a323953a4ecf68b4988d",
-      "category": "container_scanning",
-      "message": "CVE-2018-12020 in gpgv-2.1.18-8~deb9u1",
       "description": "mainproc.c in GnuPG before 2.2.8 mishandles the original filename during decryption and verification actions, which allows remote attackers to spoof the output that GnuPG sends on file descriptor 2 to other programs that use the \"--status-fd 2\" option. For example, the OpenPGP data might represent an original filename that contains line feed characters in conjunction with GOODSIG or VALIDSIG status codes.",
-      "cve": "CVE-2018-12020",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "Upgrade gpgv to 2.1.18-8~deb9u2",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -160,17 +142,9 @@
     },
     {
       "id": "29defa5c3a0c5dcd47365bd00d6d1cbd637022b6",
-      "category": "container_scanning",
-      "message": "bash: when effective UID is not equal to its real UID the saved UID is not dropped",
       "description": "An issue was discovered in disable_priv_mode in shell.c in GNU Bash through 5.0 patch 11. By default, if Bash is run with its effective UID not equal to its real UID, it will drop privileges by setting its effective UID to its real UID. However, it does so incorrectly. On Linux and other systems that support \"saved UID\" functionality, the saved UID is not dropped. An attacker with command execution in the shell can use \"enable -f\" for runtime loading of a new builtin, which can be a shared object that calls setuid() and therefore regains privileges. However, binaries running with an effective UID of 0 are unaffected.",
-      "cve": "CVE-2019-18276",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -210,17 +184,9 @@
     },
     {
       "id": "f114f40927c3c9d1d5a52eb874cb691c0bb2d5e1",
-      "category": "container_scanning",
-      "message": "",
       "description": "TEMP-0841856-B18BAF",
-      "cve": "TEMP-0841856-B18BAF",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -240,23 +206,13 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0841856-B18BAF"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "aa78f20a6b82778458b89149ec7ad0b81b54d987",
-      "category": "container_scanning",
-      "message": "coreutils: Non-privileged session can escape to the parent session in chroot",
       "description": "chroot in GNU coreutils, when used with --userspec, allows local users to escape to the parent session via a crafted TIOCSTI ioctl call, which pushes characters to the terminal's input buffer.",
-      "cve": "CVE-2016-2781",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -296,17 +252,9 @@
     },
     {
       "id": "c43b29e62b706d992959ebe63f790fefabcc065e",
-      "category": "container_scanning",
-      "message": "coreutils: race condition vulnerability in chown and chgrp",
       "description": "In GNU Coreutils through 8.29, chown-core.c in chown and chgrp does not prevent replacement of a plain file with a symlink during use of the POSIX \"-R -L\" options, which allows local users to modify the ownership of arbitrary files by leveraging a race condition.",
-      "cve": "CVE-2017-18018",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -334,17 +282,9 @@
     },
     {
       "id": "8781b8d91a49d380c91922402a2c2741bf4cc787",
-      "category": "container_scanning",
-      "message": "gcc: spilling of stack protection address in cfgexpand.c and function.c leads to stack-overflow protection bypass",
       "description": "stack_protect_prologue in cfgexpand.c and stack_protect_epilogue in function.c in GNU Compiler Collection (GCC) 4.1 through 8 (under certain circumstances) generate instruction sequences when targeting ARM targets that spill the address of the stack protector guard, which allows an attacker to bypass the protection of -fstack-protector, -fstack-protector-all, -fstack-protector-strong, and -fstack-protector-explicit against stack overflow by controlling what the stack canary is compared against.",
-      "cve": "CVE-2018-12886",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -375,17 +315,9 @@
     },
     {
       "id": "2d5bf99effe2e1aaf85f81cb3d5ca949ce11f2f8",
-      "category": "container_scanning",
-      "message": "gcc: POWER9 \"DARN\" RNG intrinsic produces repeated output",
       "description": "The POWER9 backend in GNU Compiler Collection (GCC) before version 10 could optimize multiple calls of the __builtin_darn intrinsic into a single call, thus reducing the entropy of the random number generator. This occurred because a volatile operation was not specified. For example, within a single execution of a program, the output of every __builtin_darn() call may be the same.",
-      "cve": "CVE-2019-15847",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -428,17 +360,9 @@
     },
     {
       "id": "8d767e832481beb95fabcbf0494d2b9ef660fe83",
-      "category": "container_scanning",
-      "message": "gnupg2: OpenPGP Key Certification Forgeries with SHA-1",
       "description": "A flaw was found in the way certificate signatures could be forged using collisions found in the SHA-1 algorithm. An attacker could use this weakness to create forged certificate signatures. This issue affects GnuPG versions before 2.2.18.",
-      "cve": "CVE-2019-14855",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -487,17 +411,9 @@
     },
     {
       "id": "3f2aaa75a563321432f4485d923c1dcd4a21abef",
-      "category": "container_scanning",
-      "message": "iproute: use-after-free in get_netnsid_from_name in ip/ipnetns.c",
       "description": "iproute2 before 5.1.0 has a use-after-free in get_netnsid_from_name in ip/ipnetns.c. NOTE: security relevance may be limited to certain uses of setuid that, although not a default, are sometimes a configuration option offered to end users. Even when setuid is used, other factors (such as C library configuration) may block exploitability.",
-      "cve": "CVE-2019-20795",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -540,17 +456,9 @@
     },
     {
       "id": "e9983377fdc9f15b47bf883c4e6de55044b26587",
-      "category": "container_scanning",
-      "message": "",
       "description": "It was found that apt-key in apt, all versions, do not correctly validate gpg keys with the master keyring, leading to a potential man-in-the-middle attack.",
-      "cve": "CVE-2011-3374",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -590,17 +498,9 @@
     },
     {
       "id": "4f43c83e78a1a67b9fa575ba3be361c5189144b9",
-      "category": "container_scanning",
-      "message": "glibc: array overflow in backtrace functions for powerpc",
       "description": "An out-of-bounds write vulnerability was found in glibc before 2.31 when handling signal trampolines on PowerPC. Specifically, the backtrace function did not properly check the array bounds when storing the frame address, resulting in a denial of service or potential code execution. The highest threat from this vulnerability is to system availability.",
-      "cve": "CVE-2020-1751",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -652,17 +552,9 @@
     },
     {
       "id": "a545366936568651b388e39f67605339a4af9980",
-      "category": "container_scanning",
-      "message": "glibc: use-after-free in glob() function when expanding ~user",
       "description": "A use-after-free vulnerability introduced in glibc upstream version 2.14 was found in the way the tilde expansion was carried out. Directory paths containing an initial tilde followed by a valid username were affected by this issue. A local attacker could exploit this flaw by creating a specially crafted path that, when processed by the glob function, would potentially lead to arbitrary code execution. This was fixed in version 2.32.",
-      "cve": "CVE-2020-1752",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -714,17 +606,9 @@
     },
     {
       "id": "3f1448c8f3534d29b9246f1495907a28a82d7d1f",
-      "category": "container_scanning",
-      "message": "glibc: stack corruption from crafted input in cosl, sinl, sincosl, and tanl functions",
       "description": "The GNU C Library (aka glibc or libc6) before 2.32 could overflow an on-stack buffer during range reduction if an input to an 80-bit long double function contains a non-canonical bit pattern, a seen when passing a 0x5d414141414141410000 value to sinl on x86 targets. This is related to sysdeps/ieee754/ldbl-96/e_rem_pio2l.c.",
-      "cve": "CVE-2020-10029",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -788,17 +672,9 @@
     },
     {
       "id": "94ba226d5ba1213913535b38adf1345aa4080914",
-      "category": "container_scanning",
-      "message": "glibc: iconv when processing invalid multi-byte input sequences fails to advance the input state, which could result in an infinite loop",
       "description": "No description is available for this CVE.",
-      "cve": "CVE-2020-27618",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -826,17 +702,9 @@
     },
     {
       "id": "d724e356f3e68f38fcfbd32fccbc48103a25762e",
-      "category": "container_scanning",
-      "message": "CVE-2010-4052 glibc: De-recursivise regular expression engine",
       "description": "The regcomp implementation in the GNU C Library (aka glibc or libc6) through 2.11.3, and 2.12.x through 2.12.2, allows context-dependent attackers to cause a denial of service (application crash) via a regular expression containing adjacent bounded repetitions that bypass the intended RE_DUP_MAX limitation, as demonstrated by a {10,}{10,}{10,}{10,}{10,} sequence in the proftpd.gnu.c exploit for ProFTPD, related to a \"RE_DUP_MAX overflow.\"",
-      "cve": "CVE-2010-4051",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -894,17 +762,9 @@
     },
     {
       "id": "e405d741bae3613e4a344cc93fad2532006898c1",
-      "category": "container_scanning",
-      "message": "CVE-2010-4051 CVE-2010-4052 glibc: De-recursivise regular expression engine",
       "description": "Stack consumption vulnerability in the regcomp implementation in the GNU C Library (aka glibc or libc6) through 2.11.3, and 2.12.x through 2.12.2, allows context-dependent attackers to cause a denial of service (resource exhaustion) via a regular expression containing adjacent repetition operators, as demonstrated by a {10,}{10,}{10,}{10,} sequence in the proftpd.gnu.c exploit for ProFTPD.",
-      "cve": "CVE-2010-4052",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -962,17 +822,9 @@
     },
     {
       "id": "7437c29b9237dcc6cf8281b66f079bfe72465d08",
-      "category": "container_scanning",
-      "message": "glibc: glob implementation can cause excessive CPU and memory consumption due to crafted glob expressions",
       "description": "The glob implementation in the GNU C Library (aka glibc or libc6) allows remote authenticated users to cause a denial of service (CPU and memory consumption) via crafted glob expressions that do not match any pathnames, as demonstrated by glob expressions in STAT commands to an FTP daemon, a different vulnerability than CVE-2010-2632.",
-      "cve": "CVE-2010-4756",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1006,17 +858,9 @@
     },
     {
       "id": "f940734f2e75aa0709cceb5fde3a2908997f6354",
-      "category": "container_scanning",
-      "message": "glibc: iconv program can hang when invoked with the -c option",
       "description": "The iconv program in the GNU C Library (aka glibc or libc6) 2.31 and earlier, when invoked with multiple suffixes in the destination encoding (TRANSLATE or IGNORE) along with the -c option, enters an infinite loop when processing invalid multi-byte input sequences, leading to a denial of service.",
-      "cve": "CVE-2016-10228",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1059,17 +903,9 @@
     },
     {
       "id": "833cd88419eeffeda75dd86496efcf640846db97",
-      "category": "container_scanning",
-      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c",
       "description": "In the GNU C Library (aka glibc or libc6) through 2.29, check_dst_limits_calc_pos_1 in posix/regexec.c has Uncontrolled Recursion, as demonstrated by '(\\227|)(\\\\1\\\\1|t1|\\\\\\2537)+' in grep.",
-      "cve": "CVE-2018-20796",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1109,17 +945,9 @@
     },
     {
       "id": "ca7cbe4cb721087bd07bcc09ac1a41f5cb6e691e",
-      "category": "container_scanning",
-      "message": "glibc: stack guard protection bypass",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass stack guard protection. The component is: nptl. The attack vector is: Exploit stack buffer overflow vulnerability and use this bypass vulnerability to bypass stack guard. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
-      "cve": "CVE-2019-1010022",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1153,17 +981,9 @@
     },
     {
       "id": "f837cc6443f5b3c1b7e32fbbc2570e12fbe7cc82",
-      "category": "container_scanning",
-      "message": "glibc: running ldd on malicious ELF leads to code execution because of wrong size computation",
       "description": "** DISPUTED ** GNU Libc current is affected by: Re-mapping current loaded library with malicious ELF file. The impact is: In worst case attacker may evaluate privileges. The component is: libld. The attack vector is: Attacker sends 2 ELF files to victim and asks to run ldd on it. ldd execute code. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
-      "cve": "CVE-2019-1010023",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1203,17 +1023,9 @@
     },
     {
       "id": "75bfe4334d9b067e0016439dbb444cd6654450dc",
-      "category": "container_scanning",
-      "message": "glibc: ASLR bypass using cache of thread stack and heap",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass ASLR using cache of thread stack and heap. The component is: glibc. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
-      "cve": "CVE-2019-1010024",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1256,17 +1068,9 @@
     },
     {
       "id": "b605a04194d4ca187388691acec6697e07dc9481",
-      "category": "container_scanning",
-      "message": "glibc: information disclosure of heap addresses of pthread_created thread",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may guess the heap addresses of pthread_created thread. The component is: glibc. NOTE: the vendor's position is \"ASLR bypass itself is not a vulnerability.\"",
-      "cve": "CVE-2019-1010025",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1306,17 +1110,9 @@
     },
     {
       "id": "fd377bdacb5e1c91e771c11a51a22ac773a8d238",
-      "category": "container_scanning",
-      "message": "glibc: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries",
       "description": "On the x86-64 architecture, the GNU C Library (aka glibc) before 2.31 fails to ignore the LD_PREFER_MAP_32BIT_EXEC environment variable during program execution after a security transition, allowing local attackers to restrict the possible mapping addresses for loaded libraries and thus bypass ASLR for a setuid program.",
-      "cve": "CVE-2019-19126",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1368,17 +1164,9 @@
     },
     {
       "id": "d246d5a32210288dae16b2fb05d98f2acf3238f7",
-      "category": "container_scanning",
-      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c",
       "description": "** DISPUTED ** In the GNU C Library (aka glibc or libc6) through 2.29, check_dst_limits_calc_pos_1 in posix/regexec.c has Uncontrolled Recursion, as demonstrated by '(|)(\\\\1\\\\1)*' in grep, a different issue than CVE-2018-20796. NOTE: the software maintainer disputes that this is a vulnerability because the behavior occurs only with a crafted pattern.",
-      "cve": "CVE-2019-9192",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1409,17 +1197,9 @@
     },
     {
       "id": "5c26b490c435311e785fe8b59429cf858bbbdad6",
-      "category": "container_scanning",
-      "message": "glibc: signed comparison vulnerability in the ARMv7 memcpy function",
       "description": "An exploitable signed comparison vulnerability exists in the ARMv7 memcpy() implementation of GNU glibc 2.30.9000. Calling memcpy() (on ARMv7 targets that utilize the GNU glibc implementation) with a negative value for the 'num' parameter results in a signed comparison vulnerability. If an attacker underflows the 'num' parameter to memcpy(), this vulnerability could lead to undefined behavior such as writing to out-of-bounds memory and potentially remote code execution. Furthermore, this memcpy() implementation allows for program execution to continue in scenarios where a segmentation fault or crash should have occurred. The dangers occur in that subsequent execution and iterations of this code will be executed with this corrupted data.",
-      "cve": "CVE-2020-6096",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1465,17 +1245,9 @@
     },
     {
       "id": "021fa457defc3a7f5dc8281f933fc47a4a00d4d7",
-      "category": "container_scanning",
-      "message": "",
       "description": "The iconv function in the GNU C Library (aka glibc or libc6) 2.30 to 2.32, when converting UCS4 text containing an irreversible character, fails an assertion in the code path and aborts the program, potentially resulting in a denial of service.",
-      "cve": "CVE-2020-29562",
       "severity": "Unknown",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1503,17 +1275,9 @@
     },
     {
       "id": "84bd1dc925c3ab030c83035608f78cd2252ed1dd",
-      "category": "container_scanning",
-      "message": "glibc: array overflow in backtrace functions for powerpc",
       "description": "An out-of-bounds write vulnerability was found in glibc before 2.31 when handling signal trampolines on PowerPC. Specifically, the backtrace function did not properly check the array bounds when storing the frame address, resulting in a denial of service or potential code execution. The highest threat from this vulnerability is to system availability.",
-      "cve": "CVE-2020-1751",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1565,17 +1329,9 @@
     },
     {
       "id": "87786618e8422e99651ce44013befe6ea517bec2",
-      "category": "container_scanning",
-      "message": "glibc: use-after-free in glob() function when expanding ~user",
       "description": "A use-after-free vulnerability introduced in glibc upstream version 2.14 was found in the way the tilde expansion was carried out. Directory paths containing an initial tilde followed by a valid username were affected by this issue. A local attacker could exploit this flaw by creating a specially crafted path that, when processed by the glob function, would potentially lead to arbitrary code execution. This was fixed in version 2.32.",
-      "cve": "CVE-2020-1752",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1627,17 +1383,9 @@
     },
     {
       "id": "42a63c54161fd3a5e147f14e0ed33c774fc3303a",
-      "category": "container_scanning",
-      "message": "glibc: stack corruption from crafted input in cosl, sinl, sincosl, and tanl functions",
       "description": "The GNU C Library (aka glibc or libc6) before 2.32 could overflow an on-stack buffer during range reduction if an input to an 80-bit long double function contains a non-canonical bit pattern, a seen when passing a 0x5d414141414141410000 value to sinl on x86 targets. This is related to sysdeps/ieee754/ldbl-96/e_rem_pio2l.c.",
-      "cve": "CVE-2020-10029",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1701,17 +1449,9 @@
     },
     {
       "id": "5d793833b94a056bae117cfe7763cfadbf185fc1",
-      "category": "container_scanning",
-      "message": "glibc: iconv when processing invalid multi-byte input sequences fails to advance the input state, which could result in an infinite loop",
       "description": "No description is available for this CVE.",
-      "cve": "CVE-2020-27618",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1739,17 +1479,9 @@
     },
     {
       "id": "70899d233a291615a6ddb48b10c9f57fbaa71222",
-      "category": "container_scanning",
-      "message": "CVE-2010-4052 glibc: De-recursivise regular expression engine",
       "description": "The regcomp implementation in the GNU C Library (aka glibc or libc6) through 2.11.3, and 2.12.x through 2.12.2, allows context-dependent attackers to cause a denial of service (application crash) via a regular expression containing adjacent bounded repetitions that bypass the intended RE_DUP_MAX limitation, as demonstrated by a {10,}{10,}{10,}{10,}{10,} sequence in the proftpd.gnu.c exploit for ProFTPD, related to a \"RE_DUP_MAX overflow.\"",
-      "cve": "CVE-2010-4051",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1807,17 +1539,9 @@
     },
     {
       "id": "8576ad1f98d6d6d08e9487944aa73d0e6bb000fa",
-      "category": "container_scanning",
-      "message": "CVE-2010-4051 CVE-2010-4052 glibc: De-recursivise regular expression engine",
       "description": "Stack consumption vulnerability in the regcomp implementation in the GNU C Library (aka glibc or libc6) through 2.11.3, and 2.12.x through 2.12.2, allows context-dependent attackers to cause a denial of service (resource exhaustion) via a regular expression containing adjacent repetition operators, as demonstrated by a {10,}{10,}{10,}{10,} sequence in the proftpd.gnu.c exploit for ProFTPD.",
-      "cve": "CVE-2010-4052",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1875,17 +1599,9 @@
     },
     {
       "id": "6be5ead508442c3e4ccabd5030d311bb3ea331cd",
-      "category": "container_scanning",
-      "message": "glibc: glob implementation can cause excessive CPU and memory consumption due to crafted glob expressions",
       "description": "The glob implementation in the GNU C Library (aka glibc or libc6) allows remote authenticated users to cause a denial of service (CPU and memory consumption) via crafted glob expressions that do not match any pathnames, as demonstrated by glob expressions in STAT commands to an FTP daemon, a different vulnerability than CVE-2010-2632.",
-      "cve": "CVE-2010-4756",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1919,17 +1635,9 @@
     },
     {
       "id": "9330ec3d5b36e41f24455b99c625c7917ea30f2a",
-      "category": "container_scanning",
-      "message": "glibc: iconv program can hang when invoked with the -c option",
       "description": "The iconv program in the GNU C Library (aka glibc or libc6) 2.31 and earlier, when invoked with multiple suffixes in the destination encoding (TRANSLATE or IGNORE) along with the -c option, enters an infinite loop when processing invalid multi-byte input sequences, leading to a denial of service.",
-      "cve": "CVE-2016-10228",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -1972,17 +1680,9 @@
     },
     {
       "id": "541f0dff8d3d6717cfc9574d2f51fa61caeda520",
-      "category": "container_scanning",
-      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c",
       "description": "In the GNU C Library (aka glibc or libc6) through 2.29, check_dst_limits_calc_pos_1 in posix/regexec.c has Uncontrolled Recursion, as demonstrated by '(\\227|)(\\\\1\\\\1|t1|\\\\\\2537)+' in grep.",
-      "cve": "CVE-2018-20796",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2022,17 +1722,9 @@
     },
     {
       "id": "1c2fa95a19e538829ccca3f6c2d0bb3a57ee9c20",
-      "category": "container_scanning",
-      "message": "glibc: stack guard protection bypass",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass stack guard protection. The component is: nptl. The attack vector is: Exploit stack buffer overflow vulnerability and use this bypass vulnerability to bypass stack guard. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
-      "cve": "CVE-2019-1010022",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2066,17 +1758,9 @@
     },
     {
       "id": "50c551880c04646f6cf18fb3d304108e92920a58",
-      "category": "container_scanning",
-      "message": "glibc: running ldd on malicious ELF leads to code execution because of wrong size computation",
       "description": "** DISPUTED ** GNU Libc current is affected by: Re-mapping current loaded library with malicious ELF file. The impact is: In worst case attacker may evaluate privileges. The component is: libld. The attack vector is: Attacker sends 2 ELF files to victim and asks to run ldd on it. ldd execute code. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
-      "cve": "CVE-2019-1010023",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2116,17 +1800,9 @@
     },
     {
       "id": "0dab0efddb05d6b7abc431de032ba9bfb3452132",
-      "category": "container_scanning",
-      "message": "glibc: ASLR bypass using cache of thread stack and heap",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass ASLR using cache of thread stack and heap. The component is: glibc. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
-      "cve": "CVE-2019-1010024",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2169,17 +1845,9 @@
     },
     {
       "id": "e37acc3875fb50a3e1b37e4c96ac8ca16a5eb7b7",
-      "category": "container_scanning",
-      "message": "glibc: information disclosure of heap addresses of pthread_created thread",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may guess the heap addresses of pthread_created thread. The component is: glibc. NOTE: the vendor's position is \"ASLR bypass itself is not a vulnerability.\"",
-      "cve": "CVE-2019-1010025",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2219,17 +1887,9 @@
     },
     {
       "id": "49f8a972c9414de98b47030268d9ab22f8976afb",
-      "category": "container_scanning",
-      "message": "glibc: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries",
       "description": "On the x86-64 architecture, the GNU C Library (aka glibc) before 2.31 fails to ignore the LD_PREFER_MAP_32BIT_EXEC environment variable during program execution after a security transition, allowing local attackers to restrict the possible mapping addresses for loaded libraries and thus bypass ASLR for a setuid program.",
-      "cve": "CVE-2019-19126",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2281,17 +1941,9 @@
     },
     {
       "id": "3e4abd21f5381362fb26152866e6ec80ba6cb32f",
-      "category": "container_scanning",
-      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c",
       "description": "** DISPUTED ** In the GNU C Library (aka glibc or libc6) through 2.29, check_dst_limits_calc_pos_1 in posix/regexec.c has Uncontrolled Recursion, as demonstrated by '(|)(\\\\1\\\\1)*' in grep, a different issue than CVE-2018-20796. NOTE: the software maintainer disputes that this is a vulnerability because the behavior occurs only with a crafted pattern.",
-      "cve": "CVE-2019-9192",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2322,17 +1974,9 @@
     },
     {
       "id": "4c5fc7255032ed2f4d965fe4e57ac318966b5526",
-      "category": "container_scanning",
-      "message": "glibc: signed comparison vulnerability in the ARMv7 memcpy function",
       "description": "An exploitable signed comparison vulnerability exists in the ARMv7 memcpy() implementation of GNU glibc 2.30.9000. Calling memcpy() (on ARMv7 targets that utilize the GNU glibc implementation) with a negative value for the 'num' parameter results in a signed comparison vulnerability. If an attacker underflows the 'num' parameter to memcpy(), this vulnerability could lead to undefined behavior such as writing to out-of-bounds memory and potentially remote code execution. Furthermore, this memcpy() implementation allows for program execution to continue in scenarios where a segmentation fault or crash should have occurred. The dangers occur in that subsequent execution and iterations of this code will be executed with this corrupted data.",
-      "cve": "CVE-2020-6096",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2378,17 +2022,9 @@
     },
     {
       "id": "4da28273f15cfaa22f7a9c3e3878b8c14ee2f135",
-      "category": "container_scanning",
-      "message": "",
       "description": "The iconv function in the GNU C Library (aka glibc or libc6) 2.30 to 2.32, when converting UCS4 text containing an irreversible character, fails an assertion in the code path and aborts the program, potentially resulting in a denial of service.",
-      "cve": "CVE-2020-29562",
       "severity": "Unknown",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2416,17 +2052,9 @@
     },
     {
       "id": "8b8188f832fc4c3a9d1fdc3c820a5b558d2266b8",
-      "category": "container_scanning",
-      "message": "gcc: spilling of stack protection address in cfgexpand.c and function.c leads to stack-overflow protection bypass",
       "description": "stack_protect_prologue in cfgexpand.c and stack_protect_epilogue in function.c in GNU Compiler Collection (GCC) 4.1 through 8 (under certain circumstances) generate instruction sequences when targeting ARM targets that spill the address of the stack protector guard, which allows an attacker to bypass the protection of -fstack-protector, -fstack-protector-all, -fstack-protector-strong, and -fstack-protector-explicit against stack overflow by controlling what the stack canary is compared against.",
-      "cve": "CVE-2018-12886",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2457,17 +2085,9 @@
     },
     {
       "id": "9dad62c1a0ab0110186de54e27cd63f6dcde761a",
-      "category": "container_scanning",
-      "message": "gcc: POWER9 \"DARN\" RNG intrinsic produces repeated output",
       "description": "The POWER9 backend in GNU Compiler Collection (GCC) before version 10 could optimize multiple calls of the __builtin_darn intrinsic into a single call, thus reducing the entropy of the random number generator. This occurred because a volatile operation was not specified. For example, within a single execution of a program, the output of every __builtin_darn() call may be the same.",
-      "cve": "CVE-2019-15847",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2510,17 +2130,9 @@
     },
     {
       "id": "2a7f5914935b3b49b90f3cb9e69c5fcb83d4e759",
-      "category": "container_scanning",
-      "message": "Libgcrypt: physical addresses being available to other processes leads to a flush-and-reload side-channel attack",
       "description": "In Libgcrypt 1.8.4, the C implementation of AES is vulnerable to a flush-and-reload side-channel attack because physical addresses are available to other processes. (The C implementation is used on platforms where an assembly-language implementation is unavailable.)",
-      "cve": "CVE-2019-12904",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2563,17 +2175,9 @@
     },
     {
       "id": "d1541cfdc8aa7675aa6703504875994f06806680",
-      "category": "container_scanning",
-      "message": "libgcrypt: ECDSA timing attack allowing private key leak",
       "description": "It was discovered that there was a ECDSA timing attack in the libgcrypt20 cryptographic library. Version affected: 1.8.4-5, 1.7.6-2+deb9u3, and 1.6.3-2+deb8u4. Versions fixed: 1.8.5-2 and 1.6.3-2+deb8u7.",
-      "cve": "CVE-2019-13627",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2655,17 +2259,9 @@
     },
     {
       "id": "a3f34e16021df304cca2bee395d76d7cd5ec7ea3",
-      "category": "container_scanning",
-      "message": "libgcrypt: ElGamal implementation doesn't have semantic security due to incorrectly encoded plaintexts possibly allowing to obtain sensitive information",
       "description": "cipher/elgamal.c in Libgcrypt through 1.8.2, when used to encrypt messages directly, improperly encodes plaintexts, which allows attackers to obtain sensitive information by reading ciphertext data (i.e., it does not have semantic security in face of a ciphertext-only attack). The Decisional Diffie-Hellman (DDH) assumption does not hold for Libgcrypt's ElGamal implementation.",
-      "cve": "CVE-2018-6829",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2702,17 +2298,9 @@
     },
     {
       "id": "9eb3ff563d1643a852e5c42ad4800e70ef7a80d7",
-      "category": "container_scanning",
-      "message": "gnutls: Heap buffer overflow in handshake with no_renegotiation alert sent",
       "description": "An issue was discovered in GnuTLS before 3.6.15. A server can trigger a NULL pointer dereference in a TLS 1.3 client if a no_renegotiation alert is sent with unexpected timing, and then an invalid second handshake occurs. The crash happens in the application's error handling path, where the gnutls_deinit function is called after detecting a handshake failure.",
-      "cve": "CVE-2020-24659",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -2770,17 +2358,9 @@
     },
     {
       "id": "b0369d0890cd582261791c20cac89b1e54f15e6d",
-      "category": "container_scanning",
-      "message": "HTTPS: block-wise chosen-plaintext attack against SSL/TLS (BEAST)",
       "description": "The SSL protocol, as used in certain configurations in Microsoft Windows and Microsoft Internet Explorer, Mozilla Firefox, Google Chrome, Opera, and other products, encrypts data by using CBC mode with chained initialization vectors, which allows man-in-the-middle attackers to obtain plaintext HTTP headers via a blockwise chosen-boundary attack (BCBA) on an HTTPS session, in conjunction with JavaScript code that uses (1) the HTML5 WebSocket API, (2) the Java URLConnection API, or (3) the Silverlight WebClient API, aka a \"BEAST\" attack.",
-      "cve": "CVE-2011-3389",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3087,17 +2667,9 @@
     },
     {
       "id": "ef2e44ca7c354a05ea0f5a120a90160bd8062300",
-      "category": "container_scanning",
-      "message": "",
       "description": "GNU libidn2 before 2.2.0 fails to perform the roundtrip checks specified in RFC3490 Section 4.2 when converting A-labels to U-labels. This makes it possible in some circumstances for one domain to impersonate another. By creating a malicious domain that matches a target domain except for the inclusion of certain punycoded Unicode characters (that would be discarded when converted first to a Unicode label and then back to an ASCII label), arbitrary domains can be impersonated.",
-      "cve": "CVE-2019-12290",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3164,17 +2736,9 @@
     },
     {
       "id": "84149f891e707d2ac4fecc8f06a423e33fb2e89f",
-      "category": "container_scanning",
-      "message": "lz4: heap-based buffer overflow in LZ4_write32",
       "description": "LZ4 before 1.9.2 has a heap-based buffer overflow in LZ4_write32 (related to LZ4_compress_destSize), affecting applications that call LZ4_compress_fast with a large input. (This issue can also lead to data corruption.) NOTE: the vendor states \"only a few specific / uncommon usages of the API are at risk.\"",
-      "cve": "CVE-2019-17543",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3253,17 +2817,9 @@
     },
     {
       "id": "fe7e2ab2b8e330cff7ce66981d76de506f331ff1",
-      "category": "container_scanning",
-      "message": "pcre: integer overflow in libpcre",
       "description": "libpcre in PCRE before 8.44 allows an integer overflow via a large number after a (?C substring.",
-      "cve": "CVE-2020-14155",
       "severity": "Medium",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3303,17 +2859,9 @@
     },
     {
       "id": "ae4e8b9afb6badbb1b37119f6684ffd61ebb5b7b",
-      "category": "container_scanning",
-      "message": "pcre: OP_KETRMAX feature in the match function in pcre_exec.c",
       "description": "In PCRE 8.41, the OP_KETRMAX feature in the match function in pcre_exec.c allows stack exhaustion (uncontrolled recursion) when processing a crafted regular expression.",
-      "cve": "CVE-2017-11164",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3347,17 +2895,9 @@
     },
     {
       "id": "8f0ce78996cf3d92187819b0524a88c296cf7666",
-      "category": "container_scanning",
-      "message": "pcre: self-recursive call in match() in pcre_exec.c leads to denial of service",
       "description": "** DISPUTED ** In PCRE 8.41, after compiling, a pcretest load test PoC produces a crash overflow in the function match() in pcre_exec.c because of a self-recursive call. NOTE: third parties dispute the relevance of this report, noting that there are options that can be used to limit the amount of stack that is used.",
-      "cve": "CVE-2017-16231",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3406,17 +2946,9 @@
     },
     {
       "id": "22fdae9fdfc3e2860c5b3bdf42ea8c3dca673295",
-      "category": "container_scanning",
-      "message": "pcre: stack-based buffer overflow write in pcre32_copy_substring",
       "description": "Stack-based buffer overflow in the pcre32_copy_substring function in pcre_get.c in libpcre1 in PCRE 8.40 allows remote attackers to cause a denial of service (WRITE of size 4) or possibly have unspecified other impact via a crafted file.",
-      "cve": "CVE-2017-7245",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3453,17 +2985,9 @@
     },
     {
       "id": "a3d83dae9aaea58b4096215ac2fb206657d22801",
-      "category": "container_scanning",
-      "message": "pcre: stack-based buffer overflow write in pcre32_copy_substring",
       "description": "Stack-based buffer overflow in the pcre32_copy_substring function in pcre_get.c in libpcre1 in PCRE 8.40 allows remote attackers to cause a denial of service (WRITE of size 268) or possibly have unspecified other impact via a crafted file.",
-      "cve": "CVE-2017-7246",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3500,17 +3024,9 @@
     },
     {
       "id": "6ade597c7559403e5bc4267c8e942cdc8eed8013",
-      "category": "container_scanning",
-      "message": "pcre: buffer over-read in JIT when UTF is disabled",
       "description": "libpcre in PCRE before 8.43 allows a subject buffer over-read in JIT when UTF is disabled, and \\X or \\R has more than one fixed quantifier, a related issue to CVE-2019-20454.",
-      "cve": "CVE-2019-20838",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3547,17 +3063,9 @@
     },
     {
       "id": "8daf6c2057e4e8f1e34fd1c194bc28c1c28b396b",
-      "category": "container_scanning",
-      "message": "libseccomp: incorrect generation of syscall filters in libseccomp",
       "description": "libseccomp before 2.4.0 did not correctly generate 64-bit syscall argument comparisons using the arithmetic operators (LT, GT, LE, GE), which might able to lead to bypassing seccomp filters and potential privilege escalations.",
-      "cve": "CVE-2019-9893",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3627,17 +3135,9 @@
     },
     {
       "id": "1749d40dfab2dbe0703c5cb28799c65a1075d946",
-      "category": "container_scanning",
-      "message": "gcc: spilling of stack protection address in cfgexpand.c and function.c leads to stack-overflow protection bypass",
       "description": "stack_protect_prologue in cfgexpand.c and stack_protect_epilogue in function.c in GNU Compiler Collection (GCC) 4.1 through 8 (under certain circumstances) generate instruction sequences when targeting ARM targets that spill the address of the stack protector guard, which allows an attacker to bypass the protection of -fstack-protector, -fstack-protector-all, -fstack-protector-strong, and -fstack-protector-explicit against stack overflow by controlling what the stack canary is compared against.",
-      "cve": "CVE-2018-12886",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3668,17 +3168,9 @@
     },
     {
       "id": "f54f116602c6d8c212063e6b1556bd7eb3beb3c8",
-      "category": "container_scanning",
-      "message": "gcc: POWER9 \"DARN\" RNG intrinsic produces repeated output",
       "description": "The POWER9 backend in GNU Compiler Collection (GCC) before version 10 could optimize multiple calls of the __builtin_darn intrinsic into a single call, thus reducing the entropy of the random number generator. This occurred because a volatile operation was not specified. For example, within a single execution of a program, the output of every __builtin_darn() call may be the same.",
-      "cve": "CVE-2019-15847",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3721,17 +3213,9 @@
     },
     {
       "id": "0694ebe71848802c78c2c752fdb7979f2a386334",
-      "category": "container_scanning",
-      "message": "systemd: services with DynamicUser can create SUID/SGID binaries",
       "description": "It was discovered that a systemd service that uses DynamicUser property can create a SUID/SGID binary that would be allowed to run as the transient service UID/GID even after the service is terminated. A local attacker may use this flaw to access resources that will be owned by a potentially different service in the future, when the UID/GID will be recycled.",
-      "cve": "CVE-2019-3843",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3783,17 +3267,9 @@
     },
     {
       "id": "4d276ad579d923249b5b055f04ec63691ef324fa",
-      "category": "container_scanning",
-      "message": "systemd: services with DynamicUser can get new privileges and create SGID binaries",
       "description": "It was discovered that a systemd service that uses DynamicUser property can get new privileges through the execution of SUID binaries, which would allow to create binaries owned by the service transient group with the setgid bit set. A local attacker may use this flaw to access resources that will be owned by a potentially different service in the future, when the GID will be recycled.",
-      "cve": "CVE-2019-3844",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3842,17 +3318,9 @@
     },
     {
       "id": "78802ed6c87ce2748a463310e83abda4a79dd499",
-      "category": "container_scanning",
-      "message": "systemd: TOCTOU race condition when updating file permissions and SELinux security contexts",
       "description": "systemd, when updating file permissions, allows local users to change the permissions and SELinux security contexts for arbitrary files via a symlink attack on unspecified files.",
-      "cve": "CVE-2013-4392",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3886,17 +3354,9 @@
     },
     {
       "id": "0a4408fc9db48de5a784922bfe3350a350223789",
-      "category": "container_scanning",
-      "message": "systemd: memory leak in button_open() in login/logind-button.c when udev events are received",
       "description": "An issue was discovered in button_open in login/logind-button.c in systemd before 243. When executing the udevadm trigger command, a memory leak may occur.",
-      "cve": "CVE-2019-20386",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3948,17 +3408,9 @@
     },
     {
       "id": "ae824c8ced583065049da5eccae3937f55ea67fc",
-      "category": "container_scanning",
-      "message": "systemd: mishandles numerical usernames beginning with decimal digits or 0x followed by hexadecimal digits",
       "description": "systemd through v245 mishandles numerical usernames such as ones composed of decimal digits or 0x followed by hex digits, as demonstrated by use of root privileges when privileges of the 0x0 user account were intended. NOTE: this issue exists because of an incomplete fix for CVE-2017-1000082.",
-      "cve": "CVE-2020-13776",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -3992,17 +3444,9 @@
     },
     {
       "id": "39981c71985f4bcac03c3d866b9d92406ec3d495",
-      "category": "container_scanning",
-      "message": "libtasn1: Infinite loop in _asn1_expand_object_id(ptree) leads to memory exhaustion",
       "description": "GNU Libtasn1-4.13 libtasn1-4.13 version libtasn1-4.13, libtasn1-4.12 contains a DoS, specifically CPU usage will reach 100% when running asn1Paser against the POC due to an issue in _asn1_expand_object_id(p_tree), after a long time, the program will be killed. This attack appears to be exploitable via parsing a crafted file.",
-      "cve": "CVE-2018-1000654",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4042,17 +3486,9 @@
     },
     {
       "id": "603d0f7a4011e34ebb32a3232046a65c5ecf9fc2",
-      "category": "container_scanning",
-      "message": "systemd: services with DynamicUser can create SUID/SGID binaries",
       "description": "It was discovered that a systemd service that uses DynamicUser property can create a SUID/SGID binary that would be allowed to run as the transient service UID/GID even after the service is terminated. A local attacker may use this flaw to access resources that will be owned by a potentially different service in the future, when the UID/GID will be recycled.",
-      "cve": "CVE-2019-3843",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4104,17 +3540,9 @@
     },
     {
       "id": "dfe383aeb5df1072b9e74d2367a9e6366e218836",
-      "category": "container_scanning",
-      "message": "systemd: services with DynamicUser can get new privileges and create SGID binaries",
       "description": "It was discovered that a systemd service that uses DynamicUser property can get new privileges through the execution of SUID binaries, which would allow to create binaries owned by the service transient group with the setgid bit set. A local attacker may use this flaw to access resources that will be owned by a potentially different service in the future, when the GID will be recycled.",
-      "cve": "CVE-2019-3844",
       "severity": "High",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4163,17 +3591,9 @@
     },
     {
       "id": "7078dadb7a17d5bffd8f9279176555a95b8f1647",
-      "category": "container_scanning",
-      "message": "systemd: TOCTOU race condition when updating file permissions and SELinux security contexts",
       "description": "systemd, when updating file permissions, allows local users to change the permissions and SELinux security contexts for arbitrary files via a symlink attack on unspecified files.",
-      "cve": "CVE-2013-4392",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4207,17 +3627,9 @@
     },
     {
       "id": "0b5753808104de4b662606612bff42ae172cf152",
-      "category": "container_scanning",
-      "message": "systemd: memory leak in button_open() in login/logind-button.c when udev events are received",
       "description": "An issue was discovered in button_open in login/logind-button.c in systemd before 243. When executing the udevadm trigger command, a memory leak may occur.",
-      "cve": "CVE-2019-20386",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4269,17 +3681,9 @@
     },
     {
       "id": "75c9b8dea884caed05b1ea21d3a2044e9ef12d90",
-      "category": "container_scanning",
-      "message": "systemd: mishandles numerical usernames beginning with decimal digits or 0x followed by hexadecimal digits",
       "description": "systemd through v245 mishandles numerical usernames such as ones composed of decimal digits or 0x followed by hex digits, as demonstrated by use of root privileges when privileges of the 0x0 user account were intended. NOTE: this issue exists because of an incomplete fix for CVE-2017-1000082.",
-      "cve": "CVE-2020-13776",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4313,17 +3717,9 @@
     },
     {
       "id": "c70ecd597512f9cf1768c4f5b606b2be54e70e21",
-      "category": "container_scanning",
-      "message": "iptables: --syn flag bypass",
       "description": "extensions/libxt_tcp.c in iptables through 1.4.21 does not match TCP SYN+FIN packets in --syn rules, which might allow remote attackers to bypass intended firewall restrictions via crafted packets.  NOTE: the CVE-2012-6638 fix makes this issue less relevant.",
-      "cve": "CVE-2012-2663",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4354,17 +3750,9 @@
     },
     {
       "id": "16d58e0c1b950b69aed37ff9a3edcd8448f85a54",
-      "category": "container_scanning",
-      "message": "",
       "description": "A buffer overflow in iptables-restore in netfilter iptables 1.8.2 allows an attacker to (at least) crash the program or potentially gain code execution via a specially crafted iptables-save file. This is related to add_param_to_argv in xshared.c.",
-      "cve": "CVE-2019-11360",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4395,17 +3783,9 @@
     },
     {
       "id": "5ae9f917afbd217339b5c6cb935b6f49b89cbf71",
-      "category": "container_scanning",
-      "message": "",
       "description": "initscripts in rPath Linux 1 sets insecure permissions for the /var/log/btmp file, which allows local users to obtain sensitive information regarding authentication attempts.  NOTE: because sshd detects the insecure permissions and does not log certain events, this also prevents sshd from logging failed authentication attempts by remote attackers.",
-      "cve": "CVE-2007-5686",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4448,17 +3828,9 @@
     },
     {
       "id": "370af6842ceea84637a76a3635b6dd1313bd8e24",
-      "category": "container_scanning",
-      "message": "shadow-utils: TOCTOU race conditions by copying and removing directory trees",
       "description": "shadow: TOCTOU (time-of-check time-of-use) race condition when copying and removing directory trees",
-      "cve": "CVE-2013-4235",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4495,17 +3867,9 @@
     },
     {
       "id": "a97de8768bb301b5c0be0643a72f17e179767374",
-      "category": "container_scanning",
-      "message": "shadow-utils: newgidmap allows unprivileged user to drop supplementary groups potentially allowing privilege escalation",
       "description": "An issue was discovered in shadow 4.5. newgidmap (in shadow-utils) is setuid and allows an unprivileged user to be placed in a user namespace where setgroups(2) is permitted. This allows an attacker to remove themselves from a supplementary group, which may allow access to certain filesystem paths if the administrator has used \"group blacklisting\" (e.g., chmod g-rwx) to restrict access to paths. This flaw effectively reverts a security feature in the kernel (in particular, the /proc/self/setgroups knob) to prevent this sort of privilege escalation.",
-      "cve": "CVE-2018-7169",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4542,17 +3906,9 @@
     },
     {
       "id": "d70c371f3fb97d5f4b2b20a6abdf096b5363b5ee",
-      "category": "container_scanning",
-      "message": "shadow-utils: local users can obtain root access because setuid programs are misconfigured",
       "description": "shadow 4.8, in certain circumstances affecting at least Gentoo, Arch Linux, and Void Linux, allows local users to obtain root access because setuid programs are misconfigured. Specifically, this affects shadow 4.8 when compiled using --with-libpam but without explicitly passing --disable-account-tools-setuid, and without a PAM configuration suitable for use with setuid account management tools. This combination leads to account management tools (groupadd, groupdel, groupmod, useradd, userdel, usermod) that can easily be used by unprivileged local users to escalate privileges to root in multiple ways. This issue became much more relevant in approximately December 2019 when an unrelated bug was fixed (i.e., the chmod calls to suidusbins were fixed in the upstream Makefile which is now included in the release version 4.8).",
-      "cve": "CVE-2019-19882",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4595,17 +3951,9 @@
     },
     {
       "id": "a74955a1e01a23d6f9e15d59635cc07dc524fa83",
-      "category": "container_scanning",
-      "message": "",
       "description": "TEMP-0628843-DBAD28",
-      "cve": "TEMP-0628843-DBAD28",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4625,23 +3973,13 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0628843-DBAD28"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "2ff0576fed842a4e235de80f599ca796a5fab6fc",
-      "category": "container_scanning",
-      "message": "",
       "description": "initscripts in rPath Linux 1 sets insecure permissions for the /var/log/btmp file, which allows local users to obtain sensitive information regarding authentication attempts.  NOTE: because sshd detects the insecure permissions and does not log certain events, this also prevents sshd from logging failed authentication attempts by remote attackers.",
-      "cve": "CVE-2007-5686",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4684,17 +4022,9 @@
     },
     {
       "id": "6c2ff056ed7736078e60ebb755dcc92cb2a8c331",
-      "category": "container_scanning",
-      "message": "shadow-utils: TOCTOU race conditions by copying and removing directory trees",
       "description": "shadow: TOCTOU (time-of-check time-of-use) race condition when copying and removing directory trees",
-      "cve": "CVE-2013-4235",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4731,17 +4061,9 @@
     },
     {
       "id": "dd790871d45a7c82eda518c1772efb98682a60e7",
-      "category": "container_scanning",
-      "message": "shadow-utils: newgidmap allows unprivileged user to drop supplementary groups potentially allowing privilege escalation",
       "description": "An issue was discovered in shadow 4.5. newgidmap (in shadow-utils) is setuid and allows an unprivileged user to be placed in a user namespace where setgroups(2) is permitted. This allows an attacker to remove themselves from a supplementary group, which may allow access to certain filesystem paths if the administrator has used \"group blacklisting\" (e.g., chmod g-rwx) to restrict access to paths. This flaw effectively reverts a security feature in the kernel (in particular, the /proc/self/setgroups knob) to prevent this sort of privilege escalation.",
-      "cve": "CVE-2018-7169",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4778,17 +4100,9 @@
     },
     {
       "id": "5d37d447196c5186c32965634cc5cd48b439cebe",
-      "category": "container_scanning",
-      "message": "shadow-utils: local users can obtain root access because setuid programs are misconfigured",
       "description": "shadow 4.8, in certain circumstances affecting at least Gentoo, Arch Linux, and Void Linux, allows local users to obtain root access because setuid programs are misconfigured. Specifically, this affects shadow 4.8 when compiled using --with-libpam but without explicitly passing --disable-account-tools-setuid, and without a PAM configuration suitable for use with setuid account management tools. This combination leads to account management tools (groupadd, groupdel, groupmod, useradd, userdel, usermod) that can easily be used by unprivileged local users to escalate privileges to root in multiple ways. This issue became much more relevant in approximately December 2019 when an unrelated bug was fixed (i.e., the chmod calls to suidusbins were fixed in the upstream Makefile which is now included in the release version 4.8).",
-      "cve": "CVE-2019-19882",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4831,17 +4145,9 @@
     },
     {
       "id": "a98d1fa2ad3e858f421204841d81b18b589184d7",
-      "category": "container_scanning",
-      "message": "",
       "description": "TEMP-0628843-DBAD28",
-      "cve": "TEMP-0628843-DBAD28",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4861,23 +4167,13 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0628843-DBAD28"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "e2a829ce7aa8a2d3a416d8a5cc22871a07ab6685",
-      "category": "container_scanning",
-      "message": "perl: File::Temp insecure temporary file handling",
       "description": "_is_safe in the File::Temp module for Perl does not properly handle symlinks.",
-      "cve": "CVE-2011-4116",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4917,17 +4213,9 @@
     },
     {
       "id": "7fb67f50ee11b0f369fdf4e8b26edd0f801d26ac",
-      "category": "container_scanning",
-      "message": "",
       "description": "TEMP-0517018-A83CE6",
-      "cve": "TEMP-0517018-A83CE6",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4947,23 +4235,13 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0517018-A83CE6"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "2dfe3336ee2c60cceda0cc34f67206bdec5fc7a9",
-      "category": "container_scanning",
-      "message": "",
       "description": "Tar 1.15.1 does not properly warn the user when extracting setuid or setgid files, which may allow local users or remote attackers to gain privileges.",
-      "cve": "CVE-2005-2541",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -4991,17 +4269,9 @@
     },
     {
       "id": "dc0682d7fc7cedb38608b99efdc87f6d9153d9e8",
-      "category": "container_scanning",
-      "message": "tar: null-pointer dereference in pax_decode_header in sparse.c",
       "description": "pax_decode_header in sparse.c in GNU Tar before 1.32 had a NULL pointer dereference when parsing certain archives that have malformed extended headers.",
-      "cve": "CVE-2019-9923",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -5041,17 +4311,9 @@
     },
     {
       "id": "63e8e73603bb15342a91a9ea592598fd530109c1",
-      "category": "container_scanning",
-      "message": "",
       "description": "TEMP-0290435-0B57B5",
-      "cve": "TEMP-0290435-0B57B5",
       "severity": "Low",
-      "confidence": "Unknown",
       "solution": "No solution provided",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      },
       "location": {
         "dependency": {
           "package": {
@@ -5071,14 +4333,10 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0290435-0B57B5"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     }
   ],
-  "remediations": [
-
-  ],
+  "remediations": [],
   "scan": {
     "scanner": {
       "id": "trivy",
@@ -5095,12 +4353,12 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.1.22"
+      "version": "5.2.0"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
     "end_time": "2021-09-15T08:36:25",
     "status": "success"
   },
-  "version": "14.1.2"
+  "version": "15.0.0"
 }

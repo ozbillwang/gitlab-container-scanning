@@ -29,7 +29,7 @@ RSpec.describe Gcs::Remediations::Remediation do
 
     it 'remediates Dockerfile' do
       expect(remediation.to_hash).to include(
-        fixes: [{ 'cve' => '123', 'id' => '456' }],
+        fixes: [{ 'id' => '456' }],
         summary: "Upgrade #{package_name} to #{fixed_version}",
         diff: diff
       )
