@@ -1,3 +1,9 @@
+## 5.2.1 (2022-09-30)
+
+### fixed (1 change)
+
+- [Revert "Return report in Security Report Schemas 15.0.0"](gitlab-org/security-products/analyzers/container-scanning@eb120fab309b46f4b695c7b08f3773b8eddd8996) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2823))
+
 ## 5.2.0 (2022-09-26)
 
 ### changed (1 change)
