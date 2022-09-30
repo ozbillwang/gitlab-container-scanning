@@ -2,9 +2,17 @@
   "vulnerabilities": [
     {
       "id": "e076334f66dce89dd340013638b30bb42d7d88a6",
+      "category": "container_scanning",
+      "message": "curl: NTLM password overflow via integer overflow",
       "description": "curl before version 7.61.1 is vulnerable to a buffer overrun in the NTLM authentication code. The internal function Curl_ntlm_core_mk_nt_hash multiplies the length of the password by two (SUM) to figure out how large temporary storage area to allocate from the heap. The length value is then subsequently used to iterate over the password and generate output into the allocated storage buffer. On systems with a 32 bit size_t, the math to calculate SUM triggers an integer overflow when the password length exceeds 2GB (2^31 bytes). This integer overflow usually causes a very small buffer to actually get allocated instead of the intended very huge one, making the use of that buffer end up in a heap buffer overflow. (This bug is almost identical to CVE-2017-8816.)",
+      "cve": "CVE-2018-14618",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -23,13 +31,23 @@
           "url": "https://nvd.nist.gov/vuln/detail/CVE-2018-14618"
         }
       ],
-      "links": []
+      "links": [
+
+      ]
     },
     {
       "id": "1c4b3e39fe542c51ef6307ac76f807cdbd0484ab",
+      "category": "container_scanning",
+      "message": "curl: Integer overflow leading to heap-based buffer overflow in Curl_sasl_create_plain_message()",
       "description": "Curl versions 7.33.0 through 7.61.1 are vulnerable to a buffer overrun in the SASL authentication code that may lead to denial of service.",
+      "cve": "CVE-2018-16839",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -86,9 +104,17 @@
     },
     {
       "id": "395c60d2e01f003987493a78d0a2f829dbe3fcae",
+      "category": "container_scanning",
+      "message": "curl: Use-after-free when closing \"easy\" handle in Curl_close()",
       "description": "A heap use-after-free flaw was found in curl versions from 7.59.0 through 7.61.1 in the code related to closing an easy handle. When closing and cleaning up an 'easy' handle in the `Curl_close()` function, the library code first frees a struct (without nulling the pointer) and might then subsequently erroneously write to a struct field within that already freed struct.",
+      "cve": "CVE-2018-16840",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -136,9 +162,17 @@
     },
     {
       "id": "5f16fcc9e46da35395a7927c43a3b4aec5380307",
+      "category": "container_scanning",
+      "message": "curl: Heap-based buffer over-read in the curl tool warning formatting",
       "description": "Curl versions 7.14.1 through 7.61.1 are vulnerable to a heap-based buffer over-read in the tool_msgs.c:voutf() function that may result in information exposure and denial of service.",
+      "cve": "CVE-2018-16842",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -210,9 +244,17 @@
     },
     {
       "id": "ad8e6e6a6f35219b1e8da6505744944d70f3d614",
+      "category": "container_scanning",
+      "message": "curl: NTLMv2 type-3 header stack buffer overflow",
       "description": "libcurl versions from 7.36.0 to before 7.64.0 are vulnerable to a stack-based buffer overflow. The function creating an outgoing NTLM type-3 header (`lib/vauth/ntlm.c:Curl_auth_create_ntlm_type3_message()`), generates the request HTTP header contents based on previously received data. The check that exists to prevent the local buffer from getting overflowed is implemented wrongly (using unsigned math) and as such it does not prevent the overflow from happening. This output data can grow larger than the local buffer if very large 'nt response' data is extracted from a previous NTLMv2 header provided by the malicious or broken HTTP server. Such a 'large value' needs to be around 1000 bytes or more. The actual payload data copied to the target buffer comes from the NTLMv2 type-2 response header.",
+      "cve": "CVE-2019-3822",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -293,9 +335,17 @@
     },
     {
       "id": "07664ffa6c6552d103345b5c1751becb2e5cede0",
+      "category": "container_scanning",
+      "message": "curl: double free due to subsequent call of realloc()",
       "description": "Double-free vulnerability in the FTP-kerberos code in cURL 7.52.0 to 7.65.3.",
+      "cve": "CVE-2019-5481",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r3",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -370,9 +420,17 @@
     },
     {
       "id": "32909f95df76831339a758cdff6428ff7912e6a3",
+      "category": "container_scanning",
+      "message": "curl: heap buffer overflow in function tftp_receive_packet()",
       "description": "Heap buffer overflow in the TFTP protocol handler in cURL 7.19.4 to 7.65.3.",
+      "cve": "CVE-2019-5482",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r3",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -453,9 +511,17 @@
     },
     {
       "id": "65820e05a9a8a3231086fd9c8f809009b0e9b7af",
+      "category": "container_scanning",
+      "message": "curl: NTLM type-2 heap out-of-bounds buffer read",
       "description": "libcurl versions from 7.36.0 to before 7.64.0 is vulnerable to a heap buffer out-of-bounds read. The function handling incoming NTLM type-2 messages (`lib/vauth/ntlm.c:ntlm_decode_type2_target`) does not validate incoming data correctly and is subject to an integer overflow vulnerability. Using that overflow, a malicious or broken NTLM server could trick libcurl to accept a bad length + offset combination that would lead to a buffer read out-of-bounds.",
+      "cve": "CVE-2018-16890",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -527,9 +593,17 @@
     },
     {
       "id": "66bd76e96a8c16c8782567b8c2922731d0e96e17",
+      "category": "container_scanning",
+      "message": "curl: SMTP end-of-response out-of-bounds read",
       "description": "libcurl versions from 7.34.0 to before 7.64.0 are vulnerable to a heap out-of-bounds read in the code handling the end-of-response for SMTP. If the buffer passed to `smtp_endofresp()` isn't NUL terminated and contains no character ending the parsed number, and `len` is set to 5, then the `strtol()` call reads beyond the allocated buffer. The read contents will not be returned to the caller.",
+      "cve": "CVE-2019-3823",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-r2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -598,9 +672,17 @@
     },
     {
       "id": "acfe8fad615296ea3e3ad885cb1afb70d5561b6f",
+      "category": "container_scanning",
+      "message": "expat: large number of colons in input makes parser consume high amount of resources, leading to DoS",
       "description": "In libexpat in Expat before 2.2.7, XML input including XML names that contain a large number of colons could make the XML parser consume a high amount of RAM and CPU resources while processing (enough to be usable for denial-of-service attacks).",
+      "cve": "CVE-2018-20843",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade expat to 2.2.7-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -696,9 +778,17 @@
     },
     {
       "id": "789dbb0200a847da7eef2803b44e0845b8c01929",
+      "category": "container_scanning",
+      "message": "expat: heap-based buffer over-read via crafted XML input",
       "description": "In libexpat before 2.2.8, crafted XML input could fool the parser into changing from DTD parsing to document parsing too early; a consecutive call to XML_GetCurrentLineNumber (or XML_GetCurrentColumnNumber) then resulted in a heap-based buffer over-read.",
+      "cve": "CVE-2019-15903",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade expat to 2.2.7-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -923,9 +1013,17 @@
     },
     {
       "id": "f889aafb21de82adf13c1eb6499565ffc990ccc2",
+      "category": "container_scanning",
+      "message": "git: arbitrary code execution via .gitmodules",
       "description": "Git before 2.14.5, 2.15.x before 2.15.3, 2.16.x before 2.16.5, 2.17.x before 2.17.2, 2.18.x before 2.18.1, and 2.19.x before 2.19.1 allows remote code execution during processing of a recursive \"git clone\" of a superproject if a .gitmodules file has a URL field beginning with a '-' character.",
+      "cve": "CVE-2018-17456",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.3-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1018,9 +1116,17 @@
     },
     {
       "id": "961fbff2f147d253eda0f6dff824f6e856e26df7",
+      "category": "container_scanning",
+      "message": "git: Improper handling of PATH allows for commands to be executed from the current directory",
       "description": "Git before 2.19.2 on Linux and UNIX executes commands from the current working directory (as if '.' were at the end of $PATH) in certain cases involving the run_command() API and run-command.c, because there was a dangerous change from execvp to execv during 2017.",
+      "cve": "CVE-2018-19486",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.3-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1071,9 +1177,17 @@
     },
     {
       "id": "e0b9daaaea16f43ef37d8e1ce75907c6934dc298",
+      "category": "container_scanning",
+      "message": "git: NTFS protections inactive when running Git in the Windows Subsystem for Linux",
       "description": "An issue was found in Git before v2.24.1, v2.23.1, v2.22.2, v2.21.1, v2.20.2, v2.19.3, v2.18.2, v2.17.3, v2.16.6, v2.15.4, and v2.14.6. When running Git in the Windows Subsystem for Linux (also known as \"WSL\") while accessing a working directory on a regular Windows drive, none of the NTFS protections were active.",
+      "cve": "CVE-2019-1353",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1124,9 +1238,17 @@
     },
     {
       "id": "eb39f2be0cd828f536ffbc7a13e3d94841db7331",
+      "category": "container_scanning",
+      "message": "git: Recursive submodule cloning allows using git directory twice with synonymous directory name written in .git/",
       "description": "A remote code execution vulnerability exists when Git for Visual Studio improperly sanitizes input, aka 'Git for Visual Studio Remote Code Execution Vulnerability'. This CVE ID is unique from CVE-2019-1350, CVE-2019-1352, CVE-2019-1354, CVE-2019-1387.",
+      "cve": "CVE-2019-1349",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1186,9 +1308,17 @@
     },
     {
       "id": "9045737303dabaa38085e9b7c1875a3324db7421",
+      "category": "container_scanning",
+      "message": "git: Incorrect quoting of command-line arguments allowed remote code execution during a recursive clone",
       "description": "A remote code execution vulnerability exists when Git for Visual Studio improperly sanitizes input, aka 'Git for Visual Studio Remote Code Execution Vulnerability'. This CVE ID is unique from CVE-2019-1349, CVE-2019-1352, CVE-2019-1354, CVE-2019-1387.",
+      "cve": "CVE-2019-1350",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1242,9 +1372,17 @@
     },
     {
       "id": "13533676168ba077747009dc34d4509cab6a8807",
+      "category": "container_scanning",
+      "message": "git: Git mistakes some paths for relative paths allowing writing outside of the worktree while cloning",
       "description": "A tampering vulnerability exists when Git for Visual Studio improperly handles virtual drive paths, aka 'Git for Visual Studio Tampering Vulnerability'.",
+      "cve": "CVE-2019-1351",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1295,9 +1433,17 @@
     },
     {
       "id": "0dee91b528a88782b7e0f899606c343a56ab91f8",
+      "category": "container_scanning",
+      "message": "git: Files inside the .git directory may be overwritten during cloning via NTFS Alternate Data Streams",
       "description": "A remote code execution vulnerability exists when Git for Visual Studio improperly sanitizes input, aka 'Git for Visual Studio Remote Code Execution Vulnerability'. This CVE ID is unique from CVE-2019-1349, CVE-2019-1350, CVE-2019-1354, CVE-2019-1387.",
+      "cve": "CVE-2019-1352",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1357,9 +1503,17 @@
     },
     {
       "id": "5ff0a90e87aa0a05dd8624d6ffba72aaed60c0db",
+      "category": "container_scanning",
+      "message": "git: Git does not refuse to write out tracked files with backlashes in filenames",
       "description": "A remote code execution vulnerability exists when Git for Visual Studio improperly sanitizes input, aka 'Git for Visual Studio Remote Code Execution Vulnerability'. This CVE ID is unique from CVE-2019-1349, CVE-2019-1350, CVE-2019-1352, CVE-2019-1387.",
+      "cve": "CVE-2019-1354",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1410,9 +1564,17 @@
     },
     {
       "id": "ec6dd5024c33db6a7fe725e016ab24815a459153",
+      "category": "container_scanning",
+      "message": "git: Remote code execution in recursive clones with nested submodules",
       "description": "An issue was found in Git before v2.24.1, v2.23.1, v2.22.2, v2.21.1, v2.20.2, v2.19.3, v2.18.2, v2.17.3, v2.16.6, v2.15.4, and v2.14.6. Recursive clones are currently affected by a vulnerability that is caused by too-lax validation of submodule names, allowing very targeted attacks via remote code execution in recursive clones.",
+      "cve": "CVE-2019-1387",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1490,9 +1652,17 @@
     },
     {
       "id": "3a01cd6a6098fd07b6c54e61c20bb2e78e323344",
+      "category": "container_scanning",
+      "message": "git: Arbitrary path overwriting via export-marks in-stream command feature",
       "description": "An issue was found in Git before v2.24.1, v2.23.1, v2.22.2, v2.21.1, v2.20.2, v2.19.3, v2.18.2, v2.17.3, v2.16.6, v2.15.4, and v2.14.6. The --export-marks option of git fast-import is exposed also via the in-stream command feature export-marks=... and it allows overwriting arbitrary paths.",
+      "cve": "CVE-2019-1348",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade git to 2.15.4-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1558,9 +1728,17 @@
     },
     {
       "id": "af4fe1f5452c8f03db0c9d102116f0071fc73e14",
+      "category": "container_scanning",
+      "message": "bzip2: out-of-bounds write in function BZ2_decompress",
       "description": "BZ2_decompress in decompress.c in bzip2 through 1.0.6 has an out-of-bounds write when there are many selectors.",
+      "cve": "CVE-2019-12900",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libbz2 to 1.0.6-r7",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1671,9 +1849,17 @@
     },
     {
       "id": "4f5216490bc0071144ec7b54eb8935af5792e88c",
+      "category": "container_scanning",
+      "message": "curl: Integer overflow leading to heap-based buffer overflow in Curl_sasl_create_plain_message()",
       "description": "Curl versions 7.33.0 through 7.61.1 are vulnerable to a buffer overrun in the SASL authentication code that may lead to denial of service.",
+      "cve": "CVE-2018-16839",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1730,9 +1916,17 @@
     },
     {
       "id": "a3b08b873f26ddbb28311bb0198a58ea3031f1b8",
+      "category": "container_scanning",
+      "message": "curl: Use-after-free when closing \"easy\" handle in Curl_close()",
       "description": "A heap use-after-free flaw was found in curl versions from 7.59.0 through 7.61.1 in the code related to closing an easy handle. When closing and cleaning up an 'easy' handle in the `Curl_close()` function, the library code first frees a struct (without nulling the pointer) and might then subsequently erroneously write to a struct field within that already freed struct.",
+      "cve": "CVE-2018-16840",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1780,9 +1974,17 @@
     },
     {
       "id": "4880df3b973f11b4b858549a248daaf835b82a34",
+      "category": "container_scanning",
+      "message": "curl: Heap-based buffer over-read in the curl tool warning formatting",
       "description": "Curl versions 7.14.1 through 7.61.1 are vulnerable to a heap-based buffer over-read in the tool_msgs.c:voutf() function that may result in information exposure and denial of service.",
+      "cve": "CVE-2018-16842",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1854,9 +2056,17 @@
     },
     {
       "id": "6e79fc2e0925b12a0201b6cb9f97cf49c3ae5dc8",
+      "category": "container_scanning",
+      "message": "curl: NTLMv2 type-3 header stack buffer overflow",
       "description": "libcurl versions from 7.36.0 to before 7.64.0 are vulnerable to a stack-based buffer overflow. The function creating an outgoing NTLM type-3 header (`lib/vauth/ntlm.c:Curl_auth_create_ntlm_type3_message()`), generates the request HTTP header contents based on previously received data. The check that exists to prevent the local buffer from getting overflowed is implemented wrongly (using unsigned math) and as such it does not prevent the overflow from happening. This output data can grow larger than the local buffer if very large 'nt response' data is extracted from a previous NTLMv2 header provided by the malicious or broken HTTP server. Such a 'large value' needs to be around 1000 bytes or more. The actual payload data copied to the target buffer comes from the NTLMv2 type-2 response header.",
+      "cve": "CVE-2019-3822",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1937,9 +2147,17 @@
     },
     {
       "id": "cb8e1d0637e5e9294aa2f6555bba767788757912",
+      "category": "container_scanning",
+      "message": "curl: double free due to subsequent call of realloc()",
       "description": "Double-free vulnerability in the FTP-kerberos code in cURL 7.52.0 to 7.65.3.",
+      "cve": "CVE-2019-5481",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r3",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2014,9 +2232,17 @@
     },
     {
       "id": "48f5313b0769cae66be77229c75f83d20a766682",
+      "category": "container_scanning",
+      "message": "curl: heap buffer overflow in function tftp_receive_packet()",
       "description": "Heap buffer overflow in the TFTP protocol handler in cURL 7.19.4 to 7.65.3.",
+      "cve": "CVE-2019-5482",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r3",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2097,9 +2323,17 @@
     },
     {
       "id": "09a81c1574320d14c43bf13f4f788ec885f5d6da",
+      "category": "container_scanning",
+      "message": "curl: NTLM type-2 heap out-of-bounds buffer read",
       "description": "libcurl versions from 7.36.0 to before 7.64.0 is vulnerable to a heap buffer out-of-bounds read. The function handling incoming NTLM type-2 messages (`lib/vauth/ntlm.c:ntlm_decode_type2_target`) does not validate incoming data correctly and is subject to an integer overflow vulnerability. Using that overflow, a malicious or broken NTLM server could trick libcurl to accept a bad length + offset combination that would lead to a buffer read out-of-bounds.",
+      "cve": "CVE-2018-16890",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2171,9 +2405,17 @@
     },
     {
       "id": "b779e9e0ecb7dcec5e47c8a5cda77e078d234d6e",
+      "category": "container_scanning",
+      "message": "curl: SMTP end-of-response out-of-bounds read",
       "description": "libcurl versions from 7.34.0 to before 7.64.0 are vulnerable to a heap out-of-bounds read in the code handling the end-of-response for SMTP. If the buffer passed to `smtp_endofresp()` isn't NUL terminated and contains no character ending the parsed number, and `len` is set to 5, then the `strtol()` call reads beyond the allocated buffer. The read contents will not be returned to the caller.",
+      "cve": "CVE-2019-3823",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl to 7.61.1-r2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2242,9 +2484,17 @@
     },
     {
       "id": "fa432503cf56c6c1e26cdacd17d270155477b54c",
+      "category": "container_scanning",
+      "message": "libssh2: Zero-byte allocation with a specially crafted SFTP packed leading to an out-of-bounds read",
       "description": "An out of bounds read flaw was discovered in libssh2 before 1.8.1 when a specially crafted SFTP packet is received from the server. A remote attacker who compromises a SSH server may be able to cause a Denial of Service or read data in the client memory.",
+      "cve": "CVE-2019-3858",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2331,9 +2581,17 @@
     },
     {
       "id": "c498029ab980b619e5d46c69c1a735ac0f8990a6",
+      "category": "container_scanning",
+      "message": "libssh2: Unchecked use of _libssh2_packet_require and _libssh2_packet_requirev resulting in out-of-bounds read",
       "description": "An out of bounds read flaw was discovered in libssh2 before 1.8.1 in the _libssh2_packet_require and _libssh2_packet_requirev functions. A remote attacker who compromises a SSH server may be able to cause a Denial of Service or read data in the client memory.",
+      "cve": "CVE-2019-3859",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2426,9 +2684,17 @@
     },
     {
       "id": "0ba33e1e7fa3287da99e84072c480723cab763ef",
+      "category": "container_scanning",
+      "message": "libssh2: Out-of-bounds reads with specially crafted SFTP packets",
       "description": "An out of bounds read flaw was discovered in libssh2 before 1.8.1 in the way SFTP packets with empty payloads are parsed. A remote attacker who compromises a SSH server may be able to cause a Denial of Service or read data in the client memory.",
+      "cve": "CVE-2019-3860",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2497,9 +2763,17 @@
     },
     {
       "id": "563b58f0027eb5b09229ffc0b491b807fb8b6e2a",
+      "category": "container_scanning",
+      "message": "libssh2: Out-of-bounds reads with specially crafted SSH packets",
       "description": "An out of bounds read flaw was discovered in libssh2 before 1.8.1 in the way SSH packets with a padding length value greater than the packet length are parsed. A remote attacker who compromises a SSH server may be able to cause a Denial of Service or read data in the client memory.",
+      "cve": "CVE-2019-3861",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2571,9 +2845,17 @@
     },
     {
       "id": "8c1017e368bfe280e9344c75777905b4d3f7f82d",
+      "category": "container_scanning",
+      "message": "libssh2: Out-of-bounds memory comparison with specially crafted message channel request",
       "description": "An out of bounds read flaw was discovered in libssh2 before 1.8.1 in the way SSH_MSG_CHANNEL_REQUEST packets with an exit status message and no payload are parsed. A remote attacker who compromises a SSH server may be able to cause a Denial of Service or read data in the client memory.",
+      "cve": "CVE-2019-3862",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2666,9 +2948,17 @@
     },
     {
       "id": "2ac32c70790dbb03b754170da7db08ec44d70d51",
+      "category": "container_scanning",
+      "message": "libssh2: integer overflow in kex_method_diffie_hellman_group_exchange_sha256_key_exchange in kex.c leads to out-of-bounds write",
       "description": "In libssh2 before 1.9.0, kex_method_diffie_hellman_group_exchange_sha256_key_exchange in kex.c has an integer overflow that could lead to an out-of-bounds read in the way packets are read from the server. A remote attacker who compromises a SSH server may be able to disclose sensitive information or cause a denial of service condition on the client system when a user connects to the server. This is related to an _libssh2_check_length mistake, and is different from the various issues fixed in 1.8.1, such as CVE-2019-3855.",
+      "cve": "CVE-2019-13115",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.9.0-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2725,9 +3015,17 @@
     },
     {
       "id": "ed0467450ddacd31897e9f1ff7437c4922ccfbbe",
+      "category": "container_scanning",
+      "message": "libssh2: integer overflow in SSH_MSG_DISCONNECT logic in packet.c",
       "description": "In libssh2 v1.9.0 and earlier versions, the SSH_MSG_DISCONNECT logic in packet.c has an integer overflow in a bounds check, enabling an attacker to specify an arbitrary (out-of-bounds) offset for a subsequent memory read. A crafted SSH server may be able to disclose sensitive information or cause a denial of service condition on the client system when a user connects to the server.",
+      "cve": "CVE-2019-17498",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.9.0-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2784,9 +3082,17 @@
     },
     {
       "id": "a6cf9637ff2fe5f682aa5eee63ff4f05e040c5d1",
+      "category": "container_scanning",
+      "message": "libssh2: Integer overflow in transport read resulting in out of bounds write",
       "description": "An integer overflow flaw which could lead to an out of bounds write was discovered in libssh2 before 1.8.1 in the way packets are read from the server. A remote attacker who compromises a SSH server may be able to execute code on the client system when a user connects to the server.",
+      "cve": "CVE-2019-3855",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2903,9 +3209,17 @@
     },
     {
       "id": "b61c69385bb0635b988649df2da6932f3b72ac17",
+      "category": "container_scanning",
+      "message": "libssh2: Integer overflow in keyboard interactive handling resulting in out of bounds write",
       "description": "An integer overflow flaw, which could lead to an out of bounds write, was discovered in libssh2 before 1.8.1 in the way keyboard prompt requests are parsed. A remote attacker who compromises a SSH server may be able to execute code on the client system when a user connects to the server.",
+      "cve": "CVE-2019-3856",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2989,9 +3303,17 @@
     },
     {
       "id": "2b8fd8eaa6f10b87d0b2e0115fea42347c41bde4",
+      "category": "container_scanning",
+      "message": "libssh2: Integer overflow in SSH packet processing channel resulting in out of bounds write",
       "description": "An integer overflow flaw which could lead to an out of bounds write was discovered in libssh2 before 1.8.1 in the way SSH_MSG_CHANNEL_REQUEST packets with an exit signal are parsed. A remote attacker who compromises a SSH server may be able to execute code on the client system when a user connects to the server.",
+      "cve": "CVE-2019-3857",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3075,9 +3397,17 @@
     },
     {
       "id": "408bb0e700886092ab5091fdd0519f198954856b",
+      "category": "container_scanning",
+      "message": "libssh2: Integer overflow in user authenticate keyboard interactive allows out-of-bounds writes",
       "description": "A flaw was found in libssh2 before 1.8.1. A server could send a multiple keyboard interactive response messages whose total length are greater than unsigned char max characters. This value is used as an index to copy memory causing in an out of bounds memory write error.",
+      "cve": "CVE-2019-3863",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libssh2 to 1.8.1-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3161,9 +3491,17 @@
     },
     {
       "id": "027e8a9f0e254fb0843cec69f4056163278d31a3",
+      "category": "container_scanning",
+      "message": "libxml2: NULL pointer dereference in xmlXPathCompOpEval() function in xpath.c",
       "description": "A NULL pointer dereference vulnerability exists in the xpath.c:xmlXPathCompOpEval() function of libxml2 through 2.9.8 when parsing an invalid XPath expression in the XPATH_OP_AND or XPATH_OP_OR case. Applications processing untrusted XSL format inputs with the use of the libxml2 library may be vulnerable to a denial of service attack due to a crash of the application.",
+      "cve": "CVE-2018-14404",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade libxml2 to 2.9.8-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3247,9 +3585,17 @@
     },
     {
       "id": "0e123654adcc1423e59716af26457d6599fa0285",
+      "category": "container_scanning",
+      "message": "libxml2: Infinite loop caused by incorrect error detection during LZMA decompression",
       "description": "libxml2 2.9.8, if --with-lzma is used, allows remote attackers to cause a denial of service (infinite loop) via a crafted XML file that triggers LZMA_MEMLIMIT_ERROR, as demonstrated by xmllint, a different vulnerability than CVE-2015-8035 and CVE-2018-9251.",
+      "cve": "CVE-2018-14567",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libxml2 to 2.9.8-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3300,9 +3646,17 @@
     },
     {
       "id": "b6e3bc03024ed99a1b607fef977137e04f51011a",
+      "category": "container_scanning",
+      "message": "libxml2: infinite loop in xz_decomp function in xzlib.c",
       "description": "The xz_decomp function in xzlib.c in libxml2 2.9.8, if --with-lzma is used, allows remote attackers to cause a denial of service (infinite loop) via a crafted XML file that triggers LZMA_MEMLIMIT_ERROR, as demonstrated by xmllint, a different vulnerability than CVE-2015-8035.",
+      "cve": "CVE-2018-9251",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libxml2 to 2.9.8-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3338,9 +3692,17 @@
     },
     {
       "id": "f9e55da9fc650e10d72173a1bd13dc96399deb81",
+      "category": "container_scanning",
+      "message": "mercurial: Path-checking logic bypass via symlinks and subrepositories",
       "description": "A flaw was found in Mercurial before 4.9. It was possible to use symlinks and subrepositories to defeat Mercurial's path-checking logic and write files outside a repository.",
+      "cve": "CVE-2019-3902",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade mercurial to 4.5.2-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3385,9 +3747,17 @@
     },
     {
       "id": "8cd8aaeb34b961e89ab5a0da6e5f944f5f734fec",
+      "category": "container_scanning",
+      "message": "",
       "description": "musl libc through 1.1.23 has an x87 floating-point stack adjustment imbalance, related to the math/i386/ directory. In some cases, use of this library could introduce out-of-bounds writes that are not present in an application's source code.",
+      "cve": "CVE-2019-14697",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade musl to 1.1.18-r4",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3420,9 +3790,17 @@
     },
     {
       "id": "24c3a95cb233ce763a2a2441ab41bd163b1f59b4",
+      "category": "container_scanning",
+      "message": "",
       "description": "musl libc through 1.1.23 has an x87 floating-point stack adjustment imbalance, related to the math/i386/ directory. In some cases, use of this library could introduce out-of-bounds writes that are not present in an application's source code.",
+      "cve": "CVE-2019-14697",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade musl-utils to 1.1.18-r4",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3455,9 +3833,17 @@
     },
     {
       "id": "c2bd323c2c91debd8abf15b33ce4a1f9ca95e5b1",
+      "category": "container_scanning",
+      "message": "openssh: scp client improper directory name validation",
       "description": "In OpenSSH 7.9, scp.c in the scp client allows remote SSH servers to bypass intended access restrictions via the filename of . or an empty filename. The impact is modifying the permissions of the target directory on the client side.",
+      "cve": "CVE-2018-20685",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3535,9 +3921,17 @@
     },
     {
       "id": "2b6046fb2b036e27716b9bc7db90278ed94144ae",
+      "category": "container_scanning",
+      "message": "openssh: Missing character encoding in progress display allows for spoofing of scp client output",
       "description": "An issue was discovered in OpenSSH 7.9. Due to missing character encoding in the progress display, a malicious server (or Man-in-The-Middle attacker) can employ crafted object names to manipulate the client output, e.g., by using ANSI control codes to hide additional files being transferred. This affects refresh_progress_meter() in progressmeter.c.",
+      "cve": "CVE-2019-6109",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3612,9 +4006,17 @@
     },
     {
       "id": "f37f5133077387ec057654567762e0e8d180e12b",
+      "category": "container_scanning",
+      "message": "openssh: Improper validation of object names allows malicious server to overwrite files via scp client",
       "description": "An issue was discovered in OpenSSH 7.9. Due to the scp implementation being derived from 1983 rcp, the server chooses which files/directories are sent to the client. However, the scp client only performs cursory validation of the object name returned (only directory traversal attacks are prevented). A malicious scp server (or Man-in-The-Middle attacker) can overwrite arbitrary files in the scp client target directory. If recursive operation (-r) is performed, the server can manipulate subdirectories as well (for example, to overwrite the .ssh/authorized_keys file).",
+      "cve": "CVE-2019-6111",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3719,9 +4121,17 @@
     },
     {
       "id": "36b34724033d75079e32891e0ad4781df9465f0c",
+      "category": "container_scanning",
+      "message": "openssh: scp client improper directory name validation",
       "description": "In OpenSSH 7.9, scp.c in the scp client allows remote SSH servers to bypass intended access restrictions via the filename of . or an empty filename. The impact is modifying the permissions of the target directory on the client side.",
+      "cve": "CVE-2018-20685",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-client to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3799,9 +4209,17 @@
     },
     {
       "id": "f172adff5753e1b34691d853aa82212361e11bd9",
+      "category": "container_scanning",
+      "message": "openssh: Missing character encoding in progress display allows for spoofing of scp client output",
       "description": "An issue was discovered in OpenSSH 7.9. Due to missing character encoding in the progress display, a malicious server (or Man-in-The-Middle attacker) can employ crafted object names to manipulate the client output, e.g., by using ANSI control codes to hide additional files being transferred. This affects refresh_progress_meter() in progressmeter.c.",
+      "cve": "CVE-2019-6109",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-client to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3876,9 +4294,17 @@
     },
     {
       "id": "20d8644ce343953f86ae2e90f9c1d259c945c675",
+      "category": "container_scanning",
+      "message": "openssh: Improper validation of object names allows malicious server to overwrite files via scp client",
       "description": "An issue was discovered in OpenSSH 7.9. Due to the scp implementation being derived from 1983 rcp, the server chooses which files/directories are sent to the client. However, the scp client only performs cursory validation of the object name returned (only directory traversal attacks are prevented). A malicious scp server (or Man-in-The-Middle attacker) can overwrite arbitrary files in the scp client target directory. If recursive operation (-r) is performed, the server can manipulate subdirectories as well (for example, to overwrite the .ssh/authorized_keys file).",
+      "cve": "CVE-2019-6111",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-client to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3983,9 +4409,17 @@
     },
     {
       "id": "a6a91567790e5c7466e20493cbe02d54b5fb8f3e",
+      "category": "container_scanning",
+      "message": "openssh: scp client improper directory name validation",
       "description": "In OpenSSH 7.9, scp.c in the scp client allows remote SSH servers to bypass intended access restrictions via the filename of . or an empty filename. The impact is modifying the permissions of the target directory on the client side.",
+      "cve": "CVE-2018-20685",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-keygen to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4063,9 +4497,17 @@
     },
     {
       "id": "1689792f092fb9f536cf66c4639fa93ea6171e87",
+      "category": "container_scanning",
+      "message": "openssh: Missing character encoding in progress display allows for spoofing of scp client output",
       "description": "An issue was discovered in OpenSSH 7.9. Due to missing character encoding in the progress display, a malicious server (or Man-in-The-Middle attacker) can employ crafted object names to manipulate the client output, e.g., by using ANSI control codes to hide additional files being transferred. This affects refresh_progress_meter() in progressmeter.c.",
+      "cve": "CVE-2019-6109",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-keygen to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4140,9 +4582,17 @@
     },
     {
       "id": "02755f0de95c5b68f3836de6c0da7330d0f4a9c8",
+      "category": "container_scanning",
+      "message": "openssh: Improper validation of object names allows malicious server to overwrite files via scp client",
       "description": "An issue was discovered in OpenSSH 7.9. Due to the scp implementation being derived from 1983 rcp, the server chooses which files/directories are sent to the client. However, the scp client only performs cursory validation of the object name returned (only directory traversal attacks are prevented). A malicious scp server (or Man-in-The-Middle attacker) can overwrite arbitrary files in the scp client target directory. If recursive operation (-r) is performed, the server can manipulate subdirectories as well (for example, to overwrite the .ssh/authorized_keys file).",
+      "cve": "CVE-2019-6111",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-keygen to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4247,9 +4697,17 @@
     },
     {
       "id": "d3d6e23266c39a1b2d0f10d3acdd975ae35d9700",
+      "category": "container_scanning",
+      "message": "openssh: scp client improper directory name validation",
       "description": "In OpenSSH 7.9, scp.c in the scp client allows remote SSH servers to bypass intended access restrictions via the filename of . or an empty filename. The impact is modifying the permissions of the target directory on the client side.",
+      "cve": "CVE-2018-20685",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-server to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4327,9 +4785,17 @@
     },
     {
       "id": "5d96944eed18b739d990bd1e9c41697eb34af2d8",
+      "category": "container_scanning",
+      "message": "openssh: Missing character encoding in progress display allows for spoofing of scp client output",
       "description": "An issue was discovered in OpenSSH 7.9. Due to missing character encoding in the progress display, a malicious server (or Man-in-The-Middle attacker) can employ crafted object names to manipulate the client output, e.g., by using ANSI control codes to hide additional files being transferred. This affects refresh_progress_meter() in progressmeter.c.",
+      "cve": "CVE-2019-6109",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-server to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4404,9 +4870,17 @@
     },
     {
       "id": "5d5a60895ee8c0cc569db8f19fae321b50f0b9c6",
+      "category": "container_scanning",
+      "message": "openssh: Improper validation of object names allows malicious server to overwrite files via scp client",
       "description": "An issue was discovered in OpenSSH 7.9. Due to the scp implementation being derived from 1983 rcp, the server chooses which files/directories are sent to the client. However, the scp client only performs cursory validation of the object name returned (only directory traversal attacks are prevented). A malicious scp server (or Man-in-The-Middle attacker) can overwrite arbitrary files in the scp client target directory. If recursive operation (-r) is performed, the server can manipulate subdirectories as well (for example, to overwrite the .ssh/authorized_keys file).",
+      "cve": "CVE-2019-6111",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-server to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4511,9 +4985,17 @@
     },
     {
       "id": "88b8970cd5becf2ec76183d24eee429cdaa5c8f1",
+      "category": "container_scanning",
+      "message": "openssh: scp client improper directory name validation",
       "description": "In OpenSSH 7.9, scp.c in the scp client allows remote SSH servers to bypass intended access restrictions via the filename of . or an empty filename. The impact is modifying the permissions of the target directory on the client side.",
+      "cve": "CVE-2018-20685",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-server-common to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4591,9 +5073,17 @@
     },
     {
       "id": "d0396f52a491f59340b37e8218ec0ac78529e144",
+      "category": "container_scanning",
+      "message": "openssh: Missing character encoding in progress display allows for spoofing of scp client output",
       "description": "An issue was discovered in OpenSSH 7.9. Due to missing character encoding in the progress display, a malicious server (or Man-in-The-Middle attacker) can employ crafted object names to manipulate the client output, e.g., by using ANSI control codes to hide additional files being transferred. This affects refresh_progress_meter() in progressmeter.c.",
+      "cve": "CVE-2019-6109",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-server-common to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4668,9 +5158,17 @@
     },
     {
       "id": "2604ef19efb73ec653409818194ce1debd1e956b",
+      "category": "container_scanning",
+      "message": "openssh: Improper validation of object names allows malicious server to overwrite files via scp client",
       "description": "An issue was discovered in OpenSSH 7.9. Due to the scp implementation being derived from 1983 rcp, the server chooses which files/directories are sent to the client. However, the scp client only performs cursory validation of the object name returned (only directory traversal attacks are prevented). A malicious scp server (or Man-in-The-Middle attacker) can overwrite arbitrary files in the scp client target directory. If recursive operation (-r) is performed, the server can manipulate subdirectories as well (for example, to overwrite the .ssh/authorized_keys file).",
+      "cve": "CVE-2019-6111",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-server-common to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4775,9 +5273,17 @@
     },
     {
       "id": "2338ed07b8f8edc8f8fe14d72579b80dbc7b2e95",
+      "category": "container_scanning",
+      "message": "openssh: scp client improper directory name validation",
       "description": "In OpenSSH 7.9, scp.c in the scp client allows remote SSH servers to bypass intended access restrictions via the filename of . or an empty filename. The impact is modifying the permissions of the target directory on the client side.",
+      "cve": "CVE-2018-20685",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-sftp-server to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4855,9 +5361,17 @@
     },
     {
       "id": "586fd4d5bac3c8f0aa97ce102379cb8afb89d80e",
+      "category": "container_scanning",
+      "message": "openssh: Missing character encoding in progress display allows for spoofing of scp client output",
       "description": "An issue was discovered in OpenSSH 7.9. Due to missing character encoding in the progress display, a malicious server (or Man-in-The-Middle attacker) can employ crafted object names to manipulate the client output, e.g., by using ANSI control codes to hide additional files being transferred. This affects refresh_progress_meter() in progressmeter.c.",
+      "cve": "CVE-2019-6109",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-sftp-server to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4932,9 +5446,17 @@
     },
     {
       "id": "b467251e69bb1956741b801844003bd0a0eee258",
+      "category": "container_scanning",
+      "message": "openssh: Improper validation of object names allows malicious server to overwrite files via scp client",
       "description": "An issue was discovered in OpenSSH 7.9. Due to the scp implementation being derived from 1983 rcp, the server chooses which files/directories are sent to the client. However, the scp client only performs cursory validation of the object name returned (only directory traversal attacks are prevented). A malicious scp server (or Man-in-The-Middle attacker) can overwrite arbitrary files in the scp client target directory. If recursive operation (-r) is performed, the server can manipulate subdirectories as well (for example, to overwrite the .ssh/authorized_keys file).",
+      "cve": "CVE-2019-6111",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade openssh-sftp-server to 7.5_p1-r10",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5039,9 +5561,17 @@
     },
     {
       "id": "637580340c472334715bce357b2afe763c6acab1",
+      "category": "container_scanning",
+      "message": "patch: Malicious patch files cause ed to execute arbitrary commands",
       "description": "GNU Patch version 2.7.6 contains an input validation vulnerability when processing patch files, specifically the EDITOR_PROGRAM invocation (using ed) can result in code execution. This attack appear to be exploitable via a patch file processed via the patch utility. This is similar to FreeBSD's CVE-2015-1418 however although they share a common ancestry the code bases have diverged over time.",
+      "cve": "CVE-2018-1000156",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade patch to 2.7.6-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5143,9 +5673,17 @@
     },
     {
       "id": "762cdce633788304cd945912bdd25a0c926ea252",
+      "category": "container_scanning",
+      "message": "patch: Double free of memory in pch.c:another_hunk() causes a crash",
       "description": "A double free exists in the another_hunk function in pch.c in GNU patch through 2.7.6.",
+      "cve": "CVE-2018-6952",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade patch to 2.7.6-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5190,9 +5728,17 @@
     },
     {
       "id": "f58111bdbe3fadab2b2fac049a1e19f5800a0323",
+      "category": "container_scanning",
+      "message": "patch: OS shell command injection when processing crafted patch files",
       "description": "GNU patch through 2.7.6 is vulnerable to OS shell command injection that can be exploited by opening a crafted patch file that contains an ed style diff payload with shell metacharacters. The ed editor does not need to be present on the vulnerable system. This is different from CVE-2018-1000156.",
+      "cve": "CVE-2019-13638",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade patch to 2.7.6-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5276,9 +5822,17 @@
     },
     {
       "id": "2faff4d09f869ebcceb7c52c07c826ec9bd2b935",
+      "category": "container_scanning",
+      "message": "patch: the following of symlinks in inp.c and util.c is mishandled in cases other than input files",
       "description": "In GNU patch through 2.7.6, the following of symlinks is mishandled in certain cases other than input files. This affects inp.c and util.c.",
+      "cve": "CVE-2019-13636",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade patch to 2.7.5-r3",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5353,9 +5907,17 @@
     },
     {
       "id": "b6bc8a4edaee7f83f08e4f79824e9c38675473b2",
+      "category": "container_scanning",
+      "message": "sqlite: heap out-of-bound read in function rtreenode()",
       "description": "SQLite3 from 3.6.0 to and including 3.27.2 is vulnerable to heap out-of-bound read in the rtreenode() function when handling invalid rtree tables.",
+      "cve": "CVE-2019-8457",
       "severity": "Critical",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.25.3-r1",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5442,9 +6004,17 @@
     },
     {
       "id": "b288ba4d5fcd4dcc5c6dc2d66ccfaac9c1d6a117",
+      "category": "container_scanning",
+      "message": "CVE-2018-20505 CVE-2018-20506 sqlite: Multiple flaws in sqlite which can be triggered via corrupted internal databases (Magellan)",
       "description": "SQLite before 3.25.3, when the FTS3 extension is enabled, encounters an integer overflow (and resultant buffer overflow) for FTS3 queries that occur after crafted changes to FTS3 shadow tables, allowing remote attackers to execute arbitrary code by leveraging the ability to run arbitrary SQL statements (such as in certain WebSQL use cases), aka Magellan.",
+      "cve": "CVE-2018-20346",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.25.3-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5573,9 +6143,17 @@
     },
     {
       "id": "3acb9219ead9eb9e4860d80c87231460a56bc275",
+      "category": "container_scanning",
+      "message": "subversion: NULL pointer dereference in svnserve leading to an unauthenticated remote DoS",
       "description": "In Apache Subversion versions up to and including 1.9.10, 1.10.4, 1.12.0, Subversion's svnserve server process may exit when a client sends certain sequences of protocol commands. This can lead to disruption for users of the server.",
+      "cve": "CVE-2019-0203",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade subversion to 1.9.12-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5620,9 +6198,17 @@
     },
     {
       "id": "5bbbe2f57da1f629a33090ec5841e0424cdd8949",
+      "category": "container_scanning",
+      "message": "subversion: remotely triggerable DoS vulnerability in svnserve 'get-deleted-rev'",
       "description": "In Apache Subversion versions up to and including 1.9.10, 1.10.4, 1.12.0, Subversion's svnserve server process may exit when a well-formed read-only request produces a particular answer. This can lead to disruption for users of the server.",
+      "cve": "CVE-2018-11782",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade subversion to 1.9.12-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5667,9 +6253,17 @@
     },
     {
       "id": "65e602830b933605592358faddcce2af7db674e2",
+      "category": "container_scanning",
+      "message": "subversion: NULL pointer dereference in svnserve leading to an unauthenticated remote DoS",
       "description": "In Apache Subversion versions up to and including 1.9.10, 1.10.4, 1.12.0, Subversion's svnserve server process may exit when a client sends certain sequences of protocol commands. This can lead to disruption for users of the server.",
+      "cve": "CVE-2019-0203",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade subversion-libs to 1.9.12-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5714,9 +6308,17 @@
     },
     {
       "id": "056d98fad9b858669af43420b2441a00727fb7bd",
+      "category": "container_scanning",
+      "message": "subversion: remotely triggerable DoS vulnerability in svnserve 'get-deleted-rev'",
       "description": "In Apache Subversion versions up to and including 1.9.10, 1.10.4, 1.12.0, Subversion's svnserve server process may exit when a well-formed read-only request produces a particular answer. This can lead to disruption for users of the server.",
+      "cve": "CVE-2018-11782",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade subversion-libs to 1.9.12-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5761,9 +6363,17 @@
     },
     {
       "id": "22cdb64f0c38dfb0b9022c4952e5b1f7e96eacf1",
+      "category": "container_scanning",
+      "message": "tar: Infinite read loop in sparse_dump_region function in sparse.c",
       "description": "GNU Tar through 1.30, when --sparse is used, mishandles file shrinkage during read access, which allows local users to cause a denial of service (infinite read loop in sparse_dump_region in sparse.c) by modifying a file that is supposed to be archived by a different user's process (e.g., a system backup running as root).",
+      "cve": "CVE-2018-20482",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade tar to 1.31-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5816,7 +6426,9 @@
       ]
     }
   ],
-  "remediations": [],
+  "remediations": [
+
+  ],
   "scan": {
     "scanner": {
       "id": "trivy",
@@ -5833,12 +6445,12 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.2.0"
+      "version": "5.1.22"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
     "end_time": "2021-09-15T08:36:25",
     "status": "success"
   },
-  "version": "15.0.0"
+  "version": "14.1.2"
 }

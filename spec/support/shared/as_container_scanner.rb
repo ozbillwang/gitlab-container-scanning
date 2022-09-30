@@ -26,6 +26,7 @@ RSpec.shared_examples 'as container scanner' do |item|
       expect(remedy['diff']).not_to be_nil
 
       remedy['fixes'].each do |fix|
+        expect(fix['cve']).not_to be_nil
         expect(fix['id']).not_to be_nil
       end
     end
@@ -37,6 +38,7 @@ RSpec.shared_examples 'as container scanner' do |item|
 
     report['vulnerabilities'].each do |vulnerability|
       expect(vulnerability['id']).not_to be_nil
+      expect(vulnerability['message']).not_to be_nil
       expect(vulnerability['description']).not_to be_nil
       expect(vulnerability['severity']).not_to be_nil
       expect(vulnerability['location']['dependency']['package']['name']).not_to be_nil
@@ -53,11 +55,15 @@ RSpec.shared_examples 'as container scanner' do |item|
         expect(link['url']).not_to be_nil
       end
     end
+
+    expect(report['vulnerabilities']).to all(include('category' => 'container_scanning'))
   end
 
   shared_examples 'as trivy scanner' do
     specify do
       current_trivy_version = File.read(TRIVY_VERSION_FILE).strip
+
+      expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
 
       expect(report['scan']['scanner']['version']).to eql(current_trivy_version)
       expect(report['scan']['scanner']['id']).to eql('trivy')
@@ -86,6 +92,8 @@ RSpec.shared_examples 'as container scanner' do |item|
   shared_examples 'as grype scanner' do
     specify do
       current_grype_version = File.read(GRYPE_VERSION_FILE).strip
+
+      expect(report['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
 
       expect(report['scan']['scanner']['version']).to eql(current_grype_version)
       expect(report['scan']['scanner']['id']).to eql('grype')

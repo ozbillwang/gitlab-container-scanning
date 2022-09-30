@@ -2,9 +2,17 @@
   "vulnerabilities": [
     {
       "id": "f51a9eacd79d02f84670f3fd4e1a70f1d004be78",
+      "category": "container_scanning",
+      "message": "bash: when effective UID is not equal to its real UID the saved UID is not dropped",
       "description": "An issue was discovered in disable_priv_mode in shell.c in GNU Bash through 5.0 patch 11. By default, if Bash is run with its effective UID not equal to its real UID, it will drop privileges by setting its effective UID to its real UID. However, it does so incorrectly. On Linux and other systems that support \"saved UID\" functionality, the saved UID is not dropped. An attacker with command execution in the shell can use \"enable -f\" for runtime loading of a new builtin, which can be a shared object that calls setuid() and therefore regains privileges. However, binaries running with an effective UID of 0 are unaffected.",
+      "cve": "CVE-2019-18276",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -24,13 +32,23 @@
           "url": "https://avd.aquasec.com/nvd/cve-2019-18276"
         }
       ],
-      "links": []
+      "links": [
+
+      ]
     },
     {
       "id": "aea29156c6beb81262095cb0b0e07b692f33f5e8",
+      "category": "container_scanning",
+      "message": "bind: asterisk character in an empty non-terminal can cause an assertion failure in rbtdb.c",
       "description": "In ISC BIND9 versions BIND 9.11.14 -> 9.11.19, BIND 9.14.9 -> 9.14.12, BIND 9.16.0 -> 9.16.3, BIND Supported Preview Edition 9.11.14-S1 -> 9.11.19-S1: Unless a nameserver is providing authoritative service for one or more zones and at least one zone contains an empty non-terminal entry containing an asterisk (\"*\") character, this defect cannot be encountered. A would-be attacker who is allowed to change zone content could theoretically introduce such a record in order to exploit this condition to cause denial of service, though we consider the use of this vector unlikely because any such attack would require a significant privilege level and be easily traceable.",
+      "cve": "CVE-2020-8619",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade bind-export-libs to 32:9.11.20-5.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -91,9 +109,17 @@
     },
     {
       "id": "c0baf3ecc2ff7d2ae5348538634e2fbc3eb932d7",
+      "category": "container_scanning",
+      "message": "bind: truncated TSIG response can lead to an assertion failure",
       "description": "In BIND 9.0.0 -> 9.11.21, 9.12.0 -> 9.16.5, 9.17.0 -> 9.17.3, also affects 9.9.3-S1 -> 9.11.21-S1 of the BIND 9 Supported Preview Edition, An attacker on the network path for a TSIG-signed request, or operating the server receiving the TSIG-signed request, could send a truncated response to that request, triggering an assertion failure, causing the server to exit. Alternately, an off-path attacker would have to correctly guess when a TSIG-signed request was sent, along with other characteristics of the packet and message, and spoof a truncated response to trigger an assertion failure, causing the server to exit.",
+      "cve": "CVE-2020-8622",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade bind-export-libs to 32:9.11.20-5.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -169,9 +195,17 @@
     },
     {
       "id": "496328eb02614ea74a2c4380a5e3aeaca221e76b",
+      "category": "container_scanning",
+      "message": "bind: remotely triggerable assertion failure in pk11.c",
       "description": "In BIND 9.10.0 -> 9.11.21, 9.12.0 -> 9.16.5, 9.17.0 -> 9.17.3, also affects 9.10.5-S1 -> 9.11.21-S1 of the BIND 9 Supported Preview Edition, An attacker that can reach a vulnerable system with a specially crafted query packet can trigger a crash. To be vulnerable, the system must: * be running BIND that was built with \"--enable-native-pkcs11\" * be signing one or more zones with an RSA key * be able to receive queries from a possible attacker",
+      "cve": "CVE-2020-8623",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade bind-export-libs to 32:9.11.20-5.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -241,9 +275,17 @@
     },
     {
       "id": "b31f922bd96f813a9650913724a85cc0933d0bff",
+      "category": "container_scanning",
+      "message": "bind: incorrect enforcement of update-policy rules of type \"subdomain\"",
       "description": "In BIND 9.9.12 -> 9.9.13, 9.10.7 -> 9.10.8, 9.11.3 -> 9.11.21, 9.12.1 -> 9.16.5, 9.17.0 -> 9.17.3, also affects 9.9.12-S1 -> 9.9.13-S1, 9.11.3-S1 -> 9.11.21-S1 of the BIND 9 Supported Preview Edition, An attacker who has been granted privileges to change a specific subset of the zone's content could abuse these unintended additional privileges to update other contents of the zone.",
+      "cve": "CVE-2020-8624",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade bind-export-libs to 32:9.11.20-5.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -310,9 +352,17 @@
     },
     {
       "id": "b2b5b3bafeb22eb61dd97d049591e8132ef1c05e",
+      "category": "container_scanning",
+      "message": "binutils: integer overflow leads to heap-based buffer overflow in objdump",
       "description": "binutils version 2.32 and earlier contains a Integer Overflow vulnerability in objdump, bfd_get_dynamic_reloc_upper_bound,bfd_canonicalize_dynamic_reloc that can result in Integer overflow trigger heap overflow. Successful exploitation allows execution of arbitrary code.. This attack appear to be exploitable via Local. This vulnerability appears to have been fixed in after commit 3a551c7a1b80fca579461774860574eabfd7f18f.",
+      "cve": "CVE-2018-1000876",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -370,9 +420,17 @@
     },
     {
       "id": "70d4854e769fa3ad7390b464dee226a39d8f7b1f",
+      "category": "container_scanning",
+      "message": "binutils: Use-after-free in the error function",
       "description": "In GNU Binutils 2.31.1, there is a use-after-free in the error function in elfcomm.c when called from the process_archive function in readelf.c via a crafted ELF file.",
+      "cve": "CVE-2018-20623",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -421,9 +479,17 @@
     },
     {
       "id": "b8347b31cb5bdaf5b13b08c9d965422a1f06508e",
+      "category": "container_scanning",
+      "message": "binutils: Integer overflow in load_specific_debug_section function",
       "description": "load_specific_debug_section in objdump.c in GNU Binutils through 2.31.1 contains an integer overflow vulnerability that can trigger a heap-based buffer overflow via a crafted section size.",
+      "cve": "CVE-2018-20671",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -472,9 +538,17 @@
     },
     {
       "id": "e6dc8b93e1195c3d4806a1e90a404b40ebe32723",
+      "category": "container_scanning",
+      "message": "libiberty: Integer overflow in demangle_template() function",
       "description": "The demangle_template function in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31.1, contains an integer overflow vulnerability (for \"Create an array for saving the template argument values\") that can trigger a heap-based buffer overflow, as demonstrated by nm.",
+      "cve": "CVE-2018-20673",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -508,9 +582,17 @@
     },
     {
       "id": "8b58820f1878dacc78caf564666b62ee30564576",
+      "category": "container_scanning",
+      "message": "binutils: out-of-bound read in function bfd_getl32 in libbfd.c",
       "description": "An issue was discovered in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.32. It is an out-of-bounds read leading to a SEGV in bfd_getl32 in libbfd.c, when called from pex64_get_runtime_function in pei-x86_64.c.",
+      "cve": "CVE-2019-9074",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -559,9 +641,17 @@
     },
     {
       "id": "c38ebef5dcd0898f7bf580cc7c46e0218c362268",
+      "category": "container_scanning",
+      "message": "binutils: heap-based buffer overflow in function _bfd_archive_64_bit_slurp_armap in archive64.c",
       "description": "An issue was discovered in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.32. It is a heap-based buffer overflow in _bfd_archive_64_bit_slurp_armap in archive64.c.",
+      "cve": "CVE-2019-9075",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -610,9 +700,17 @@
     },
     {
       "id": "490f110a956d2360e109130691ba4873541c586c",
+      "category": "container_scanning",
+      "message": "binutils: heap-based buffer overflow in function process_mips_specific in readelf.c",
       "description": "An issue was discovered in GNU Binutils 2.32. It is a heap-based buffer overflow in process_mips_specific in readelf.c via a malformed MIPS option section.",
+      "cve": "CVE-2019-9077",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -664,9 +762,17 @@
     },
     {
       "id": "2d10cf12420b0d6cfc1b9d01e18856e553243ca5",
+      "category": "container_scanning",
+      "message": "binutils: Stack Exhaustion in the demangling functions provided by libiberty",
       "description": "An issue was discovered in arm_pt in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.30. Stack Exhaustion occurs in the C++ demangling functions provided by libiberty, and there are recursive stack frames: demangle_arm_hp_template, demangle_class_name, demangle_fund_type, do_type, do_arg, demangle_args, and demangle_nested_args. This can occur during execution of nm-new.",
+      "cve": "CVE-2018-12641",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -727,9 +833,17 @@
     },
     {
       "id": "4cb2c51aa0e9259f6fe90b98d5e8da6202c828c1",
+      "category": "container_scanning",
+      "message": "binutils: NULL pointer dereference in work_stuff_copy_to_from in cplus-dem.c.",
       "description": "A NULL pointer dereference (aka SEGV on unknown address 0x000000000000) was discovered in work_stuff_copy_to_from in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.30. This can occur during execution of objdump.",
+      "cve": "CVE-2018-12697",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -793,9 +907,17 @@
     },
     {
       "id": "f1cc846a98117f29da504472370d5a5ac870a31d",
+      "category": "container_scanning",
+      "message": "binutils: excessive memory consumption in demangle_template in cplus-dem.c",
       "description": "demangle_template in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.30, allows attackers to trigger excessive memory consumption (aka OOM) during the \"Create an array for saving the template argument values\" XNEWVEC call. This can occur during execution of objdump.",
+      "cve": "CVE-2018-12698",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -850,9 +972,17 @@
     },
     {
       "id": "a822c6d4e831c3eb9704a9a06b734763985f71dd",
+      "category": "container_scanning",
+      "message": "binutils: heap-based buffer overflow in finish_stab in stabs.c",
       "description": "finish_stab in stabs.c in GNU Binutils 2.30 allows attackers to cause a denial of service (heap-based buffer overflow) or possibly have unspecified other impact, as demonstrated by an out-of-bounds write of 8 bytes. This can occur during execution of objdump.",
+      "cve": "CVE-2018-12699",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -901,9 +1031,17 @@
     },
     {
       "id": "da256670cb046669abd2732d327cab38dcdc7e34",
+      "category": "container_scanning",
+      "message": "binutils: Stack Exhaustion in debug_write_type in debug.c",
       "description": "A Stack Exhaustion issue was discovered in debug_write_type in debug.c in GNU Binutils 2.30 because of DEBUG_KIND_INDIRECT infinite recursion.",
+      "cve": "CVE-2018-12700",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -952,9 +1090,17 @@
     },
     {
       "id": "b8f762837cc6c8c6e91140403e169956e349346f",
+      "category": "container_scanning",
+      "message": "binutils: Uncontrolled Resource Consumption in remember_Ktype in cplus-dem.c",
       "description": "remember_Ktype in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.30, allows attackers to trigger excessive memory consumption (aka OOM). This can occur during execution of cxxfilt.",
+      "cve": "CVE-2018-12934",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1003,9 +1149,17 @@
     },
     {
       "id": "a13df890c2b97eb0814360e414d92f7ca00feb13",
+      "category": "container_scanning",
+      "message": "binutils: heap-based buffer over-read in bfd_getl32 in libbfd.c",
       "description": "An issue was discovered in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.31. a heap-based buffer over-read in bfd_getl32 in libbfd.c allows an attacker to cause a denial of service through a crafted PE file. This vulnerability can be triggered by the executable objdump.",
+      "cve": "CVE-2018-17360",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1048,9 +1202,17 @@
     },
     {
       "id": "57ba90c7418c762d146b17356e7214b437c85a2d",
+      "category": "container_scanning",
+      "message": "binutils: NULL pointer dereference in libiberty/cplus-dem.c:work_stuff_copy_to_from() via crafted input",
       "description": "An issue was discovered in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31. There is a NULL pointer dereference in work_stuff_copy_to_from when called from iterate_demangle_function.",
+      "cve": "CVE-2018-17794",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1093,9 +1255,17 @@
     },
     {
       "id": "4784db39a4b1972dbb18d03df964f68f5252082f",
+      "category": "container_scanning",
+      "message": "binutils: Stack consumption problem caused by the cplus_demangle_type",
       "description": "An issue was discovered in cp-demangle.c in GNU libiberty, as distributed in GNU Binutils 2.31. There is a stack consumption problem caused by the cplus_demangle_type function making recursive calls to itself in certain scenarios involving many 'P' characters.",
+      "cve": "CVE-2018-17985",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1144,9 +1314,17 @@
     },
     {
       "id": "896078f5f125ad2d631eb061bd7a5436d6f0efa9",
+      "category": "container_scanning",
+      "message": "binutils: invalid memory address dereference in read_reloc in reloc.c",
       "description": "An issue was discovered in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.31. An invalid memory address dereference was discovered in read_reloc in reloc.c. The vulnerability causes a segmentation fault and application crash, which leads to denial of service, as demonstrated by objdump, because of missing _bfd_clear_contents bounds checking.",
+      "cve": "CVE-2018-18309",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1195,9 +1373,17 @@
     },
     {
       "id": "1b5e9a19cd4a3fb067871188577c221d516e4933",
+      "category": "container_scanning",
+      "message": "binutils: Integer overflow in cplus-dem.c:get_count() allows for denial of service",
       "description": "The get_count function in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31, allows remote attackers to cause a denial of service (malloc called with the result of an integer-overflowing calculation) or possibly have unspecified other impact via a crafted string, as demonstrated by c++filt.",
+      "cve": "CVE-2018-18483",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1252,9 +1438,17 @@
     },
     {
       "id": "f230b1c405f23f2d44db3339286cc7078611ab69",
+      "category": "container_scanning",
+      "message": "binutils: Stack exhaustion in cp-demangle.c allows for denial of service",
       "description": "An issue was discovered in cp-demangle.c in GNU libiberty, as distributed in GNU Binutils 2.31. Stack Exhaustion occurs in the C++ demangling functions provided by libiberty, and there is a stack consumption problem caused by recursive stack frames: cplus_demangle_type, d_bare_function_type, d_function_type.",
+      "cve": "CVE-2018-18484",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1306,9 +1500,17 @@
     },
     {
       "id": "ee40f759c10f181be24445fcf474c5f9b9e2113e",
+      "category": "container_scanning",
+      "message": "binutils: heap-based buffer over-read in sec_merge_hash_lookup in merge.c",
       "description": "A heap-based buffer over-read issue was discovered in the function sec_merge_hash_lookup in merge.c in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.31, because _bfd_add_merge_section mishandles section merges when size is not a multiple of entsize. A specially crafted ELF allows remote attackers to cause a denial of service, as demonstrated by ld.",
+      "cve": "CVE-2018-18605",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1360,9 +1562,17 @@
     },
     {
       "id": "dbf207298d9dbcaac73e0cbb93f47c7dbf5f82f2",
+      "category": "container_scanning",
+      "message": "binutils: NULL pointer dereference in _bfd_add_merge_section in merge_strings function in merge.c",
       "description": "An issue was discovered in the merge_strings function in merge.c in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.31. There is a NULL pointer dereference in _bfd_add_merge_section when attempting to merge sections with large alignments. A specially crafted ELF allows remote attackers to cause a denial of service, as demonstrated by ld.",
+      "cve": "CVE-2018-18606",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1414,9 +1624,17 @@
     },
     {
       "id": "66caee96c76f2bebc6bb0719373b4a5f6ee0a7dd",
+      "category": "container_scanning",
+      "message": "binutils: NULL pointer dereference in elf_link_input_bfd in elflink.c",
       "description": "An issue was discovered in elf_link_input_bfd in elflink.c in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.31. There is a NULL pointer dereference in elf_link_input_bfd when used for finding STT_TLS symbols without any TLS section. A specially crafted ELF allows remote attackers to cause a denial of service, as demonstrated by ld.",
+      "cve": "CVE-2018-18607",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1468,9 +1686,17 @@
     },
     {
       "id": "5d56aa668af7d5647410295f2e3b060f31843746",
+      "category": "container_scanning",
+      "message": "binutils: Recursive Stack Overflow within function d_name, d_encoding, and d_local_name in cp-demangle.c",
       "description": "An issue was discovered in cp-demangle.c in GNU libiberty, as distributed in GNU Binutils 2.31. There is a stack consumption vulnerability resulting from infinite recursion in the functions d_name(), d_encoding(), and d_local_name() in cp-demangle.c. Remote attackers could leverage this vulnerability to cause a denial-of-service via an ELF file, as demonstrated by nm.",
+      "cve": "CVE-2018-18700",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1513,9 +1739,17 @@
     },
     {
       "id": "9483a6219df086957498650c07cb0ee86f96fb21",
+      "category": "container_scanning",
+      "message": "binutils: infinite recursion in next_is_type_qual and cplus_demangle_type functions in cp-demangle.c",
       "description": "An issue was discovered in cp-demangle.c in GNU libiberty, as distributed in GNU Binutils 2.31. There is a stack consumption vulnerability resulting from infinite recursion in the functions next_is_type_qual() and cplus_demangle_type() in cp-demangle.c. Remote attackers could leverage this vulnerability to cause a denial-of-service via an ELF file, as demonstrated by nm.",
+      "cve": "CVE-2018-18701",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1558,9 +1792,17 @@
     },
     {
       "id": "88376bcf041e2b738a02433b1d5f99aacbad104b",
+      "category": "container_scanning",
+      "message": "binutils: Integer overflow due to the IS_CONTAINED_BY_LMA macro resulting in a denial of service",
       "description": "An issue was discovered in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils through 2.31. There is an integer overflow and infinite loop caused by the IS_CONTAINED_BY_LMA macro in elf.c.",
+      "cve": "CVE-2018-19932",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1615,9 +1857,17 @@
     },
     {
       "id": "b87fafaa12623737eff6b5544350283d03fb4038",
+      "category": "container_scanning",
+      "message": "binutils: memory leak in _bfd_generic_read_minisymbols function in syms.c",
       "description": "The _bfd_generic_read_minisymbols function in syms.c in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.31, has a memory leak via a crafted ELF file, leading to a denial of service (memory consumption), as demonstrated by nm.",
+      "cve": "CVE-2018-20002",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1669,9 +1919,17 @@
     },
     {
       "id": "2c8f6792ba768e1a3334407320664588a05bfb2c",
+      "category": "container_scanning",
+      "message": "binutils: NULL pointer dereference in elf_link_add_object_symbols function resulting in a denial of service",
       "description": "A NULL pointer dereference was discovered in elf_link_add_object_symbols in elflink.c in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.31.1. This occurs for a crafted ET_DYN with no program headers. A specially crafted ELF file allows remote attackers to cause a denial of service, as demonstrated by ld.",
+      "cve": "CVE-2018-20651",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1726,9 +1984,17 @@
     },
     {
       "id": "e137713dca2625ba93c8f391e3b4311918a5d9e6",
+      "category": "container_scanning",
+      "message": "libiberty: Memory leak in demangle_template function resulting in a denial of service",
       "description": "The demangle_template function in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31.1, has a memory leak via a crafted string, leading to a denial of service (memory consumption), as demonstrated by cxxfilt, a related issue to CVE-2018-12698.",
+      "cve": "CVE-2018-20657",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1774,9 +2040,17 @@
     },
     {
       "id": "2ef85a1c6aa9c70c148c36e894bfaf4811138afe",
+      "category": "container_scanning",
+      "message": "binutils: out of bounds read in elf_parse_notes function in elf.c file in libbfd library",
       "description": "The elf_parse_notes function in elf.c in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.30, allows remote attackers to cause a denial of service (out-of-bounds read and segmentation violation) via a note with a large alignment.",
+      "cve": "CVE-2018-6872",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1822,9 +2096,17 @@
     },
     {
       "id": "8e90126e0f61a4a404ef128e1911415e65b08eba",
+      "category": "container_scanning",
+      "message": "binutils: out-of-bounds read in setup_group in bfd/elf.c",
       "description": "An issue was discovered in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.32. There is a heap-based buffer over-read in _bfd_doprnt in bfd.c because elf_object_p in elfcode.h mishandles an e_shstrndx section of type SHT_GROUP by omitting a trailing '\\0' character.",
+      "cve": "CVE-2019-12972",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1876,9 +2158,17 @@
     },
     {
       "id": "a620793d551d97b0b59a4fe051b077d7d9d59464",
+      "category": "container_scanning",
+      "message": "binutils: integer overflow in simple-object-elf.c leads to a heap-based buffer overflow",
       "description": "An issue was discovered in GNU libiberty, as distributed in GNU Binutils 2.32. simple_object_elf_match in simple-object-elf.c does not check for a zero shstrndx value, leading to an integer overflow and resultant heap-based buffer overflow.",
+      "cve": "CVE-2019-14250",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -1948,9 +2238,17 @@
     },
     {
       "id": "1d91389aa00f6cf8c0fc1a05ec1be4a3f22b364b",
+      "category": "container_scanning",
+      "message": "binutils: denial of service via crafted ELF file",
       "description": "find_abstract_instance in dwarf2.c in the Binary File Descriptor (BFD) library (aka libbfd), as distributed in GNU Binutils 2.32, allows remote attackers to cause a denial of service (infinite recursion and application crash) via a crafted ELF file.",
+      "cve": "CVE-2019-17450",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade binutils to 2.30-79.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2005,9 +2303,17 @@
     },
     {
       "id": "b3bd422e4461602ed0288b302d99799c702ca12e",
+      "category": "container_scanning",
+      "message": "binutils: stack consumption in function d_count_templates_scopes in cp-demangle.c",
       "description": "An issue was discovered in GNU libiberty, as distributed in GNU Binutils 2.32. It is a stack consumption issue in d_count_templates_scopes in cp-demangle.c after many recursive calls.",
+      "cve": "CVE-2019-9071",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2062,9 +2368,17 @@
     },
     {
       "id": "71ec8d0f04d90a03cdbf238f9b6936d9edf857c9",
+      "category": "container_scanning",
+      "message": "bzip2: out-of-bounds write in function BZ2_decompress",
       "description": "BZ2_decompress in decompress.c in bzip2 through 1.0.6 has an out-of-bounds write when there are many selectors.",
+      "cve": "CVE-2019-12900",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2176,9 +2490,17 @@
     },
     {
       "id": "a97d018986a0c9906022a6d97d80bd221f5a9d6a",
+      "category": "container_scanning",
+      "message": "coreutils: race condition vulnerability in chown and chgrp",
       "description": "In GNU Coreutils through 8.29, chown-core.c in chown and chgrp does not prevent replacement of a plain file with a symlink during use of the POSIX \"-R -L\" options, which allows local users to modify the ownership of arbitrary files by leveraging a race condition.",
+      "cve": "CVE-2017-18018",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2206,9 +2528,17 @@
     },
     {
       "id": "e120537f51be754b5952be74810961c2aaf60734",
+      "category": "container_scanning",
+      "message": "cpio: improper input validation when writing tar header fields leads to unexpect tar generation",
       "description": "In all versions of cpio before 2.13 does not properly validate input files when generating TAR archives. When cpio is used to create TAR archives from paths an attacker can write to, the resulting archive may contain files with permissions the attacker did not have or in paths he did not have access to. Extracting those archives from a high-privilege user without carefully reviewing them may lead to the compromise of the system.",
+      "cve": "CVE-2019-14866",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2254,9 +2584,17 @@
     },
     {
       "id": "345e56354e50c1dc9c726c8296f64fd933319733",
+      "category": "container_scanning",
+      "message": "cryptsetup: Out-of-bounds write when validating segments",
       "description": "A vulnerability was found in upstream release cryptsetup-2.2.0 where, there's a bug in LUKS2 format validation code, that is effectively invoked on every device/image presenting itself as LUKS2 container. The bug is in segments validation code in file 'lib/luks2/luks2_json_metadata.c' in function hdr_validate_segments(struct crypt_device *cd, json_object *hdr_jobj) where the code does not check for possible overflow on memory allocation used for intervals array (see statement \"intervals = malloc(first_backup * sizeof(*intervals));\"). Due to the bug, library can be *tricked* to expect such allocation was successful but for far less memory then originally expected. Later it may read data FROM image crafted by an attacker and actually write such data BEYOND allocated memory.",
+      "cve": "CVE-2020-14382",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade cryptsetup-libs to 2.3.3-2.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2311,9 +2649,17 @@
     },
     {
       "id": "2de2807743be2a4a32db71a998c2bb09ef75a971",
+      "category": "container_scanning",
+      "message": "curl: Incorrect argument check can allow remote servers to overwrite local files",
       "description": "A flaw was found in curl. Overwriting local files is possible when using a certain combination of command line options. Requesting content from a malicious server could lead to overwriting local files with compromised files leading to unknown effects. The highest threat from this vulnerability is to file integrity.",
+      "cve": "CVE-2020-8177",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade curl to 7.61.1-14.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2353,9 +2699,17 @@
     },
     {
       "id": "7ad2c223d02307094e027f8ff1def0339fc72f44",
+      "category": "container_scanning",
+      "message": "curl: Expired pointer dereference via multi API with `CURLOPT_CONNECT_ONLY` option set",
       "description": "A flaw was found in libcurl from versions 7.29.0 through 7.71.1. An application that performs multiple requests with libcurl's multi API, and sets the `CURLOPT_CONNECT_ONLY` option, might experience libcurl using the wrong connection. The highest threat from this vulnerability is to data confidentiality.",
+      "cve": "CVE-2020-8231",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2392,9 +2746,17 @@
     },
     {
       "id": "43e1baf67ac218273a8fe3d40aa96fc67c3a931c",
+      "category": "container_scanning",
+      "message": "cyrus-sasl: denial of service in _sasl_add_string function",
       "description": "cyrus-sasl (aka Cyrus SASL) 2.1.27 has an out-of-bounds write leading to unauthenticated remote denial-of-service in OpenLDAP via a malformed LDAP packet. The OpenLDAP crash is ultimately caused by an off-by-one error in _sasl_add_string in common.c in cyrus-sasl.",
+      "cve": "CVE-2019-19906",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade cyrus-sasl-lib to 2.1.27-5.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2467,9 +2829,17 @@
     },
     {
       "id": "43b5b2fc1e1c04871774edc385f58468216ad694",
+      "category": "container_scanning",
+      "message": "expat: large number of colons in input makes parser consume high amount of resources, leading to DoS",
       "description": "In libexpat in Expat before 2.2.7, XML input including XML names that contain a large number of colons could make the XML parser consume a high amount of RAM and CPU resources while processing (enough to be usable for denial-of-service attacks).",
+      "cve": "CVE-2018-20843",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade expat to 2.2.5-4.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2566,9 +2936,17 @@
     },
     {
       "id": "87ccff97a65c03bb23c5f7ce1cfad4e9430f54d6",
+      "category": "container_scanning",
+      "message": "expat: heap-based buffer over-read via crafted XML input",
       "description": "In libexpat before 2.2.8, crafted XML input could fool the parser into changing from DTD parsing to document parsing too early; a consecutive call to XML_GetCurrentLineNumber (or XML_GetCurrentColumnNumber) then resulted in a heap-based buffer over-read.",
+      "cve": "CVE-2019-15903",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade expat to 2.2.5-4.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2794,9 +3172,17 @@
     },
     {
       "id": "814382eb5023031c2a27d32ea9c577a05f7bd3af",
+      "category": "container_scanning",
+      "message": "file: heap-based buffer overflow in cdf_read_property_info in cdf.c",
       "description": "cdf_read_property_info in cdf.c in file through 5.37 does not restrict the number of CDF_VECTOR elements, which allows a heap-based buffer overflow (4-byte out-of-bounds write).",
+      "cve": "CVE-2019-18218",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2866,9 +3252,17 @@
     },
     {
       "id": "32cfe81f6f609067a897661ffeeea682e9253028",
+      "category": "container_scanning",
+      "message": "file: stack-based buffer over-read in do_core_note in readelf.c",
       "description": "do_core_note in readelf.c in libmagic.a in file 5.35 has a stack-based buffer over-read, related to file_printable, a different vulnerability than CVE-2018-10360.",
+      "cve": "CVE-2019-8905",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2917,9 +3311,17 @@
     },
     {
       "id": "b2f19b601f4a586d3eace34ecfdcae77df343cb6",
+      "category": "container_scanning",
+      "message": "file: out-of-bounds read in do_core_note in readelf.c",
       "description": "do_core_note in readelf.c in libmagic.a in file 5.35 has an out-of-bounds read because memcpy is misused.",
+      "cve": "CVE-2019-8906",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -2977,9 +3379,17 @@
     },
     {
       "id": "c869ad077f2aa18e7092fd70d2f054dc99fbcd2c",
+      "category": "container_scanning",
+      "message": "glib: g_socket_client_connected_callback in gio/gsocketclient.c allows to cause denial of service",
       "description": "gio/gsocketclient.c in GNOME GLib 2.59.2 does not ensure that a parent GTask remains alive during the execution of a connection-attempting enumeration, which allows remote attackers to cause a denial of service (g_socket_client_connected_callback mishandling and application crash) via a crafted web site, as demonstrated by GNOME Web (aka Epiphany).",
+      "cve": "CVE-2019-9633",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3010,9 +3420,17 @@
     },
     {
       "id": "00d56698ab730ac329560515a69bef3bb31ee264",
+      "category": "container_scanning",
+      "message": "glib2: NULL pointer dereference in g_markup_parse_context_end_parse() function in gmarkup.c",
       "description": "In GNOME GLib 2.56.1, g_markup_parse_context_end_parse() in gmarkup.c has a NULL pointer dereference.",
+      "cve": "CVE-2018-16428",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3067,9 +3485,17 @@
     },
     {
       "id": "5a3340249af49faa883fb67017251e16cf8e9a20",
+      "category": "container_scanning",
+      "message": "glib2: Out-of-bounds read in g_markup_parse_context_parse() in gmarkup.c",
       "description": "GNOME GLib 2.56.1 has an out-of-bounds read vulnerability in g_markup_parse_context_parse() in gmarkup.c, related to utf8_str().",
+      "cve": "CVE-2018-16429",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3118,9 +3544,17 @@
     },
     {
       "id": "eadc61f9a359ba1b52f1c049d6a70e4a99ddfe1c",
+      "category": "container_scanning",
+      "message": "glib2: insecure permissions for files and directories",
       "description": "The keyfile settings backend in GNOME GLib (aka glib2.0) before 2.60.0 creates directories using g_file_make_directory_with_parents (kfsb->dir, NULL, NULL) and files using g_file_replace_contents (kfsb->file, contents, length, NULL, FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL, NULL, NULL). Consequently, it does not properly restrict directory (and file) permissions. Instead, for directories, 0777 permissions are used; for files, default file permissions are used. This is similar to CVE-2019-12450.",
+      "cve": "CVE-2019-13012",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3190,9 +3624,17 @@
     },
     {
       "id": "f52e066b08952b7df43268dbf8885b6f19a6e61c",
+      "category": "container_scanning",
+      "message": "glibc: stack guard protection bypass",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass stack guard protection. The component is: nptl. The attack vector is: Exploit stack buffer overflow vulnerability and use this bypass vulnerability to bypass stack guard. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
+      "cve": "CVE-2019-1010022",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3226,9 +3668,17 @@
     },
     {
       "id": "4ba0aca06e170967abf667d3fc21154ee55f9e64",
+      "category": "container_scanning",
+      "message": "glibc: regular-expression match via proceed_next_node in posix/regexec.c leads to heap-based buffer over-read",
       "description": "In the GNU C Library (aka glibc or libc6) through 2.29, proceed_next_node in posix/regexec.c has a heap-based buffer over-read via an attempted case-insensitive regular-expression match.",
+      "cve": "CVE-2019-9169",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3289,9 +3739,17 @@
     },
     {
       "id": "e0449ea340f4395eb1b853c067df3ee21a3e8109",
+      "category": "container_scanning",
+      "message": "glibc: stack corruption from crafted input in cosl, sinl, sincosl, and tanl functions",
       "description": "The GNU C Library (aka glibc or libc6) before 2.32 could overflow an on-stack buffer during range reduction if an input to an 80-bit long double function contains a non-canonical bit pattern, a seen when passing a 0x5d414141414141410000 value to sinl on x86 targets. This is related to sysdeps/ieee754/ldbl-96/e_rem_pio2l.c.",
+      "cve": "CVE-2020-10029",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3355,9 +3813,17 @@
     },
     {
       "id": "2c939821044474336617f7c1a9b0072bbc8c0b06",
+      "category": "container_scanning",
+      "message": "glibc: array overflow in backtrace functions for powerpc",
       "description": "An out-of-bounds write vulnerability was found in glibc before 2.31 when handling signal trampolines on PowerPC. Specifically, the backtrace function did not properly check the array bounds when storing the frame address, resulting in a denial of service or potential code execution. The highest threat from this vulnerability is to system availability.",
+      "cve": "CVE-2020-1751",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3409,9 +3875,17 @@
     },
     {
       "id": "832fbeb8b5f7e539503b2ddddee226ad79835cc4",
+      "category": "container_scanning",
+      "message": "glibc: use-after-free in glob() function when expanding ~user",
       "description": "A use-after-free vulnerability introduced in glibc upstream version 2.14 was found in the way the tilde expansion was carried out. Directory paths containing an initial tilde followed by a valid username were affected by this issue. A local attacker could exploit this flaw by creating a specially crafted path that, when processed by the glob function, would potentially lead to arbitrary code execution. This was fixed in version 2.32.",
+      "cve": "CVE-2020-1752",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3463,9 +3937,17 @@
     },
     {
       "id": "1b8a248941b9a1f4c9d892536c41f583065b4ebf",
+      "category": "container_scanning",
+      "message": "glibc: running ldd on malicious ELF leads to code execution because of wrong size computation",
       "description": "** DISPUTED ** GNU Libc current is affected by: Re-mapping current loaded library with malicious ELF file. The impact is: In worst case attacker may evaluate privileges. The component is: libld. The attack vector is: Attacker sends 2 ELF files to victim and asks to run ldd on it. ldd execute code. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
+      "cve": "CVE-2019-1010023",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3505,9 +3987,17 @@
     },
     {
       "id": "7838455b185d71695efe47dee292aa0eafea974c",
+      "category": "container_scanning",
+      "message": "glibc: iconv when processing invalid multi-byte input sequences fails to advance the input state, which could result in an infinite loop",
       "description": "No description is available for this CVE.",
+      "cve": "CVE-2020-27618",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3535,9 +4025,17 @@
     },
     {
       "id": "e6602611fdc4d8f0b8e43c552c503a8591e4a0ac",
+      "category": "container_scanning",
+      "message": "glibc: stack guard protection bypass",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass stack guard protection. The component is: nptl. The attack vector is: Exploit stack buffer overflow vulnerability and use this bypass vulnerability to bypass stack guard. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
+      "cve": "CVE-2019-1010022",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3571,9 +4069,17 @@
     },
     {
       "id": "7bdc18210e416e4acc5bbbaa7e76d581adc416c3",
+      "category": "container_scanning",
+      "message": "glibc: regular-expression match via proceed_next_node in posix/regexec.c leads to heap-based buffer over-read",
       "description": "In the GNU C Library (aka glibc or libc6) through 2.29, proceed_next_node in posix/regexec.c has a heap-based buffer over-read via an attempted case-insensitive regular-expression match.",
+      "cve": "CVE-2019-9169",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3634,9 +4140,17 @@
     },
     {
       "id": "42ec7f70407e40fffc96822abea10ef7d46116e0",
+      "category": "container_scanning",
+      "message": "glibc: stack corruption from crafted input in cosl, sinl, sincosl, and tanl functions",
       "description": "The GNU C Library (aka glibc or libc6) before 2.32 could overflow an on-stack buffer during range reduction if an input to an 80-bit long double function contains a non-canonical bit pattern, a seen when passing a 0x5d414141414141410000 value to sinl on x86 targets. This is related to sysdeps/ieee754/ldbl-96/e_rem_pio2l.c.",
+      "cve": "CVE-2020-10029",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc-common to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3700,9 +4214,17 @@
     },
     {
       "id": "b5b6d4196b73f97f0918a79ca970125dba3432ae",
+      "category": "container_scanning",
+      "message": "glibc: array overflow in backtrace functions for powerpc",
       "description": "An out-of-bounds write vulnerability was found in glibc before 2.31 when handling signal trampolines on PowerPC. Specifically, the backtrace function did not properly check the array bounds when storing the frame address, resulting in a denial of service or potential code execution. The highest threat from this vulnerability is to system availability.",
+      "cve": "CVE-2020-1751",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc-common to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3754,9 +4276,17 @@
     },
     {
       "id": "e7e12f2ff19ce989dfba35c1f06f489f63d04400",
+      "category": "container_scanning",
+      "message": "glibc: use-after-free in glob() function when expanding ~user",
       "description": "A use-after-free vulnerability introduced in glibc upstream version 2.14 was found in the way the tilde expansion was carried out. Directory paths containing an initial tilde followed by a valid username were affected by this issue. A local attacker could exploit this flaw by creating a specially crafted path that, when processed by the glob function, would potentially lead to arbitrary code execution. This was fixed in version 2.32.",
+      "cve": "CVE-2020-1752",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc-common to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3808,9 +4338,17 @@
     },
     {
       "id": "6a1a329c5759926686761f7578891d039cb238d5",
+      "category": "container_scanning",
+      "message": "glibc: running ldd on malicious ELF leads to code execution because of wrong size computation",
       "description": "** DISPUTED ** GNU Libc current is affected by: Re-mapping current loaded library with malicious ELF file. The impact is: In worst case attacker may evaluate privileges. The component is: libld. The attack vector is: Attacker sends 2 ELF files to victim and asks to run ldd on it. ldd execute code. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
+      "cve": "CVE-2019-1010023",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3850,9 +4388,17 @@
     },
     {
       "id": "c7c90169a83ed553acf7c7657bc1b26752e78165",
+      "category": "container_scanning",
+      "message": "glibc: iconv when processing invalid multi-byte input sequences fails to advance the input state, which could result in an infinite loop",
       "description": "No description is available for this CVE.",
+      "cve": "CVE-2020-27618",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3880,9 +4426,17 @@
     },
     {
       "id": "9feef81b21376cead62ed0eb956d3cccf5680a3a",
+      "category": "container_scanning",
+      "message": "glibc: stack guard protection bypass",
       "description": "** DISPUTED ** GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass stack guard protection. The component is: nptl. The attack vector is: Exploit stack buffer overflow vulnerability and use this bypass vulnerability to bypass stack guard. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
+      "cve": "CVE-2019-1010022",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3916,9 +4470,17 @@
     },
     {
       "id": "3246b9ea6d0fabdc97744ce962c26c80f4a7866f",
+      "category": "container_scanning",
+      "message": "glibc: regular-expression match via proceed_next_node in posix/regexec.c leads to heap-based buffer over-read",
       "description": "In the GNU C Library (aka glibc or libc6) through 2.29, proceed_next_node in posix/regexec.c has a heap-based buffer over-read via an attempted case-insensitive regular-expression match.",
+      "cve": "CVE-2019-9169",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -3979,9 +4541,17 @@
     },
     {
       "id": "14b5763508de9866b34f0aa0bba44050a4abc5c0",
+      "category": "container_scanning",
+      "message": "glibc: stack corruption from crafted input in cosl, sinl, sincosl, and tanl functions",
       "description": "The GNU C Library (aka glibc or libc6) before 2.32 could overflow an on-stack buffer during range reduction if an input to an 80-bit long double function contains a non-canonical bit pattern, a seen when passing a 0x5d414141414141410000 value to sinl on x86 targets. This is related to sysdeps/ieee754/ldbl-96/e_rem_pio2l.c.",
+      "cve": "CVE-2020-10029",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc-minimal-langpack to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4045,9 +4615,17 @@
     },
     {
       "id": "670b5e865192df9d214be7710ed9ce51efd9666e",
+      "category": "container_scanning",
+      "message": "glibc: array overflow in backtrace functions for powerpc",
       "description": "An out-of-bounds write vulnerability was found in glibc before 2.31 when handling signal trampolines on PowerPC. Specifically, the backtrace function did not properly check the array bounds when storing the frame address, resulting in a denial of service or potential code execution. The highest threat from this vulnerability is to system availability.",
+      "cve": "CVE-2020-1751",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc-minimal-langpack to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4099,9 +4677,17 @@
     },
     {
       "id": "fb84a923282bd77cd1ca683959cc4ecddf25ff3f",
+      "category": "container_scanning",
+      "message": "glibc: use-after-free in glob() function when expanding ~user",
       "description": "A use-after-free vulnerability introduced in glibc upstream version 2.14 was found in the way the tilde expansion was carried out. Directory paths containing an initial tilde followed by a valid username were affected by this issue. A local attacker could exploit this flaw by creating a specially crafted path that, when processed by the glob function, would potentially lead to arbitrary code execution. This was fixed in version 2.32.",
+      "cve": "CVE-2020-1752",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade glibc-minimal-langpack to 2.28-127.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4153,9 +4739,17 @@
     },
     {
       "id": "1db5b34fa0c276d58999c14d822ebf1e8be6bea7",
+      "category": "container_scanning",
+      "message": "glibc: running ldd on malicious ELF leads to code execution because of wrong size computation",
       "description": "** DISPUTED ** GNU Libc current is affected by: Re-mapping current loaded library with malicious ELF file. The impact is: In worst case attacker may evaluate privileges. The component is: libld. The attack vector is: Attacker sends 2 ELF files to victim and asks to run ldd on it. ldd execute code. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.\"",
+      "cve": "CVE-2019-1010023",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4195,9 +4789,17 @@
     },
     {
       "id": "7b49b214ecb36d9abad3cc7ab13e9751ed661197",
+      "category": "container_scanning",
+      "message": "glibc: iconv when processing invalid multi-byte input sequences fails to advance the input state, which could result in an infinite loop",
       "description": "No description is available for this CVE.",
+      "cve": "CVE-2020-27618",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4225,9 +4827,17 @@
     },
     {
       "id": "20e9d23d1addb1d5daa9e34234e1214351309357",
+      "category": "container_scanning",
+      "message": "gnupg2: Cross site request forgery in dirmngr resulting in an information disclosure or denial of service",
       "description": "GnuPG version 2.1.12 - 2.2.11 contains a Cross ite Request Forgery (CSRF) vulnerability in dirmngr that can result in Attacker controlled CSRF, Information Disclosure, DoS. This attack appear to be exploitable via Victim must perform a WKD request, e.g. enter an email address in the composer window of Thunderbird/Enigmail. This vulnerability appears to have been fixed in after commit 4a4bb874f63741026bd26264c43bb32b1099f060.",
+      "cve": "CVE-2018-1000858",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4267,9 +4877,17 @@
     },
     {
       "id": "242f14c0143802f754d135d5c0570ffce6f28eb4",
+      "category": "container_scanning",
+      "message": "GnuPG: interaction between the sks-keyserver code and GnuPG allows for a Certificate Spamming Attack which leads to persistent DoS",
       "description": "Interaction between the sks-keyserver code through 1.2.0 of the SKS keyserver network, and GnuPG through 2.2.16, makes it risky to have a GnuPG keyserver configuration line referring to a host on the SKS keyserver network. Retrieving data from this network may cause a persistent denial of service, because of a Certificate Spamming Attack.",
+      "cve": "CVE-2019-13050",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade gnupg2 to 2.2.20-2.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4330,9 +4948,17 @@
     },
     {
       "id": "1077604be561a6589d0a3d1f6edb61016bd035db",
+      "category": "container_scanning",
+      "message": "gnutls: Heap buffer overflow in handshake with no_renegotiation alert sent",
       "description": "An issue was discovered in GnuTLS before 3.6.15. A server can trigger a NULL pointer dereference in a TLS 1.3 client if a no_renegotiation alert is sent with unexpected timing, and then an invalid second handshake occurs. The crash happens in the application's error handling path, where the gnutls_deinit function is called after detecting a handshake failure.",
+      "cve": "CVE-2020-24659",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4390,9 +5016,17 @@
     },
     {
       "id": "114ac04d48f2f6df62d78af7bab0efa2a9693f64",
+      "category": "container_scanning",
+      "message": "json-c: integer overflow and out-of-bounds write via a large JSON file",
       "description": "json-c through 0.14 has an integer overflow and out-of-bounds write via a large JSON file, as demonstrated by printbuf_memappend.",
+      "cve": "CVE-2020-12762",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4462,9 +5096,17 @@
     },
     {
       "id": "675383e63709f63b263af61e1509329c1d4a78b5",
+      "category": "container_scanning",
+      "message": "krb5: unbounded recursion via an ASN.1-encoded Kerberos message in lib/krb5/asn.1/asn1_encode.c may lead to DoS",
       "description": "MIT Kerberos 5 (aka krb5) before 1.17.2 and 1.18.x before 1.18.3 allows unbounded recursion via an ASN.1-encoded Kerberos message because the lib/krb5/asn.1/asn1_encode.c support for BER indefinite lengths lacks a recursion limit.",
+      "cve": "CVE-2020-28196",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4519,9 +5161,17 @@
     },
     {
       "id": "80a83882fb5a913c2ac2c97e2f62e795f63438a6",
+      "category": "container_scanning",
+      "message": "libarchive: Off-by-one error in the read_header function",
       "description": "read_header in archive_read_support_format_rar.c in libarchive 3.3.2 suffers from an off-by-one error for UTF-16 names in RAR archives, leading to an out-of-bounds read in archive_read_format_rar_read_header.",
+      "cve": "CVE-2017-14502",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4573,9 +5223,17 @@
     },
     {
       "id": "0f39e2af0bafe5a0db56af632bfa2ae62433d8c3",
+      "category": "container_scanning",
+      "message": "libarchive: out-of-bounds read in archive_wstring_append_from_mbs in archive_string.c",
       "description": "In Libarchive 3.4.0, archive_wstring_append_from_mbs in archive_string.c has an out-of-bounds read because of an incorrect mbrtowc or mbtowc call. For example, bsdtar crashes via a crafted archive.",
+      "cve": "CVE-2019-19221",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libarchive to 3.3.2-9.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4624,9 +5282,17 @@
     },
     {
       "id": "d72ebbf67a714dad82359f547795be96193e8c66",
+      "category": "container_scanning",
+      "message": "libarchive: heap-based buffer overflow in archive_string_append_from_wcs function in archive_string.c",
       "description": "Heap-based buffer overflow in archive_string_append_from_wcs() (archive_string.c) in libarchive-3.4.1dev allows remote attackers to cause a denial of service (out-of-bounds write in heap memory resulting into a crash) via a crafted archive file. NOTE: this only affects users who downloaded the development code from GitHub. Users of the product's official releases are unaffected.",
+      "cve": "CVE-2020-21674",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4657,9 +5323,17 @@
     },
     {
       "id": "18831b0a1541b4d63e7a1ec345e4aa9392c2277e",
+      "category": "container_scanning",
+      "message": "libarchive: Heap-based buffer over-read in the atol8 function",
       "description": "libarchive 3.3.2 allows remote attackers to cause a denial of service (xml_data heap-based buffer over-read and application crash) via a crafted xar archive, related to the mishandling of empty strings in the atol8 function in archive_read_support_format_xar.c.",
+      "cve": "CVE-2017-14166",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4711,9 +5385,17 @@
     },
     {
       "id": "5f806f5f4bcf86e1ae7f224284da006fe79d5e03",
+      "category": "container_scanning",
+      "message": "libarchive: Out-of-bounds read in parse_file_info",
       "description": "An out-of-bounds read flaw exists in parse_file_info in archive_read_support_format_iso9660.c in libarchive 3.3.2 when extracting a specially crafted iso9660 iso file, related to archive_read_format_iso9660_read_header.",
+      "cve": "CVE-2017-14501",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4762,9 +5444,17 @@
     },
     {
       "id": "863eee0c96952aad872a9c7827ecb5b14b5c4c28",
+      "category": "container_scanning",
+      "message": "libarchive: NULL pointer dereference in ACL parser resulting in a denial of service",
       "description": "libarchive version commit 379867ecb330b3a952fb7bfa7bffb7bbd5547205 onwards (release v3.3.0 onwards) contains a CWE-476: NULL Pointer Dereference vulnerability in ACL parser - libarchive/archive_acl.c, archive_acl_from_text_l() that can result in Crash/DoS. This attack appear to be exploitable via the victim must open a specially crafted archive file.",
+      "cve": "CVE-2018-1000879",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4816,9 +5506,17 @@
     },
     {
       "id": "3bdcf66061e74a568ab2e4f5d9ff217824def520",
+      "category": "container_scanning",
+      "message": "libarchive: Improper input validation in WARC parser resulting in a denial of service",
       "description": "libarchive version commit 9693801580c0cf7c70e862d305270a16b52826a7 onwards (release v3.2.0 onwards) contains a CWE-20: Improper Input Validation vulnerability in WARC parser - libarchive/archive_read_support_format_warc.c, _warc_read() that can result in DoS - quasi-infinite run time and disk usage from tiny file. This attack appear to be exploitable via the victim must open a specially crafted WARC file.",
+      "cve": "CVE-2018-1000880",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4879,9 +5577,17 @@
     },
     {
       "id": "d4f62f735b183d00191dcb0f13216ed3f47fadf2",
+      "category": "container_scanning",
+      "message": "e2fsprogs: Out-of-bounds write in e2fsck/rehash.c",
       "description": "A code execution vulnerability exists in the directory rehashing functionality of E2fsprogs e2fsck 1.45.4. A specially crafted ext4 directory can cause an out-of-bounds write on the stack, resulting in code execution. An attacker can corrupt a partition to trigger this vulnerability.",
+      "cve": "CVE-2019-5188",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4939,9 +5645,17 @@
     },
     {
       "id": "5449fd04fe62a543a13e3f0bba583a63b18bce8a",
+      "category": "container_scanning",
+      "message": "curl: Incorrect argument check can allow remote servers to overwrite local files",
       "description": "A flaw was found in curl. Overwriting local files is possible when using a certain combination of command line options. Requesting content from a malicious server could lead to overwriting local files with compromised files leading to unknown effects. The highest threat from this vulnerability is to file integrity.",
+      "cve": "CVE-2020-8177",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libcurl-minimal to 7.61.1-14.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -4981,9 +5695,17 @@
     },
     {
       "id": "20d14c8097ab809527ba07918431d5b6eddf221c",
+      "category": "container_scanning",
+      "message": "curl: Expired pointer dereference via multi API with `CURLOPT_CONNECT_ONLY` option set",
       "description": "A flaw was found in libcurl from versions 7.29.0 through 7.71.1. An application that performs multiple requests with libcurl's multi API, and sets the `CURLOPT_CONNECT_ONLY` option, might experience libcurl using the wrong connection. The highest threat from this vulnerability is to data confidentiality.",
+      "cve": "CVE-2020-8231",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5020,9 +5742,17 @@
     },
     {
       "id": "c61345dc209d5165c06970d367183f5b4437a612",
+      "category": "container_scanning",
+      "message": "libdb: data store execution leads to partial DoS",
       "description": "Vulnerability in the Data Store component of Oracle Berkeley DB. Supported versions that are affected are Prior to 6.138, prior to 6.2.38 and prior to 18.1.32. Easily exploitable vulnerability allows low privileged attacker having Local Logon privilege with logon to the infrastructure where Data Store executes to compromise Data Store. Successful attacks of this vulnerability can result in unauthorized ability to cause a partial denial of service (partial DOS) of Data Store. CVSS 3.0 Base Score 3.3 (Availability impacts). CVSS Vector: (CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L).",
+      "cve": "CVE-2019-2708",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5050,9 +5780,17 @@
     },
     {
       "id": "a12098b8e34a5f0db8057590d10be832a1606632",
+      "category": "container_scanning",
+      "message": "libdb: data store execution leads to partial DoS",
       "description": "Vulnerability in the Data Store component of Oracle Berkeley DB. Supported versions that are affected are Prior to 6.138, prior to 6.2.38 and prior to 18.1.32. Easily exploitable vulnerability allows low privileged attacker having Local Logon privilege with logon to the infrastructure where Data Store executes to compromise Data Store. Successful attacks of this vulnerability can result in unauthorized ability to cause a partial denial of service (partial DOS) of Data Store. CVSS 3.0 Base Score 3.3 (Availability impacts). CVSS Vector: (CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L).",
+      "cve": "CVE-2019-2708",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5080,9 +5818,17 @@
     },
     {
       "id": "c0281823016e5b247fcdcf03a6a623039ee9f1a1",
+      "category": "container_scanning",
+      "message": "libiberty: Integer overflow in demangle_template() function",
       "description": "The demangle_template function in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31.1, contains an integer overflow vulnerability (for \"Create an array for saving the template argument values\") that can trigger a heap-based buffer overflow, as demonstrated by nm.",
+      "cve": "CVE-2018-20673",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5116,9 +5862,17 @@
     },
     {
       "id": "649949cf809162288901c33abe6f924fc678f1ae",
+      "category": "container_scanning",
+      "message": "libiberty: Memory leak in demangle_template function resulting in a denial of service",
       "description": "The demangle_template function in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31.1, has a memory leak via a crafted string, leading to a denial of service (memory consumption), as demonstrated by cxxfilt, a related issue to CVE-2018-12698.",
+      "cve": "CVE-2018-20657",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5164,9 +5918,17 @@
     },
     {
       "id": "9db80a338cffac526aaf30d8ec78574accda99ad",
+      "category": "container_scanning",
+      "message": "binutils: integer overflow in simple-object-elf.c leads to a heap-based buffer overflow",
       "description": "An issue was discovered in GNU libiberty, as distributed in GNU Binutils 2.32. simple_object_elf_match in simple-object-elf.c does not check for a zero shstrndx value, leading to an integer overflow and resultant heap-based buffer overflow.",
+      "cve": "CVE-2019-14250",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5236,9 +5998,17 @@
     },
     {
       "id": "9ce4c4abac8a12fd62cb2920fbf642f19fed5fe4",
+      "category": "container_scanning",
+      "message": "Libgcrypt: physical addresses being available to other processes leads to a flush-and-reload side-channel attack",
       "description": "In Libgcrypt 1.8.4, the C implementation of AES is vulnerable to a flush-and-reload side-channel attack because physical addresses are available to other processes. (The C implementation is used on platforms where an assembly-language implementation is unavailable.)",
+      "cve": "CVE-2019-12904",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5281,9 +6051,17 @@
     },
     {
       "id": "3ebc7d58903d6be36821dc81126dd94633a100a2",
+      "category": "container_scanning",
+      "message": "libgcrypt: ECDSA timing attack allowing private key leak",
       "description": "It was discovered that there was a ECDSA timing attack in the libgcrypt20 cryptographic library. Version affected: 1.8.4-5, 1.7.6-2+deb9u3, and 1.6.3-2+deb8u4. Versions fixed: 1.8.5-2 and 1.6.3-2+deb8u7.",
+      "cve": "CVE-2019-13627",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libgcrypt to 1.8.5-4.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5365,9 +6143,17 @@
     },
     {
       "id": "ebf13e3e9f58d53bf065101a8d65d4a3f225817f",
+      "category": "container_scanning",
+      "message": "libidn2: heap-based buffer overflow in idn2_to_ascii_4i in lib/lookup.c",
       "description": "idn2_to_ascii_4i in lib/lookup.c in GNU libidn2 before 2.1.1 has a heap-based buffer overflow via a long domain string.",
+      "cve": "CVE-2019-18224",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5431,9 +6217,17 @@
     },
     {
       "id": "3ca0242711c383b99b5775828147abcc15b4b001",
+      "category": "container_scanning",
+      "message": "libpcap: Resource exhaustion during PHB header length validation",
       "description": "sf-pcapng.c in libpcap before 1.9.1 does not properly validate the PHB header length before allocating memory.",
+      "cve": "CVE-2019-15165",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade libpcap to 14:1.9.1-4.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5536,9 +6330,17 @@
     },
     {
       "id": "60ad95da0b4038ca5426b7ac0133ebdf215fefe6",
+      "category": "container_scanning",
+      "message": "librepo: missing path validation in repomd.xml may lead to directory traversal",
       "description": "A flaw was found in librepo in versions before 1.12.1. A directory traversal vulnerability was found where it failed to sanitize paths in remote repository metadata. An attacker controlling a remote repository may be able to copy files outside of the destination directory on the targeted system via path traversal. This flaw could potentially result in system compromise via the overwriting of critical system files. The highest threat from this flaw is to users that make use of untrusted third-party repositories.",
+      "cve": "CVE-2020-14352",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "Upgrade librepo to 1.11.0-3.el8_2",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5587,9 +6389,17 @@
     },
     {
       "id": "d39dbda94d2a1a9e776240417324105e6150069f",
+      "category": "container_scanning",
+      "message": "libsolv: out-of-bounds read in repodata_schema2id in repodata.c",
       "description": "repodata_schema2id in repodata.c in libsolv before 0.7.6 has a heap-based buffer over-read via a last schema whose length is less than the length of the input schema.",
+      "cve": "CVE-2019-20387",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libsolv to 0.7.11-1.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5632,9 +6442,17 @@
     },
     {
       "id": "512f82511120dd4d2eec97bedb5749a5ada11207",
+      "category": "container_scanning",
+      "message": "libiberty: Integer overflow in demangle_template() function",
       "description": "The demangle_template function in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31.1, contains an integer overflow vulnerability (for \"Create an array for saving the template argument values\") that can trigger a heap-based buffer overflow, as demonstrated by nm.",
+      "cve": "CVE-2018-20673",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5668,9 +6486,17 @@
     },
     {
       "id": "19d0175c67b74790f6dc98ec5436b484d270376b",
+      "category": "container_scanning",
+      "message": "libiberty: Memory leak in demangle_template function resulting in a denial of service",
       "description": "The demangle_template function in cplus-dem.c in GNU libiberty, as distributed in GNU Binutils 2.31.1, has a memory leak via a crafted string, leading to a denial of service (memory consumption), as demonstrated by cxxfilt, a related issue to CVE-2018-12698.",
+      "cve": "CVE-2018-20657",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5716,9 +6542,17 @@
     },
     {
       "id": "e3ab5adbbdb9c74b119b53f4bc596a471d477e74",
+      "category": "container_scanning",
+      "message": "binutils: integer overflow in simple-object-elf.c leads to a heap-based buffer overflow",
       "description": "An issue was discovered in GNU libiberty, as distributed in GNU Binutils 2.32. simple_object_elf_match in simple-object-elf.c does not check for a zero shstrndx value, leading to an integer overflow and resultant heap-based buffer overflow.",
+      "cve": "CVE-2019-14250",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5788,9 +6622,17 @@
     },
     {
       "id": "9c97c830b268693a7ff3c6436ca5f1317a13af73",
+      "category": "container_scanning",
+      "message": "libtasn1: Infinite loop in _asn1_expand_object_id(ptree) leads to memory exhaustion",
       "description": "GNU Libtasn1-4.13 libtasn1-4.13 version libtasn1-4.13, libtasn1-4.12 contains a DoS, specifically CPU usage will reach 100% when running asn1Paser against the POC due to an issue in _asn1_expand_object_id(p_tree), after a long time, the program will be killed. This attack appears to be exploitable via parsing a crafted file.",
+      "cve": "CVE-2018-1000654",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5830,9 +6672,17 @@
     },
     {
       "id": "b56c23d583caec8f134d51d81e419f1f8de592b4",
+      "category": "container_scanning",
+      "message": "libxml2: memory leak in xmlParseBalancedChunkMemoryRecover in parser.c",
       "description": "xmlParseBalancedChunkMemoryRecover in parser.c in libxml2 before 2.9.10 has a memory leak related to newDoc->oldNs.",
+      "cve": "CVE-2019-19956",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libxml2 to 2.9.7-8.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5899,9 +6749,17 @@
     },
     {
       "id": "be33c767a64b3de7be593d40db768f8c4ec29f19",
+      "category": "container_scanning",
+      "message": "libxml2: memory leak in xmlSchemaPreRun in xmlschemas.c",
       "description": "xmlSchemaPreRun in xmlschemas.c in libxml2 2.9.10 allows an xmlSchemaValidateStream memory leak.",
+      "cve": "CVE-2019-20388",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libxml2 to 2.9.7-8.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -5962,9 +6820,17 @@
     },
     {
       "id": "6536a25cb94f70aaf70db577125a8947e2d4ef51",
+      "category": "container_scanning",
+      "message": "libxml2: Buffer Overflow vulnerability in xmlEncodeEntitiesInternal at libxml2/entities.c",
       "description": "GNOME project libxml2 v2.9.10 has a global buffer over-read vulnerability in xmlEncodeEntitiesInternal at libxml2/entities.c. The issue has been fixed in commit 50f06b3e.",
+      "cve": "CVE-2020-24977",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6040,9 +6906,17 @@
     },
     {
       "id": "ee8bc80e9a85b9070126a6d204abb2e329d24adb",
+      "category": "container_scanning",
+      "message": "libxml2: infinite loop in xmlStringLenDecodeEntities in some end-of-file situations",
       "description": "xmlStringLenDecodeEntities in parser.c in libxml2 2.9.10 has an infinite loop in a certain end-of-file situation.",
+      "cve": "CVE-2020-7595",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade libxml2 to 2.9.7-8.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6118,9 +6992,17 @@
     },
     {
       "id": "3141a4a01370571428a12f4121da095486819b5c",
+      "category": "container_scanning",
+      "message": "lua: segmentation fault in changedline in ldebug.c",
       "description": "Lua through 5.4.0 has a segmentation fault in changedline in ldebug.c (e.g., when called by luaG_traceexec) because it incorrectly expects that an oldpc value is always updated upon a return of the flow of control to a function.",
+      "cve": "CVE-2020-15945",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6151,9 +7033,17 @@
     },
     {
       "id": "95e6e63890023ad0a2d4695720c5679c21338aa6",
+      "category": "container_scanning",
+      "message": "lua: segmentation fault in getlocal and setlocal functions in ldebug.c",
       "description": "ldebug.c in Lua 5.4.0 allows a negation overflow and segmentation fault in getlocal and setlocal, as demonstrated by getlocal(3,2^31).",
+      "cve": "CVE-2020-24370",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6196,9 +7086,17 @@
     },
     {
       "id": "fa6b59d9995f83b03101356abf65e97404d409c0",
+      "category": "container_scanning",
+      "message": "lz4: heap-based buffer overflow in LZ4_write32",
       "description": "LZ4 before 1.9.2 has a heap-based buffer overflow in LZ4_write32 (related to LZ4_compress_destSize), affecting applications that call LZ4_compress_fast with a large input. (This issue can also lead to data corruption.) NOTE: the vendor states \"only a few specific / uncommon usages of the API are at risk.\"",
+      "cve": "CVE-2019-17543",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6277,9 +7175,17 @@
     },
     {
       "id": "6bd0291f319336ba2db30d9fa5a22cf31db1e1cf",
+      "category": "container_scanning",
+      "message": "ncurses: heap-based buffer overflow in the _nc_find_entry function in tinfo/comp_hash.c",
       "description": "There is a heap-based buffer over-read in the _nc_find_entry function in tinfo/comp_hash.c in the terminfo library in ncurses before 6.1-20191012.",
+      "cve": "CVE-2019-17594",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6319,9 +7225,17 @@
     },
     {
       "id": "33eb32db63338b916b6e9fd54058daef76869ebf",
+      "category": "container_scanning",
+      "message": "ncurses: heap-based buffer overflow in the fmt_entry function in tinfo/comp_hash.c",
       "description": "There is a heap-based buffer over-read in the fmt_entry function in tinfo/comp_hash.c in the terminfo library in ncurses before 6.1-20191012.",
+      "cve": "CVE-2019-17595",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6361,9 +7275,17 @@
     },
     {
       "id": "8936971b4530aff59841bd2494a2413932a915a5",
+      "category": "container_scanning",
+      "message": "ncurses: Null pointer dereference at function _nc_parse_entry in parse_entry.c",
       "description": "In ncurses 6.1, there is a NULL pointer dereference at function _nc_parse_entry in parse_entry.c that will lead to a denial of service attack. The product proceeds to the dereference code path even after a \"dubious character `*' in name or alias field\" detection.",
+      "cve": "CVE-2018-19211",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6394,9 +7316,17 @@
     },
     {
       "id": "701f0cd4463cba325672f5a2ef76be5cd7bf0df8",
+      "category": "container_scanning",
+      "message": "ncurses: Null pointer dereference at function _nc_name_match",
       "description": "** DISPUTED ** In ncurses, possibly a 6.x version, there is a NULL pointer dereference at the function _nc_name_match that will lead to a denial of service attack. NOTE: the original report stated version 6.1, but the issue did not reproduce for that version according to the maintainer or a reliable third-party.",
+      "cve": "CVE-2018-19217",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6427,9 +7357,17 @@
     },
     {
       "id": "82b3040d3f2a8afe78a01b52812248642856b73e",
+      "category": "container_scanning",
+      "message": "ncurses: heap-based buffer overflow in the _nc_find_entry function in tinfo/comp_hash.c",
       "description": "There is a heap-based buffer over-read in the _nc_find_entry function in tinfo/comp_hash.c in the terminfo library in ncurses before 6.1-20191012.",
+      "cve": "CVE-2019-17594",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6469,9 +7407,17 @@
     },
     {
       "id": "febaa8554e659f9f75c0b305d79e4e1bb0c905fa",
+      "category": "container_scanning",
+      "message": "ncurses: heap-based buffer overflow in the fmt_entry function in tinfo/comp_hash.c",
       "description": "There is a heap-based buffer over-read in the fmt_entry function in tinfo/comp_hash.c in the terminfo library in ncurses before 6.1-20191012.",
+      "cve": "CVE-2019-17595",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6511,9 +7457,17 @@
     },
     {
       "id": "9ebe52472425d40e26bc12f22e23a6e250ca6dfe",
+      "category": "container_scanning",
+      "message": "ncurses: Null pointer dereference at function _nc_parse_entry in parse_entry.c",
       "description": "In ncurses 6.1, there is a NULL pointer dereference at function _nc_parse_entry in parse_entry.c that will lead to a denial of service attack. The product proceeds to the dereference code path even after a \"dubious character `*' in name or alias field\" detection.",
+      "cve": "CVE-2018-19211",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6544,9 +7498,17 @@
     },
     {
       "id": "1abafc7cc4085d67c44061cc44a01589ea802c73",
+      "category": "container_scanning",
+      "message": "ncurses: Null pointer dereference at function _nc_name_match",
       "description": "** DISPUTED ** In ncurses, possibly a 6.x version, there is a NULL pointer dereference at the function _nc_name_match that will lead to a denial of service attack. NOTE: the original report stated version 6.1, but the issue did not reproduce for that version according to the maintainer or a reliable third-party.",
+      "cve": "CVE-2018-19217",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6577,9 +7539,17 @@
     },
     {
       "id": "d0f2b9b993c55ca69be425b3d18e61ffddd8e2e3",
+      "category": "container_scanning",
+      "message": "openldap: Information disclosure issue in slapd component",
       "description": "An issue was discovered in the server in OpenLDAP before 2.4.48. When the server administrator delegates rootDN (database admin) privileges for certain databases but wants to maintain isolation (e.g., for multi-tenant deployments), slapd does not properly stop a rootDN from requesting authorization as an identity from another database during a SASL bind or with a proxyAuthz (RFC 4370) control. (It is not a common configuration to deploy a system where the server administrator and a DB administrator enjoy different levels of trust.)",
+      "cve": "CVE-2019-13057",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6655,9 +7625,17 @@
     },
     {
       "id": "9a81b390166ce234bb553eae3971770ca65c5ae6",
+      "category": "container_scanning",
+      "message": "openldap: denial of service via nested boolean expressions in LDAP search filters",
       "description": "In filter.c in slapd in OpenLDAP before 2.4.50, LDAP search filters with nested boolean expressions can result in denial of service (daemon crash).",
+      "cve": "CVE-2020-12243",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6733,9 +7711,17 @@
     },
     {
       "id": "1241cfebdb125ec9a3d39fe301333a50f51bde85",
+      "category": "container_scanning",
+      "message": "openldap: assertion failure in Certificate List syntax validation",
       "description": "No description is available for this CVE.",
+      "cve": "CVE-2020-25709",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6772,9 +7758,17 @@
     },
     {
       "id": "44929d4426ed414b0c103918d2a8600113efe92c",
+      "category": "container_scanning",
+      "message": "openldap: assertion failure in CSN normalization with invalid input",
       "description": "No description is available for this CVE.",
+      "cve": "CVE-2020-25710",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6811,9 +7805,17 @@
     },
     {
       "id": "be96ff65e0aef7e4a47b8859dd5fb5ae521447eb",
+      "category": "container_scanning",
+      "message": "openssl: Integer overflow in RSAZ modular exponentiation on x86_64",
       "description": "There is an overflow bug in the x64_64 Montgomery squaring procedure used in exponentiation with 512-bit moduli. No EC algorithms are affected. Analysis suggests that attacks against 2-prime RSA1024, 3-prime RSA1536, and DSA1024 as a result of this defect would be very difficult to perform and are not believed likely. Attacks against DH512 are considered just feasible. However, for an attack the target would have to re-use the DH512 private key, which is not recommended anyway. Also applications directly using the low level API BN_mod_exp may be affected if they use BN_FLG_CONSTTIME. Fixed in OpenSSL 1.1.1e (Affected 1.1.1-1.1.1d). Fixed in OpenSSL 1.0.2u (Affected 1.0.2-1.0.2t).",
+      "cve": "CVE-2019-1551",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade openssl-libs to 1:1.1.1g-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6910,9 +7912,17 @@
     },
     {
       "id": "dbdd620d793b92d6a0370d6e044a7fe9c3f3c8ba",
+      "category": "container_scanning",
+      "message": "pcre: buffer over-read in JIT when UTF is disabled",
       "description": "libpcre in PCRE before 8.43 allows a subject buffer over-read in JIT when UTF is disabled, and \\X or \\R has more than one fixed quantifier, a related issue to CVE-2019-20454.",
+      "cve": "CVE-2019-20838",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6949,9 +7959,17 @@
     },
     {
       "id": "87a7722710663751e0468c2c3dc7a555ae7d40b6",
+      "category": "container_scanning",
+      "message": "pcre: integer overflow in libpcre",
       "description": "libpcre in PCRE before 8.44 allows an integer overflow via a large number after a (?C substring.",
+      "cve": "CVE-2020-14155",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -6991,9 +8009,17 @@
     },
     {
       "id": "768585a11cbe375549af15e28eb94b1dd64bf4d6",
+      "category": "container_scanning",
+      "message": "pcre: Out of bounds read in JIT mode when \\X is used in non-UTF mode",
       "description": "An out-of-bounds read was discovered in PCRE before 10.34 when the pattern \\X is JIT compiled and used to match specially crafted subjects in non-UTF mode. Applications that use PCRE to parse untrusted input may be vulnerable to this flaw, which would allow an attacker to crash the application. The flaw occurs in do_extuni_no_utf in pcre2_jit_compile.c.",
+      "cve": "CVE-2019-20454",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade pcre2 to 10.32-2.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7045,9 +8071,17 @@
     },
     {
       "id": "303557f8ac1f84f8a7ee2fc89ab1821a1e290c80",
+      "category": "container_scanning",
+      "message": "python: XSS vulnerability in the documentation XML-RPC server in server_title field",
       "description": "The documentation XML-RPC server in Python through 2.7.16, 3.x through 3.6.9, and 3.7.x through 3.7.4 has XSS via the server_title field. This occurs in Lib/DocXMLRPCServer.py in Python 2.x, and in Lib/xmlrpc/server.py in Python 3.x. If set_server_title is called with untrusted input, arbitrary JavaScript can be delivered to clients that visit the http URL for this server.",
+      "cve": "CVE-2019-16935",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade platform-python to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7153,9 +8187,17 @@
     },
     {
       "id": "d3837af6452efa73dd5b5b618fe02c815cdea4ba",
+      "category": "container_scanning",
+      "message": "python: CRLF injection via the host part of the url passed to urlopen()",
       "description": "An issue was discovered in urllib2 in Python 2.x through 2.7.17 and urllib in Python 3.x through 3.8.0. CRLF injection is possible if the attacker controls a url parameter, as demonstrated by the first argument to urllib.request.urlopen with \\r\\n (specifically in the host component of a URL) followed by an HTTP header. This is similar to the CVE-2019-9740 query string issue and the CVE-2019-9947 path string issue. (This is not exploitable when glibc has CVE-2016-10739 fixed.). This is fixed in: v2.7.18, v2.7.18rc1; v3.5.10, v3.5.10rc1; v3.6.11, v3.6.11rc1, v3.6.12; v3.7.8, v3.7.8rc1, v3.7.9; v3.8.3, v3.8.3rc1, v3.8.4, v3.8.4rc1, v3.8.5, v3.8.6, v3.8.6rc1.",
+      "cve": "CVE-2019-18348",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7228,9 +8270,17 @@
     },
     {
       "id": "959aca66fc9c8baf73ea10a0ad41edf65d868183",
+      "category": "container_scanning",
+      "message": "python: infinite loop in the tarfile module via crafted TAR archive",
       "description": "In Lib/tarfile.py in Python through 3.8.3, an attacker is able to craft a TAR archive leading to an infinite loop when opened by tarfile.open, because _proc_pax lacks header validation.",
+      "cve": "CVE-2019-20907",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade platform-python to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7342,9 +8392,17 @@
     },
     {
       "id": "798bfd9a0de69ad925ff831e3072b70d5e391b3c",
+      "category": "container_scanning",
+      "message": "python: DoS via inefficiency in IPv{4,6}Interface classes",
       "description": "Lib/ipaddress.py in Python through 3.8.3 improperly computes hash values in the IPv4Interface and IPv6Interface classes, which might allow a remote attacker to cause a denial of service if an application is affected by the performance of a dictionary containing IPv4Interface or IPv6Interface objects, and this attacker can cause many dictionary entries to be created. This is fixed in: v3.5.10, v3.5.10rc1; v3.6.12; v3.7.9; v3.8.4, v3.8.4rc1, v3.8.5, v3.8.6, v3.8.6rc1; v3.9.0, v3.9.0b4, v3.9.0b5, v3.9.0rc1, v3.9.0rc2.",
+      "cve": "CVE-2020-14422",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade platform-python to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7447,9 +8505,17 @@
     },
     {
       "id": "7593b59ca0db33bf9c12ad1031480514d02e27c3",
+      "category": "container_scanning",
+      "message": "python: CRLF injection via HTTP request method in httplib/http.client",
       "description": "http.client in Python 3.x before 3.5.10, 3.6.x before 3.6.12, 3.7.x before 3.7.9, and 3.8.x before 3.8.5 allows CRLF injection if the attacker controls the HTTP request method, as demonstrated by inserting CR and LF control characters in the first argument of HTTPConnection.request.",
+      "cve": "CVE-2020-26116",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7512,10 +8578,18 @@
       ]
     },
     {
-      "id": "52c72f2435ccc402d0911f135ca2de6805569b3d",
+      "id": "9aff81289f43bc57f4880fd82513ef1a44fa1228",
+      "category": "container_scanning",
+      "message": "python: Python 3 eval of http resources during test suite runs",
       "description": "In Python 3 through 3.9.0, the Lib/test/multibytecodec_support.py CJK codec tests call eval() on content retrieved via HTTP.",
+      "cve": "CVE-2020-27619",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7536,6 +8610,9 @@
         }
       ],
       "links": [
+        {
+          "url": "Patches:"
+        },
         {
           "url": "https://bugs.python.org/issue41944"
         },
@@ -7561,9 +8638,17 @@
     },
     {
       "id": "8338a920eab817b3e2538ee8cc5fac13ce437913",
+      "category": "container_scanning",
+      "message": "python: wrong backtracking in urllib.request.AbstractBasicAuthHandler allows for a ReDoS",
       "description": "Python 2.7 through 2.7.17, 3.5 through 3.5.9, 3.6 through 3.6.10, 3.7 through 3.7.6, and 3.8 through 3.8.1 allows an HTTP server to conduct Regular Expression Denial of Service (ReDoS) attacks against a client because of urllib.request.AbstractBasicAuthHandler catastrophic backtracking.",
+      "cve": "CVE-2020-8492",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade platform-python to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7645,9 +8730,17 @@
     },
     {
       "id": "78baf6d393720f56b838433bafbd0c38a92b944d",
+      "category": "container_scanning",
+      "message": "python: Nested zip file (Zip bomb) vulnerability in Lib/zipfile.py",
       "description": "Lib/zipfile.py in Python through 3.7.2 allows remote attackers to cause a denial of service (resource consumption) via a ZIP bomb.",
+      "cve": "CVE-2019-9674",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7705,9 +8798,17 @@
     },
     {
       "id": "fc6681533017b310f331cf9b06ae46aee9273552",
+      "category": "container_scanning",
+      "message": "procps-ng, procps: process hiding through race condition enumerating /proc",
       "description": "procps-ng, procps is vulnerable to a process hiding through race condition. Since the kernel's proc_pid_readdir() returns PID entries in ascending numeric order, a process occupying a high PID can use inotify events to determine when the process list is being scanned, and fork/exec to obtain a lower PID, thus avoiding enumeration. An unprivileged attacker can hide a process from procps-ng's utilities by exploiting a race condition in reading /proc/PID entries. This vulnerability affects procps and procps-ng up to version 3.3.15, newer versions might be affected also.",
+      "cve": "CVE-2018-1121",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7750,9 +8851,17 @@
     },
     {
       "id": "3d7bfd0c63fb335bc801cce128b775e7323bd5ff",
+      "category": "container_scanning",
+      "message": "python: XSS vulnerability in the documentation XML-RPC server in server_title field",
       "description": "The documentation XML-RPC server in Python through 2.7.16, 3.x through 3.6.9, and 3.7.x through 3.7.4 has XSS via the server_title field. This occurs in Lib/DocXMLRPCServer.py in Python 2.x, and in Lib/xmlrpc/server.py in Python 3.x. If set_server_title is called with untrusted input, arbitrary JavaScript can be delivered to clients that visit the http URL for this server.",
+      "cve": "CVE-2019-16935",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade python3-libs to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7858,9 +8967,17 @@
     },
     {
       "id": "25ef4235db7acddfbcda10a8ecdfd4a440cdbce5",
+      "category": "container_scanning",
+      "message": "python: CRLF injection via the host part of the url passed to urlopen()",
       "description": "An issue was discovered in urllib2 in Python 2.x through 2.7.17 and urllib in Python 3.x through 3.8.0. CRLF injection is possible if the attacker controls a url parameter, as demonstrated by the first argument to urllib.request.urlopen with \\r\\n (specifically in the host component of a URL) followed by an HTTP header. This is similar to the CVE-2019-9740 query string issue and the CVE-2019-9947 path string issue. (This is not exploitable when glibc has CVE-2016-10739 fixed.). This is fixed in: v2.7.18, v2.7.18rc1; v3.5.10, v3.5.10rc1; v3.6.11, v3.6.11rc1, v3.6.12; v3.7.8, v3.7.8rc1, v3.7.9; v3.8.3, v3.8.3rc1, v3.8.4, v3.8.4rc1, v3.8.5, v3.8.6, v3.8.6rc1.",
+      "cve": "CVE-2019-18348",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -7933,9 +9050,17 @@
     },
     {
       "id": "165c4cddfc9495621d966c441a6410aab594cb73",
+      "category": "container_scanning",
+      "message": "python: infinite loop in the tarfile module via crafted TAR archive",
       "description": "In Lib/tarfile.py in Python through 3.8.3, an attacker is able to craft a TAR archive leading to an infinite loop when opened by tarfile.open, because _proc_pax lacks header validation.",
+      "cve": "CVE-2019-20907",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade python3-libs to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8047,9 +9172,17 @@
     },
     {
       "id": "729dbfee2a1ee5b85349b8470801d1b7fc6253c5",
+      "category": "container_scanning",
+      "message": "python: DoS via inefficiency in IPv{4,6}Interface classes",
       "description": "Lib/ipaddress.py in Python through 3.8.3 improperly computes hash values in the IPv4Interface and IPv6Interface classes, which might allow a remote attacker to cause a denial of service if an application is affected by the performance of a dictionary containing IPv4Interface or IPv6Interface objects, and this attacker can cause many dictionary entries to be created. This is fixed in: v3.5.10, v3.5.10rc1; v3.6.12; v3.7.9; v3.8.4, v3.8.4rc1, v3.8.5, v3.8.6, v3.8.6rc1; v3.9.0, v3.9.0b4, v3.9.0b5, v3.9.0rc1, v3.9.0rc2.",
+      "cve": "CVE-2020-14422",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade python3-libs to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8152,9 +9285,17 @@
     },
     {
       "id": "29c468a986dcdc8c4b2643f3b5b41e1d766e18a2",
+      "category": "container_scanning",
+      "message": "python: CRLF injection via HTTP request method in httplib/http.client",
       "description": "http.client in Python 3.x before 3.5.10, 3.6.x before 3.6.12, 3.7.x before 3.7.9, and 3.8.x before 3.8.5 allows CRLF injection if the attacker controls the HTTP request method, as demonstrated by inserting CR and LF control characters in the first argument of HTTPConnection.request.",
+      "cve": "CVE-2020-26116",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8217,10 +9358,18 @@
       ]
     },
     {
-      "id": "686416b95c596b82d5dc96851f1659f47f5fc65e",
+      "id": "2af782fc493fcecb5c1cf24b42452ac97bca756f",
+      "category": "container_scanning",
+      "message": "python: Python 3 eval of http resources during test suite runs",
       "description": "In Python 3 through 3.9.0, the Lib/test/multibytecodec_support.py CJK codec tests call eval() on content retrieved via HTTP.",
+      "cve": "CVE-2020-27619",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8241,6 +9390,9 @@
         }
       ],
       "links": [
+        {
+          "url": "Patches:"
+        },
         {
           "url": "https://bugs.python.org/issue41944"
         },
@@ -8266,9 +9418,17 @@
     },
     {
       "id": "06f1bb32b4ad85e5860e92d44b7cba318ce4672b",
+      "category": "container_scanning",
+      "message": "python: wrong backtracking in urllib.request.AbstractBasicAuthHandler allows for a ReDoS",
       "description": "Python 2.7 through 2.7.17, 3.5 through 3.5.9, 3.6 through 3.6.10, 3.7 through 3.7.6, and 3.8 through 3.8.1 allows an HTTP server to conduct Regular Expression Denial of Service (ReDoS) attacks against a client because of urllib.request.AbstractBasicAuthHandler catastrophic backtracking.",
+      "cve": "CVE-2020-8492",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade python3-libs to 3.6.8-31.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8350,9 +9510,17 @@
     },
     {
       "id": "25c6b86d67813f8382517c803e6c41257c5e31d5",
+      "category": "container_scanning",
+      "message": "python: Nested zip file (Zip bomb) vulnerability in Lib/zipfile.py",
       "description": "Lib/zipfile.py in Python through 3.7.2 allows remote attackers to cause a denial of service (resource consumption) via a ZIP bomb.",
+      "cve": "CVE-2019-9674",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8410,9 +9578,17 @@
     },
     {
       "id": "6f71f78e4344f5b32d34a74976f3c9a7fcc63ae7",
+      "category": "container_scanning",
+      "message": "python-pip: directory traversal in _download_http_url() function in src/pip/_internal/download.py",
       "description": "The pip package before 19.2 for Python allows Directory Traversal when a URL is given in an install command, because a Content-Disposition header can have ../ in a filename, as demonstrated by overwriting the /root/.ssh/authorized_keys file. This occurs in _download_http_url in _internal/download.py.",
+      "cve": "CVE-2019-20916",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade python3-pip-wheel to 9.0.3-18.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8467,9 +9643,17 @@
     },
     {
       "id": "b138a12f4e332908b78dc53876579a432bdfc3b0",
+      "category": "container_scanning",
+      "message": "python: DoS via inefficiency in IPv{4,6}Interface classes",
       "description": "Lib/ipaddress.py in Python through 3.8.3 improperly computes hash values in the IPv4Interface and IPv6Interface classes, which might allow a remote attacker to cause a denial of service if an application is affected by the performance of a dictionary containing IPv4Interface or IPv6Interface objects, and this attacker can cause many dictionary entries to be created. This is fixed in: v3.5.10, v3.5.10rc1; v3.6.12; v3.7.9; v3.8.4, v3.8.4rc1, v3.8.5, v3.8.6, v3.8.6rc1; v3.9.0, v3.9.0b4, v3.9.0b5, v3.9.0rc1, v3.9.0rc2.",
+      "cve": "CVE-2020-14422",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8572,9 +9756,17 @@
     },
     {
       "id": "c7c066155668821ccd57ce1a6c0e7db9b7dfb6df",
+      "category": "container_scanning",
+      "message": "python-pip: when --extra-index-url option is used and package does not already exist in the public index, the installation of malicious package with arbitrary version number is possible.",
       "description": "** DISPUTED ** An issue was discovered in pip (all versions) because it installs the version with the highest version number, even if the user had intended to obtain a private package from a private index. This only affects use of the --extra-index-url option, and exploitation requires that the package does not already exist in the public index (and thus the attacker can put the package there with an arbitrary version number). NOTE: it has been reported that this is intended functionality and the user is responsible for using --extra-index-url securely.",
+      "cve": "CVE-2018-20225",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8611,9 +9803,17 @@
     },
     {
       "id": "1b7c9455a1751078fbf84af351e89dbb84ac9fdc",
+      "category": "container_scanning",
+      "message": "chromium-browser: out-of-bounds access in SQLite",
       "description": "Integer overflow in SQLite via WebSQL in Google Chrome prior to 74.0.3729.131 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "cve": "CVE-2019-5827",
       "severity": "High",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8674,9 +9874,17 @@
     },
     {
       "id": "6861391113e642d321d4aabfec3806262abb3e72",
+      "category": "container_scanning",
+      "message": "sqlite: dropping of shadow tables not restricted in defensive mode",
       "description": "Insufficient data validation in SQLite in Google Chrome prior to 79.0.3945.79 allowed a remote attacker to bypass defense-in-depth measures via a crafted HTML page.",
+      "cve": "CVE-2019-13750",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8746,9 +9954,17 @@
     },
     {
       "id": "e0a97fd086033382889f125e1e4f4604da1898fa",
+      "category": "container_scanning",
+      "message": "sqlite: fts3: improve detection of corrupted records",
       "description": "Uninitialized data in SQLite in Google Chrome prior to 79.0.3945.79 allowed a remote attacker to obtain potentially sensitive information from process memory via a crafted HTML page.",
+      "cve": "CVE-2019-13751",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8818,9 +10034,17 @@
     },
     {
       "id": "153875a51e80d18d17bdf0ae304d547ab59f03d3",
+      "category": "container_scanning",
+      "message": "sqlite: Division by zero in whereLoopAddBtreeIndex in sqlite3.c",
       "description": "In SQLite through 3.29.0, whereLoopAddBtreeIndex in sqlite3.c can crash a browser or other application because of missing validation of a sqlite_stat1 sz field, aka a \"severe division by zero in the query planner.\"",
+      "cve": "CVE-2019-16168",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8896,9 +10120,17 @@
     },
     {
       "id": "995507cc137d0645e558e1c444c6fbc434ab2476",
+      "category": "container_scanning",
+      "message": "sqlite: SQL injection in sqlite3ExprCodeTarget in expr.c",
       "description": "SQLite 3.30.1 mishandles pExpr->y.pTab, as demonstrated by the TK_COLUMN case in sqlite3ExprCodeTarget in expr.c.",
+      "cve": "CVE-2019-19242",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8938,9 +10170,17 @@
     },
     {
       "id": "37983b92efbe1c4d09b0f5e0396a9daef18a2b87",
+      "category": "container_scanning",
+      "message": "sqlite: mishandles certain SELECT statements with a nonexistent VIEW, leading to DoS",
       "description": "SQLite 3.30.1 mishandles certain SELECT statements with a nonexistent VIEW, leading to an application crash.",
+      "cve": "CVE-2019-19603",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -8986,9 +10226,17 @@
     },
     {
       "id": "25578db5a69d914698e046879e06be336d78a3bc",
+      "category": "container_scanning",
+      "message": "sqlite: infinite recursion via certain types of self-referential views in conjunction with ALTER TABLE statements",
       "description": "alter.c in SQLite through 3.30.1 allows attackers to trigger infinite recursion via certain types of self-referential views in conjunction with ALTER TABLE statements.",
+      "cve": "CVE-2019-19645",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9031,9 +10279,17 @@
     },
     {
       "id": "1e02e44c754ddf276c6b69991e4732d15aeb1071",
+      "category": "container_scanning",
+      "message": "sqlite: invalid pointer dereference in exprListAppendList in window.c",
       "description": "exprListAppendList in window.c in SQLite 3.30.1 allows attackers to trigger an invalid pointer dereference because constant integer values in ORDER BY clauses of window definitions are mishandled.",
+      "cve": "CVE-2019-19880",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9091,9 +10347,17 @@
     },
     {
       "id": "b732275bb44593e621a4b6c498bfb39b0bff13d8",
+      "category": "container_scanning",
+      "message": "sqlite: selectExpander in select.c proceeds with WITH stack unwinding even after a parsing error",
       "description": "selectExpander in select.c in SQLite 3.30.1 proceeds with WITH stack unwinding even after a parsing error.",
+      "cve": "CVE-2019-20218",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9145,9 +10409,17 @@
     },
     {
       "id": "09e4e5eed0905d122ee41029062e40897e13442e",
+      "category": "container_scanning",
+      "message": "sqlite: Use-after-free in window function leading to remote code execution",
       "description": "An exploitable use after free vulnerability exists in the window function functionality of Sqlite3 3.26.0. A specially crafted SQL command can cause a use after free vulnerability, potentially resulting in remote code execution. An attacker can send a malicious SQL command to trigger this vulnerability.",
+      "cve": "CVE-2019-5018",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9205,9 +10477,17 @@
     },
     {
       "id": "984876587bc69a7c21a04edb833071349aa2ad6c",
+      "category": "container_scanning",
+      "message": "sqlite: integer overflow in sqlite3_str_vappendf function in printf.c",
       "description": "SQLite through 3.32.0 has an integer overflow in sqlite3_str_vappendf in printf.c.",
+      "cve": "CVE-2020-13434",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9295,9 +10575,17 @@
     },
     {
       "id": "af10c690add6704902b7844e71051d79110a12d7",
+      "category": "container_scanning",
+      "message": "sqlite: NULL pointer dereference leads to segmentation fault in sqlite3ExprCodeTarget in expr.c",
       "description": "SQLite through 3.32.0 has a segmentation fault in sqlite3ExprCodeTarget in expr.c.",
+      "cve": "CVE-2020-13435",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9376,9 +10664,17 @@
     },
     {
       "id": "3f9d05b0933ff8105e31edd3836c032fd0f28564",
+      "category": "container_scanning",
+      "message": "sqlite: Use-after-free in fts3EvalNextRow in ext/fts3/fts3.c",
       "description": "ext/fts3/fts3.c in SQLite before 3.32.0 has a use-after-free in fts3EvalNextRow, related to the snippet feature.",
+      "cve": "CVE-2020-13630",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9472,9 +10768,17 @@
     },
     {
       "id": "53231d79e1dc8aa7e2d2e76a7ac602400a266195",
+      "category": "container_scanning",
+      "message": "sqlite: Virtual table can be renamed into the name of one of its shadow tables",
       "description": "SQLite before 3.32.0 allows a virtual table to be renamed to the name of one of its shadow tables, related to alter.c and build.c.",
+      "cve": "CVE-2020-13631",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9565,9 +10869,17 @@
     },
     {
       "id": "9bf9f97c7629b215aae75e7e994c128f70369d77",
+      "category": "container_scanning",
+      "message": "sqlite: NULL pointer dereference in ext/fts3/fts3_snippet.c via a crafted matchinfo() query",
       "description": "ext/fts3/fts3_snippet.c in SQLite before 3.32.0 has a NULL pointer dereference via a crafted matchinfo() query.",
+      "cve": "CVE-2020-13632",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9634,9 +10946,17 @@
     },
     {
       "id": "e988ae80c3f3bbc8442a8ea109a42da211ed2a9b",
+      "category": "container_scanning",
+      "message": "sqlite: heap-based buffer overflow in multiSelectOrderBy due to mishandling of query-flattener optimization in select.c",
       "description": "In SQLite before 3.32.3, select.c mishandles query-flattener optimization, leading to a multiSelectOrderBy heap overflow because of misuse of transitive properties for constant propagation.",
+      "cve": "CVE-2020-15358",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9712,9 +11032,17 @@
     },
     {
       "id": "ca673dd691e5f7e8f9d5b7bcd31970452e9dee41",
+      "category": "container_scanning",
+      "message": "sqlite: Out-of-bounds read in SELECT with ON/USING clause",
       "description": "Out of bounds read in SQLite in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to obtain potentially sensitive information from process memory via a crafted HTML page.",
+      "cve": "CVE-2020-6405",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9772,9 +11100,17 @@
     },
     {
       "id": "c3568c58ab737e8ca7e399de953807a6bdd0cb4e",
+      "category": "container_scanning",
+      "message": "sqlite: NULL pointer dereference and segmentation fault because of generated column optimizations",
       "description": "In SQLite 3.31.1, isAuxiliaryVtabOperator allows attackers to trigger a NULL pointer dereference and segmentation fault because of generated column optimizations.",
+      "cve": "CVE-2020-9327",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade sqlite-libs to 3.26.0-11.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9835,9 +11171,17 @@
     },
     {
       "id": "16f83e355f2a36695c910dff30d88729c9c6219a",
+      "category": "container_scanning",
+      "message": "sqlite: allows a crash if a sub-select uses both DISTINCT and window functions and also has certain ORDER BY usage",
       "description": "sqlite3Select in select.c in SQLite 3.30.1 allows a crash if a sub-select uses both DISTINCT and window functions, and also has certain ORDER BY usage.",
+      "cve": "CVE-2019-19244",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9877,9 +11221,17 @@
     },
     {
       "id": "97d8806cca8423b1d98f56a7adc4f6dad0d3f95e",
+      "category": "container_scanning",
+      "message": "sqlite: heap-based buffer over-read in function fts5HashEntrySort in sqlite3.c",
       "description": "In SQLite 3.27.2, running fts5 prefix queries inside a transaction could trigger a heap-based buffer over-read in fts5HashEntrySort in sqlite3.c, which may lead to an information leak. This is related to ext/fts5/fts5_hash.c.",
+      "cve": "CVE-2019-9936",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -9949,9 +11301,17 @@
     },
     {
       "id": "f30af0cb4bcabb3ad44d3f713c816aafd9e21494",
+      "category": "container_scanning",
+      "message": "sqlite: null-pointer dereference in function fts5ChunkIterate in sqlite3.c",
       "description": "In SQLite 3.27.2, interleaving reads and writes in a single transaction with an fts5 virtual table will lead to a NULL Pointer Dereference in fts5ChunkIterate in sqlite3.c. This is related to ext/fts5/fts5_hash.c and ext/fts5/fts5_index.c.",
+      "cve": "CVE-2019-9937",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10021,9 +11381,17 @@
     },
     {
       "id": "6d6b5dbfd5a7bad2ad97b974031bf4b5826d11a3",
+      "category": "container_scanning",
+      "message": "systemd: mishandling of the current keyboard mode check leading to passwords being disclosed in cleartext to attacker",
       "description": "systemd 242 changes the VT1 mode upon a logout, which allows attackers to read cleartext passwords in certain circumstances, such as watching a shutdown, or using Ctrl-Alt-F1 and Ctrl-Alt-F2. This occurs because the KDGKBMODE (aka current keyboard mode) check is mishandled.",
+      "cve": "CVE-2018-20839",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10069,9 +11437,17 @@
     },
     {
       "id": "d493275701de6b7759a8ed5b4ade86fdef43f537",
+      "category": "container_scanning",
+      "message": "systemd: Spoofing of XDG_SEAT allows for actions to be checked against \"allow_active\" instead of \"allow_any\"",
       "description": "In systemd before v242-rc4, it was discovered that pam_systemd does not properly sanitize the environment before using the XDG_SEAT variable. It is possible for an attacker, in some particular configurations, to set a XDG_SEAT environment variable which allows for commands to be checked against polkit policies using the \"allow_active\" element rather than \"allow_any\".",
+      "cve": "CVE-2019-3842",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10120,9 +11496,17 @@
     },
     {
       "id": "c55f49fcf6fb642a570de7f23e514a65d1f32f0b",
+      "category": "container_scanning",
+      "message": "systemd: mishandles numerical usernames beginning with decimal digits or 0x followed by hexadecimal digits",
       "description": "systemd through v245 mishandles numerical usernames such as ones composed of decimal digits or 0x followed by hex digits, as demonstrated by use of root privileges when privileges of the 0x0 user account were intended. NOTE: this issue exists because of an incomplete fix for CVE-2017-1000082.",
+      "cve": "CVE-2020-13776",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10156,9 +11540,17 @@
     },
     {
       "id": "9b6053994264ac7ee90c2edde525ad0fb5726075",
+      "category": "container_scanning",
+      "message": "systemd: memory leak in button_open() in login/logind-button.c when udev events are received",
       "description": "An issue was discovered in button_open in login/logind-button.c in systemd before 243. When executing the udevadm trigger command, a memory leak may occur.",
+      "cve": "CVE-2019-20386",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade systemd to 239-40.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10210,9 +11602,17 @@
     },
     {
       "id": "f74f6256a7b0acddcedfdb77353a793fb56fae13",
+      "category": "container_scanning",
+      "message": "systemd: mishandling of the current keyboard mode check leading to passwords being disclosed in cleartext to attacker",
       "description": "systemd 242 changes the VT1 mode upon a logout, which allows attackers to read cleartext passwords in certain circumstances, such as watching a shutdown, or using Ctrl-Alt-F1 and Ctrl-Alt-F2. This occurs because the KDGKBMODE (aka current keyboard mode) check is mishandled.",
+      "cve": "CVE-2018-20839",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10258,9 +11658,17 @@
     },
     {
       "id": "9a84fab36b0faf660c895ac3b732c20fb3103291",
+      "category": "container_scanning",
+      "message": "systemd: Spoofing of XDG_SEAT allows for actions to be checked against \"allow_active\" instead of \"allow_any\"",
       "description": "In systemd before v242-rc4, it was discovered that pam_systemd does not properly sanitize the environment before using the XDG_SEAT variable. It is possible for an attacker, in some particular configurations, to set a XDG_SEAT environment variable which allows for commands to be checked against polkit policies using the \"allow_active\" element rather than \"allow_any\".",
+      "cve": "CVE-2019-3842",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10309,9 +11717,17 @@
     },
     {
       "id": "a332ae626f5ba59565efee6eff0436e13adec47b",
+      "category": "container_scanning",
+      "message": "systemd: mishandles numerical usernames beginning with decimal digits or 0x followed by hexadecimal digits",
       "description": "systemd through v245 mishandles numerical usernames such as ones composed of decimal digits or 0x followed by hex digits, as demonstrated by use of root privileges when privileges of the 0x0 user account were intended. NOTE: this issue exists because of an incomplete fix for CVE-2017-1000082.",
+      "cve": "CVE-2020-13776",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10345,9 +11761,17 @@
     },
     {
       "id": "ae4712d487cae06d5f2473cf228feeedd14dacff",
+      "category": "container_scanning",
+      "message": "systemd: memory leak in button_open() in login/logind-button.c when udev events are received",
       "description": "An issue was discovered in button_open in login/logind-button.c in systemd before 243. When executing the udevadm trigger command, a memory leak may occur.",
+      "cve": "CVE-2019-20386",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade systemd-libs to 239-40.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10399,9 +11823,17 @@
     },
     {
       "id": "ac737a6776d226118fd105e7d1ab8e0a53ab5b38",
+      "category": "container_scanning",
+      "message": "systemd: mishandling of the current keyboard mode check leading to passwords being disclosed in cleartext to attacker",
       "description": "systemd 242 changes the VT1 mode upon a logout, which allows attackers to read cleartext passwords in certain circumstances, such as watching a shutdown, or using Ctrl-Alt-F1 and Ctrl-Alt-F2. This occurs because the KDGKBMODE (aka current keyboard mode) check is mishandled.",
+      "cve": "CVE-2018-20839",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10447,9 +11879,17 @@
     },
     {
       "id": "9f3d9de54fb1f59d7613b7079bb455ee6cc81ade",
+      "category": "container_scanning",
+      "message": "systemd: Spoofing of XDG_SEAT allows for actions to be checked against \"allow_active\" instead of \"allow_any\"",
       "description": "In systemd before v242-rc4, it was discovered that pam_systemd does not properly sanitize the environment before using the XDG_SEAT variable. It is possible for an attacker, in some particular configurations, to set a XDG_SEAT environment variable which allows for commands to be checked against polkit policies using the \"allow_active\" element rather than \"allow_any\".",
+      "cve": "CVE-2019-3842",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10498,9 +11938,17 @@
     },
     {
       "id": "396b804c4647776013a8e83635ab14b1f6fc9ff4",
+      "category": "container_scanning",
+      "message": "systemd: mishandles numerical usernames beginning with decimal digits or 0x followed by hexadecimal digits",
       "description": "systemd through v245 mishandles numerical usernames such as ones composed of decimal digits or 0x followed by hex digits, as demonstrated by use of root privileges when privileges of the 0x0 user account were intended. NOTE: this issue exists because of an incomplete fix for CVE-2017-1000082.",
+      "cve": "CVE-2020-13776",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10534,9 +11982,17 @@
     },
     {
       "id": "a4fddcdb313d55f85c4f050b506cc94b5c4efad1",
+      "category": "container_scanning",
+      "message": "systemd: memory leak in button_open() in login/logind-button.c when udev events are received",
       "description": "An issue was discovered in button_open in login/logind-button.c in systemd before 243. When executing the udevadm trigger command, a memory leak may occur.",
+      "cve": "CVE-2019-20386",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade systemd-pam to 239-40.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10588,9 +12044,17 @@
     },
     {
       "id": "e9ce44b85584c87375049a4ccd19abd2b7b7062c",
+      "category": "container_scanning",
+      "message": "systemd: mishandling of the current keyboard mode check leading to passwords being disclosed in cleartext to attacker",
       "description": "systemd 242 changes the VT1 mode upon a logout, which allows attackers to read cleartext passwords in certain circumstances, such as watching a shutdown, or using Ctrl-Alt-F1 and Ctrl-Alt-F2. This occurs because the KDGKBMODE (aka current keyboard mode) check is mishandled.",
+      "cve": "CVE-2018-20839",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10636,9 +12100,17 @@
     },
     {
       "id": "b7c9ac91aa40814f014360591f179cf52e8f3c3c",
+      "category": "container_scanning",
+      "message": "systemd: Spoofing of XDG_SEAT allows for actions to be checked against \"allow_active\" instead of \"allow_any\"",
       "description": "In systemd before v242-rc4, it was discovered that pam_systemd does not properly sanitize the environment before using the XDG_SEAT variable. It is possible for an attacker, in some particular configurations, to set a XDG_SEAT environment variable which allows for commands to be checked against polkit policies using the \"allow_active\" element rather than \"allow_any\".",
+      "cve": "CVE-2019-3842",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10687,9 +12159,17 @@
     },
     {
       "id": "b0a8095cb0dc064d208474c89ac0cf2e7ac12dd7",
+      "category": "container_scanning",
+      "message": "systemd: mishandles numerical usernames beginning with decimal digits or 0x followed by hexadecimal digits",
       "description": "systemd through v245 mishandles numerical usernames such as ones composed of decimal digits or 0x followed by hex digits, as demonstrated by use of root privileges when privileges of the 0x0 user account were intended. NOTE: this issue exists because of an incomplete fix for CVE-2017-1000082.",
+      "cve": "CVE-2020-13776",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10723,9 +12203,17 @@
     },
     {
       "id": "1f8b49f067352a0b06df66086f729edc13e831be",
+      "category": "container_scanning",
+      "message": "systemd: memory leak in button_open() in login/logind-button.c when udev events are received",
       "description": "An issue was discovered in button_open in login/logind-button.c in systemd before 243. When executing the udevadm trigger command, a memory leak may occur.",
+      "cve": "CVE-2019-20386",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "Upgrade systemd-udev to 239-40.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10777,9 +12265,17 @@
     },
     {
       "id": "8a7a7ecfb218ae0c747666d06c0041ea9dbd9fb5",
+      "category": "container_scanning",
+      "message": "tar: null-pointer dereference in pax_decode_header in sparse.c",
       "description": "pax_decode_header in sparse.c in GNU Tar before 1.32 had a NULL pointer dereference when parsing certain archives that have malformed extended headers.",
+      "cve": "CVE-2019-9923",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10819,9 +12315,17 @@
     },
     {
       "id": "cbd4aa450dd2d75e5b10f2f93065c5e1823c7465",
+      "category": "container_scanning",
+      "message": "vim: users can execute arbitrary OS commands via scripting interfaces in the rvim restricted mode",
       "description": "In Vim before 8.1.0881, users can circumvent the rvim restricted mode and execute arbitrary OS commands via scripting interfaces (e.g., Python, Ruby, or Lua).",
+      "cve": "CVE-2019-20807",
       "severity": "Medium",
+      "confidence": "Unknown",
       "solution": "Upgrade vim-minimal to 2:8.0.1763-15.el8",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10876,9 +12380,17 @@
     },
     {
       "id": "f88f05510b4878c4a0e1d1be089e1cbc67d27140",
+      "category": "container_scanning",
+      "message": "libvterm: NULL pointer dereference in vterm_screen_set_callbacks",
       "description": "libvterm through 0+bzr726, as used in Vim and other products, mishandles certain out-of-memory conditions, leading to a denial of service (application crash), related to screen.c, state.c, and vterm.c.",
+      "cve": "CVE-2018-20786",
       "severity": "Low",
+      "confidence": "Unknown",
       "solution": "No solution provided",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
       "location": {
         "dependency": {
           "package": {
@@ -10917,7 +12429,9 @@
       ]
     }
   ],
-  "remediations": [],
+  "remediations": [
+
+  ],
   "scan": {
     "scanner": {
       "id": "trivy",
@@ -10934,12 +12448,12 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.2.0"
+      "version": "5.1.22"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
     "end_time": "2021-09-15T08:36:25",
     "status": "success"
   },
-  "version": "15.0.0"
+  "version": "14.1.2"
 }

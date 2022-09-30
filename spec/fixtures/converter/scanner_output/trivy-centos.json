@@ -7169,6 +7169,8 @@
         }
       ],
       "links": [{
+          "url": "Patches:"
+        },{
           "url": "Upstream bug: https://bugs.python.org/issue41944"
         },{
           "url": "https://bugs.python.org/issue41944"
@@ -7795,6 +7797,8 @@
         }
       ],
       "links": [{
+          "url": "Patches:"
+        },{
           "url": "Upstream bug: https://bugs.python.org/issue41944"
         },{
           "url": "https://bugs.python.org/issue41944"

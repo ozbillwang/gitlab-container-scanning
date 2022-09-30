@@ -44,7 +44,7 @@ module Gcs
 
       Fixes = Struct.new(:cve, :id) do
         def to_hash
-          { 'id' => id }
+          { 'cve' => cve, 'id' => id }
         end
       end
 
