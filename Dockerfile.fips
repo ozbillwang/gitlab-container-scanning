@@ -31,7 +31,7 @@ RUN ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs
 
 RUN su - gitlab -c 'gem install --no-document /home/gitlab/gcs.gem' && \
     su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
-    microdnf remove shadow-utils util-linux wget tar && \
+    microdnf remove shadow-utils wget tar && \
     microdnf clean all && \
     microdnf remove microdnf && \
     rm -f /usr/local/bin/oras
