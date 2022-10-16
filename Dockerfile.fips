@@ -16,7 +16,8 @@ ENV PATH="/home/gitlab:${PATH}"
 
 RUN microdnf update --nodocs && \
     microdnf module enable ruby:2.7 && \
-    microdnf install ruby shadow-utils util-linux wget curl tar git --nodocs
+    microdnf install ruby shadow-utils util-linux wget curl tar git --nodocs && \
+    microdnf clean all
 
 RUN useradd --create-home gitlab -g root && \
     chown gitlab /etc/pki/ && \
