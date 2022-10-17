@@ -1,3 +1,9 @@
+## 5.2.3 (2022-10-17)
+
+### changed (1 change)
+
+- [Switch to UBI8-minimal base image](gitlab-org/security-products/analyzers/container-scanning@0fa972f55cce07ad093b347ea0ea9b8cc776a767) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2826))
+
 ## 5.2.2 (2022-10-12)
 
 ### changed (2 changes)
