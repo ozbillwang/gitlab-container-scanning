@@ -38,7 +38,7 @@ module Gcs
           # If the logger receives a nil message, then it sets the progname as the message.
           next if msg.blank? || msg == progname
 
-          "[#{color(LOG_LEVEL_COLOR[severity.to_sym], severity)}] [#{datetime}] [#{progname}]  ▶  #{msg}\n"
+          "[#{color(LOG_LEVEL_COLOR[severity.to_sym], severity)}] [#{datetime}] [#{progname}]  >  #{msg}\n"
         end
       end
     end

@@ -24,7 +24,7 @@ RSpec.describe Gcs::LoggerFormatter do
       expected_log_level = "[\e[#{expected_color_code}m#{expected_severity}\e[0m]"
       expected_timestamp = "[2001-02-03 04:05:06 +0000]"
       expected_progname = "[container-scanning]"
-      expected_stdout = "#{expected_log_level} #{expected_timestamp} #{expected_progname}  ▶  #{message}\n"
+      expected_stdout = "#{expected_log_level} #{expected_timestamp} #{expected_progname}  >  #{message}\n"
 
       expect { emit }.to output(expected_stdout).to_stdout
     end

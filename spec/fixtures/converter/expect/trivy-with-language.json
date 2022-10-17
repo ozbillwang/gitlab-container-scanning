@@ -121,7 +121,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.2.2"
+      "version": "5.2.3"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
