@@ -14,23 +14,21 @@ ARG SCANNER
 ENV SCANNER=${SCANNER}
 ENV PATH="/home/gitlab:${PATH}"
 
+COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
+
+COPY --from=builder /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
+COPY --from=builder /gcs/legal /home/gitlab/legal/
+COPY --from=builder /gcs/ee/LICENSE /home/gitlab/ee/LICENSE
+
 RUN microdnf update --nodocs && \
     microdnf module enable ruby:2.7 && \
     microdnf install ruby shadow-utils util-linux wget curl tar git --nodocs && \
-    microdnf clean all
-
-RUN useradd --create-home gitlab -g root && \
+    useradd gitlab -g root && \
+    chown -R gitlab:root /home/gitlab/ && \
     chown gitlab /etc/pki/ && \
-    chmod -R g+rw /etc/pki/
-
-COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
-
-COPY --from=builder --chown=gitlab:root /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
-COPY --from=builder --chown=gitlab:root /gcs/legal /home/gitlab/legal/
-COPY --from=builder --chown=gitlab:root /gcs/ee/LICENSE /home/gitlab/ee/LICENSE
-RUN ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs
-
-RUN su - gitlab -c 'gem install --no-document /home/gitlab/gcs.gem' && \
+    chmod -R g+rw /etc/pki/ && \
+    ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs && \
+    su - gitlab -c 'gem install --no-document /home/gitlab/gcs.gem' && \
     su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
     microdnf remove shadow-utils wget tar && \
     microdnf clean all && \
