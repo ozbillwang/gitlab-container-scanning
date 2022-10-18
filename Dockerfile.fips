@@ -1,6 +1,6 @@
 ARG SCANNER=trivy
 
-FROM registry.access.redhat.com/ubi8/ruby-27 as builder
+FROM registry.access.redhat.com/ubi8/ruby-30 as builder
 USER root
 COPY . /gcs
 WORKDIR /gcs
@@ -15,7 +15,7 @@ ENV SCANNER=${SCANNER}
 ENV PATH="/home/gitlab:${PATH}"
 
 RUN microdnf update --nodocs && \
-    microdnf module enable ruby:2.7 && \
+    microdnf module enable ruby:3.0 && \
     microdnf install ruby shadow-utils util-linux wget curl tar git --nodocs && \
     microdnf clean all
 
