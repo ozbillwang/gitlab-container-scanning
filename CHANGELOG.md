@@ -1,3 +1,9 @@
+## 5.2.4 (2022-10-18)
+
+### changed (1 change)
+
+- [Reduce FIPS Image Size](gitlab-org/security-products/analyzers/container-scanning@14bae868bf3ea328c9d762b4704880de5e24bcc7) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2827))
+
 ## 5.2.3 (2022-10-17)
 
 ### changed (1 change)
