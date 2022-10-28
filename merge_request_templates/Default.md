@@ -1,3 +1,31 @@
+## What does this MR do?
+
+<!-- 
+Describe in detail what your merge request does, why it does that, etc. 
+
+Please also keep this description up-to-date with any discussion that takes
+place so that reviewers can understand your intent. This is especially
+important if they didn't participate in the discussion.
+
+Make sure to remove this comment when you are done.
+-->
+
+## What are the relevant issue numbers?
+
+## Does this MR meet the acceptance criteria?
+
+- [ ] Changelog entry added
+- [ ] [Documentation created/updated for GitLab EE](https://docs.gitlab.com/ee/development/documentation/feature-change-workflow.html), if necessary
+- [ ] Documentation created/updated for this project, if necessary
+- [ ] Documentation reviewed by technical writer *or* follow-up review issue [created](https://gitlab.com/gitlab-org/gitlab-ee/issues/new?issuable_template=Doc%20Review)
+- [ ] [Tests added for this feature/bug](https://docs.gitlab.com/ee/development/testing_guide/index.html)
+- [ ] Job definition updated, if necessary
+  - [ ] [Auto-DevOps template](https://gitlab.com/gitlab-org/gitlab-ci-yml/blob/master/Auto-DevOps.gitlab-ci.yml)
+  - [ ] [Job definition example](https://docs.gitlab.com/ee/ci/examples/sast.html)
+  - [ ] [CI Templates](https://gitlab.com/gitlab-org/security-products/ci-templates/tree/master/includes)
+- [ ] Conforms to the [code review guidelines](https://docs.gitlab.com/ee/development/code_review.html)
+- [ ] Conforms to the [Go guidelines](https://docs.gitlab.com/ee/development/go_guide/index.html)
+- [ ] Security reports checked/validated by reviewer
 
 /label ~"devops::secure" ~"section::sec" ~"group::composition analysis" ~"Category:Container Scanning" ~"backend"
 
