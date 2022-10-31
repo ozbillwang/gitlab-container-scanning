@@ -53,16 +53,12 @@ danger-review:
     - if: $CI_MERGE_REQUEST_IID
     - when: never
   variables:
-    DANGER_BOT_VERSION: v0.11.0
+    DANGER_BOT_VERSION: v0.12
     DANGER_CHANGELOG_MODE: trailer
   script:
     - cp -r /danger/ danger/
     - mv danger/analyzers/Dangerfile Dangerfile
     - |
-      if [ -f danger/Gemfile ]; then
-        mv danger/Gemfile Gemfile
-        bundle config set path danger/vendor/
-        bundle exec danger --fail-on-errors=true
-      else
-        danger --fail-on-errors=true
-      fi
+      mv danger/Gemfile Gemfile
+      bundle config set path danger/vendor/
+      bundle exec danger --fail-on-errors=true
