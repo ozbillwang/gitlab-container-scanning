@@ -77,6 +77,10 @@ module Gcs
           "The image #{image_name} could not be found. " \
           "To change the image being scanned, use the CS_IMAGE environment variable. " \
           "For details, see https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables"
+        elsif manifest_v1?(stderr)
+          "This image cannot be scanned because it is stored in the registry using manifest version 2, schema 1. " \
+          "This schema version is deprecated and is not supported. Use a different image, or upgrade the image " \
+          "manifest to a newer schema version: https://docs.docker.com/registry/spec/deprecated-schema-v1/"
         else
           stderr
         end
@@ -89,6 +93,10 @@ module Gcs
 
       def image_not_found?(stderr)
         stderr.include?('manifest unknown') || stderr.include?('access forbidden')
+      end
+
+      def manifest_v1?(stderr)
+        stderr.match?(%r{unsupported MediaType.*application/vnd\.docker\.distribution\.manifest\.v1}i)
       end
 
       def environment
