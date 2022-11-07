@@ -84,6 +84,27 @@ RSpec.describe Gcs::Scanner do
           expect(scan_image[1]).to eq(expected_err)
         end
       end
+
+      context 'when manifest is version 1' do
+        let(:stderr) do
+          "unable to initialize a scanner: unable to initialize a docker scanner: 3 errors occurred:\n" \
+          "* unable to inspect the image (invalid_image:500eeeae44f97568feb254f2141a0603668d03a8): " \
+          "Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?\n" \
+          "* unable to initialize Podman client: no podman socket found: " \
+          "stat podman/podman.sock: no such file or directory\n" \
+          "* unsupported MediaType: \"application/vnd.docker.distribution.manifest.v1+prettyjws\", " \
+          "see https://github.com/google/go-containerregistry/issues/377"
+        end
+
+        it 'returns invalid credentials error message' do
+          expected_err =
+            "This image cannot be scanned because it is stored in the registry using manifest version 2, schema 1. " \
+            "This schema version is deprecated and is not supported. Use a different image, or upgrade the image " \
+            "manifest to a newer schema version: https://docs.docker.com/registry/spec/deprecated-schema-v1/"
+
+          expect(scan_image[1]).to eq(expected_err)
+        end
+      end
     end
 
     context 'when docker file does not exist' do
