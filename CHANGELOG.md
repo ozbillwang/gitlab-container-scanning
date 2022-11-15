@@ -1,3 +1,10 @@
+## 5.2.5 (2022-11-15)
+
+### changed (2 changes)
+
+- [Improve messaging when trying to scan an unsupported manifest](gitlab-org/security-products/analyzers/container-scanning@fcc669e3ed7822e8adbd14e28003d0cc935ed0a8) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2831))
+- [Upgrade to Ruby 3.0](gitlab-org/security-products/analyzers/container-scanning@6f8398a831875746ecd0b884c20cf56ddaf0c479) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2828))
+
 ## 5.2.4 (2022-10-18)
 
 ### changed (1 change)
