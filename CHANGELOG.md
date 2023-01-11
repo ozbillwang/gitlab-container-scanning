@@ -1,3 +1,10 @@
+## 5.2.6 (2023-01-11)
+
+### changed (2 changes)
+
+- [Update trivy to version 0.36.1](gitlab-org/security-products/analyzers/container-scanning@5ee90a5ad3ff6c08d8e237e021a10582eccd15b2) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2837))
+- [Improve messaging when trying to scan an unsupported manifest](gitlab-org/security-products/analyzers/container-scanning@fcc669e3ed7822e8adbd14e28003d0cc935ed0a8) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2831))
+
 ## 5.2.5 (2022-11-15)
 
 ### changed (2 changes)
