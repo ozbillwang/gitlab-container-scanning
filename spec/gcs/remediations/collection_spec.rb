@@ -3,6 +3,12 @@
 RSpec.describe Gcs::Remediations::Collection do
   let(:remediation_collection) { described_class.new }
 
+  before do
+    allow(Gcs.shell).to receive(:execute).and_call_original
+    allow(Gcs.shell).to receive(:execute).with(
+      ['git config --global --add safe.directory', "'*'"]).and_return(["true", nil, nil])
+  end
+
   modify_environment 'CI_DEFAULT_BRANCH' => 'main',
                      'CI_REGISTRY_IMAGE' => 'registry.example.com/group/project',
                      'CI_APPLICATION_TAG' => 'latest'

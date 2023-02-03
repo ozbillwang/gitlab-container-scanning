@@ -4,23 +4,30 @@ RSpec.describe Gcs::Remediations::Remediation do
   let(:package_name) { 'something' }
   let(:package_version) { '1.0.0' }
   let(:fixed_version) { '2.2.1' }
+  let(:operating_system) { 'centos' }
+  let(:args) do
+    {
+      'package_name' => package_name,
+      'package_version' => package_version,
+      'fixed_version' => fixed_version,
+      'operating_system' => operating_system,
+      'summary' => "Upgrade #{package_name} to #{fixed_version}"
+    }
+  end
 
   after do
     `git checkout #{docker_file.to_path}`
   end
 
+  before do
+    allow(Gcs.shell).to receive(:execute).and_call_original
+    allow(Gcs.shell).to receive(:execute).with(
+      ['git config --global --add safe.directory', "'*'"]).and_return(["true", nil, nil])
+  end
+
   RSpec.shared_examples 'remediates Dockerfile' do
     let(:remediation) do
-      described_class.new(
-        {
-          'package_name' => package_name,
-          'package_version' => package_version,
-          'fixed_version' => fixed_version,
-          'operating_system' => operating_system,
-          'summary' => "Upgrade #{package_name} to #{fixed_version}"
-        },
-        docker_file
-      )
+      described_class.new(args, docker_file)
     end
 
     before do
@@ -121,20 +128,21 @@ RSpec.describe Gcs::Remediations::Remediation do
   end
 
   describe 'for unsupported operating systems' do
-    let(:remediation) do
-      described_class.new(
-        {
-          'package_name' => 'apt',
-          'package_version' => '1.0.0',
-          'fixed_version' => '2.2.1',
-          'operating_system' => 'some-unrecognized-os',
-          'summary' => 'Upgrade apt to 2.2.1'
-        },
-        docker_file
-      )
-    end
+    let(:operating_system) { 'some-unrecognized-os' }
+    let(:remediation) { described_class.new(args, docker_file) }
 
     it 'does not crash' do
+      expect(remediation.to_hash).to eq({})
+    end
+  end
+
+  describe 'for unsupported git systems' do
+    let(:remediation) { described_class.new(args, docker_file) }
+
+    it 'does not crash' do
+      status = instance_double(Process::Status, success?: false)
+      allow(Gcs.shell).to receive(:execute).with(
+        ['git -C', docker_file.dirname, 'rev-parse --is-inside-work-tree']).and_return(["false", nil, status])
       expect(remediation.to_hash).to eq({})
     end
   end
