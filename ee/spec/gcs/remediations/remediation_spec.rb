@@ -138,4 +138,28 @@ RSpec.describe Gcs::Remediations::Remediation do
       expect(remediation.to_hash).to eq({})
     end
   end
+
+  describe 'for unsupported git systems' do
+    let(:remediation) do
+      described_class.new(
+        {
+          'package_name' => 'apt',
+          'package_version' => '1.0.0',
+          'fixed_version' => '2.2.1',
+          'operating_system' => 'opensuse',
+          'summary' => 'Upgrade apt to 2.2.1'
+        },
+        docker_file
+      )
+    end
+
+    it 'does not crash' do
+      status = instance_double(Process::Status, success?: false)
+      allow(Gcs.shell).to receive(:execute).with(
+        ['git config --global --add safe.directory', "'*'"]).and_return(["true", nil, nil])
+      allow(Gcs.shell).to receive(:execute).with(
+        ['git -C', docker_file.dirname, 'rev-parse --is-inside-work-tree']).and_return(["false", nil, status])
+      expect(remediation.to_hash).to eq({})
+    end
+  end
 end
