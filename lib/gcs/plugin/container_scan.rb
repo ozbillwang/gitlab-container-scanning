@@ -10,7 +10,7 @@ module Gcs
         gitlab_format = Converter.new(scanner_output, scan_metadata).convert
 
         allow_list = build_allow_list
-        Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET'] # FIXME: undocumented env var
+        Gcs::Util.write_table(gitlab_format, allow_list) unless ENV['CS_QUIET']
         Gcs::Util.write_file(Gcs::DEFAULT_REPORT_NAME, gitlab_format, Environment.project_dir, allow_list)
       end
 
