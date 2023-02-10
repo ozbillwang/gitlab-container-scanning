@@ -1,3 +1,7 @@
+# Gitlab EE Trivy database build flow
+![image](/doc/assets/ee_trivy_db_build_process.png)
+This diagram describes how the EE database is built. Access this [diagram source](https://docs.google.com/drawings/d/1NenY9_XVtKA7R5xH5z7Itz29pl5RkIYh_fMihSTTT6c/edit?usp=sharing) to view the links that provides context for each step.
+
 # How to run Trivy locally with the EE database
 
 The Trivy databse is a [bbolt](https://github.com/etcd-io/bbolt) database file
