@@ -4,7 +4,7 @@ The pipeline `Check if scanners are outdated` [is scheduled to run every 11th of
 It will generate an MR with the latest versions of Trivy or Grype if there are new versions available.
 
 ## Steps to update scanner
-Make sure that the above pipeline has completed running first. If it succesfully completes and there are new scanner versions, you should be able to see new MRs created with title `"Update #{scanner} to version #{new_version}"`
+Make sure that the above pipeline has completed running first. If it successfully completes and there are new scanner versions, you should be able to see new MRs created with the title `"Update #{scanner} to version #{new_version}"`
 
 1. Retrieve the image url from the pipeline job log: 
     - The job should have the title: **release > tag branch:[\<scanner>, Dockerfile]**
