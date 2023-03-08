@@ -2,7 +2,7 @@
   extends:
     - .not-on-schedule
     - .scanners-matrix
-  image: $BUILD_IMAGES/docker-stable_ruby
+  image: $BUILD_IMAGES/docker-latest_ruby
   stage: release
   services:
     - docker:20.10-dind

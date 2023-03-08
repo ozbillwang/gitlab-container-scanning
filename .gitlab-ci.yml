@@ -66,7 +66,7 @@ stages:
 .build-tmp-image:
   extends: .not-on-schedule
   # docker_ruby is not much larger than docker:stable and lives locally on our network
-  image: $BUILD_IMAGES/docker-stable_ruby
+  image: $BUILD_IMAGES/docker-latest_ruby
   stage: build-image
   services:
     - docker:20.10-dind
@@ -90,6 +90,6 @@ build-scanner-image:
 
 check version:
   extends: .only-on-tag
-  image: $BUILD_IMAGES/docker-stable_ruby
+  image: $BUILD_IMAGES/docker-latest_ruby
   stage: initial-test
   script: ./script/check_version
