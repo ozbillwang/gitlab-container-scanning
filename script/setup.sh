@@ -3,13 +3,13 @@
 set -e
 
 CE_TRIVY_DB_REGISTRY="ghcr.io/aquasecurity/trivy-db"
-EE_TRIVY_DB_REGISTRY="registry.gitlab.com/gitlab-org/security-products/dependencies/trivy-db-glad"
+# EE_TRIVY_DB_REGISTRY="registry.gitlab.com/gitlab-org/security-products/dependencies/trivy-db-glad"
 
 setup_trivy_files() {
   echo "Creating temp directory"
   trivy_version=$(cat TRIVY_VERSION)
   trivy_db_version_ce=$(cat TRIVY_DB_VERSION_CE)
-  trivy_db_version_ee=$(cat TRIVY_DB_VERSION_EE)
+  # trivy_db_version_ee=$(cat TRIVY_DB_VERSION_EE)
   echo "Dowloading and installing Trivy ${trivy_version}"
   mkdir /home/gitlab/opt/trivy
   wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v"${trivy_version}"/trivy_"${trivy_version}"_Linux-64bit.tar.gz -O - | tar -zxvf - -C /home/gitlab/opt/trivy
@@ -26,7 +26,9 @@ setup_trivy_files() {
   rm -f db.tar.gz
 
   echo "Dowloading EE Trivy DB"
-  oras pull "$EE_TRIVY_DB_REGISTRY":"${trivy_db_version_ee}" -a
+  # oras pull "$EE_TRIVY_DB_REGISTRY":"${trivy_db_version_ee}" -a
+  oras pull registry.gitlab.com/gitlab-org/security-products/dependencies/trivy-db-glad:02927fa34a72882683b7603a78d4be18b82cd600 -a
+
   tar -zxvf db.tar.gz -C /home/gitlab/.cache/trivy/ee/db
   rm -f db.tar.gz
 
