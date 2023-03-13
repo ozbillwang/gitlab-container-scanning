@@ -45,7 +45,7 @@ stages:
 
 .ruby-alpine:
   extends: .not-on-schedule
-  image: $BUILD_IMAGES/ruby-2.7-alpine_git_build-base
+  image: $BUILD_IMAGES/ruby-3.0-alpine_git_build-base
   before_script:
     - bundle install --quiet
 
