@@ -36,6 +36,7 @@ class ProjectHelper
   def mount(dir: nil, add_allow_list: false, env: {})
     chdir do
       execute({}, 'git', 'init')
+      execute({}, 'git', 'config', '--global', '--add', 'safe.directory', Pathname.pwd.to_s)
       execute({}, 'git', 'config', 'user.name', 'test')
       execute({}, 'git', 'config', 'user.email', 'test@test.com')
     end
