@@ -266,6 +266,10 @@ distroless:
   variables:
     INTEGRATION_TEST_IMAGE: gcr.io/distroless/base-debian9:latest
   extends: .generic_integration_test
+  parallel:
+    matrix:
+      - SCANNER: [trivy]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile.fips:ubi]
 
 ubuntu:
   variables:
@@ -322,6 +326,10 @@ webgoat:
       "registry.gitlab.com/gitlab-org/security-products/dast/webgoat-8.0\
       @sha256:bc09fe2e0721dfaeee79364115aeedf2174cce0947b9ae5fe7c33312ee019a4e"
   extends: .generic_integration_test
+  parallel:
+    matrix:
+      - SCANNER: [trivy]
+        DOCKERFILE_SOURCE: [Dockerfile, Dockerfile.fips:fips, Dockerfile.fips:ubi]
 
 ca cert:
   variables:
