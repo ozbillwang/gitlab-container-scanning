@@ -92,12 +92,10 @@ gemnasium-dependency_scanning:
     - changes:
       - Gemfile.lock
 
+# TODO: remove this when the corresponding job in the template has been removed
 bundler-audit-dependency_scanning:
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
-    - changes:
-      - Gemfile.lock
+    - when: never
 
 license_scanning:
   stage: initial-test
