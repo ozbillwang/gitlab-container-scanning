@@ -8,7 +8,8 @@ module Gcs
 
       plugins = [
         Gcs::Plugin::ContainerScan.new,
-        Gcs::Plugin::DependencyScan.new
+        Gcs::Plugin::DependencyScan.new,
+        Gcs::Plugin::SbomScan.new
       ]
 
       results = plugins.map do |plugin|

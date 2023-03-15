@@ -24,11 +24,15 @@ module Gcs
       end
 
       def write_file(name, content, location, allow_list)
-        content['vulnerabilities']&.delete_if { |vuln| allow_list&.allowed?(vuln) }
+        if content.is_a?(Hash)
+          content['vulnerabilities']&.delete_if { |vuln| allow_list&.allowed?(vuln) }
+          content = JSON.dump(content)
+        end
+
         full_path = location.join(name)
         Gcs.logger.debug("writing results to #{full_path}")
         FileUtils.mkdir_p(full_path.dirname)
-        IO.write(full_path, JSON.dump(content))
+        IO.write(full_path, content)
       end
 
       def write_table(report, allow_list)
