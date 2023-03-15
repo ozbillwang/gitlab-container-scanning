@@ -24,6 +24,7 @@ loader.setup
 module Gcs
   DEFAULT_REPORT_NAME = 'gl-container-scanning-report.json'
   DEFAULT_DEPENDENCY_REPORT_NAME = 'gl-dependency-scanning-report.json'
+  DEFAULT_SBOM_REPORT_NAME = 'gl-sbom-container-scanning.cdx.json'
   LOGGER_PROGNAME = 'container-scanning'
 
   class << self

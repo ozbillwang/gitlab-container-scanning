@@ -52,6 +52,15 @@ RSpec.describe Gcs::Trivy do
     end
   end
 
+  RSpec.shared_examples 'sbom scan command' do
+    it 'calls #execute with expected command and environment' do
+      expect(Gcs.shell).to receive(:execute).with(expected_command, expected_environment)
+      expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment).twice
+
+      scan_image
+    end
+  end
+
   describe '.db_updated_at' do
     it 'returns the value extracted from the scanner output' do
       expect(described_class.send(:db_updated_at)).to eq('2022-05-24T12:07:24+00:00')
@@ -135,6 +144,39 @@ RSpec.describe Gcs::Trivy do
       let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
 
       it_behaves_like 'scan image command'
+    end
+  end
+
+  describe '.scan_sbom_supported?' do
+    subject { described_class.scan_sbom_supported? }
+
+    it { is_expected.to be true }
+  end
+
+  describe '.scan_sbom' do
+    subject(:scan_image) { described_class.scan_sbom(image_name, output_file_name) }
+
+    let(:expected_command) do
+      [
+        "trivy image",
+        "--format cyclonedx",
+        "--output #{output_file_name}",
+        image_name
+      ]
+    end
+
+    context 'when given severity levels' do
+      let(:severity_threshold) { "HIGH" }
+      # Should behave the same as default because OS package list does not have severities
+
+      it_behaves_like 'sbom scan command'
+    end
+
+    context 'when EE' do
+      let(:features) { 'container_scanning' }
+      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
+
+      it_behaves_like 'sbom scan command'
     end
   end
 
