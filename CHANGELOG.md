@@ -1,6 +1,8 @@
 ## 5.3.0 (2023-03-17)
 
-No changes.
+### added (1 change)
+
+- [Add support for Security Report Schema 15.0.0](gitlab-org/security-products/analyzers/container-scanning@90dc7aa72cc3c07e82fa1b19d69bdd4a3648c639) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2847))
 
 ## 5.2.8 (2023-03-16)
 
