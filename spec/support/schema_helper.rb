@@ -25,7 +25,7 @@ module SchemaHelper
     json = JSON.parse(schema_path.read)
     actual_version = json.dig('self', 'version')
 
-    actual_version == Gcs::Converter::SCHEMA_VERSION
+    actual_version == Gcs::Converter.schema_version
   end
 
   def clean!
@@ -33,7 +33,18 @@ module SchemaHelper
   end
 
   def clone_schemas!
-    `git clone --depth 1 --branch "v#{Gcs::Converter::SCHEMA_VERSION}" \
+    `git clone --branch "v#{Gcs::Converter.schema_version}" \
       https://gitlab.com/gitlab-org/security-products/security-report-schemas.git #{SCHEMAS_DIR}`
+  end
+
+  module ClassMethods
+    def switch_schemas(schema_version)
+      around do |example|
+        current_tag = `git -C #{SCHEMAS_DIR} describe --tags`.chomp
+        `git -C #{SCHEMAS_DIR} checkout v#{schema_version}`
+        example.run
+        `git -C #{SCHEMAS_DIR} checkout #{current_tag}`
+      end
+    end
   end
 end

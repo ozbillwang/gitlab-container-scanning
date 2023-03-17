@@ -33,8 +33,9 @@ RSpec.configure do |config|
   config.include FixtureFileHelper
   config.include ExitCodeMatchers
   config.include SchemaHelper
+  config.extend  SchemaHelper::ClassMethods
   config.include EnvironmentHelper
-  config.extend EnvironmentHelper::ClassMethods
+  config.extend  EnvironmentHelper::ClassMethods
 
   config.before(:all, type: :network) do
     ProxyServer.instance.start

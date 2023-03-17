@@ -8,6 +8,7 @@ variables:
   DEFAULT_SCANNER: trivy
   GIT_STRATEGY: fetch
   CS_SEVERITY_THRESHOLD: medium
+  CS_SCHEMA_MODEL: 14
 
 include:
   - local: .gitlab/ci/integration-test.yml

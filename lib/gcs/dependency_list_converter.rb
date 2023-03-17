@@ -16,7 +16,7 @@ module Gcs
       converted_report['scan']['start_time'] = @opt.fetch(:start_time, '')
       converted_report['scan']['end_time'] = @opt.fetch(:end_time, '')
 
-      converted_report['version'] = Gcs::Converter::SCHEMA_VERSION
+      converted_report['version'] = Gcs::Converter.schema_version
       converted_report['scan']['analyzer']['version'] = Gcs::VERSION
 
       return converted_report if @source.nil?

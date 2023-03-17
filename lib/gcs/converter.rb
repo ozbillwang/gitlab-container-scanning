@@ -2,7 +2,11 @@
 
 module Gcs
   class Converter
-    SCHEMA_VERSION = "14.1.2"
+    def self.schema_version
+      return "14.1.2" if Gcs::Environment.cs_schema_model == 14
+
+      "15.0.4"
+    end
 
     def initialize(source, opt = {})
       @source = source
@@ -15,7 +19,7 @@ module Gcs
       parsed_report['scan']['start_time'] = @opt.fetch(:start_time, '')
       parsed_report['scan']['end_time'] = @opt.fetch(:end_time, '')
 
-      parsed_report['version'] = SCHEMA_VERSION
+      parsed_report['version'] = self.class.schema_version
       parsed_report['scan']['analyzer']['version'] = Gcs::VERSION
 
       vulns = []

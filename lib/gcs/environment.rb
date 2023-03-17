@@ -108,6 +108,10 @@ module Gcs
         resolve('GITLAB_FEATURES', default: '').to_s.split(',').include?('container_scanning')
       end
 
+      def cs_schema_model
+        resolve('CS_SCHEMA_MODEL', default: 14).to_i
+      end
+
       private
 
       def should_use_ci_credentials?
