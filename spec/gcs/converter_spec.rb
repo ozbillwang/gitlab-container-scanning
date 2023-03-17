@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Gcs::Converter do
   let(:reports) do
     {
@@ -136,6 +137,18 @@ RSpec.describe Gcs::Converter do
       let(:expected_raw) do
         # Manually created
         fixture_file_content(File.join('converter', 'expect', 'trivy-alpine-without-default-branch-image.json'))
+      end
+
+      it_behaves_like 'valid conversion'
+    end
+
+    context 'when CS_SCHEMA_MODEL is set to 15' do
+      modify_environment 'CS_SCHEMA_MODEL' => '15'
+      switch_schemas('15.0.4')
+
+      let(:expected_raw) do
+        # Manually created
+        fixture_file_content(File.join('converter', 'expect', 'trivy-alpine-cs-schema-model-15.json'))
       end
 
       it_behaves_like 'valid conversion'

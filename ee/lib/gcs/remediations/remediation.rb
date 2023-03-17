@@ -14,7 +14,7 @@ module Gcs
         'tdnf' => "tdnf -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; tdnf update -y %{package_name}; }" \
                   " && tdnf clean all",
         'yum' => "yum -y check-update || { rc=$?; [ $rc -neq 100 ] && exit $rc; yum update -y %{package_name}; }" \
-                  " && yum clean all",
+                 " && yum clean all",
         'zypper' => "zypper ref --force && zypper install -y --force %{package_name}=%{fixed_version}"
       }.freeze
 
@@ -44,7 +44,9 @@ module Gcs
 
       Fixes = Struct.new(:cve, :id) do
         def to_hash
-          { 'cve' => cve, 'id' => id }
+          return { 'cve' => cve, 'id' => id } if Environment.cs_schema_model == 14
+
+          { 'id' => id }
         end
       end
 
