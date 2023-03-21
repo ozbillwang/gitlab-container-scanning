@@ -108,6 +108,8 @@ module Gcs
       end
 
       def make_dir_git_safe
+        # This is a quickfix to unblock the users and will be removed with
+        # https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/issues/36
         Gcs.shell.execute(['git config --global --add safe.directory', "'*'"])
       end
 
