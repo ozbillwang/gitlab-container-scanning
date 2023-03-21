@@ -9,6 +9,12 @@ RSpec.describe Gcs::Remediations::Remediation do
     `git checkout #{docker_file.to_path}`
   end
 
+  before do
+    allow(Gcs.shell).to receive(:execute).and_call_original
+    allow(Gcs.shell).to receive(:execute).with(
+      ['git config --global --add safe.directory', "'*'"]).and_return(["true", nil, nil])
+  end
+
   RSpec.shared_examples 'remediates Dockerfile' do
     let(:remediation) do
       described_class.new(
@@ -155,8 +161,6 @@ RSpec.describe Gcs::Remediations::Remediation do
 
     it 'does not crash' do
       status = instance_double(Process::Status, success?: false)
-      allow(Gcs.shell).to receive(:execute).with(
-        ['git config --global --add safe.directory', "'*'"]).and_return(["true", nil, nil])
       allow(Gcs.shell).to receive(:execute).with(
         ['git -C', docker_file.dirname, 'rev-parse --is-inside-work-tree']).and_return(["false", nil, status])
       expect(remediation.to_hash).to eq({})
