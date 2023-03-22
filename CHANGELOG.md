@@ -240,65 +240,9 @@ No changes.
 
 ## 4.6.23 (2023-03-22)
 
-### changed (35 changes)
+### changed (1 change)
 
-- [Update grype to version 0.59.1](gitlab-org/security-products/analyzers/container-scanning@f07e66fe605b3b598e378100b1ff11fe668f174f) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2849))
-- [Update grype to version 0.55.0](gitlab-org/security-products/analyzers/container-scanning@2124ac1c847893ecad0eb08e534e7e25cdf8a37a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2838))
-- [Update trivy to version 0.36.1](gitlab-org/security-products/analyzers/container-scanning@5ee90a5ad3ff6c08d8e237e021a10582eccd15b2) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2837))
-- [Improve messaging when trying to scan an unsupported manifest](gitlab-org/security-products/analyzers/container-scanning@fcc669e3ed7822e8adbd14e28003d0cc935ed0a8) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2831))
-- [Upgrade to Ruby 3.0](gitlab-org/security-products/analyzers/container-scanning@6f8398a831875746ecd0b884c20cf56ddaf0c479) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2828))
-- [Reduce FIPS Image Size](gitlab-org/security-products/analyzers/container-scanning@14bae868bf3ea328c9d762b4704880de5e24bcc7) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2827))
-- [Switch to UBI8-minimal base image](gitlab-org/security-products/analyzers/container-scanning@0fa972f55cce07ad093b347ea0ea9b8cc776a767) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2826))
-- [Update trivy to version 0.32.1](gitlab-org/security-products/analyzers/container-scanning@44b4165ae48f33d099dccfaa3cc68075254fc71e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2825))
-- [Update grype to version 0.50.2](gitlab-org/security-products/analyzers/container-scanning@3436c8de66ecdff628de6f9c915127208c8836b5) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2824))
-- [Update trivy to version 0.31.3](gitlab-org/security-products/analyzers/container-scanning@c78d30d9535acc8b05ac0e19ac680ce5206fb94f) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2814))
-- [Update grype to version 0.49.0](gitlab-org/security-products/analyzers/container-scanning@4169331d95d8dc35049d644945630eb60a654926) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2813))
-- [Update grype to version 0.48.0](gitlab-org/security-products/analyzers/container-scanning@36a921fbd48d4a4a0aaa703218743ecd3044154b) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2807))
-- [Update trivy to version 0.31.2](gitlab-org/security-products/analyzers/container-scanning@80b3c2eb15a44ddf12f08f0be01c46c06656702f) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2805))
-- [Update grype to version 0.47.0](gitlab-org/security-products/analyzers/container-scanning@5ff3dce3206d1d3fc0346cdc24e5d20bc9ab966b) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2804))
-- [Update grype to version 0.46.0](gitlab-org/security-products/analyzers/container-scanning@4e35c440d24964abea657f227a1d781693bef8c5) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2799))
-- [Update grype to version 0.45.0](gitlab-org/security-products/analyzers/container-scanning@f17880a36c90a6782afc17978b8147bd376c1ad9) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2797))
-- [Update grype to version 0.44.0](gitlab-org/security-products/analyzers/container-scanning@6ead6d427f32f5375884205664e7f82a5df54f08) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2796))
-- [Update trivy to version 0.30.4](gitlab-org/security-products/analyzers/container-scanning@c502cf1880b855582d24837901a238ea0cb0950b) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2795))
-- [Update grype to version 0.43.0](gitlab-org/security-products/analyzers/container-scanning@2f183232ea0940615bac2882bad3f045892c09a4) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2793))
-- [Update trivy to version 0.30.2](gitlab-org/security-products/analyzers/container-scanning@eee4136d0f31d77d70af917038517746f1fddd08) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2792))
-- [Update grype to version 0.42.0](gitlab-org/security-products/analyzers/container-scanning@ecf6f52249fdc1024c6a4d0fa9792edec6c957c3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2788))
-- [Update grype to version 0.41.0](gitlab-org/security-products/analyzers/container-scanning@9483f16d102e4b90cb645306f89c6c89925bc1c4) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2786))
-- [Update grype to version 0.40.1](gitlab-org/security-products/analyzers/container-scanning@6a355c7a301836e8a8e04ff4b043b7128b561ebb) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2785))
-- [Update trivy to version 0.29.2](gitlab-org/security-products/analyzers/container-scanning@1687c6548645f6ffa2805790ce7644a09dda7db1) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2783))
-- [Update trivy to version 0.29.0](gitlab-org/security-products/analyzers/container-scanning@bbf3029fe1290c9aebc38cc5cb357f048388bca1) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2777))
-- [Update grype to version 0.40.0](gitlab-org/security-products/analyzers/container-scanning@8e751669ba811c47e8295965927acfb154193983) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2778))
-- [Update trivy to version 0.28.1](gitlab-org/security-products/analyzers/container-scanning@1a27d64e1995c5832f1bee3b9a1051cec604c24a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2768))
-- [Update grype to version 0.38.0](gitlab-org/security-products/analyzers/container-scanning@6866927376c27ec20ed4e0005373971e84e07254) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2769))
-- [Use --cache-dir flag to load the database](gitlab-org/security-products/analyzers/container-scanning@67712f0651583a7598c061d87e6f92d308c69fa0) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2765))
-- [Update grype to version 0.37.0](gitlab-org/security-products/analyzers/container-scanning@82be24b9377b8faf8d84f3986250aac37e694741) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2758))
-- [Update trivy to version 0.28.0](gitlab-org/security-products/analyzers/container-scanning@61f4755020ef3e278664cc10e7b3ac9994897d1a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2764))
-- [Update security report schema to version 14.1.2](gitlab-org/security-products/analyzers/container-scanning@09ed30dc2932973283ac01270ff4e35ebb64d3f0) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2749))
-- [Update trivy to version 0.27.1](gitlab-org/security-products/analyzers/container-scanning@7fc825a0c752d4aa9e1bb7f40be3edb18439f8cd) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2752))
-- [Include EE Trivy Database with GitLab Advisory Database](gitlab-org/security-products/analyzers/container-scanning@f10eafe66ce6cdf6afffd78689469d04217d4167) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2720))
-- [Restructure free and ultimate features](gitlab-org/security-products/analyzers/container-scanning@5dccbf4b540753b52756caac2b28a517f89faf02) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2717))
-
-### fixed (6 changes)
-
-- [Revert "Return report in Security Report Schemas 15.0.0"](gitlab-org/security-products/analyzers/container-scanning@eb120fab309b46f4b695c7b08f3773b8eddd8996) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2823))
-- [Remove check for presence of package name in allowlist](gitlab-org/security-products/analyzers/container-scanning@ebaedaea50faa3fd4df2759b1ef4865d0cc58968) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2821))
-- [Fix db_updated_at to use UpdatedAt timestamp](gitlab-org/security-products/analyzers/container-scanning@de50b8d6a63ae4c9440ddfd429d5351b300796a3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2801))
-- [Fix logger emiting blank messages](gitlab-org/security-products/analyzers/container-scanning@e560e2a09196a1e75838cebba6bbd7886dc1aae3) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2803))
-- [Fix crash on version command failure](gitlab-org/security-products/analyzers/container-scanning@123e6e0ec93dda2f5a4177e59cb79b3d5a89a6a4) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2802))
-- [When using Trivy, only run the vulnerabilities check](gitlab-org/security-products/analyzers/container-scanning@0f9b0fc517033223a8fcd30a7123fa1b9f8f364d) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2752))
-
-### added (2 changes)
-
-- [Add more information with debug mode](gitlab-org/security-products/analyzers/container-scanning@77bad0c9d7c7822fe743888f2acc84988e18688c) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2800))
-- [Exit when FIPS mode is enabled and an authenticated registry is scanned](gitlab-org/security-products/analyzers/container-scanning@72d34a71415b6f6d171ebc29045f895fb3470c3e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2790))
-
-### security (1 change)
-
-- [Remove vim-minimal package](gitlab-org/security-products/analyzers/container-scanning@aa28115dbda499a2c60b84b396787bdf27116718) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2787))
-
-### removed (1 change)
-
-- [Do not publish a `-ubi` copy of the `-fips`image](gitlab-org/security-products/analyzers/container-scanning@837d765488f43ca78287572158b06647b1cd02b2) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2729))
+- [Disable safe.check and ensure git is available before performing remediation](gitlab-org/security-products/analyzers/container-scanning@e353a14e861d5fb7d439ceaef1655dbd9bdf8243) ([merge request](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/merge_requests/2863))
 
 ## 4.6.22 (2023-03-16)
 
