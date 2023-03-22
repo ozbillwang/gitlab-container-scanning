@@ -70,7 +70,7 @@ Integration tests:
 To run integration tests you need to specify `INTEGRATION_TEST_IMAGE` environment variable with selected Docker image.
 
 ```
-$ INTEGRATION_TEST_IMAGE=alpine:3.12.0
+$ export INTEGRATION_TEST_IMAGE=alpine:3.12.0
 $ sudo ./script/setup_integration
 $ bundle exec rake integration_test
 ```
