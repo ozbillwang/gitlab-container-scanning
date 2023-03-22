@@ -16,13 +16,12 @@ class ProjectHelper
   end
 
   def report_for(type:)
-    if type == 'sbom-scanning'
-      binding.pry
-
-      report_path = project_path.join('gl-sbom-container-scanning.cdx.json')
-    else
-      report_path = project_path.join("gl-#{type}-report.json")
-    end
+    report_path =
+      if type == 'sbom-scanning'
+        project_path.join('gl-sbom-container-scanning.cdx.json')
+      else
+        project_path.join("gl-#{type}-report.json")
+      end
 
     if report_path.exist?
       JSON.parse(report_path.read)

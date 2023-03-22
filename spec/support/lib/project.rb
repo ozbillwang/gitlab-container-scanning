@@ -10,7 +10,12 @@ class Project
   end
 
   def report_for(type:)
-    report_path = path.join("gl-#{type}-report.json")
+    report_path =
+      if type == 'sbom-scanning'
+        project_path.join('gl-sbom-container-scanning.cdx.json')
+      else
+        project_path.join("gl-#{type}-report.json")
+      end
 
     if report_path.exist?
       JSON.parse(report_path.read)
