@@ -1,6 +1,6 @@
 ## 5.3.1 (2023-03-21)
 
-No changes.
+- [Disable safe.check and ensure git is available before performing remediation](gitlab-org/security-products/analyzers/container-scanning@b7b5d266dd2e7f1b3480aed31f9940b2250cae39) ([merge request](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/merge_requests/2839))
 
 ## 5.3.0 (2023-03-17)
 
