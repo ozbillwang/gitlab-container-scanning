@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Gcs
   module Remediations
     class Remediation
@@ -65,13 +64,23 @@ module Gcs
       end
 
       def to_hash
-        return {} unless supported_operating_system?
+        return {} unless supported_operating_system? && git_available?
 
         {
           fixes: fixes.to_a.map(&:to_hash),
           summary: remediate_metadata['summary'],
           diff: create_git_diff
         }
+      end
+
+      # This checks if git is available for use in the repository.
+      def git_available?
+        make_dir_git_safe
+
+        _stdout, _stderr, status = Gcs.shell.execute(
+          ['git -C', @docker_file.dirname, 'rev-parse --is-inside-work-tree']
+        )
+        status.success?
       end
 
       def supported_operating_system?(os = operating_system)
@@ -91,6 +100,12 @@ module Gcs
         Gcs.logger.error("Problem generating remediation: #{stderr}")
 
         ''
+      end
+
+      def make_dir_git_safe
+        # This is a quickfix to unblock the users and will be removed with
+        # https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/issues/36
+        Gcs.shell.execute(['git config --global --add safe.directory', "'*'"])
       end
 
       def write_remediation
