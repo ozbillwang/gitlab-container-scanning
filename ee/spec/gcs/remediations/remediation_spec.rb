@@ -34,12 +34,26 @@ RSpec.describe Gcs::Remediations::Remediation do
       remediation.add_fix('123', '456')
     end
 
-    it 'remediates Dockerfile' do
-      expect(remediation.to_hash).to include(
-        fixes: [{ 'cve' => '123', 'id' => '456' }],
-        summary: "Upgrade #{package_name} to #{fixed_version}",
-        diff: diff
-      )
+    context 'when CS_SCHEMA_MODEL is left at the default' do
+      it 'remediates Dockerfile' do
+        expect(remediation.to_hash).to include(
+          fixes: [{ 'cve' => '123', 'id' => '456' }],
+          summary: "Upgrade #{package_name} to #{fixed_version}",
+          diff: diff
+        )
+      end
+    end
+
+    context 'when CS_SCHEMA_MODEL is set to 15' do
+      modify_environment 'CS_SCHEMA_MODEL' => '15'
+
+      it 'remediates Dockerfile' do
+        expect(remediation.to_hash).to include(
+          fixes: [{ 'id' => '456' }],
+          summary: "Upgrade #{package_name} to #{fixed_version}",
+          diff: diff
+        )
+      end
     end
   end
 
