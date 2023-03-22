@@ -86,7 +86,9 @@ RSpec.shared_examples 'as container scanner' do |item|
       expect(dependency_scanning_report['dependency_files'][0]['path']).to eq("container-image:#{env['CS_IMAGE']}")
       expect(dependency_scanning_report['dependency_files'][0]['package_manager']).not_to be_nil
       expect(dependency_scanning_report['dependency_files'][0]['dependencies']).not_to be_empty
+
       expect(sbom_scanning_report["bomFormat"]).not_to be_nil
+      expect(nil).not_to be_nil
     end
   end
 
