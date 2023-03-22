@@ -134,8 +134,28 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
       #{assignee}, would you mind assigning correct milestone and taking care of this MR? :eyes:
 
       We're updating #{scanner} to the newest available version (#{new_version.strip}).
-      Please review [the changelog](#{updater.changelog_link(new_version)}) and ensure
-      that integration tests are passing.
+
+      Please follow these steps to release the new version:     
+      1. Retrieve the image url from the pipeline job log: 
+          - The job should have the title: **release > tag branch:[\<scanner>, Dockerfile]**
+          - Look for the image url from the logs. It should look something like: `registry.gitlab.com/gitlab-org/security-products/analyzers/container-scanning/tmp/grype:193dca72bab3627976c62f4b6d3e7ccb438a7f5c `
+      2. Run a container scan using the image url
+          
+          You can reference this [Container Scanning Test](https://gitlab.com/gitlab-org/govern/demos/container-scanning-test) repo to run a container scan.
+          1. [Run a new pipeline](https://gitlab.com/gitlab-org/govern/demos/container-scanning-test/-/pipelines/new)
+          2. Set a ci variable `CS_ANALYZER_IMAGE` with the `image url` obtained from step 1
+          3. Check that the container scan completes without error.
+          
+      3. Check the changelog of [Trivy](https://github.com/aquasecurity/trivy/releases) and [Grype](https://github.com/anchore/grype/releases) to see if there are any potential breaking change that might affect the code.
+
+      4. Ensure Integration tests are passing
+
+      5. If all is good, merge this MR.
+
+      6. Create a new tag based on the new version that should have been auto incremented.
+          - The new version can be found in the [version.rb](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/lib/gcs/version.rb) file. 
+
+      7. A release pipeline would be triggered to release the new version.
 
       /label ~"devops::protect" ~"group::container security" ~"section::sec" ~"type::maintenance" ~"maintenance::dependency"
       /label ~"Category:Container Scanning" ~backend

@@ -1,29 +1,5 @@
 # How scanners are updated monthly
-The pipeline `Check if scanners are outdated` [is scheduled to run every 11th of the month](https://gitlab.com/gitlab-org/security-products/dependencies/trivy-db-glad/-/pipeline_schedules)
-
-It will generate an MR with the latest versions of Trivy or Grype if there are new versions available.
-
-## Steps to update scanner
-Make sure that the above pipeline has completed running first. If it successfully completes and there are new scanner versions, you should be able to see new MRs created with the title `"Update #{scanner} to version #{new_version}"`
-
-1. Retrieve the image url from the pipeline job log: 
-    - The job should have the title: **release > tag branch:[\<scanner>, Dockerfile]**
-    - Look for the image url from the logs. It should look something like: `registry.gitlab.com/gitlab-org/security-products/analyzers/container-scanning/tmp/grype:193dca72bab3627976c62f4b6d3e7ccb438a7f5c `
-2. Run a container scan using the image url
-    
-    You can use this [Container Scanning Test](https://gitlab.com/gitlab-org/govern/demos/container-scanning-test) repo to run a container scan.
-    1. [Run a new pipeline](https://gitlab.com/gitlab-org/govern/demos/container-scanning-test/-/pipelines/new)
-    2. Set a ci variable `CS_ANALYZER_IMAGE` with the `image url` obtained from step 1
-    3. Check that the container scan completes without error.
-    
-3. Check the changelog of [Trivy](https://github.com/aquasecurity/trivy/releases) and [Grype](https://github.com/anchore/grype/releases) to see if there are any potential breaking change that might affect the code.
-
-4. If all is good, merge both scanner MRs(If both scanners have new versions) 
-
-5. Create a new tag based on the new version that should have been auto incremented.
-    - The new version can be found in the [version.rb](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/blob/master/lib/gcs/version.rb) file. 
-
-6. A release pipeline would be triggered to release the new version.
+The pipeline `Check if scanners are outdated` [is scheduled to run every 11th of the month](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/pipeline_schedules). It will generate MRs for new versions of Trivy or Grype. Once the MR is generated, a team member should follow the checklist in the MR to release the updated scanner.
 
 # Scheduled pipeline configuration
 
