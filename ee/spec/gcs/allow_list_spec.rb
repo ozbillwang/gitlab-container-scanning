@@ -98,6 +98,7 @@ RSpec.describe Gcs::AllowList do
             before do
               report['vulnerabilities'].map! do |vuln|
                 vuln.delete('cve')
+                vuln['identifiers'].find { |i| i['type'] == 'cve' }['type'] = 'not-cve'
                 vuln
               end
             end
@@ -124,6 +125,7 @@ RSpec.describe Gcs::AllowList do
             before do
               report['vulnerabilities'].map! do |vuln|
                 vuln['cve'][0] = 'A'
+                vuln['identifiers'].find { |i| i['type'] == 'cve' }['value'] = 'non-matching-cve'
                 vuln
               end
             end

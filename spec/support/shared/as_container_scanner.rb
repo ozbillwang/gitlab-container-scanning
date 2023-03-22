@@ -3,7 +3,11 @@
 TRIVY_VERSION_FILE = './version/TRIVY_VERSION'
 GRYPE_VERSION_FILE = './version/GRYPE_VERSION'
 
-RSpec.shared_examples 'as container scanner' do |item|
+def legacy_schema?
+  env['CS_SCHEMA_MODEL'] && env['CS_SCHEMA_MODEL'].to_i == 14
+end
+
+RSpec.shared_examples 'as container scanner' do
   before(:all) do
     setup_schemas!
   end
@@ -26,7 +30,7 @@ RSpec.shared_examples 'as container scanner' do |item|
       expect(remedy['diff']).not_to be_nil
 
       remedy['fixes'].each do |fix|
-        expect(fix['cve']).not_to be_nil
+        expect(fix['cve']).not_to be_nil if legacy_schema?
         expect(fix['id']).not_to be_nil
       end
     end
@@ -38,7 +42,6 @@ RSpec.shared_examples 'as container scanner' do |item|
 
     report['vulnerabilities'].each do |vulnerability|
       expect(vulnerability['id']).not_to be_nil
-      expect(vulnerability['message']).not_to be_nil
       expect(vulnerability['description']).not_to be_nil
       expect(vulnerability['severity']).not_to be_nil
       expect(vulnerability['location']['dependency']['package']['name']).not_to be_nil
@@ -56,14 +59,19 @@ RSpec.shared_examples 'as container scanner' do |item|
       end
     end
 
-    expect(report['vulnerabilities']).to all(include('category' => 'container_scanning'))
+    if legacy_schema?
+      expect(vulnerability['message']).not_to be_nil
+      expect(report['vulnerabilities']).to all(include('category' => 'container_scanning'))
+    end
   end
 
   shared_examples 'as trivy scanner' do
     specify do
       current_trivy_version = File.read(TRIVY_VERSION_FILE).strip
 
-      expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
+      if legacy_schema?
+        expect(subject['vulnerabilities']).to all(include('scanner' => { 'id' => 'trivy', 'name' => 'trivy' }))
+      end
 
       expect(report['scan']['scanner']['version']).to eql(current_trivy_version)
       expect(report['scan']['scanner']['id']).to eql('trivy')
@@ -93,7 +101,9 @@ RSpec.shared_examples 'as container scanner' do |item|
     specify do
       current_grype_version = File.read(GRYPE_VERSION_FILE).strip
 
-      expect(report['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
+      if legacy_schema?
+        expect(report['vulnerabilities']).to all(include('scanner' => { 'id' => 'grype', 'name' => 'grype' }))
+      end
 
       expect(report['scan']['scanner']['version']).to eql(current_grype_version)
       expect(report['scan']['scanner']['id']).to eql('grype')
@@ -122,13 +132,12 @@ RSpec.shared_examples 'as container scanner' do |item|
   end
 
   specify do
-    expect(report['vulnerabilities']).not_to include('cve' => 'CVE-2019-3462',
-                                                     'location' => {
-                                                       'dependency' => {
-                                                         'package' => {
-                                                           'name' => 'apt'
-                                                         }
-                                                       }
-                                                     })
+    skip 'allowlisting is EE only' if env['GITLAB_FEATURES'].empty?
+
+    allowlisted_vulnerability = report['vulnerabilities'].find do |v|
+      v['identifiers'].any? { |i| i['value'] == 'CVE-2019-3462' }
+    end
+
+    expect(allowlisted_vulnerability).to be_nil
   end
 end

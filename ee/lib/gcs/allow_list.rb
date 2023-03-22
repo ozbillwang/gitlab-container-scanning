@@ -10,10 +10,10 @@ module Gcs
     end
 
     def allowed?(vuln)
-      cve = vuln['cve']
-      docker_image = vuln.dig('location', 'image')&.gsub(/\s\S*/, '')
-
+      cve = vuln['identifiers'].find { |identifier| identifier['type'].casecmp("cve").zero? }&.dig('value')
       return false unless cve
+
+      docker_image = vuln.dig('location', 'image')&.gsub(/\s\S*/, '')
 
       included_in_general?(cve) || included_in_images?(cve, docker_image)
     end
