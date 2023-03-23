@@ -1,3 +1,9 @@
+## 5.3.2 (2023-03-23)
+
+### fixed (1 change)
+
+- [Fix broken allowlist caused by update to schema v15](gitlab-org/security-products/analyzers/container-scanning@68afae717b08c4e9a3da81cd6c31e4c7c494e424) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2862))
+
 ## 5.3.1 (2023-03-21)
 
 - [Disable safe.check and ensure git is available before performing remediation](gitlab-org/security-products/analyzers/container-scanning@b7b5d266dd2e7f1b3480aed31f9940b2250cae39) ([merge request](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/-/merge_requests/2839))
