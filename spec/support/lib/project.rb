@@ -10,7 +10,7 @@ class Project
   end
 
   def report_for(type:)
-    report_path = path.join("gl-#{type}-report.json")
+    report_path = project_path.join(Gcs.report_name_for(type: type))
 
     if report_path.exist?
       JSON.parse(report_path.read)
