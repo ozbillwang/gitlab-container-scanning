@@ -1,3 +1,9 @@
+## 5.4.0 (2023-04-04)
+
+### changed (1 change)
+
+- [Add SBOM scanner](gitlab-org/security-products/analyzers/container-scanning@651ab4bb253bdec22f55a88517edca520c67e514) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2856))
+
 ## 5.3.2 (2023-03-23)
 
 ### fixed (1 change)
