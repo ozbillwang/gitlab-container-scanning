@@ -8,6 +8,7 @@ Signal.trap('INT') do
 end
 
 begin
+  `/bin/bash $HOME/.bashrc`
   Gcs::Cli.start(ARGV)
 rescue StandardError => e
   Gcs.logger.error(e.message)
