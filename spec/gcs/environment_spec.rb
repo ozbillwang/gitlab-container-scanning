@@ -251,6 +251,32 @@ RSpec.describe Gcs::Environment do
     end
   end
 
+  describe '.sbom_enabled?' do
+    context 'when CS_SBOM_ENABLED is not set' do
+      it 'returns false' do
+        with_modified_environment 'CS_SBOM_ENABLED' => nil do
+          expect(described_class.sbom_enabled?).to eq(false)
+        end
+      end
+    end
+
+    context 'when CS_SBOM_ENABLED is true' do
+      it 'returns true' do
+        with_modified_environment 'CS_SBOM_ENABLED' => 'true' do
+          expect(described_class.sbom_enabled?).to eq(true)
+        end
+      end
+    end
+
+    context 'when CS_SBOM_ENABLED is false' do
+      it 'returns true' do
+        with_modified_environment 'CS_SBOM_ENABLED' => 'false' do
+          expect(described_class.sbom_enabled?).to eq(false)
+        end
+      end
+    end
+  end
+
   describe '.fips_enabled?' do
     context 'with CI_GITLAB_FIPS_MODE set to false' do
       it 'returns false' do

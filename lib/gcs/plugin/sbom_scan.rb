@@ -15,7 +15,7 @@ module Gcs
       end
 
       def enabled?
-        Environment.scanner.scan_sbom_supported?
+        Environment.scanner.scan_sbom_supported? && Environment.sbom_enabled?
       end
 
       def skip

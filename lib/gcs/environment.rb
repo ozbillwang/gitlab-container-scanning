@@ -88,6 +88,10 @@ module Gcs
         File.exist?('/etc/redhat-release')
       end
 
+      def sbom_enabled?
+        resolve('CS_SBOM_ENABLED', default: 'false').to_s.casecmp?('true')
+      end
+
       def fips_enabled?
         resolve('CI_GITLAB_FIPS_MODE', default: 'false').to_s.casecmp?('true')
       end
