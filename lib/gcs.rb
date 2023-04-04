@@ -24,11 +24,7 @@ loader.setup
 module Gcs
   DEFAULT_REPORT_NAME = 'gl-container-scanning-report.json'
   DEFAULT_DEPENDENCY_REPORT_NAME = 'gl-dependency-scanning-report.json'
-  DEFAULT_SBOM_REPORT_NAME = 'gl-sbom-report.cdx.json'
   LOGGER_PROGNAME = 'container-scanning'
-  REPORT_NAMES = { 'sbom-scanning' => DEFAULT_SBOM_REPORT_NAME,
-                   'container-scanning' => DEFAULT_REPORT_NAME,
-                   'dependency-scanning' => DEFAULT_DEPENDENCY_REPORT_NAME }.freeze
 
   class << self
     def root
@@ -45,10 +41,6 @@ module Gcs
 
     def shell
       @shell ||= Shell.new
-    end
-
-    def report_name_for(type:)
-      REPORT_NAMES[type] || raise("report type '#{type}' does not exist")
     end
   end
 end
