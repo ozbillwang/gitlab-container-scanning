@@ -4,18 +4,14 @@ RSpec.describe Gcs::Cli do
   let(:execution) { -> { described_class.start(arguments) } }
   let(:container_scan_status) { instance_double(Process::Status, success?: true) }
   let(:dependency_scan_status) { instance_double(Process::Status, success?: true) }
-  let(:sbom_scan_status) { instance_double(Process::Status, success?: true) }
 
   before do
     allow_any_instance_of(Gcs::Plugin::ContainerScan).to receive(:scan)
       .and_return([nil, nil, container_scan_status])
     allow_any_instance_of(Gcs::Plugin::DependencyScan).to receive(:scan)
       .and_return([nil, nil, dependency_scan_status])
-    allow_any_instance_of(Gcs::Plugin::SbomScan).to receive(:scan)
-      .and_return([nil, nil, container_scan_status])
     allow_any_instance_of(Gcs::Plugin::ContainerScan).to receive(:convert)
     allow_any_instance_of(Gcs::Plugin::DependencyScan).to receive(:convert)
-    allow_any_instance_of(Gcs::Plugin::SbomScan).to receive(:convert)
   end
 
   describe '#scan' do

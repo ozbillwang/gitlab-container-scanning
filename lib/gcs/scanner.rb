@@ -25,21 +25,9 @@ module Gcs
         false
       end
 
-      def scan_sbom_supported?
-        # Scanner class must implement scan_sbom_supported? and sbom_scan_command methods when this is supported
-        false
-      end
-
       def scan_os_packages(image_name, output_file_name)
         Gcs.logger.info(log_message(image_name))
         stdout, stderr, status = Gcs.shell.execute(os_scan_command(image_name, output_file_name), environment)
-
-        [stdout, improve_stderr_msg(stderr, image_name), status]
-      end
-
-      def scan_sbom(image_name, output_file_name)
-        Gcs.logger.info(log_message(image_name))
-        stdout, stderr, status = Gcs.shell.execute(sbom_scan_command(image_name, output_file_name), environment)
 
         [stdout, improve_stderr_msg(stderr, image_name), status]
       end
@@ -129,10 +117,6 @@ module Gcs
 
       def os_scan_command(image_name, output_file_name)
         raise 'Scanner class must implement the `os_scan_command` method'
-      end
-
-      def sbom_scan_command(image_name, output_file_name)
-        raise 'Scanner class must implement the `sbom_scan_command` method'
       end
     end
   end

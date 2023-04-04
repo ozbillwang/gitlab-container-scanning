@@ -33,22 +33,6 @@ RSpec.describe Gcs::Util do
         expect(fixture_file_content(full_path)).not_to match(/CVE-2019-3462/)
       end
     end
-
-    shared_examples 'with file content' do
-      specify do
-        expect(fixture_file_content(full_path)).not_to be_empty
-      end
-    end
-
-    context 'when content is hash' do
-      it_behaves_like 'with file content'
-    end
-
-    context 'when content is json' do
-      let(:report) { fixture_file_content('report.json') }
-
-      it_behaves_like 'with file content'
-    end
   end
 
   describe '.write_table' do
