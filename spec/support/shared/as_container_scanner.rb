@@ -94,6 +94,12 @@ RSpec.shared_examples 'as container scanner' do
       expect(dependency_scanning_report['dependency_files'][0]['path']).to eq("container-image:#{env['CS_IMAGE']}")
       expect(dependency_scanning_report['dependency_files'][0]['package_manager']).not_to be_nil
       expect(dependency_scanning_report['dependency_files'][0]['dependencies']).not_to be_empty
+      expect(sbom_scanning_report["bomFormat"]).to eq("CycloneDX")
+      expect(sbom_scanning_report["version"]).to eq(1)
+      expect(sbom_scanning_report["vulnerabilities"]).not_to be_nil
+      expect(sbom_scanning_report["metadata"]).not_to be_nil
+      expect(sbom_scanning_report["components"]).not_to be_nil
+      expect(sbom_scanning_report["dependencies"]).not_to be_nil
     end
   end
 
