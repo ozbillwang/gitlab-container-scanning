@@ -137,7 +137,7 @@ task :update_scanner_and_create_mr, [:scanner] do |_, args|
 
       Please follow these steps to release the new version:     
       1. Retrieve the image url from the pipeline job log: 
-          - The job should have the title: **release > tag branch:[\<scanner>, Dockerfile]**
+          - The job should have the title: **release > tag branch:[#{scanner}, Dockerfile]**
           - Look for the image url from the logs. It should look something like: `registry.gitlab.com/gitlab-org/security-products/analyzers/container-scanning/tmp/grype:193dca72bab3627976c62f4b6d3e7ccb438a7f5c `
       2. Run a container scan using the image url
           
