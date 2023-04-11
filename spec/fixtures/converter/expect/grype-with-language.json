@@ -2429,7 +2429,9 @@
           "url": "https://github.com/advisories/GHSA-5mg8-w23w-74h3"
         }
       ],
-      "links": []
+      "links": [
+
+      ]
     },
     {
       "id": "1b226d65aa4f1ed11860f404fc4445668a4d1f9f",
@@ -2850,7 +2852,9 @@
       ]
     }
   ],
-  "remediations": [],
+  "remediations": [
+
+  ],
   "scan": {
     "scanner": {
       "id": "grype",
@@ -2867,7 +2871,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.4.1"
+      "version": "5.4.2"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
