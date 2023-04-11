@@ -87,21 +87,7 @@ this is not currently in place.
 
 #### Scanner updates
 
-To update a scanner to the latest version, run `bundle exec rake update_<scanner_name>` to create a branch with the updated
-version, then push your changes and create a new MR. Example:
-```bash
-$ bundle exec rake update_trivy
-Version has changed from 0.18.1 to 0.19.1
-creating update-trivy-to-0.19.1-2021-07-19 branch
-$ git push
-```
-
-##### Automatic scanner updates
-
-A scheduled pipeline is executed to run automatic scanner updates. To run correctly, it needs the following CI/CD variables:
-
-* `TRIGGER_SCANNER_UPDATE` - **true/false** - if set to **true**, it triggers scanner update during pipeline execution.
-* `CS_REVIEWERS_GROUP_ID` - **integer** - a reviewer for the created MR will be picked from the group with this ID.
+Follow the steps in [how to update scanners](/doc/howto/update-scanners)
 
 ## License
 
