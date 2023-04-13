@@ -53,6 +53,12 @@ RSpec.describe Gcs::Grype do
     it { is_expected.to be false }
   end
 
+  describe '.scan_sbom_supported?' do
+    subject { described_class.scan_sbom_supported? }
+
+    it { is_expected.to be false }
+  end
+
   describe 'scanning with grype' do
     subject(:scan_image) { described_class.scan_image(image_name, output_file_name) }
 

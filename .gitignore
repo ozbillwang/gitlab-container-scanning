@@ -9,6 +9,7 @@
 tmp/*
 .tool-versions
 vendor
+.DS_Store
 
 # rspec failure tracking
 .vscode

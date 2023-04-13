@@ -43,12 +43,24 @@ RSpec.describe Gcs::Trivy do
       .and_return([version_data, nil, version_status])
   end
 
-  RSpec.shared_examples 'scan image command' do
+  RSpec.shared_examples 'expected command' do
     it 'calls #execute with expected command and environment' do
       expect(Gcs.shell).to receive(:execute).with(expected_command, expected_environment)
       expect(Gcs.shell).to receive(:execute).with(["trivy", "--version"], expected_environment).twice
-
       scan_image
+    end
+  end
+
+  shared_context 'with scan image command' do
+    context 'when CE' do
+      include_context 'expected command'
+    end
+
+    context 'when EE' do
+      let(:features) { 'container_scanning' }
+      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
+
+      include_context 'expected command'
     end
   end
 
@@ -127,15 +139,29 @@ RSpec.describe Gcs::Trivy do
         allow(Gcs::Environment).to receive(:dependency_scan_disabled?).and_return(false)
       end
 
-      it_behaves_like 'scan image command'
+      it_behaves_like 'with scan image command'
+    end
+  end
+
+  describe '.scan_sbom_supported?' do
+    subject { described_class.scan_sbom_supported? }
+
+    it { is_expected.to be true }
+  end
+
+  describe '.scan_sbom' do
+    subject(:scan_image) { described_class.scan_sbom(image_name, output_file_name) }
+
+    let(:expected_command) do
+      [
+        "trivy image",
+        "--format cyclonedx",
+        "--output #{output_file_name}",
+        image_name
+      ]
     end
 
-    context 'when EE' do
-      let(:features) { 'container_scanning' }
-      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
-
-      it_behaves_like 'scan image command'
-    end
+    it_behaves_like 'with scan image command'
   end
 
   describe 'scanning with trivy' do
@@ -169,7 +195,7 @@ RSpec.describe Gcs::Trivy do
         ]
       end
 
-      it_behaves_like 'scan image command'
+      it_behaves_like 'with scan image command'
     end
 
     context 'when language specific scan is enabled' do
@@ -188,7 +214,7 @@ RSpec.describe Gcs::Trivy do
         allow(Gcs::Environment).to receive(:language_specific_scan_disabled?).and_return(false)
       end
 
-      it_behaves_like 'scan image command'
+      it_behaves_like 'with scan image command'
     end
 
     context 'when ignoring unfixed vulnerabilities is enabled' do
@@ -209,14 +235,7 @@ RSpec.describe Gcs::Trivy do
         allow(Gcs::Environment).to receive(:ignore_unfixed_vulnerabilities?).and_return(true)
       end
 
-      it_behaves_like 'scan image command'
-    end
-
-    context 'when EE' do
-      let(:features) { 'container_scanning' }
-      let(:expected_cache_dir) { "/home/gitlab/.cache/trivy/ee" }
-
-      it_behaves_like 'scan image command'
+      it_behaves_like 'with scan image command'
     end
   end
 end

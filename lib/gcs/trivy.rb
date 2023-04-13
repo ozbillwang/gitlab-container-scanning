@@ -22,6 +22,10 @@ module Gcs
         true
       end
 
+      def scan_sbom_supported?
+        true
+      end
+
       private
 
       def scan_command(image_name, output_file_name)
@@ -45,6 +49,15 @@ module Gcs
           "--no-progress",
           "--offline-scan --skip-update --security-checks vuln",
           "--format json",
+          "--output #{output_file_name}",
+          image_name
+        ]
+      end
+
+      def sbom_scan_command(image_name, output_file_name)
+        [
+          "trivy image",
+          "--format cyclonedx",
           "--output #{output_file_name}",
           image_name
         ]
