@@ -8,7 +8,7 @@
   extends:
     - .not-on-schedule
     - .scanners-matrix
-  image: $DOCKER_IMAGE
+  image: $CS_IMAGE
   retry: 1
   cache:
     key: ${CI_COMMIT_REF_SLUG}
@@ -16,7 +16,7 @@
       - vendor/ruby
   stage: test
   variables:
-    IMAGE_TAG: $DOCKER_IMAGE
+    IMAGE_TAG: $CS_IMAGE
     CS_QUIET: "true"
   artifacts:
     when: always

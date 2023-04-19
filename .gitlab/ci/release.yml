@@ -14,7 +14,7 @@
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
         export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
-    - export SOURCE_IMAGE=$DOCKER_IMAGE$IMAGE_TAG_POSTFIX
+    - export SOURCE_IMAGE=$CS_IMAGE$IMAGE_TAG_POSTFIX
     - docker pull $SOURCE_IMAGE
     - |
       if [ "$DEFAULT_SCANNER" = "$SCANNER" ]; then
