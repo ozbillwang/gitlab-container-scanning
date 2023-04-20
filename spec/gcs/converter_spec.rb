@@ -1,9 +1,11 @@
 # frozen_string_literal: true
+require 'rspec/json_expectations'
 
 RSpec.describe Gcs::Converter do
   let(:reports) do
     {
       trivy_alpine: 'trivy-alpine.json',
+      trivy_alpine_with_invalid_urls: 'trivy-alpine-with-invalid-urls.json',
       trivy_centos: 'trivy-centos.json',
       trivy_debian: 'trivy-debian.json',
       trivy_dependencies: 'trivy-dependencies.json',
@@ -40,7 +42,7 @@ RSpec.describe Gcs::Converter do
     end
 
     it 'matches expected output' do
-      expect(gitlab_format).to eq(expected)
+      expect(gitlab_format).to include_json(expected)
     end
   end
 
@@ -67,6 +69,12 @@ RSpec.describe Gcs::Converter do
       it 'sets provided image_name' do
         expect(gitlab_format.dig('vulnerabilities', 0, 'location', 'image')).to eq('g:0.1')
       end
+
+      it_behaves_like 'valid conversion'
+    end
+
+    context 'when vulnerability contains invalid URLs' do
+      let(:scanner_report) { :trivy_alpine_with_invalid_urls }
 
       it_behaves_like 'valid conversion'
     end

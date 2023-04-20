@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": "0b14144db6fa9e46ae58f5a31d8b5802c8406786",
+      "severity": "Medium",
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "tar"
+          },
+          "version": "1.29-r1"
+        },
+        "operating_system": "alpine 3.7.1",
+        "image": "registry.gitlab.com/caneldem/trivy-test/caneldem-master-patch-27986:e2c168dd9f04b7ffe2d7c69209cb5fcee565dc21",
+        "default_branch_image": "registry.example.com/group/project:latest"
+      },
+      "identifiers": [
+        {
+          "type": "cve",
+          "name": "CVE-2018-20482",
+          "value": "CVE-2018-20482",
+          "url": "http://git.savannah.gnu.org/cgit/tar.git/commit/?id=c15c42ccd1e2377945fd0414eca1a49294bff454"
+        }
+      ],
+      "links": [
+        {
+          "url": "http://git.savannah.gnu.org/cgit/tar.git/commit/?id=c15c42ccd1e2377945fd0414eca1a49294bff454"
+        },
+        {
+          "url": "https://lists.gnu.org/archive/html/bug-tar/2018-12/msg00023.html"
+        },
+        {
+          "url": "ftp://lists.opensuse.org/opensuse-security-announce/2019-04/msg00077.html"
+        }
+      ],
+      "category": "container_scanning",
+      "message": "tar: Infinite read loop in sparse_dump_region function in sparse.c",
+      "description": "GNU Tar through 1.30, when --sparse is used, mishandles file shrinkage during read access, which allows local users to cause a denial of service (infinite read loop in sparse_dump_region in sparse.c) by modifying a file that is supposed to be archived by a different user's process (e.g., a system backup running as root).",
+      "cve": "CVE-2018-20482",
+      "confidence": "Unknown",
+      "solution": "Upgrade tar to 1.31-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      }
+    }
+  ],
+  "remediations": [
+
+  ],
+  "scan": {
+    "scanner": {
+      "id": "trivy",
+      "name": "Trivy",
+      "url": "https://github.com/aquasecurity/trivy/",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "0.19.2"
+    },
+    "analyzer": {
+      "id": "gcs",
+      "name": "GitLab Container Scanning",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "5.4.3"
+    },
+    "type": "container_scanning",
+    "start_time": "2021-09-15T08:36:08",
+    "end_time": "2021-09-15T08:36:25",
+    "status": "success"
+  },
+  "version": "14.1.2"
+}

@@ -1,0 +1,81 @@
+{
+  "vulnerabilities": [
+    {
+      "id": "CVE-2018-20482",
+      "category": "container_scanning",
+      "message": "tar: Infinite read loop in sparse_dump_region function in sparse.c",
+      "description": "GNU Tar through 1.30, when --sparse is used, mishandles file shrinkage during read access, which allows local users to cause a denial of service (infinite read loop in sparse_dump_region in sparse.c) by modifying a file that is supposed to be archived by a different user's process (e.g., a system backup running as root).",
+      "cve": "CVE-2018-20482",
+      "severity": "Medium",
+      "confidence": "Unknown",
+      "solution": "Upgrade tar to 1.31-r0",
+      "scanner": {
+        "id": "trivy",
+        "name": "trivy"
+      },
+      "location": {
+        "dependency": {
+          "package": {
+            "name": "tar"
+          },
+          "version": "1.29-r1"
+        },
+        "operating_system": "Unknown",
+        "image": "registry.gitlab.com/caneldem/trivy-test/caneldem-master-patch-27986:e2c168dd9f04b7ffe2d7c69209cb5fcee565dc21 (alpine 3.7.1)"
+      },
+      "identifiers": [
+        {
+          "type": "cve",
+          "name": "CVE-2018-20482",
+          "value": "CVE-2018-20482",
+          "url": ""
+        }
+      ],
+      "links": [{
+          "url": "http://git.savannah.gnu.org/cgit/tar.git/commit/?id=c15c42ccd1e2377945fd0414eca1a49294bff454"
+        },{
+          "url": "https://lists.gnu.org/archive/html/bug-tar/2018-12/msg00023.html"
+        },{
+          "url": "ftp://lists.opensuse.org/opensuse-security-announce/2019-04/msg00077.html"
+        },{
+          "url": "afp://www.securityfocus.com/bid/106354"
+        },{
+          "url": "git://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20482"
+        },{
+          "url": "(none)"
+        },{
+          "url": "invalid"
+        },{
+          "url": "smb://security.gentoo.org/glsa/201903-05"
+        },{
+          "url": "patches:"
+        },{
+          "url": ""
+        }
+      ]
+    }
+  ],
+  "remediations": [],
+  "scan": {
+    "scanner": {
+      "id": "trivy",
+      "name": "Trivy",
+      "url": "https://github.com/aquasecurity/trivy/",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "0.19.2"
+    },
+    "analyzer": {
+      "id": "gcs",
+      "name": "GitLab Container Scanning",
+      "vendor": {
+        "name": "GitLab"
+      }
+    },
+    "type": "container_scanning",
+    "start_time": "",
+    "end_time": "",
+    "status": "success"
+  }
+}
