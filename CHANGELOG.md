@@ -1,3 +1,9 @@
+## 5.4.3 (2023-04-20)
+
+### fixed (1 change)
+
+- [Ignore invalid URLs](gitlab-org/security-products/analyzers/container-scanning@4eb1e3d0f3fd26179b734f2616095921a1149efc) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2877))
+
 ## 5.4.2 (2023-04-13)
 
 ### changed (1 change)
