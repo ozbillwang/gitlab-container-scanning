@@ -8576,7 +8576,7 @@
       ]
     },
     {
-      "id": "9aff81289f43bc57f4880fd82513ef1a44fa1228",
+      "id": "52c72f2435ccc402d0911f135ca2de6805569b3d",
       "category": "container_scanning",
       "message": "python: Python 3 eval of http resources during test suite runs",
       "description": "In Python 3 through 3.9.0, the Lib/test/multibytecodec_support.py CJK codec tests call eval() on content retrieved via HTTP.",
@@ -8608,9 +8608,6 @@
         }
       ],
       "links": [
-        {
-          "url": "Patches:"
-        },
         {
           "url": "https://bugs.python.org/issue41944"
         },
@@ -9356,7 +9353,7 @@
       ]
     },
     {
-      "id": "2af782fc493fcecb5c1cf24b42452ac97bca756f",
+      "id": "686416b95c596b82d5dc96851f1659f47f5fc65e",
       "category": "container_scanning",
       "message": "python: Python 3 eval of http resources during test suite runs",
       "description": "In Python 3 through 3.9.0, the Lib/test/multibytecodec_support.py CJK codec tests call eval() on content retrieved via HTTP.",
@@ -9388,9 +9385,6 @@
         }
       ],
       "links": [
-        {
-          "url": "Patches:"
-        },
         {
           "url": "https://bugs.python.org/issue41944"
         },
@@ -12444,7 +12438,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.4.2"
+      "version": "5.4.3"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
