@@ -5,7 +5,7 @@ module Gcs
       include Gcs::Config
 
       def docker_image
-        resolve('CS_IMAGE', 'DOCKER_IMAGE') { default_docker_image }
+        resolve('CS_IMAGE') { default_docker_image }
       end
 
       def default_branch_image
@@ -28,7 +28,7 @@ module Gcs
       end
 
       def docker_file
-        docker_file = resolve('CS_DOCKERFILE_PATH', 'DOCKERFILE_PATH') do
+        docker_file = resolve('CS_DOCKERFILE_PATH') do
           "#{project_dir}/Dockerfile"
         end
 
@@ -48,11 +48,11 @@ module Gcs
       end
 
       def docker_registry_credentials
-        username = resolve('CS_REGISTRY_USER', 'DOCKER_USER') do
+        username = resolve('CS_REGISTRY_USER') do
           ENV['CI_REGISTRY_USER'] if should_use_ci_credentials?
         end
 
-        password = resolve('CS_REGISTRY_PASSWORD', 'DOCKER_PASSWORD') do
+        password = resolve('CS_REGISTRY_PASSWORD') do
           ENV['CI_REGISTRY_PASSWORD'] if should_use_ci_credentials?
         end
 
