@@ -2,7 +2,7 @@
 variables:
   BUILD_IMAGES: registry.gitlab.com/gitlab-org/security-products/dependencies/build-images
   DOCKERFILE_SOURCE: Dockerfile
-  CS_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
+  DOCKER_IMAGE: $CI_REGISTRY_IMAGE/tmp/$SCANNER:$CI_COMMIT_SHA
   DEPLOY_REGISTRY_IMAGE: registry.gitlab.com/security-products/container-scanning
   SCANNER: trivy
   DEFAULT_SCANNER: trivy
@@ -81,8 +81,8 @@ stages:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     # ## Use string before `:` from DOCKERFILE_SOURCE (Dockerfile.ubi:fips => Dockerfile.ubi) to build the image.
     - docker build --network host --build-arg SCANNER -f "${DOCKERFILE_SOURCE%%:*}"
-      -q -t $CS_IMAGE$IMAGE_TAG_POSTFIX .
-    - docker push $CS_IMAGE$IMAGE_TAG_POSTFIX
+      -q -t $DOCKER_IMAGE$IMAGE_TAG_POSTFIX .
+    - docker push $DOCKER_IMAGE$IMAGE_TAG_POSTFIX
 
 build-scanner-image:
   extends:

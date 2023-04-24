@@ -17,9 +17,9 @@ RSpec.describe Gcs::Environment do
     end
 
     context 'when CS_IMAGE env variable is not given' do
-      context 'with CS_IMAGE env variable given' do
-        it 'uses CS_IMAGE' do
-          with_modified_environment 'CS_IMAGE' => 'nginx:latest' do
+      context 'with DOCKER_IMAGE env variable given' do
+        it 'uses DOCKER_IMAGE' do
+          with_modified_environment 'DOCKER_IMAGE' => 'nginx:latest' do
             allow(described_class).to receive(:default_docker_image)
 
             expect(described_class.docker_image).to eq('nginx:latest')
@@ -28,9 +28,9 @@ RSpec.describe Gcs::Environment do
         end
       end
 
-      context 'without CS_IMAGE env variable given' do
+      context 'without DOCKER_IMAGE env variable given' do
         it 'returns default_docker_image' do
-          with_modified_environment 'CS_IMAGE' => nil do
+          with_modified_environment 'CS_IMAGE' => nil, 'DOCKER_IMAGE' => nil do
             allow(described_class).to receive(:default_docker_image).and_return(ci_registry_image)
 
             expect(described_class.docker_image).to eq(ci_registry_image)
