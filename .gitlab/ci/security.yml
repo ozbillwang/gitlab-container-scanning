@@ -27,7 +27,7 @@ container_scanning:
   extends:
     - .scanners-matrix
   variables:
-    CS_DOCKERFILE_PATH: $DOCKERFILE_SOURCE
+    DOCKERFILE_PATH: $DOCKERFILE_SOURCE
     GIT_STRATEGY: fetch
   before_script:
     ## For IMAGE_TAG_POSTFIX use string after `:` in DOCKERFILE_SOURCE (Dockerfile.fips:ubi => ubi).
@@ -35,8 +35,8 @@ container_scanning:
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
         export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
-    - export CS_IMAGE="$CS_IMAGE$IMAGE_TAG_POSTFIX"
-    - 'echo "Scanning: $CS_IMAGE"'
+    - export DOCKER_IMAGE="$DOCKER_IMAGE$IMAGE_TAG_POSTFIX"
+    - 'echo "Scanning: $DOCKER_IMAGE"'
     # SCANNER causes a conflict since it is used internally
     # by GCS to determine which scanner binary to use.
     # When SCANNER=grype, it will try to use the grype
