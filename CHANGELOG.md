@@ -1,3 +1,9 @@
+## 5.5.1 (2023-04-24)
+
+### fixed (1 change)
+
+- [Revert removal of variables published in 5.5.0](gitlab-org/security-products/analyzers/container-scanning@c3ccd7d22c49dcec1a89c5793f97273b69493867) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2880))
+
 ## 5.5.0 (2023-04-21)
 
 ### removed (1 change)
