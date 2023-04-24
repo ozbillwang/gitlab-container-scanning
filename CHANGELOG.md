@@ -1,6 +1,8 @@
 ## 5.5.0 (2023-04-21)
 
-No changes.
+### removed (1 change)
+
+- [Remove deprecated Container Scanning variables](gitlab-org/security-products/analyzers/container-scanning@581d1df4ffe0c4e6e90a0243a0a202e59643ca49) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2876))
 
 ## 5.4.3 (2023-04-20)
 
