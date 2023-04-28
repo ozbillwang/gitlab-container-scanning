@@ -5,7 +5,7 @@ module Gcs
     def self.schema_version
       return "14.1.2" if Gcs::Environment.cs_schema_model == 14
 
-      "15.0.4"
+      "15.0.6"
     end
 
     def initialize(source, opt = {})
