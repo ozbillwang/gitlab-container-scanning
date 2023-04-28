@@ -1,3 +1,9 @@
+## 5.5.2 (2023-04-28)
+
+### changed (1 change)
+
+- [Update grype to version 0.61.1](gitlab-org/security-products/analyzers/container-scanning@c54bed09911ce4fee7ba7a6070dea756a5769115) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2884))
+
 ## 5.5.1 (2023-04-24)
 
 ### fixed (1 change)
