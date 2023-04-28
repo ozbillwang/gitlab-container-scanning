@@ -1,25 +1,32 @@
 # frozen_string_literal: true
+
 require 'rspec/json_expectations'
 
 RSpec.describe Gcs::Converter do
   let(:reports) do
     {
-      trivy_alpine: 'trivy-alpine.json',
-      trivy_alpine_with_invalid_urls: 'trivy-alpine-with-invalid-urls.json',
-      trivy_centos: 'trivy-centos.json',
-      trivy_debian: 'trivy-debian.json',
-      trivy_dependencies: 'trivy-dependencies.json',
-      trivy_scratch_image: 'trivy-scratch-image.json',
-      trivy_with_language: 'trivy-with-language.json',
-      grype_with_language: 'grype-with-language.json',
-      grype_dotnet: 'grype-dotnet.json'
+      trivy_alpine: { path: 'trivy-alpine.json', schema: 14 },
+      trivy_alpine_with_invalid_urls: { schema: 15, path: 'trivy-alpine-with-invalid-urls.json' },
+      trivy_alpine_schema_15: { schema: 15, path: 'trivy-alpine.json' },
+      trivy_centos: { schema: 14, path: 'trivy-centos.json' },
+      trivy_debian: { schema: 14, path: 'trivy-debian.json' },
+      trivy_dependencies: { schema: 14, path: 'trivy-dependencies.json' },
+      trivy_scratch_image: { schema: 14, path: 'trivy-scratch-image.json' },
+      trivy_with_language: { schema: 14, path: 'trivy-with-language.json' },
+      grype_with_language: { schema: 14, path: 'grype-with-language.json' },
+      grype_dotnet: { schema: 14, path: 'grype-dotnet.json' }
     }
   end
 
   let(:scanner_report) { :trivy_alpine }
-  let(:fixture_file_name) { reports[scanner_report] }
-  let(:scanner_output) { fixture_file_content(File.join('converter', 'scanner_output', fixture_file_name)) }
-  let(:expected_raw) { fixture_file_content(File.join('converter', 'expect', fixture_file_name)) }
+  let(:fixture_file_details) { reports[scanner_report] }
+  let(:scanner_output) { fixture_file_content(File.join('converter', 'scanner_output', fixture_file_details[:path])) }
+  let(:expected_raw) do
+    fixture_file_content(
+      File.join('converter', 'expect', "schema-#{fixture_file_details[:schema]}", fixture_file_details[:path])
+    )
+  end
+
   let(:expected) { JSON.parse(expected_raw) }
   let(:options) { { start_time: "2021-09-15T08:36:08", end_time: "2021-09-15T08:36:25" } }
 
@@ -69,12 +76,6 @@ RSpec.describe Gcs::Converter do
       it 'sets provided image_name' do
         expect(gitlab_format.dig('vulnerabilities', 0, 'location', 'image')).to eq('g:0.1')
       end
-
-      it_behaves_like 'valid conversion'
-    end
-
-    context 'when vulnerability contains invalid URLs' do
-      let(:scanner_report) { :trivy_alpine_with_invalid_urls }
 
       it_behaves_like 'valid conversion'
     end
@@ -144,7 +145,9 @@ RSpec.describe Gcs::Converter do
 
       let(:expected_raw) do
         # Manually created
-        fixture_file_content(File.join('converter', 'expect', 'trivy-alpine-without-default-branch-image.json'))
+        fixture_file_content(
+          File.join('converter', 'expect', 'schema-14/trivy-alpine-without-default-branch-image.json')
+        )
       end
 
       it_behaves_like 'valid conversion'
@@ -152,14 +155,19 @@ RSpec.describe Gcs::Converter do
 
     context 'when CS_SCHEMA_MODEL is set to 15' do
       modify_environment 'CS_SCHEMA_MODEL' => '15'
-      switch_schemas('15.0.4')
+      switch_schemas('15.0.6')
 
-      let(:expected_raw) do
-        # Manually created
-        fixture_file_content(File.join('converter', 'expect', 'trivy-alpine-cs-schema-model-15.json'))
+      context 'when the vulnerability contains valid URLs' do
+        let(:scanner_report) { :trivy_alpine_schema_15 }
+
+        it_behaves_like 'valid conversion'
       end
 
-      it_behaves_like 'valid conversion'
+      context 'when vulnerability contains invalid URLs' do
+        let(:scanner_report) { :trivy_alpine_with_invalid_urls }
+
+        it_behaves_like 'valid conversion'
+      end
     end
   end
 end

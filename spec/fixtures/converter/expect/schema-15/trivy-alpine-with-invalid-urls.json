@@ -33,16 +33,8 @@
           "url": "ftp://lists.opensuse.org/opensuse-security-announce/2019-04/msg00077.html"
         }
       ],
-      "category": "container_scanning",
-      "message": "tar: Infinite read loop in sparse_dump_region function in sparse.c",
       "description": "GNU Tar through 1.30, when --sparse is used, mishandles file shrinkage during read access, which allows local users to cause a denial of service (infinite read loop in sparse_dump_region in sparse.c) by modifying a file that is supposed to be archived by a different user's process (e.g., a system backup running as root).",
-      "cve": "CVE-2018-20482",
-      "confidence": "Unknown",
-      "solution": "Upgrade tar to 1.31-r0",
-      "scanner": {
-        "id": "trivy",
-        "name": "trivy"
-      }
+      "solution": "Upgrade tar to 1.31-r0"
     }
   ],
   "remediations": [
@@ -64,12 +56,12 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.5.2"
+      "version": "5.5.3"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
     "end_time": "2021-09-15T08:36:25",
     "status": "success"
   },
-  "version": "14.1.2"
+  "version": "15.0.6"
 }

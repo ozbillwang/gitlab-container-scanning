@@ -21,7 +21,7 @@ RSpec.describe integration_test do
       context 'when CS_SCHEMA_MODEL is set to 15', if: integration_test&.end_with?('webgoat-8.0@sha256') do
         let(:env) { super().merge('CS_SCHEMA_MODEL' => '15') }
 
-        switch_schemas('15.0.4')
+        switch_schemas('15.0.6')
 
         include_examples 'as container scanner'
       end
