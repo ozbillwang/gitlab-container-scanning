@@ -108,7 +108,7 @@ Template copied from https://github.com/aquasecurity/trivy/blob/712f9eba35999cfa
       "vendor": {
         "name": "GitLab"
       },
-      "version": "0.36.1"
+      "version": "0.40.0"
     },
     "analyzer": {
       "id": "gcs",
