@@ -1,3 +1,9 @@
+## 5.5.3 (2023-04-28)
+
+### fixed (1 change)
+
+- [Upgrade security report schemas to v15.0.6](gitlab-org/security-products/analyzers/container-scanning@46a316cfcd3ac0b6499fca1e0050ee80fd1e79ff) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2882))
+
 ## 5.5.2 (2023-04-28)
 
 ### changed (1 change)
