@@ -16,7 +16,7 @@ To release a new version:
 1. Update `VERSION` in `lib/gcs/version.rb`
 1. Merge changes
 
-Then do one of the following
+Then do one of the following:
 
 ### Run the release task
 
