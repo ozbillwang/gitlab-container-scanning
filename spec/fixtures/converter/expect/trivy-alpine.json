@@ -32,7 +32,9 @@
           "url": "https://nvd.nist.gov/vuln/detail/CVE-2018-14618"
         }
       ],
-      "links": []
+      "links": [
+
+      ]
     },
     {
       "id": "2af25296f9e76db7b6e10c0de9729ab3dedca580",
@@ -6500,7 +6502,9 @@
       ]
     }
   ],
-  "remediations": [],
+  "remediations": [
+
+  ],
   "scan": {
     "scanner": {
       "id": "trivy",
@@ -6517,7 +6521,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "5.5.1"
+      "version": "5.5.2"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",
