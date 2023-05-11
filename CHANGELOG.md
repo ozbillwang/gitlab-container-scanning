@@ -1,6 +1,17 @@
+## 6.0.1 (2023-05-1)
+
+### fixed (1 change)
+
+- [Upgrade security report schemas to v15.0.6](gitlab-org/security-products/analyzers/container-scanning@46a316cfcd3ac0b6499fca1e0050ee80fd1e79ff) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2882))
+
+### changed (1 change)
+
+- [Update grype to version 0.61.1](gitlab-org/security-products/analyzers/container-scanning@c54bed09911ce4fee7ba7a6070dea756a5769115) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2884))
+
 ## 6.0.0 (2023-05-09)
 
-No changes.
+### removed (1 change)
+- [Remove deprecated Container Scanning variables](gitlab-org/security-products/analyzers/container-scanning@f5665f0da34558abb1b58146694caae3ab7daf66) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2887))
 
 ## 5.5.3 (2023-04-28)
 
