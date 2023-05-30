@@ -47,7 +47,7 @@
 
 ### changed (1 change)
 
-- [Revert "Merge branch 'revert-917feb3f' into 'master'"](gitlab-org/security-products/analyzers/container-scanning@946d2290391de6cd10dfc983e8ebc3a34848987a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2874))
+- [Add SBOM scanner](gitlab-org/security-products/analyzers/container-scanning@946d2290391de6cd10dfc983e8ebc3a34848987a) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2874))
 
 ## 5.4.1 (2023-04-04)
 
