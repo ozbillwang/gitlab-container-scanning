@@ -32,9 +32,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2011-3374"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "13070043b353b43ffd27a323953a4ecf68b4988d",
@@ -240,9 +238,7 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0841856-B18BAF"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "aa78f20a6b82778458b89149ec7ad0b81b54d987",
@@ -4625,9 +4621,7 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0628843-DBAD28"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "2ff0576fed842a4e235de80f599ca796a5fab6fc",
@@ -4861,9 +4855,7 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0628843-DBAD28"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "e2a829ce7aa8a2d3a416d8a5cc22871a07ab6685",
@@ -4947,9 +4939,7 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0517018-A83CE6"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "2dfe3336ee2c60cceda0cc34f67206bdec5fc7a9",
@@ -5071,14 +5061,10 @@
           "url": "https://security-tracker.debian.org/tracker/TEMP-0290435-0B57B5"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     }
   ],
-  "remediations": [
-
-  ],
+  "remediations": [],
   "scan": {
     "scanner": {
       "id": "trivy",
@@ -5095,7 +5081,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "6.0.1"
+      "version": "6.1.0"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",

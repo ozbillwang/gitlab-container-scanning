@@ -49,7 +49,16 @@ setup_grype_files() {
   download_grype
   download_grype_db
   rm -rf /home/gitlab/legal/glad /home/gitlab/legal/trivy-db
+
+  compress_grype_db
 }
+
+compress_grype_db() {
+  tar -C /home/gitlab/.cache/grype/ -czf /home/gitlab/.cache/grype/db.tgz db
+  rm -rf /home/gitlab/.cache/grype/db/
+}
+
+# tar -xzf /home/gitlab/.cache/grype/db.tgz -C /home/gitlab/.cache/grype/
 
 select_scanner() {
   # The following conditionals will have be update to accomodate a new scanner.
