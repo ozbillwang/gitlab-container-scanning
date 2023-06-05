@@ -16,4 +16,4 @@ inflate /tmp/trivy-ce/db.tar.gz /home/gitlab/.cache/trivy/ce/db
 inflate /tmp/trivy-ee/db.tar.gz /home/gitlab/.cache/trivy/ee/db
 
 # inflate grype db file (if it exists)
-inflate /home/gitlab/.cache/grype/db.tgz /home/gitlab/.cache/grype/db
+inflate /home/gitlab/.cache/grype/db.tgz /home/gitlab/.cache/grype/

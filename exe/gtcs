@@ -8,6 +8,8 @@ Signal.trap('INT') do
 end
 
 begin
+  # load a custom .bashrc script to inflate all database files before executing
+  # any scanner commands.
   `/bin/bash $HOME/.bashrc`
   Gcs::Cli.start(ARGV)
 rescue StandardError => e
