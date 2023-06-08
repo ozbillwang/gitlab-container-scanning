@@ -32,9 +32,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2019-18276"
         }
       ],
-      "links": [
-
-      ]
+      "links": []
     },
     {
       "id": "aea29156c6beb81262095cb0b0e07b692f33f5e8",
@@ -12423,9 +12421,7 @@
       ]
     }
   ],
-  "remediations": [
-
-  ],
+  "remediations": [],
   "scan": {
     "scanner": {
       "id": "trivy",
@@ -12442,7 +12438,7 @@
       "vendor": {
         "name": "GitLab"
       },
-      "version": "6.0.1"
+      "version": "6.1.0"
     },
     "type": "container_scanning",
     "start_time": "2021-09-15T08:36:08",

@@ -52,5 +52,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y -q \
 USER gitlab
 ENV HOME "/home/gitlab"
 
+COPY script/.bashrc $HOME
+
 WORKDIR /home/gitlab
 CMD ["gtcs", "scan"]
