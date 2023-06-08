@@ -2,7 +2,7 @@
 
 ### changed (1 change)
 
-- [Extract trivy db on the fly](gitlab-org/security-products/analyzers/container-scanning@f3fa3d1746981dd6c810a5f05c90b2bad09c44df) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2868))
+- [Uncompress vulnerability databases at runtime](gitlab-org/security-products/analyzers/container-scanning@f3fa3d1746981dd6c810a5f05c90b2bad09c44df) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2868))
 
 ## 6.0.1 (2023-05-11)
 
