@@ -16,7 +16,7 @@ module Gcs
       end
 
       def to_hash
-        @remediations.values.map(&:to_hash)
+        @remediations.values.map(&:to_hash).reject(&:empty?)
       end
 
       def create_remediation(converted_vuln, vulnerability)
