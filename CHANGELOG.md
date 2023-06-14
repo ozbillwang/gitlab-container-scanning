@@ -1,3 +1,9 @@
+## 6.1.1 (2023-06-14)
+
+### fixed (1 change)
+
+- [Fix bug preventing uncompressing vuln DBs at runtime for fips images](gitlab-org/security-products/analyzers/container-scanning@db3ea98a5ffc30b0663d03ab2c703d17b33d096e) ([merge request](gitlab-org/security-products/analyzers/container-scanning!2891))
+
 ## 6.1.0 (2023-06-08)
 
 ### changed (1 change)
