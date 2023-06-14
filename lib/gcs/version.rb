@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 module Gcs
-  VERSION = "6.1.0"
+  VERSION = "6.1.1"
 end

@@ -16,7 +16,7 @@ ENV PATH="/home/gitlab:${PATH}"
 
 COPY --from=ghcr.io/oras-project/oras:v0.12.0 /bin/oras /usr/local/bin/
 
-COPY --from=builder /gcs/gcs.gem /gcs/script/setup.sh /gcs/version /home/gitlab/
+COPY --from=builder /gcs/gcs.gem /gcs/script/setup.sh /gcs/script/.bashrc /gcs/version /home/gitlab/
 COPY --from=builder /gcs/legal /home/gitlab/legal/
 COPY --from=builder /gcs/ee/LICENSE /home/gitlab/ee/LICENSE
 
@@ -30,7 +30,7 @@ RUN microdnf update --nodocs && \
     ln -s /home/gitlab/bin/gtcs /usr/bin/gtcs && \
     su - gitlab -c 'gem install --no-document /home/gitlab/gcs.gem' && \
     su - gitlab -c "export SCANNER=$SCANNER PATH="/home/gitlab:${PATH}"; cd /home/gitlab && bash setup.sh" && \
-    microdnf remove shadow-utils wget tar && \
+    microdnf remove shadow-utils wget && \
     microdnf clean all && \
     microdnf remove microdnf && \
     rm -f /usr/local/bin/oras
@@ -40,7 +40,7 @@ ENV HOME "/home/gitlab"
 
 # https://docs.openshift.com/container-platform/4.6/openshift_images/create-images.html#support-arbitrary-user-ids
 RUN chgrp -R 0 /home/gitlab && \
-    chmod -R g=u /home/gitlab 
+    chmod -R g=u /home/gitlab
 
 WORKDIR /home/gitlab
 CMD ["gtcs", "scan"]
