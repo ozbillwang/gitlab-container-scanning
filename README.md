@@ -87,7 +87,7 @@ this is not currently in place.
 
 #### Scanner updates
 
-Follow the steps in [how to update scanners](/doc/howto/update-scanners)
+Follow the steps in [how to update scanners](doc/howto/update-scanners.md)
 
 ## License
 
