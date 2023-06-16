@@ -5,7 +5,7 @@ require_relative 'status'
 class ScannerUpdate
   VERSION_FILE_PATH = 'version/'
   GEMFILE_LOCK_PATH = 'Gemfile.lock'
-  FIXTURES_DIR_PATH = 'spec/fixtures/converter/expect/*'
+  FIXTURES_DIR_PATH = 'spec/fixtures/converter/expect/**/*'
   SCANNERS = {
     trivy: {
       uri: 'https://api.github.com/repos/aquasecurity/trivy/releases/latest',
@@ -123,8 +123,10 @@ class ScannerUpdate
   end
 
   def update_fixtures(new_version)
-    Dir[FIXTURES_DIR_PATH].each do |file|
-      update_version_in_template_or_fixture(file, new_gem_version: new_version)
+    Dir[FIXTURES_DIR_PATH].each do |file_or_dir|
+      next if File.directory?(file_or_dir)
+
+      update_version_in_template_or_fixture(file_or_dir, new_gem_version: new_version)
     end
   end
 end
