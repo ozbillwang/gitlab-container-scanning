@@ -35,8 +35,9 @@ container_scanning:
       if [ "$DOCKERFILE_SOURCE" != "Dockerfile" ]; then
         export IMAGE_TAG_POSTFIX="-${DOCKERFILE_SOURCE##*:}"
       fi
-    - export DOCKER_IMAGE="$DOCKER_IMAGE$IMAGE_TAG_POSTFIX"
-    - 'echo "Scanning: $DOCKER_IMAGE"'
+    - export CS_IMAGE="$DOCKER_IMAGE$IMAGE_TAG_POSTFIX"
+    # Using CS_IMAGE since DOCKER_IMAGE has been deprecated in v6.x which is the version used to scan this image
+    - 'echo "Scanning: $CS_IMAGE"'
     # SCANNER causes a conflict since it is used internally
     # by GCS to determine which scanner binary to use.
     # When SCANNER=grype, it will try to use the grype
