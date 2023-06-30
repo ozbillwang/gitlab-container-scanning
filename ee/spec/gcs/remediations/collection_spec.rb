@@ -66,12 +66,25 @@ RSpec.describe Gcs::Remediations::Collection do
         `git checkout #{docker_file.to_path}`
       end
 
-      before do
-        create_remediation
+      context 'when git is available' do
+        before do
+          create_remediation
+        end
+
+        it 'adds remediation' do
+          expect(remediation_collection.to_hash[0]).to include(summary: 'Upgrade apt to 1.4.9')
+        end
       end
 
-      it 'adds remediation' do
-        expect(remediation_collection.to_hash[0]).to include(summary: 'Upgrade apt to 1.4.9')
+      context 'when git is not available' do
+        before do
+          allow_any_instance_of(Gcs::Remediations::Remediation).to receive(:git_available?).and_return(false)
+          create_remediation
+        end
+
+        it 'removes the empty remediations' do
+          expect(remediation_collection.to_hash).to be_empty
+        end
       end
     end
   end

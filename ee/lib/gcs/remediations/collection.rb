@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Gcs
   module Remediations
     class Collection
@@ -52,7 +51,7 @@ module Gcs
         new_remediation = Gcs::Remediations::Remediation.new(
           vulnerability['remediateMetadata'].merge({ 'operating_system' => os }), docker_file)
 
-        unless new_remediation.supported_operating_system?
+        unless new_remediation.supported_operating_system? && new_remediation.git_available?
           @unsupported_operating_systems.add(os)
           return nil
         end
