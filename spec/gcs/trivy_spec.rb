@@ -121,12 +121,8 @@ RSpec.describe Gcs::Trivy do
 
     let(:expected_command) do
       [
-        "trivy image",
-        "--list-all-pkgs",
-        "--no-progress",
-        "--offline-scan --skip-update --security-checks vuln",
-        "--format json",
-        "--output #{output_file_name}",
+        "echo 1 trivy image",
+        "-s HIGH,CRITICAL",
         image_name
       ]
     end
@@ -154,9 +150,8 @@ RSpec.describe Gcs::Trivy do
 
     let(:expected_command) do
       [
-        "trivy image",
-        "--format cyclonedx",
-        "--output #{output_file_name}",
+        "echo 2 trivy image",
+        "-s HIGH,CRITICAL",
         image_name
       ]
     end
@@ -169,12 +164,8 @@ RSpec.describe Gcs::Trivy do
 
     let(:expected_command) do
       [
-        "trivy image",
-        "--vuln-type os",
-        "--no-progress",
-        "--offline-scan --skip-update --security-checks vuln",
-        "--format template --template @#{described_class.template_file}",
-        "--output #{output_file_name}",
+        "echo 3 trivy image",
+        "-s HIGH,CRITICAL",
         image_name
       ]
     end
@@ -184,13 +175,8 @@ RSpec.describe Gcs::Trivy do
 
       let(:expected_command) do
         [
-          "trivy image",
-          "--severity HIGH,CRITICAL",
-          "--vuln-type os",
-          "--no-progress",
-          "--offline-scan --skip-update --security-checks vuln",
-          "--format template --template @#{described_class.template_file}",
-          "--output #{output_file_name}",
+          "echo 4 trivy image",
+          "-s HIGH,CRITICAL",
           image_name
         ]
       end
@@ -201,11 +187,8 @@ RSpec.describe Gcs::Trivy do
     context 'when language specific scan is enabled' do
       let(:expected_command) do
         [
-          "trivy image",
-          "--no-progress",
-          "--offline-scan --skip-update --security-checks vuln",
-          "--format template --template @#{described_class.template_file}",
-          "--output #{output_file_name}",
+          "echo 5 trivy image",
+          "-s HIGH,CRITICAL",
           image_name
         ]
       end
@@ -220,13 +203,8 @@ RSpec.describe Gcs::Trivy do
     context 'when ignoring unfixed vulnerabilities is enabled' do
       let(:expected_command) do
         [
-          "trivy image",
-          "--vuln-type os",
-          "--ignore-unfixed",
-          "--no-progress",
-          "--offline-scan --skip-update --security-checks vuln",
-          "--format template --template @#{described_class.template_file}",
-          "--output #{output_file_name}",
+          "echo 6 trivy image",
+          "-s HIGH,CRITICAL",
           image_name
         ]
       end

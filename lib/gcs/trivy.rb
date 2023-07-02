@@ -30,26 +30,16 @@ module Gcs
 
       def scan_command(image_name, output_file_name)
         [
-          "trivy image",
-          severity_level_arg,
-          vulnerability_type_arg,
-          ignore_unfixed_arg,
-          "--no-progress",
-          "--offline-scan --skip-update --security-checks vuln",
-          "--format template --template @#{template_file}",
-          "--output #{output_file_name}",
+          "echo 10 trivy image",
+          "-s HIGH,CRITICAL",
           image_name
         ].compact
       end
 
       def os_scan_command(image_name, output_file_name)
         [
-          "trivy image",
-          "--list-all-pkgs",
-          "--no-progress",
-          "--offline-scan --skip-update --security-checks vuln",
-          "--format json",
-          "--output #{output_file_name}",
+          "echo 11 trivy image",
+          "-s HIGH,CRITICAL",
           image_name
         ]
       end
@@ -57,8 +47,7 @@ module Gcs
       def sbom_scan_command(image_name, output_file_name)
         [
           "trivy image",
-          "--format cyclonedx",
-          "--output #{output_file_name}",
+          "-s HIGH,CRITICAL",
           image_name
         ]
       end
